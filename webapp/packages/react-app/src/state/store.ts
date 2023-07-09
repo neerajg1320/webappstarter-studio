@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers';
-import { reduxManualTest } from '../global/config';
+import { reduxManualTest } from '../config/global';
 import { persistMiddleware } from './middlewares/persist-middleware';
 
 export const store = createStore(
@@ -14,7 +14,6 @@ export const store = createStore(
 export const populateStoreManual = () => {
   // The import syntax doesn't work inside block
   const {ActionType} = require("./action-types");
-  const {defaultRootElementCode} = require('../presets/code');
 
   console.log(store.getState());
 

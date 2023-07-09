@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import axios from "axios";
-import {debugPlugin, debugCache, cacheEnabled} from "../../global/config";
+import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
 import localforage from "localforage";
 
 const refereceCode = false;

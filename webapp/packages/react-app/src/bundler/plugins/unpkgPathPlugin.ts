@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild-wasm';
-import { debugPlugin } from '../../global/config';
+import { debugPlugin } from '../../config/global';
 
 
 export const unpkgPathPlugin = () => {
