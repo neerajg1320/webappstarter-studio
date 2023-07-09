@@ -7,6 +7,7 @@ import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import { useCumulativeCode } from '../../hooks/use-cumulative';
+import { autoBundling } from '../../config/global';
 
 interface CodeCellProps {
   cell: Cell
@@ -20,20 +21,23 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // console.log(cumulativeCode);
   
   useEffect(() => {
+    // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
       createBundle(cell.id, cumulativeCode);
       return;
     }
 
-    // In subsequent attempts we wait for debounce time before bundling
-    const timer = setTimeout(async () => {
-      // console.log("Calling bundle");
-      createBundle(cell.id, cumulativeCode);
-    }, 1000)
+    if (autoBundling) {
+      // In subsequent attempts we wait for debounce time before bundling
+      const timer = setTimeout(async () => {
+        // console.log("Calling bundle");
+        createBundle(cell.id, cumulativeCode);
+      }, 1000)
 
-    return() => {
-      clearTimeout(timer);
+      return() => {
+        clearTimeout(timer);
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
