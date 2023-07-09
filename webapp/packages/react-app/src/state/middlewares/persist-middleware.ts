@@ -3,6 +3,7 @@ import { Action } from "../actions";
 import { ActionType } from "../action-types";
 import { saveCells } from "../action-creators";
 import { RootState } from "../reducers";
+import { serverConnect } from "../../config/global";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;
@@ -12,18 +13,20 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
       
       next(action);
       
-      if ([
-        ActionType.MOVE_CELL, 
-        ActionType.UPDATE_CELL,
-        ActionType.INSERT_CELL_AFTER,
-        ActionType.DELETE_CELL
-      ].includes(action.type)) {
-        if (saveTimer) {
-          clearTimeout(saveTimer);
+      if (serverConnect) {
+        if ([
+          ActionType.MOVE_CELL, 
+          ActionType.UPDATE_CELL,
+          ActionType.INSERT_CELL_AFTER,
+          ActionType.DELETE_CELL
+        ].includes(action.type)) {
+          if (saveTimer) {
+            clearTimeout(saveTimer);
+          }
+          saveTimer = setTimeout(() => {
+            saveCells()(dispatch, getState)
+          }, 1000);
         }
-        saveTimer = setTimeout(() => {
-          saveCells()(dispatch, getState)
-        }, 1000);
       }
     }
   }
