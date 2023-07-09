@@ -22,8 +22,9 @@ const initialState: CellsState = {
 const reducer = produce((state: CellsState = initialState, action: Action): CellsState => {
   switch(action.type) {
     case ActionType.UPDATE_CELL:
-      const {id, content} = action.payload;
+      const {id, content, filePath} = action.payload;
       state.data[id].content = content;
+      state.data[id].filePath = filePath;
       return state;
 
     case ActionType.DELETE_CELL:
@@ -48,6 +49,7 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
 
     case ActionType.INSERT_CELL_AFTER:
       const cell: Cell = {
+        filePath: action.payload.filePath || '',
         content: action.payload.content || '',
         type: action.payload.type,
         id: randomIdGenerator()

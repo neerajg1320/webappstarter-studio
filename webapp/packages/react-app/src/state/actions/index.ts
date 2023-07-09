@@ -22,6 +22,7 @@ export interface InsertCellAfterAction {
         id: string | null;
         type: CellTypes;
         content?: string;
+        filePath?: string;
     }
 }
 
@@ -30,6 +31,7 @@ export interface UpdateCellAction {
     payload: {
         id: string;
         content: string;
+        filePath: string;
     }
 }
 

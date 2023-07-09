@@ -7,12 +7,13 @@ import axios from 'axios';
 import {RootState} from "../reducers";
 
 
-export const updateCell = (id: string, content: string): UpdateCellAction => {
+export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
   return {
       type: ActionType.UPDATE_CELL,
       payload: {
           id,
-          content
+          content, 
+          filePath
       }
   }
 };

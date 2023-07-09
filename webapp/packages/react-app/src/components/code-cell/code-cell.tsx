@@ -1,5 +1,5 @@
 import './code-cell.css';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { Cell } from "../../state";
@@ -16,8 +16,11 @@ interface CodeCellProps {
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [autoBundle, setAutoBundle] = useState(autoBundling);
   const {updateCell, createBundle} = useActions();
+  // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+  const cellCode = useTypedSelector((state) => state.cells.data[cell.id]);
   const cumulativeCode = useCumulativeCode(cell.id);
+  const filePathInputRef = useRef<HTMLInputElement | null>(null);
 
   // console.log(cumulativeCode);
   
@@ -46,8 +49,13 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   const onEditorChange = (value:string) => {
     // setInput(value);
-    updateCell(cell.id, value);
+    updateCell(cell.id, value, filePathInputRef.current!.value);
   };
+
+  const handleSaveClick = () => {
+    console.log(cellCode);
+    createBundle(cell.id, cumulativeCode);
+  }
 
   return (
     <div>
@@ -74,9 +82,12 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       <div style={{display: "flex", justifyContent: "center", gap: "20px", alignItems: "center"}}>
         <div>
         <label>File Path:</label>
-        <input type="text" />
+        <input ref={filePathInputRef} type="text" />
         </div>
-        <button className="button is-primary is-small">
+        <button 
+          className="button is-primary is-small"
+          onClick={() => handleSaveClick()}
+        >
           Bundle
         </button>
       </div>
