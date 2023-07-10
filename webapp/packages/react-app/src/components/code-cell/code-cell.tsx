@@ -15,7 +15,7 @@ interface CodeCellProps {
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [autoBundle, setAutoBundle] = useState(autoBundling);
-  const {updateCell, createCellBundle: createBundle} = useActions();
+  const {updateCell, createCellBundle} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
@@ -28,7 +28,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
-      createBundle(cell.id, cumulativeCode);
+      createCellBundle(cell.id, cumulativeCode);
       return;
     }
 
@@ -36,7 +36,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       // In subsequent attempts we wait for debounce time before bundling
       const timer = setTimeout(async () => {
         // console.log("Calling bundle");
-        createBundle(cell.id, cumulativeCode);
+        createCellBundle(cell.id, cumulativeCode);
       }, 1000)
 
       return() => {
@@ -45,7 +45,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulativeCode, cell.id, createBundle, autoBundle]);
+  }, [cumulativeCode, cell.id, createCellBundle, autoBundle]);
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
@@ -60,7 +60,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   const handleSaveClick = () => {
     // console.log(cellState);
-    createBundle(cell.id, cumulativeCode);
+    createCellBundle(cell.id, cumulativeCode);
   }
 
   return (
