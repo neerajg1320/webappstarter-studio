@@ -1,10 +1,11 @@
 import {ActionType} from "../action-types";
-import {Action, DeleteCellAction, Direction, InsertCellAfterAction, MoveCellAction, UpdateCellAction} from '../actions';
+import {Action, DeleteCellAction, Direction, InsertCellAfterAction, MoveCellAction, SetCurrentProjectAction, UpdateCellAction} from '../actions';
 import {Cell, CellTypes} from '../cell';
 import { Dispatch } from "react";
 import bundle from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
+import { ProjectFrameworks } from "../project";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -107,6 +108,17 @@ export const saveCells = () => {
                     payload: err.message
                 });
             }
+        }
+    }
+}
+
+export const setCurrentProject = (id: string, name:string, framework: ProjectFrameworks): SetCurrentProjectAction => {
+    return {
+        type: ActionType.SET_CURRENT_PROJECT,
+        payload: {
+            id,
+            name,
+            framework
         }
     }
 }

@@ -1,5 +1,6 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
+import { Project } from "../project";
 
 export type Direction = 'up' | 'down';
 
@@ -72,6 +73,11 @@ export interface SaveCellsErrorAction {
     payload: string
 }
 
+export interface SetCurrentProjectAction {
+    type: ActionType.SET_CURRENT_PROJECT,
+    payload: Project,
+}
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -82,4 +88,5 @@ export type Action =
     | FetchCellsAction
     | FetchCellsCompleteAction
     | FetchCellsErrorAction
-    | SaveCellsErrorAction;        
+    | SaveCellsErrorAction
+    | SetCurrentProjectAction;        

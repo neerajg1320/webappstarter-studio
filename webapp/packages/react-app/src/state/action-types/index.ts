@@ -12,4 +12,6 @@ export enum ActionType {
   FETCH_CELLS_ERROR = 'fetch_cells_error',
 
   SAVE_CELLS_ERROR = 'save_cells_error',
+
+  SET_CURRENT_PROJECT = 'set_current_project',
 }
