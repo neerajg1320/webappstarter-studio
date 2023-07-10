@@ -1,11 +1,20 @@
 import {ActionType} from "../action-types";
-import {Action, DeleteCellAction, Direction, InsertCellAfterAction, MoveCellAction, SetCurrentProjectAction, UpdateCellAction} from '../actions';
+import {
+    Action,
+    CreateProjectAction,
+    DeleteCellAction, DeleteProjectAction,
+    Direction,
+    InsertCellAfterAction,
+    MoveCellAction,
+    SetCurrentProjectAction,
+    UpdateCellAction, UpdateProjectAction
+} from '../actions';
 import {Cell, CellTypes} from '../cell';
 import { Dispatch } from "react";
 import bundle from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
-import { ProjectFrameworks } from "../project";
+import {Project, ProjectFrameworks} from "../project";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -135,12 +144,47 @@ export const saveCells = () => {
     }
 }
 
-export const setCurrentProject = (name:string, framework: ProjectFrameworks): SetCurrentProjectAction => {
+export const createProject = (name:string, framework: ProjectFrameworks): CreateProjectAction => {
     return {
-        type: ActionType.SET_CURRENT_PROJECT,
+        type: ActionType.CREATE_PROJECT,
         payload: {
             name,
             framework
         }
+    }
+}
+
+export const updateProject = (id:string, name:string, framework: ProjectFrameworks): UpdateProjectAction => {
+    return {
+        type: ActionType.UPDATE_PROJECT,
+        payload: {
+            id,
+            name,
+            framework
+        }
+    }
+}
+
+export const deleteProject = (id:string): DeleteProjectAction => {
+    return {
+        type: ActionType.DELETE_PROJECT,
+        payload: id
+    }
+}
+
+export const setCurrentProject = (id: string): SetCurrentProjectAction => {
+    return {
+        type: ActionType.SET_CURRENT_PROJECT,
+        payload: id
+    }
+}
+
+export const createAndSetProject = (name:string, framework: ProjectFrameworks) => {
+    return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+        dispatch(createProject(name, framework));
+        const { projects } = getState();
+
+        const firstProject:[string, Project] = Object.entries(projects.data)[0];
+        dispatch(setCurrentProject(firstProject[0]));
     }
 }

@@ -1,19 +1,23 @@
 import CellList from "./components/cell-list/cell-list";
 import { useActions } from "./hooks/use-actions";
 import { useTypedSelector } from "./hooks/use-typed-selector";
-import { createProjectBundle } from "./state/action-creators";
+
 
 const App = () => {
-  const {setCurrentProject} = useActions();
-  // const projectsState = useTypedSelector((state) => state.projects);
+  const { createAndSetProject, updateProject} = useActions();
+  const projectsState = useTypedSelector((state) => state.projects);
 
   const handleInputChange = (value:string) => {
-    setCurrentProject(value, "reactjs");
-    // console.log(projectsState);
+    if (Object.keys(projectsState.data).length < 1) {
+      createAndSetProject(value, "reactjs");
+    } else {
+      const project = Object.entries(projectsState.data)[0][1];
+      updateProject(project.id, value, "reactjs");
+    }
   };
 
   const handleBundleClick = () => {
-    // const result = createCellBundle()
+    console.log(JSON.stringify(projectsState));
   }
 
   return (
@@ -28,7 +32,12 @@ const App = () => {
         <input type="text" onChange={(e) => {handleInputChange(e.target.value)}} />
         </div>
         <div>
-          <button className="button is-primary is-small">Bundle</button>
+          <button
+            className="button is-primary is-small"
+            onClick={handleBundleClick}
+          >
+              Bundle
+          </button>
         </div>
       </div>
       <div style={{

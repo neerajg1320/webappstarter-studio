@@ -91,12 +91,32 @@ export interface SaveCellsErrorAction {
     payload: string
 }
 
+export interface CreateProjectAction {
+    type: ActionType.CREATE_PROJECT,
+    payload: {
+        name: string,
+        framework: ProjectFrameworks
+    }
+}
+
+export interface UpdateProjectAction {
+    type: ActionType.UPDATE_PROJECT,
+    payload: {
+        id: string,
+        name: string,
+        framework: ProjectFrameworks
+    }
+}
+
+export interface DeleteProjectAction {
+    type: ActionType.DELETE_PROJECT,
+    payload: string
+}
+
+
 export interface SetCurrentProjectAction {
     type: ActionType.SET_CURRENT_PROJECT,
-    payload: {
-      name: string,
-      framework: ProjectFrameworks
-    }
+    payload: string
 }
 
 export type Action =
@@ -112,4 +132,7 @@ export type Action =
     | FetchCellsCompleteAction
     | FetchCellsErrorAction
     | SaveCellsErrorAction
+    | CreateProjectAction
+    | UpdateProjectAction
+    | DeleteProjectAction
     | SetCurrentProjectAction;        
