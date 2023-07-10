@@ -105,7 +105,10 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
           // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
           const { data, request } = await axios.get(args.path);
 
-          console.log(`request.responseURL:${request.responseURL}`);
+          if (debugPlugin || true) {
+              console.log(`request.responseURL:${request.responseURL}`);
+          }
+
           result = {
               loader: 'jsx',
               contents: data,

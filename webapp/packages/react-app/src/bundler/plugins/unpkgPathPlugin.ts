@@ -1,8 +1,8 @@
 import * as esbuild from 'esbuild-wasm';
 import { debugPlugin } from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
-import {getFileServer, getPkgServer} from "./remote";
-
+import {getFileServer, getFileServerWithPath, getPkgServer} from "./remote";
+import path from "path";
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
@@ -10,6 +10,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
   console.log(`unpkgPathPlugin: closure created for inputType '${inputType}'`);
   const pkgServer = getPkgServer();
   const fileServer = getFileServer();
+  const fileServerPath = getFileServerWithPath();
 
 
   return {
@@ -33,20 +34,30 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
         if (debugPlugin) {
           console.log('onResolve', args);
         }
-        return { path: `${fileServer}/${args.path}`, namespace: 'a'}
+        return { path: `${fileServerPath}/${args.path}`, namespace: 'a'}
       });
 
       // For relative paths like ./xxx or ../xxx
       // We prepend the pkgServer to the path.
       // TBD: We have to fix this behaviour
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
-        if (debugPlugin) {
+        if (debugPlugin || true) {
             console.log('onResolve', args);
         }
-        return {
+
+        if (args.importer.includes(pkgServer)) {
+          return {
             path: new URL(args.path, pkgServer + args.resolveDir + '/').href,
             namespace: 'a'
-        };
+          };
+        }
+        if (args.importer.includes(fileServer)) {
+          return {
+            path: new URL(args.path, fileServer + args.resolveDir + '/').href,
+            namespace: 'a'
+          };
+        }
+        console.error(`Error! unexpected importer '${args.importer}'`);
       });
 
       // For anything else

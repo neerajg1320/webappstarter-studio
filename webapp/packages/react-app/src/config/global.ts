@@ -1,7 +1,7 @@
 export const cacheEnabled = false;
 
 export const debug = false;
-export const debugPlugin = true;
+export const debugPlugin = false;
 export const debugCache = true;
 export const debugListeners = false;
 
