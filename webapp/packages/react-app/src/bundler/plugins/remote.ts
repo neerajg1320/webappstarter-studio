@@ -4,7 +4,7 @@ const pkgServer = 'https://unpkg.com';
 
 export const getServer = (inputType: BundleInputType): string => {
     // TBD: Currently the user id string is hardcoded
-    
+
     return (inputType === 'cell')
         ? getPkgServer()
         : getFileServer()

@@ -1,14 +1,16 @@
 import * as esbuild from 'esbuild-wasm';
 import { debugPlugin } from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
-import {getServer} from "./remote";
+import {getFileServer, getPkgServer} from "./remote";
 
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
 export const unpkgPathPlugin = (inputType: BundleInputType) => {
   console.log(`unpkgPathPlugin: closure created for inputType '${inputType}'`);
-  const fileServer = getServer(inputType);
+  const pkgServer = getPkgServer();
+  const fileServer = getFileServer();
+
 
   return {
     name: 'unpkg-path-plugin',
@@ -52,7 +54,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
           console.log('onResolve', args);
         }
  
-        return { path: `${fileServer}/${args.path}`, namespace: 'a' };
+        return { path: `${pkgServer}/${args.path}`, namespace: 'a' };
       });
  
 
