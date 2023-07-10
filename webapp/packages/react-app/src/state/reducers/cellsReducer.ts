@@ -23,8 +23,7 @@ const initialState: CellsState = {
 const reducer = produce((state: CellsState = initialState, action: Action): CellsState => {
   switch(action.type) {
     case ActionType.UPDATE_CELL:
-      console.log(`UPDATE_CELL: ${JSON.stringify(action.payload)}`);
-
+      // console.log(`UPDATE_CELL: ${JSON.stringify(action.payload)}`);
       const {id, content, filePath} = action.payload;
       state.data[id].content = content;
       state.data[id].filePath = filePath;

@@ -49,7 +49,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
-    console.log(cellState);
+    // console.log(cellState);
     // Don't use cellState for filePath
     updateCell(cell.id, value, filePathInputRef.current!.value);
   };
@@ -59,7 +59,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   }
 
   const handleSaveClick = () => {
-    console.log(cellState);
+    // console.log(cellState);
     createBundle(cell.id, cumulativeCode);
   }
 
