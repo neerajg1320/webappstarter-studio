@@ -1,5 +1,5 @@
 import './code-cell.css';
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useState, useRef, useMemo} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { Cell } from "../../state";
@@ -7,7 +7,7 @@ import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import { useCumulativeCode } from '../../hooks/use-cumulative';
-import { autoBundling } from '../../config/global';
+import {autoBundling, combineCellsCode} from '../../config/global';
 
 interface CodeCellProps {
   cell: Cell
@@ -19,14 +19,16 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
-  const cumulativeCode = useCumulativeCode(cell.id);
+  const cellCode = cellState.content;
+  const cumulativeCode =  useCumulativeCode(cell.id);
+  const inputCode = combineCellsCode ? cumulativeCode : cellCode;
   const filePathInputRef = useRef<HTMLInputElement | null>(null);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
-      createCellBundle(cell.id, cumulativeCode);
+      createCellBundle(cell.id, inputCode);
       return;
     }
 
@@ -34,7 +36,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       // In subsequent attempts we wait for debounce time before bundling
       const timer = setTimeout(async () => {
         // console.log("Calling bundle");
-        createCellBundle(cell.id, cumulativeCode);
+        createCellBundle(cell.id, inputCode);
       }, 1000)
 
       return() => {
@@ -43,7 +45,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cumulativeCode, cell.id, createCellBundle, autoBundle]);
+  }, [inputCode, cell.id, createCellBundle, autoBundle]);
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
@@ -56,7 +58,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   }
 
   const handleBundleClick = () => {
-    createCellBundle(cell.id, cumulativeCode);
+    createCellBundle(cell.id, inputCode);
   }
 
   return (

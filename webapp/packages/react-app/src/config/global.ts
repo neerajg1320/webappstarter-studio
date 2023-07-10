@@ -10,3 +10,5 @@ export const reduxManualTest = false;
 export const serverConnect = false;
 
 export const autoBundling = false;
+
+export const combineCellsCode = false;
