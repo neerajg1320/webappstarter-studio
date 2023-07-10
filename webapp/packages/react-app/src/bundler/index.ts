@@ -32,7 +32,7 @@ const bundleCode = async (codeOrfilePath: string, inputType: BundleInputType) =>
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
                 unpkgPathPlugin(inputType),
-                fetchPlugin(codeOrfilePath)
+                fetchPlugin(codeOrfilePath, inputType)
             ],
             define: {
                 'process.env.NODE_ENV': '"production"',

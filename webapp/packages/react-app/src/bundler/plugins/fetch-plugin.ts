@@ -22,7 +22,7 @@ if (cacheEnabled) {
   }
 }
 
-export const fetchPlugin = (inputCodeOrPath: string, inputType: BundleInputType) => {
+export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputType) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {          
@@ -98,7 +98,7 @@ export const fetchPlugin = (inputCodeOrPath: string, inputType: BundleInputType)
       if (args.path === 'index.js') {
           result  = {
               loader: 'jsx',
-              contents: inputCodeOrPath,
+              contents: inputCodeOrFilePath,
           };
 
       } else {

@@ -3,7 +3,12 @@ import { debugPlugin } from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
 
 
+// The plugins are created for each bundle request
+// Hence we can use the closures for deciding the server to be contacted
 export const unpkgPathPlugin = (inputType: BundleInputType) => {
+  console.log(`unpkgPathPlugin: closure created for ${inputType}`);
+  const fileServer = (inputType === 'cell') ? 'https://unpkg.com' : 'http://localhost:8080/mediafiles';
+
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
@@ -23,7 +28,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
             console.log('onResolve', args);
         }
         return {
-            path: new URL(args.path, 'https://unpkg.com' + args.resolveDir + '/').href,
+            path: new URL(args.path, fileServer + args.resolveDir + '/').href,
             namespace: 'a'
         };
       });
@@ -34,7 +39,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
           console.log('onResolve', args);
         }
  
-        return { path: `https://unpkg.com/${args.path}`, namespace: 'a' };
+        return { path: `${fileServer}/${args.path}`, namespace: 'a' };
       });
  
 
