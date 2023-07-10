@@ -45,7 +45,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
             },
         };
 
-        if (combineCellsCode) {
+        if (inputType === 'cell' && combineCellsCode) {
             builderServiceOptions.jsxFactory = '_React.createElement';
             builderServiceOptions.jsxFragment = '_React.Fragment';
         }
