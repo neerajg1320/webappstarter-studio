@@ -21,8 +21,6 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
   const cumulativeCode = useCumulativeCode(cell.id);
   const filePathInputRef = useRef<HTMLInputElement | null>(null);
-
-  // console.log(cumulativeCode);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -49,7 +47,6 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
-    // console.log(cellState);
     // Don't use cellState for filePath
     updateCell(cell.id, value, filePathInputRef.current!.value);
   };
@@ -58,8 +55,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     updateCell(cell.id, cellState.content, value);
   }
 
-  const handleSaveClick = () => {
-    // console.log(cellState);
+  const handleBundleClick = () => {
     createCellBundle(cell.id, cumulativeCode);
   }
 
@@ -92,7 +88,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         </div>
         <button 
           className="button is-primary is-small"
-          onClick={() => handleSaveClick()}
+          onClick={() => handleBundleClick()}
         >
           Bundle
         </button>
