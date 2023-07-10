@@ -2,6 +2,7 @@ import produce from 'immer';
 import {ActionType} from "../action-types";
 import {Action} from "../actions";
 import {Cell} from "../cell";
+import { randomIdGenerator } from '../id';
 
 interface CellsState {
   loading: boolean;
@@ -23,7 +24,7 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
   switch(action.type) {
     case ActionType.UPDATE_CELL:
       console.log(`UPDATE_CELL: ${JSON.stringify(action.payload)}`);
-      
+
       const {id, content, filePath} = action.payload;
       state.data[id].content = content;
       state.data[id].filePath = filePath;
@@ -95,8 +96,6 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
   }
 }, initialState);
 
-const randomIdGenerator = () => {
-  return Math.random().toString(36).substring(2, 7);
-}
+
 
 export default reducer;

@@ -1,4 +1,4 @@
-export type ProjectFrameworks = 'reactjs' | 'vuejs' | 'angularjs';
+export type ProjectFrameworks = 'reactjs' | 'vuejs' | 'angularjs' | 'none';
 
 export interface Project {
     id: string;
