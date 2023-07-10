@@ -112,11 +112,10 @@ export const saveCells = () => {
     }
 }
 
-export const setCurrentProject = (id: string, name:string, framework: ProjectFrameworks): SetCurrentProjectAction => {
+export const setCurrentProject = (name:string, framework: ProjectFrameworks): SetCurrentProjectAction => {
     return {
         type: ActionType.SET_CURRENT_PROJECT,
         payload: {
-            id,
             name,
             framework
         }
