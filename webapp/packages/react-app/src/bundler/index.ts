@@ -4,6 +4,8 @@ import { fetchPlugin } from './plugins/fetch-plugin';
 
 let service: esbuild.Service;
 
+// The bundleCodeStr takes a string as input.
+// In fetchPlugin, the onLoad method checks for index.js and provides this String
 const bundleCodeStr = async (rawCode: string) => {
     if (!service) {
         service = await esbuild.startService({
