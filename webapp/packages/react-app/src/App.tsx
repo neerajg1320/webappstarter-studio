@@ -1,11 +1,10 @@
 import CellList from "./components/cell-list/cell-list";
 import { useActions } from "./hooks/use-actions";
 import { useTypedSelector } from "./hooks/use-typed-selector";
-import {createProjectBundle} from "./state/action-creators";
 
 
 const App = () => {
-  const { createAndSetProject, updateProject} = useActions();
+  const { createAndSetProject, updateProject, createProjectBundle} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
 
   const handleInputChange = (value:string) => {
@@ -18,10 +17,11 @@ const App = () => {
   };
 
   const handleBundleClick = () => {
-    console.log(JSON.stringify(projectsState));
     if (Object.keys(projectsState.data).length > 0) {
       const project = Object.entries(projectsState.data)[0][1];
-      createProjectBundle(project.id, project.name)
+
+      // TBD: The project starting file is assumed to be index.js, we will soon add a check
+      createProjectBundle(project.id, `${project.name}/index.js`);
     }
   }
 

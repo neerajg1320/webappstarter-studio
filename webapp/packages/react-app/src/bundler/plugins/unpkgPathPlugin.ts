@@ -7,7 +7,7 @@ import {getServer} from "./remote";
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
 export const unpkgPathPlugin = (inputType: BundleInputType) => {
-  console.log(`unpkgPathPlugin: closure created for ${inputType}`);
+  console.log(`unpkgPathPlugin: closure created for inputType '${inputType}'`);
   const fileServer = getServer(inputType);
 
   return {
@@ -15,12 +15,23 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
     setup(build: esbuild.PluginBuild) {
       // onResolve are for path resolutions
 
-      // For index.js
+      // TBD: Check if we can put an if condition between following two
+
+      // For index.js, comes from a cell
       build.onResolve({filter: /^index\.js[x]?$/}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);
         }
         return { path: args.path, namespace: 'a'}
+      });
+
+      // For <project>/index.js: comes from a project
+      // We prepend the fileServer to the path
+      build.onResolve({filter: /^\w+\/index\.js[x]?$/}, (args: any) => {
+        if (debugPlugin) {
+          console.log('onResolve', args);
+        }
+        return { path: `${fileServer}/${args.path}`, namespace: 'a'}
       });
 
       // For relative paths like ./xxx or ../xxx
@@ -35,6 +46,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
       });
 
       // For anything else
+      // We prepend the fileServer to the path
       build.onResolve({ filter: /.*/ }, async (args: any) => {
         if (debugPlugin) {
           console.log('onResolve', args);

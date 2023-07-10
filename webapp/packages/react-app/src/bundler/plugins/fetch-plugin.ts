@@ -87,7 +87,7 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
       return result;
   });    
 
-    // We intercept the request and download from unpkg.com using axios
+    // We intercept the request and download from fileServer using axios
     build.onLoad({ filter: /.*/ }, async (args: any) => {
       if (debugPlugin) {
         console.log('onLoad', args);

@@ -9,13 +9,15 @@ export const bundleCodeStr = async(rawCode: string) => {
     return bundleCode(rawCode, 'cell');
 }
 
-export const bundleFilePath =  async(rawCode: string) => {
-    return bundleCode(rawCode, 'project');
+export const bundleFilePath =  async(filePath: string) => {
+    return bundleCode(filePath, 'project');
 }
 
 // The bundleCodeStr takes a string as input.
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
-const bundleCode = async (codeOrfilePath: string, inputType: BundleInputType) => {
+const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) => {
+    console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
+
     if (!service) {
         service = await esbuild.startService({
             worker: true,
@@ -26,13 +28,15 @@ const bundleCode = async (codeOrfilePath: string, inputType: BundleInputType) =>
 
     try {
         const result = await service.build({
-            entryPoints: ['index.js'],
+            // The following will be replaced by fetchPlugin to code for a cell
+            // For filePath the fetchPlugin will download file from fileServer
+            entryPoints: inputType === 'cell' ? ['index.js'] : [codeOrFilePath],
             bundle: true,
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
                 unpkgPathPlugin(inputType),
-                fetchPlugin(codeOrfilePath, inputType)
+                fetchPlugin(codeOrFilePath, inputType)
             ],
             define: {
                 'process.env.NODE_ENV': '"production"',
