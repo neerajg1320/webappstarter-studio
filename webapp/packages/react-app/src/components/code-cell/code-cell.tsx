@@ -15,7 +15,7 @@ interface CodeCellProps {
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [autoBundle, setAutoBundle] = useState(autoBundling);
-  const {updateCell, createBundle} = useActions();
+  const {updateCell, createCellBundle: createBundle} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
