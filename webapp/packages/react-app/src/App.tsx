@@ -1,7 +1,7 @@
 import CellList from "./components/cell-list/cell-list";
 import { useActions } from "./hooks/use-actions";
 import { useTypedSelector } from "./hooks/use-typed-selector";
-import { createCellBundle } from "./state/action-creators";
+import { createProjectBundle } from "./state/action-creators";
 
 const App = () => {
   const {setCurrentProject} = useActions();

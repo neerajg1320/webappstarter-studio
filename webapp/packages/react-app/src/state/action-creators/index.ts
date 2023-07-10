@@ -68,6 +68,29 @@ export const createCellBundle = (cellId:string, input:string) => {
   };
 }
 
+
+export const createProjectBundle = (projectId:string, input:string) => {
+    return async (dispatch:Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.PROJECT_BUNDLE_START,
+            payload: {
+                projectId,
+            }
+        });
+  
+        const result = await bundle(input);
+  
+        dispatch({
+            type: ActionType.PROJECT_BUNDLE_COMPLETE,
+            payload: {
+                projectId,
+                bundle: result
+            }
+        });
+    };
+  }
+  
+
 // We will use thunk here as we use a network request which is asynchronous
 export const fetchCells = () => {
     return async (dispatch: Dispatch<Action>) => {
