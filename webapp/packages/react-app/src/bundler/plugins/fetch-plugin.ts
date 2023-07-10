@@ -84,7 +84,6 @@ export const fetchPlugin = (inputCode: string) => {
       }
 
       return result;
-
   });    
 
     // We intercept the request and download from unpkg.com using axios
@@ -92,39 +91,41 @@ export const fetchPlugin = (inputCode: string) => {
       if (debugPlugin) {
         console.log('onLoad', args);
       }
-      
+
+      let result: esbuild.OnLoadResult;
+
       if (args.path === 'index.js') {
-          const result: esbuild.OnLoadResult = {
+          result  = {
               loader: 'jsx',
               contents: inputCode,
           };
 
-          if (debugPlugin) {
-            console.log('onLoad: returned ', result);
+      } else {
+          // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
+          const { data, request } = await axios.get(args.path);
+
+          console.log(`request.responseURL:${request.responseURL}`);
+          result = {
+              loader: 'jsx',
+              contents: data,
+              resolveDir: new URL('./', request.responseURL).pathname
+          };
+
+          if (cacheEnabled) {
+              // Store result in cache
+              await fileCache.setItem(args.path, result);
+              if (debugCache) {
+                  console.log(`stored ${args.path} to cache`);
+              }
           }
-
-          return result;
-      }
-
-      // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
-      const { data, request } = await axios.get(args.path);
-      // console.log(request.responseURL);
-      const result: esbuild.OnLoadResult = {
-        loader: 'jsx',
-        contents: data,
-        resolveDir: new URL('./', request.responseURL).pathname
-      };
-
-      if (cacheEnabled) {
-        // Store result in cache
-        await fileCache.setItem(args.path, result);
-        if (debugCache) {
-            console.log(`stored ${args.path} to cache`);
         }
-      }
 
-      return result;
-    });
+        if (debugPlugin) {
+          console.log(`onLoad: for '${args.path}' returned `, result);
+        }
+
+        return result;
+      });
     }
   }
 }

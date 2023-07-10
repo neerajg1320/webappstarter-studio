@@ -11,7 +11,7 @@ import {
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import { Dispatch } from "react";
-import bundleCodeStr from "../../bundler";
+import { bundleCodeStr } from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {Project, ProjectFrameworks} from "../project";

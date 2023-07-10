@@ -4,9 +4,13 @@ import { fetchPlugin } from './plugins/fetch-plugin';
 
 let service: esbuild.Service;
 
+export const bundleCodeStr = async(rawCode: string) => {
+    return bundleCode(rawCode);
+}
+
 // The bundleCodeStr takes a string as input.
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
-const bundleCodeStr = async (rawCode: string) => {
+const bundleCode = async (rawCode: string) => {
     if (!service) {
         service = await esbuild.startService({
             worker: true,
@@ -47,5 +51,3 @@ const bundleCodeStr = async (rawCode: string) => {
         }
     }
 }
-
-export default bundleCodeStr;

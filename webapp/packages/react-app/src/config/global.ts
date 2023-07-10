@@ -1,4 +1,4 @@
-export const cacheEnabled = true;
+export const cacheEnabled = false;
 
 export const debug = false;
 export const debugPlugin = true;
