@@ -1,11 +1,15 @@
 import CellList from "./components/cell-list/cell-list";
 import { useActions } from "./hooks/use-actions";
 import { useTypedSelector } from "./hooks/use-typed-selector";
+import React, {useEffect, useState} from "react";
+import Preview from "./components/code-cell/preview";
 
 
 const App = () => {
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
+  const [projectId, setProjectId] = useState('');
   const projectsState = useTypedSelector((state) => state.projects);
+  const bundlesState =  useTypedSelector((state) => state.bundles);
 
   const handleInputChange = (value:string) => {
     if (Object.keys(projectsState.data).length < 1) {
@@ -22,8 +26,10 @@ const App = () => {
 
       // TBD: The project starting file is assumed to be index.js, we will soon add a check
       createProjectBundle(project.id, `${project.name}/index.js`);
+      setProjectId(project.id);
     }
   }
+
 
   return (
     <div style={{display:"flex", flexDirection:"column", alignItems: "center"}}>
@@ -45,6 +51,12 @@ const App = () => {
           </button>
         </div>
       </div>
+        {(projectId !== '' && bundlesState[projectId]) &&
+          <div>
+            {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
+            <Preview code={bundlesState[projectId]!.code} err={bundlesState[projectId]!.err}/>
+          </div>
+        }
       <div style={{
           // border: "solid 2px white", 
           width: "100%", marginTop: "10px"
