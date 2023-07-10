@@ -1,10 +1,20 @@
 import {BundleInputType} from "../../state/bundle";
 
+const pkgServer = 'https://unpkg.com';
+
 export const getServer = (inputType: BundleInputType): string => {
     // TBD: Currently the user id string is hardcoded
-    const userIDStr = 'user_1';
-
+    
     return (inputType === 'cell')
-        ? 'https://unpkg.com'
-        : `http://localhost:8080/mediafiles/${userIDStr}`;
+        ? getPkgServer()
+        : getFileServer()
+}
+
+export const getPkgServer = (): string => {
+    return `${pkgServer}`;
+}
+
+export const getFileServer = (): string => {
+    const userIDStr = 'user_1';
+    return `http://localhost:8080/mediafiles/${userIDStr}`;
 }
