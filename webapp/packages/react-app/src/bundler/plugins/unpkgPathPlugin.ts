@@ -37,18 +37,20 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
       });
 
       // For relative paths like ./xxx or ../xxx
+      // We prepend the pkgServer to the path.
+      // TBD: We have to fix this behaviour
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);
         }
         return {
-            path: new URL(args.path, fileServer + args.resolveDir + '/').href,
+            path: new URL(args.path, pkgServer + args.resolveDir + '/').href,
             namespace: 'a'
         };
       });
 
       // For anything else
-      // We prepend the fileServer to the path
+      // We prepend the pkgServer to the path
       build.onResolve({ filter: /.*/ }, async (args: any) => {
         if (debugPlugin) {
           console.log('onResolve', args);

@@ -2,6 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkgPathPlugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import {BundleInputType} from "../state/bundle";
+import {autoBundling} from "../config/global";
 
 let service: esbuild.Service;
 
@@ -27,7 +28,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
     }
 
     try {
-        const result = await service.build({
+        const builderServiceOptions: esbuild.BuildOptions = {
             // The following will be replaced by fetchPlugin to code for a cell
             // For filePath the fetchPlugin will download file from fileServer
             entryPoints: inputType === 'cell' ? ['index.js'] : [codeOrFilePath],
@@ -42,11 +43,17 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
                 'process.env.NODE_ENV': '"production"',
                 global: 'window'
             },
-            jsxFactory: '_React.createElement',
-            jsxFragment: '_React.Fragment'
-        });
+        };
+
+        if (autoBundling) {
+            builderServiceOptions.jsxFactory = '_React.createElement';
+            builderServiceOptions.jsxFragment = '_React.Fragment';
+        }
+
+        const result = await service.build(builderServiceOptions);
+
         return {
-            code: result.outputFiles[0].text,
+            code: result.outputFiles![0].text,
             err: ''
         };
     } catch (err) {
