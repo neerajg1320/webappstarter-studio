@@ -94,10 +94,16 @@ export const fetchPlugin = (inputCode: string) => {
       }
       
       if (args.path === 'index.js') {
-        return {
-          loader: 'jsx',
-          contents: inputCode,
-        };
+          const result: esbuild.OnLoadResult = {
+              loader: 'jsx',
+              contents: inputCode,
+          };
+
+          if (debugPlugin) {
+            console.log('onLoad: returned ', result);
+          }
+
+          return result;
       }
 
       // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
