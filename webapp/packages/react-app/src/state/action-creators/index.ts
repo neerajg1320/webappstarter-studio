@@ -11,7 +11,7 @@ import {
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import { Dispatch } from "react";
-import bundle from "../../bundler";
+import bundleCodeStr from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {Project, ProjectFrameworks} from "../project";
@@ -65,7 +65,7 @@ export const createCellBundle = (cellId:string, input:string) => {
           }
       });
 
-      const result = await bundle(input);
+      const result = await bundleCodeStr(input);
 
       dispatch({
           type: ActionType.CELL_BUNDLE_COMPLETE,
@@ -87,7 +87,7 @@ export const createProjectBundle = (projectId:string, input:string) => {
             }
         });
   
-        const result = await bundle(input);
+        const result = await bundleCodeStr(input);
   
         dispatch({
             type: ActionType.PROJECT_BUNDLE_COMPLETE,

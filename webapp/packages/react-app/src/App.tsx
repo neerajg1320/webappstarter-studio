@@ -1,6 +1,7 @@
 import CellList from "./components/cell-list/cell-list";
 import { useActions } from "./hooks/use-actions";
 import { useTypedSelector } from "./hooks/use-typed-selector";
+import {createProjectBundle} from "./state/action-creators";
 
 
 const App = () => {
@@ -18,6 +19,10 @@ const App = () => {
 
   const handleBundleClick = () => {
     console.log(JSON.stringify(projectsState));
+    if (Object.keys(projectsState.data).length > 0) {
+      const project = Object.entries(projectsState.data)[0][1];
+      createProjectBundle(project.id, project.name)
+    }
   }
 
   return (
