@@ -11,4 +11,4 @@ export const serverConnect = false;
 
 export const autoBundling = false;
 
-export const combineCellsCode = false;
+export const combineCellsCode = true;

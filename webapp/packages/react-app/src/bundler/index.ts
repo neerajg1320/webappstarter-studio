@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkgPathPlugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import {BundleInputType} from "../state/bundle";
-import {autoBundling} from "../config/global";
+import {autoBundling, combineCellsCode} from "../config/global";
 
 let service: esbuild.Service;
 
@@ -45,7 +45,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
             },
         };
 
-        if (autoBundling) {
+        if (combineCellsCode) {
             builderServiceOptions.jsxFactory = '_React.createElement';
             builderServiceOptions.jsxFragment = '_React.Fragment';
         }
