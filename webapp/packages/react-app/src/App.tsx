@@ -13,7 +13,7 @@ const App = () => {
   };
 
   const handleBundleClick = () => {
-    const result = createCellBundle()
+    // const result = createCellBundle()
   }
 
   return (

@@ -6,6 +6,8 @@ export enum ActionType {
 
   CELL_BUNDLE_START = "cell_bundle_start",
   CELL_BUNDLE_COMPLETE = "cell_bundle_complete",
+  PROJECT_BUNDLE_START = "project_bundle_start",
+  PROJECT_BUNDLE_COMPLETE = "project_bundle_complete",
 
   FETCH_CELLS = 'fetch_cells',
   FETCH_CELLS_COMPLETE = 'fetch_cells_complete',

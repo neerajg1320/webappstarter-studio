@@ -54,6 +54,24 @@ export interface CellBundleCompleteAction {
     }
 }
 
+export interface ProjectBundleStartAction {
+    type: ActionType.PROJECT_BUNDLE_START,
+    payload: {
+        projectId: string,
+    }
+}
+
+export interface ProjectBundleCompleteAction {
+    type: ActionType.PROJECT_BUNDLE_COMPLETE,
+    payload: {
+        projectId: string,
+        bundle: {
+            code: string;
+            err: string;
+        }
+    }
+}
+
 export interface FetchCellsAction {
     type: ActionType.FETCH_CELLS
 }
@@ -88,6 +106,8 @@ export type Action =
     | UpdateCellAction
     | CellBundleStartAction
     | CellBundleCompleteAction
+    | ProjectBundleStartAction
+    | ProjectBundleCompleteAction
     | FetchCellsAction
     | FetchCellsCompleteAction
     | FetchCellsErrorAction

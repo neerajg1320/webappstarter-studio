@@ -4,6 +4,25 @@ import { ActionType } from '../action-types';
 import { Project } from '../project';
 import { randomIdGenerator } from '../id';
 
+//
+// interface CellsState {
+//   loading: boolean;
+//   error: string | null;
+//   order: string[];
+//   data: {
+//       [key: string]: Cell
+//   }
+// }
+
+// const initialState: CellsState = {
+//   loading: false,
+//   error: null,
+//   order: [],
+//   data: {}
+// }
+
+//
+
 interface ProjectsState {
   currentProject: Project
 }
