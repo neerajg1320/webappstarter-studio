@@ -1,16 +1,21 @@
 import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkgPathPlugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
+import {BundleInputType} from "../state/bundle";
 
 let service: esbuild.Service;
 
 export const bundleCodeStr = async(rawCode: string) => {
-    return bundleCode(rawCode);
+    return bundleCode(rawCode, 'cell');
+}
+
+export const bundleFilePath =  async(rawCode: string) => {
+    return bundleCode(rawCode, 'project');
 }
 
 // The bundleCodeStr takes a string as input.
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
-const bundleCode = async (rawCode: string) => {
+const bundleCode = async (codeOrfilePath: string, inputType: BundleInputType) => {
     if (!service) {
         service = await esbuild.startService({
             worker: true,
@@ -26,8 +31,8 @@ const bundleCode = async (rawCode: string) => {
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
-                unpkgPathPlugin(),
-                fetchPlugin(rawCode)
+                unpkgPathPlugin(inputType),
+                fetchPlugin(codeOrfilePath)
             ],
             define: {
                 'process.env.NODE_ENV': '"production"',

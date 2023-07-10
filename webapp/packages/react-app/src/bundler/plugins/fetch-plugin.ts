@@ -2,6 +2,7 @@ import * as esbuild from "esbuild-wasm";
 import axios from "axios";
 import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
 import localforage from "localforage";
+import {BundleInputType} from "../../state/bundle";
 
 const refereceCode = false;
 let fileCache: LocalForage;
@@ -21,7 +22,7 @@ if (cacheEnabled) {
   }
 }
 
-export const fetchPlugin = (inputCode: string) => {
+export const fetchPlugin = (inputCodeOrPath: string, inputType: BundleInputType) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {          
@@ -97,7 +98,7 @@ export const fetchPlugin = (inputCode: string) => {
       if (args.path === 'index.js') {
           result  = {
               loader: 'jsx',
-              contents: inputCode,
+              contents: inputCodeOrPath,
           };
 
       } else {

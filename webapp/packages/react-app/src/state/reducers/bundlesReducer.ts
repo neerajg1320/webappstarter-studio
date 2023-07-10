@@ -1,15 +1,15 @@
 import produce from "immer";
 import { ActionType } from "../action-types";
 import { Action } from "../actions";
+import {BundleInputType} from "../bundle";
 
-type InputType = 'cell' | 'project';
 
 interface BundlesState {
     [key: string]: {
         loading: boolean;
         code: string;
         err: string;
-        type: InputType
+        type: BundleInputType
     } | undefined;
 }
 

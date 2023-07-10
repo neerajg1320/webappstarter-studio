@@ -1,8 +1,9 @@
 import * as esbuild from 'esbuild-wasm';
 import { debugPlugin } from '../../config/global';
+import {BundleInputType} from "../../state/bundle";
 
 
-export const unpkgPathPlugin = () => {
+export const unpkgPathPlugin = (inputType: BundleInputType) => {
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
