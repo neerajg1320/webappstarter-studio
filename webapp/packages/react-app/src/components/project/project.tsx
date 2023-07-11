@@ -4,22 +4,22 @@ import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 const Project:React.FC = () => {
+  const [projectName, setProjectName] = useState('');
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
+
   const [projectId, setProjectId] = useState('');
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
 
-  const handleInputChange = (value:string) => {
-    if (Object.keys(projectsState.data).length < 1) {
-      createAndSetProject(value, "reactjs");
-    } else {
-      const project = Object.entries(projectsState.data)[0][1];
-      updateProject(project.id, value, "reactjs");
-    }
-  };
-
   const handleSaveClick = () => {
-
+    if (projectId === '') {
+      console.log('Create');
+      createAndSetProject(projectName, "reactjs");
+    } else {
+      console.log('Update');
+      const project = Object.entries(projectsState.data)[0][1];
+      updateProject(project.id, projectName, "reactjs");
+    }
   }
 
   const handleBundleClick = () => {
@@ -35,7 +35,7 @@ const Project:React.FC = () => {
   return (
     <>
       <div style={{
-        border: "2px solid white",
+        // border: "2px solid white",
         margin: "20px", width: "80%",
         display: "flex", justifyContent:"space-evenly", gap: "40px"
       }}
@@ -47,7 +47,7 @@ const Project:React.FC = () => {
         >
           <div style={{display: "flex", gap: "20px"}}>
             <label>Project</label>
-            <input type="text" onChange={(e) => {handleInputChange(e.target.value)}} />
+            <input type="text" value={projectName} onChange={(e) => {setProjectName(e.target.value)}} />
           </div>
           <div>
             <button

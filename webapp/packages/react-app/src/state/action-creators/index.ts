@@ -188,3 +188,26 @@ export const createAndSetProject = (name:string, framework: ProjectFrameworks) =
         dispatch(setCurrentProject(firstProject[0]));
     }
 }
+
+//
+export const createProjectOnServer = (name:string, description:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log(`createProjectOnServer:`)
+    const data = {
+      title: name,
+      description
+    };
+
+    try {
+      await axios.post('http://localhost:8080/api/v1/projects', data);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+        // dispatch({
+        //   type: ActionType.SAVE_CELLS_ERROR,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
+}

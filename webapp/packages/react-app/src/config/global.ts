@@ -7,7 +7,7 @@ export const debugListeners = false;
 
 export const reduxManualTest = false;
 
-export const serverConnect = false;
+export const serverConnect = true;
 
 export const autoBundling = false;
 
