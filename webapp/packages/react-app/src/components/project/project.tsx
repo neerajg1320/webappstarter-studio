@@ -24,7 +24,7 @@ const Project:React.FC = () => {
   console.log('Project: rendered', JSON.stringify(proj));
 
   const handleSaveClick = () => {
-    if (projectId === '') {
+    if (!proj) {
       const localId = randomIdGenerator();
       createAndSetProject(localId, projectName, "reactjs");
     } else {
@@ -85,7 +85,7 @@ const Project:React.FC = () => {
       {(proj && bundlesState[proj.localId]) &&
           <div>
             {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
-            <Preview code={bundlesState[projectId]!.code} err={bundlesState[projectId]!.err}/>
+            <Preview code={bundlesState[proj.localId]!.code} err={bundlesState[proj.localId]!.err}/>
           </div>
       }
     </>
