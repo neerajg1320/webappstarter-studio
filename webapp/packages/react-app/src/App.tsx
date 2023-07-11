@@ -3,6 +3,7 @@ import { useActions } from "./hooks/use-actions";
 import { useTypedSelector } from "./hooks/use-typed-selector";
 import React, {useEffect, useState} from "react";
 import Preview from "./components/code-cell/preview";
+import Project from "./components/project/project";
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
           </button>
         </div>
       </div>
+      <Project />
 
       {(projectId !== '' && bundlesState[projectId]) &&
         <div>
