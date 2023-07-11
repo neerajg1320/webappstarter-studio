@@ -10,7 +10,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
   return (next: (action: Action) => void) => {
     return (action: Action) => {
-      console.log(`persistMiddleware: ${JSON.stringify(action)}`);
+      // console.log(`persistMiddleware: ${JSON.stringify(action)}`);
 
       next(action);
 
@@ -31,7 +31,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
         }
 
         if (action.type === ActionType.CREATE_PROJECT) {
-          console.log('persistMiddleware: Create project')
+          // console.log('persistMiddleware: Create project')
           const {name} = action.payload;
           createProjectOnServer(name, "Project created from webapp")(dispatch, getState);
         }

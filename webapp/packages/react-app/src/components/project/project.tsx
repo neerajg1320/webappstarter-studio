@@ -4,6 +4,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 const Project:React.FC = () => {
+  console.log('Project: rendered');
   const [projectName, setProjectName] = useState('');
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
 
@@ -13,10 +14,8 @@ const Project:React.FC = () => {
 
   const handleSaveClick = () => {
     if (projectId === '') {
-      console.log('Create');
       createAndSetProject(projectName, "reactjs");
     } else {
-      console.log('Update');
       const project = Object.entries(projectsState.data)[0][1];
       updateProject(project.id, projectName, "reactjs");
     }

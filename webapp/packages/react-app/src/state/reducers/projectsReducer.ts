@@ -24,6 +24,7 @@ const initialState: ProjectsState = {
 }
 
 const reducer = produce((state: ProjectsState = initialState, action: Action): ProjectsState => {
+  console.log(`projectsReducer: ${JSON.stringify(action)}`)
   switch(action.type) {
     case ActionType.CREATE_PROJECT:
       const {name, framework} = action.payload;
