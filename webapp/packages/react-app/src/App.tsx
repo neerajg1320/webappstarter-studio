@@ -51,12 +51,13 @@ const App = () => {
           </button>
         </div>
       </div>
-        {(projectId !== '' && bundlesState[projectId]) &&
-          <div>
-            {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
-            <Preview code={bundlesState[projectId]!.code} err={bundlesState[projectId]!.err}/>
-          </div>
-        }
+
+      {(projectId !== '' && bundlesState[projectId]) &&
+        <div>
+          {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
+          <Preview code={bundlesState[projectId]!.code} err={bundlesState[projectId]!.err}/>
+        </div>
+      }
       <div style={{
           // border: "solid 2px white", 
           width: "100%", marginTop: "10px"
