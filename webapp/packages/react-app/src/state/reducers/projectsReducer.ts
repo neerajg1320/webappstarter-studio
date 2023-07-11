@@ -29,6 +29,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
     case ActionType.CREATE_PROJECT:
       const project: Project = {
         ...action.payload,
+        synced: false
       };
       state.data[project.localId] = project;
       return state;

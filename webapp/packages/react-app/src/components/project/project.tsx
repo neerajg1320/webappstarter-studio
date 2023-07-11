@@ -12,7 +12,7 @@ const Project:React.FC = () => {
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   console.log('Project: rendered', JSON.stringify(projectsState));
-  
+
 
   const handleSaveClick = () => {
     if (projectId === '') {

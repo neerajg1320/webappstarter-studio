@@ -201,8 +201,8 @@ export const createProjectOnServer = (localId:string, name:string, description:s
 
     try {
       const response = await axios.post('http://localhost:8080/api/v1/projects/', data, {headers});
-      const {id} = response.data
-      dispatch(updateProject({localId, id})); //
+      const {pkid} = response.data
+      dispatch(updateProject({localId, id:pkid, synced:true})); //
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
