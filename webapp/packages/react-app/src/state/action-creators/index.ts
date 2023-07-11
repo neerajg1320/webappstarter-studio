@@ -144,12 +144,12 @@ export const saveCells = () => {
     }
 }
 
-export const createProject = (localId: string, name:string, framework: ProjectFrameworks): CreateProjectAction => {
+export const createProject = (localId: string, title:string, framework: ProjectFrameworks): CreateProjectAction => {
     return {
         type: ActionType.CREATE_PROJECT,
         payload: {
             localId,
-            name,
+            title,
             framework
         }
     }
@@ -177,9 +177,9 @@ export const setCurrentProject = (localId: string): SetCurrentProjectAction => {
     }
 }
 
-export const createAndSetProject = (localId: string, name:string, framework: ProjectFrameworks) => {
+export const createAndSetProject = (localId: string, title:string, framework: ProjectFrameworks) => {
     return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-        dispatch(createProject(localId, name, framework));
+        dispatch(createProject(localId, title, framework));
         const { projects } = getState();
 
         const firstProject:[string, Project] = Object.entries(projects.data)[0];
@@ -214,10 +214,10 @@ export const fetchProjects = () => {
 }
 
 
-export const createProjectOnServer = (localId:string, name:string, description:string) => {
+export const createProjectOnServer = (localId:string, title:string, description:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const data = {
-      title: name,
+      title,
       description
     };
 

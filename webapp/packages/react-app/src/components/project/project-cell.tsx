@@ -7,6 +7,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {randomIdGenerator} from "../../state/id";
 
 const ProjectCell:React.FC = () => {
+  // const [projectOptions, setProjectOptions] = useState<{ value: string; label: string; }[]|null>(null);
   const [selectedProjectTitle, setSelectedProjectTitle] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
   const [projectName, setProjectName] = useState<string|null>(null);
@@ -31,12 +32,15 @@ const ProjectCell:React.FC = () => {
   const projects = useMemo(() => {
     return Object.entries(projectsState.data).map(entry => entry[1]);
   }, [projectsState.data]);
+  console.log('ProjectCell: rendered, projects:', JSON.stringify(projects, null, 2));
+
 
   const projectOptions = useMemo(() => {
     return projects.map(prj => {
       return {value: prj.localId, label: prj.title};
     })
   }, [projects]);
+  console.log('ProjectCell: rendered, projectOptions:', JSON.stringify(projectOptions, null, 2));
 
   const currentProject = useMemo(() => {
     if (Object.keys(projectsState.data).length > 0 && selectedProjectTitle) {
