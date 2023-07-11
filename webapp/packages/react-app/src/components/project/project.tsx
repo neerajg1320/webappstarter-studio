@@ -7,8 +7,6 @@ import {randomIdGenerator} from "../../state/id";
 const Project:React.FC = () => {
   const [projectName, setProjectName] = useState('');
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
-
-  const [projectId, setProjectId] = useState('');
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
 
@@ -34,12 +32,9 @@ const Project:React.FC = () => {
   }
 
   const handleBundleClick = () => {
-    if (Object.keys(projectsState.data).length > 0) {
-      const project = Object.entries(projectsState.data)[0][1];
-
+    if (proj) {
       // TBD: The project starting file is assumed to be index.js, we will soon add a check
-      createProjectBundle(project.localId, `${project.name}/index.js`);
-      setProjectId(project.localId);
+      createProjectBundle(proj.localId, `${proj.name}/index.js`);
     }
   }
 
