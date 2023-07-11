@@ -204,7 +204,7 @@ export const createProjectOnServer = (name:string, description:string) => {
 
     try {
       await axios.post(
-          'http://localhost:8080/api/v1/projects',
+          'http://localhost:8000/api/v1/projects/',
           data,
           {
             headers
