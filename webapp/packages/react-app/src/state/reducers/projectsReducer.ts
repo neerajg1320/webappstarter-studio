@@ -53,6 +53,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         state.data = action.payload.reduce((acc, project) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           project.localId = randomIdGenerator();
+          project.synced = true;
           acc[project.localId] = project;
           return acc;
         }, {} as ProjectsState['data']);

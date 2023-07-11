@@ -197,7 +197,7 @@ export const fetchProjects = () => {
   return async (dispatch: Dispatch<Action>) => {
     try {
       const {data}: {data: Project[]} = await axios.get(apiUri, {headers});
-      console.log(data);
+
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
         payload: data
