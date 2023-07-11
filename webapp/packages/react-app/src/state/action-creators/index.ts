@@ -130,7 +130,7 @@ export const saveCells = () => {
         const { cells: {data, order}} = getState();
 
         const cells = order.map(id => data[id]);
-        console.log(`cells=`, cells);
+        // console.log(`cells=`, cells);
         try {
             await axios.post('/cells', { cells });
         } catch (err) {
@@ -156,11 +156,11 @@ export const createProject = (localId: string, name:string, framework: ProjectFr
 }
 
 export const updateProject = (projectPartial: ProjectPartial): UpdateProjectAction => {
-  console.log(`updateProject: ${JSON.stringify(projectPartial)}`);
-    return {
-        type: ActionType.UPDATE_PROJECT,
-        payload: projectPartial
-    }
+  // console.log(`updateProject: ${JSON.stringify(projectPartial)}`);
+  return {
+      type: ActionType.UPDATE_PROJECT,
+      payload: projectPartial
+  }
 }
 
 export const deleteProject = (localId:string): DeleteProjectAction => {

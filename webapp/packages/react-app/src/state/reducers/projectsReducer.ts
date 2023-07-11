@@ -34,7 +34,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
       return state;
 
     case ActionType.UPDATE_PROJECT:
-      console.log(`UPDATE_PROJECT:`, action);
+      // console.log(`UPDATE_PROJECT:`, action);
       const {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],

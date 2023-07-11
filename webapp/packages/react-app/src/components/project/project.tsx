@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -11,8 +11,17 @@ const Project:React.FC = () => {
   const [projectId, setProjectId] = useState('');
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
-  console.log('Project: rendered', JSON.stringify(projectsState));
 
+  // console.log('Project: rendered', JSON.stringify(projectsState));
+
+  const proj = useMemo(() => {
+    if (Object.keys(projectsState.data).length > 0) {
+      return Object.entries(projectsState.data)[0][1];
+    }
+    return null;
+  }, [projectsState]);
+
+  console.log('Project: rendered', JSON.stringify(proj));
 
   const handleSaveClick = () => {
     if (projectId === '') {
@@ -73,7 +82,7 @@ const Project:React.FC = () => {
       </div>
 
 
-      {(projectId !== '' && bundlesState[projectId]) &&
+      {(proj && bundlesState[proj.localId]) &&
           <div>
             {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
             <Preview code={bundlesState[projectId]!.code} err={bundlesState[projectId]!.err}/>
