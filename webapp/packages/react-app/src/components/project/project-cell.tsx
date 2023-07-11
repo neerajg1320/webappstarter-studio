@@ -1,12 +1,14 @@
 import "./project-cell.css";
 import React, {useEffect, useMemo, useState} from 'react';
-import Select from 'react-select';
+import Select, {SingleValue} from 'react-select';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {randomIdGenerator} from "../../state/id";
 
 const ProjectCell:React.FC = () => {
+  const [selectedProject, setSelectedProject] =
+      useState<SingleValue<{ value: string; label: string; } | null>>(null);
   const [localId, setLocalId] = useState<string|null>(null);
   const [projectName, setProjectName] = useState<string|null>(null);
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
@@ -39,7 +41,14 @@ const ProjectCell:React.FC = () => {
     return null;
   }, [projectsState]);
 
-  console.log('ProjectCell: rendered', JSON.stringify(currentProject));
+  const projectOptions = useMemo(() => {
+    return projects.map(prj => {
+      return {value: prj.title, label: prj.title};
+    })
+  }, [projects]);
+  console.log('ProjectCell: rendered, projectOptions:', projectOptions);
+
+  console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject));
 
   const handleGetClick = () => {
     console.log(`Need to sync`);
@@ -117,7 +126,15 @@ const ProjectCell:React.FC = () => {
         </div>
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
-          <Select className="project-select is-primary is-small" options={options} />
+          <Select
+              value={selectedProject}
+              className="project-select is-primary is-small"
+              options={projectOptions}
+              onChange={(value) => {
+                console.log(value);
+                setSelectedProject(value);
+              }}
+          />
           <button
               className="button is-family-secondary is-small"
               onClick={handleBundleClick}
