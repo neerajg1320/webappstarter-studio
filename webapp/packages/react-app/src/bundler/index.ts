@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkgPathPlugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import {BundleInputType} from "../state/bundle";
-import {autoBundling, combineCellsCode} from "../config/global";
+import {combineCellsCode} from "../config/global";
 
 let service: esbuild.Service;
 

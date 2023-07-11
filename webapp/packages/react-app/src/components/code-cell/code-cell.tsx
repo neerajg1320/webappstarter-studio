@@ -1,5 +1,5 @@
 import './code-cell.css';
-import React, {useEffect, useState, useRef, useMemo} from "react";
+import React, {useEffect, useRef, useMemo} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { Cell } from "../../state";
@@ -14,7 +14,9 @@ interface CodeCellProps {
 }
 
 const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [autoBundle, setAutoBundle] = useState(autoBundling);
+  const autoBundle = useMemo(() => {
+    return autoBundling;
+  }, []);
   const {updateCell, createCellBundle} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);

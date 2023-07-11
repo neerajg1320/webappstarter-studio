@@ -3,7 +3,7 @@ import { Action } from "../actions";
 import { ActionType } from "../action-types";
 import {createProjectOnServer, saveCells} from "../action-creators";
 import { RootState } from "../reducers";
-import { serverConnect } from "../../config/global";
+import {syncCellsToServer, syncProjectsToServer} from "../../config/global";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;
@@ -15,7 +15,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
       next(action);
 
       
-      if (serverConnect) {
+      if (syncCellsToServer) {
         if ([
           ActionType.MOVE_CELL, 
           ActionType.UPDATE_CELL,
@@ -29,7 +29,9 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
             saveCells()(dispatch, getState)
           }, 1000);
         }
+      }
 
+      if (syncProjectsToServer) {
         if (action.type === ActionType.CREATE_PROJECT) {
           // console.log('persistMiddleware: Create project')
           const {localId, name} = action.payload;

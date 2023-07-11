@@ -8,6 +8,8 @@ export const debugListeners = false;
 export const reduxManualTest = false;
 
 export const serverConnect = true;
+export const syncCellsToServer = serverConnect && false;
+export const syncProjectsToServer = serverConnect && true;
 
 export const autoBundling = false;
 

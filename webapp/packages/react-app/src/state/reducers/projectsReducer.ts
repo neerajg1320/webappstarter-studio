@@ -2,7 +2,6 @@ import produce from 'immer';
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { Project } from '../project';
-import { randomIdGenerator } from '../id';
 
 // The difference between ProjectsState and CellsState:
 //  - ProjectsState have no order

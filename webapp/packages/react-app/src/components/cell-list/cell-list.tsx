@@ -4,13 +4,13 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import AddCell from "./add-cell/add-cell";
 import CellListItem from "./cell-list-item/cell-list-item";
 import { useActions } from '../../hooks/use-actions';
-import { serverConnect } from '../../config/global';
+import {syncCellsToServer} from '../../config/global';
 
 const CellList:React.FC = () => {
   const { fetchCells } = useActions();
 
   useEffect(() => {
-    if (serverConnect) {
+    if (syncCellsToServer) {
       fetchCells();
     }
   // eslint-disable-next-line
