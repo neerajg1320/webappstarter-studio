@@ -24,21 +24,22 @@ const initialState: ProjectsState = {
 }
 
 const reducer = produce((state: ProjectsState = initialState, action: Action): ProjectsState => {
-  console.log(`projectsReducer: ${JSON.stringify(action)}`)
+  // console.log(`projectsReducer: ${JSON.stringify(action)}`)
   switch(action.type) {
     case ActionType.CREATE_PROJECT:
-      const {name, framework} = action.payload;
       const project: Project = {
-        id: randomIdGenerator(),
-        name,
-        framework
+        ...action.payload,
       };
-      state.data[project.id] = project;
+      state.data[project.localId] = project;
       return state;
 
     case ActionType.UPDATE_PROJECT:
-      const {id} = action.payload;
-      state.data[id] = action.payload;
+      console.log(`UPDATE_PROJECT:`, action);
+      const {localId} = action.payload;
+      state.data[localId] = {
+        ...state.data[localId],
+        ...action.payload
+      }
       return state;
 
     case ActionType.DELETE_PROJECT:

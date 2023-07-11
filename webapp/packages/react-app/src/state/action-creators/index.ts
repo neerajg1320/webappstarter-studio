@@ -14,7 +14,7 @@ import { Dispatch } from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
-import {Project, ProjectFrameworks} from "../project";
+import {Project, ProjectFrameworks, ProjectPartial} from "../project";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -144,44 +144,42 @@ export const saveCells = () => {
     }
 }
 
-export const createProject = (name:string, framework: ProjectFrameworks): CreateProjectAction => {
+export const createProject = (localId: string, name:string, framework: ProjectFrameworks): CreateProjectAction => {
     return {
         type: ActionType.CREATE_PROJECT,
         payload: {
+            localId,
             name,
             framework
         }
     }
 }
 
-export const updateProject = (id:string, name:string, framework: ProjectFrameworks): UpdateProjectAction => {
+export const updateProject = (projectPartial: ProjectPartial): UpdateProjectAction => {
+  console.log(`updateProject: ${JSON.stringify(projectPartial)}`);
     return {
         type: ActionType.UPDATE_PROJECT,
-        payload: {
-            id,
-            name,
-            framework
-        }
+        payload: projectPartial
     }
 }
 
-export const deleteProject = (id:string): DeleteProjectAction => {
+export const deleteProject = (localId:string): DeleteProjectAction => {
     return {
         type: ActionType.DELETE_PROJECT,
-        payload: id
+        payload: localId
     }
 }
 
-export const setCurrentProject = (id: string): SetCurrentProjectAction => {
+export const setCurrentProject = (localId: string): SetCurrentProjectAction => {
     return {
         type: ActionType.SET_CURRENT_PROJECT,
-        payload: id
+        payload: localId
     }
 }
 
-export const createAndSetProject = (name:string, framework: ProjectFrameworks) => {
+export const createAndSetProject = (localId: string, name:string, framework: ProjectFrameworks) => {
     return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-        dispatch(createProject(name, framework));
+        dispatch(createProject(localId, name, framework));
         const { projects } = getState();
 
         const firstProject:[string, Project] = Object.entries(projects.data)[0];
@@ -190,7 +188,7 @@ export const createAndSetProject = (name:string, framework: ProjectFrameworks) =
 }
 
 //
-export const createProjectOnServer = (name:string, description:string) => {
+export const createProjectOnServer = (localId:string, name:string, description:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const data = {
       title: name,
@@ -202,12 +200,9 @@ export const createProjectOnServer = (name:string, description:string) => {
     }
 
     try {
-      await axios.post(
-          'http://localhost:8080/api/v1/projects/',
-          data,
-          {
-            headers
-      });
+      const response = await axios.post('http://localhost:8080/api/v1/projects/', data, {headers});
+      const {id} = response.data
+      dispatch(updateProject({localId, id})); //
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);

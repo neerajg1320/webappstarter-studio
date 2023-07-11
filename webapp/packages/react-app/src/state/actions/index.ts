@@ -1,6 +1,6 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
-import { ProjectFrameworks } from "../project";
+import {ProjectFrameworks, ProjectPartial} from "../project";
 
 export type Direction = 'up' | 'down';
 
@@ -94,6 +94,7 @@ export interface SaveCellsErrorAction {
 export interface CreateProjectAction {
     type: ActionType.CREATE_PROJECT,
     payload: {
+        localId: string,
         name: string,
         framework: ProjectFrameworks
     }
@@ -101,11 +102,7 @@ export interface CreateProjectAction {
 
 export interface UpdateProjectAction {
     type: ActionType.UPDATE_PROJECT,
-    payload: {
-        id: string,
-        name: string,
-        framework: ProjectFrameworks
-    }
+    payload: ProjectPartial
 }
 
 export interface DeleteProjectAction {

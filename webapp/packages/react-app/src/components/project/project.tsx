@@ -2,22 +2,25 @@ import React, {useState} from 'react';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {randomIdGenerator} from "../../state/id";
 
 const Project:React.FC = () => {
-  console.log('Project: rendered');
   const [projectName, setProjectName] = useState('');
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
 
   const [projectId, setProjectId] = useState('');
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
+  console.log('Project: rendered', JSON.stringify(projectsState));
+  
 
   const handleSaveClick = () => {
     if (projectId === '') {
-      createAndSetProject(projectName, "reactjs");
+      const localId = randomIdGenerator();
+      createAndSetProject(localId, projectName, "reactjs");
     } else {
       const project = Object.entries(projectsState.data)[0][1];
-      updateProject(project.id, projectName, "reactjs");
+      updateProject({localId:project.localId, name:projectName});
     }
   }
 
@@ -26,8 +29,8 @@ const Project:React.FC = () => {
       const project = Object.entries(projectsState.data)[0][1];
 
       // TBD: The project starting file is assumed to be index.js, we will soon add a check
-      createProjectBundle(project.id, `${project.name}/index.js`);
-      setProjectId(project.id);
+      createProjectBundle(project.localId, `${project.name}/index.js`);
+      setProjectId(project.localId);
     }
   }
 

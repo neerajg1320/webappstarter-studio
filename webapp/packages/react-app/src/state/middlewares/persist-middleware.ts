@@ -32,8 +32,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
         if (action.type === ActionType.CREATE_PROJECT) {
           // console.log('persistMiddleware: Create project')
-          const {name} = action.payload;
-          createProjectOnServer(name, "Project created from webapp")(dispatch, getState);
+          const {localId, name} = action.payload;
+          createProjectOnServer(localId, name, "Project created from webapp")(dispatch, getState);
         }
       }
     }
