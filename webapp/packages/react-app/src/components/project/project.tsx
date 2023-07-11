@@ -18,6 +18,10 @@ const Project:React.FC = () => {
     }
   };
 
+  const handleSaveClick = () => {
+
+  }
+
   const handleBundleClick = () => {
     if (Object.keys(projectsState.data).length > 0) {
       const project = Object.entries(projectsState.data)[0][1];
@@ -31,22 +35,39 @@ const Project:React.FC = () => {
   return (
     <>
       <div style={{
-        margin: "20px",
-        display: "flex", width: "20%", justifyContent:"space-around", gap: "40px"
+        border: "2px solid white",
+        margin: "20px", width: "80%",
+        display: "flex", justifyContent:"space-evenly", gap: "40px"
       }}
       >
-        <div style={{display: "flex", gap: "20px"}}>
-          <label>Project</label>
-          <input type="text" onChange={(e) => {handleInputChange(e.target.value)}} />
+        <div style={{
+            // border: "2px solid yellow",
+            display: "flex", flexDirection:"row", justifyContent: "space-between", gap: "40px",
+          }}
+        >
+          <div style={{display: "flex", gap: "20px"}}>
+            <label>Project</label>
+            <input type="text" onChange={(e) => {handleInputChange(e.target.value)}} />
+          </div>
+          <div>
+            <button
+                className="button is-primary is-small"
+                onClick={handleSaveClick}
+            >
+              Save
+            </button>
+          </div>
         </div>
+
         <div>
           <button
-              className="button is-primary is-small"
+              className="button is-family-secondary is-small"
               onClick={handleBundleClick}
           >
             Bundle
           </button>
         </div>
+
       </div>
 
 
