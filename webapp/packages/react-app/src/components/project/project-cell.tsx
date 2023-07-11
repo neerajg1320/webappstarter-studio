@@ -9,7 +9,6 @@ import {randomIdGenerator} from "../../state/id";
 const ProjectCell:React.FC = () => {
   const [selectedProjectTitle, setSelectedProjectTitle] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
-  const [localId, setLocalId] = useState<string|null>(null);
   const [projectName, setProjectName] = useState<string|null>(null);
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
@@ -31,7 +30,7 @@ const ProjectCell:React.FC = () => {
 
   const projects = useMemo(() => {
     return Object.entries(projectsState.data).map(entry => entry[1]);
-  }, [projectsState]);
+  }, [projectsState.data]);
 
   const projectOptions = useMemo(() => {
     return projects.map(prj => {
@@ -58,7 +57,6 @@ const ProjectCell:React.FC = () => {
     }
     const _localId = randomIdGenerator();
     createAndSetProject(_localId, projectName!, "reactjs");
-    setLocalId(_localId);
   }
 
   const handleUpdateClick = () => {

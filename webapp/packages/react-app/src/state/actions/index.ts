@@ -95,7 +95,7 @@ export interface CreateProjectAction {
     type: ActionType.CREATE_PROJECT,
     payload: {
         localId: string,
-        name: string,
+        title: string,
         framework: ProjectFrameworks
     }
 }

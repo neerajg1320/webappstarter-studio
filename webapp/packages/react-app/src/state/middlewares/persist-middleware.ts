@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createProjectOnServer, saveCells} from "../action-creators";
+import {createProject, createProjectOnServer, saveCells} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncProjectsToServer} from "../../config/global";
 
@@ -14,7 +14,6 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
       next(action);
 
-      
       if (syncCellsToServer) {
         if ([
           ActionType.MOVE_CELL, 
@@ -33,7 +32,6 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
       if (syncProjectsToServer) {
         if (action.type === ActionType.CREATE_PROJECT) {
-          // console.log('persistMiddleware: Create project')
           const {localId, name} = action.payload;
           createProjectOnServer(localId, name, "ProjectCell created from webapp")(dispatch, getState);
         }
