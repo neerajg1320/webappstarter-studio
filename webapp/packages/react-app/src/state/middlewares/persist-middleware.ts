@@ -13,6 +13,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
       console.log(`persistMiddleware: ${JSON.stringify(action)}`);
 
       next(action);
+
       
       if (serverConnect) {
         if ([

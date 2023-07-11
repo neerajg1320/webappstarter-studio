@@ -197,9 +197,18 @@ export const createProjectOnServer = (name:string, description:string) => {
       title: name,
       description
     };
+    const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MDYwMzIzLCJpYXQiOjE2ODkwNTg1MjMsImp0aSI6ImI3MzdjYTNjMzUwNDQ5MjQ4MGMyZWUxYmEyNGQxNTdiIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.bzX9EKtI66mODhz-L7zdJdx1t6aterc6k62ExcZujWU";
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`
+    }
 
     try {
-      await axios.post('http://localhost:8080/api/v1/projects', data);
+      await axios.post(
+          'http://localhost:8080/api/v1/projects',
+          data,
+          {
+            headers
+      });
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
