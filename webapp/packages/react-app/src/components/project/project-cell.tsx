@@ -1,4 +1,6 @@
-import React, {useMemo, useState} from 'react';
+import "./project-cell.css";
+import React, {useEffect, useMemo, useState} from 'react';
+import Select from 'react-select';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -10,19 +12,36 @@ const ProjectCell:React.FC = () => {
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
+  const { fetchProjects } = useActions();
+
+  const options = [
+    { value: "blues", label: "Blues" },
+    { value: "rock", label: "Rock" },
+    { value: "jazz", label: "Jazz" },
+    { value: "orchestra", label: "Orchestra" },
+  ];
 
   // console.log('ProjectCell: rendered', JSON.stringify(projectsState));
 
-  const project = useMemo(() => {
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const projects = useMemo(() => {
+    return Object.entries(projectsState.data).map(entry => entry[1]);
+  }, [projectsState]);
+  console.log('ProjectCell: rendered, projects:', projects);
+
+  const currentProject = useMemo(() => {
     if (Object.keys(projectsState.data).length > 0 && localId) {
       return projectsState.data[localId];
     }
     return null;
   }, [projectsState]);
 
-  console.log('ProjectCell: rendered', JSON.stringify(project));
+  console.log('ProjectCell: rendered', JSON.stringify(currentProject));
 
-  const handleSyncClick = () => {
+  const handleGetClick = () => {
     console.log(`Need to sync`);
   }
 
@@ -37,7 +56,7 @@ const ProjectCell:React.FC = () => {
   }
 
   const handleUpdateClick = () => {
-    if (!project) {
+    if (!currentProject) {
       console.error(`Error! No current project is set`);
       return;
     }
@@ -45,13 +64,13 @@ const ProjectCell:React.FC = () => {
       console.error(`Error! projectName is not set`);
       return;
     }
-    updateProject({localId:project.localId, name:projectName});
+    updateProject({localId:currentProject.localId, title:projectName});
   }
 
   const handleBundleClick = () => {
-    if (project) {
-      // TBD: The project starting file is assumed to be index.js, we will soon add a check
-      createProjectBundle(project.localId, `${project.name}/index.js`);
+    if (currentProject) {
+      // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
+      createProjectBundle(currentProject.localId, `${currentProject.name}/index.js`);
     }
   }
 
@@ -75,10 +94,10 @@ const ProjectCell:React.FC = () => {
           <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
             <button
                 className="button is-primary is-small"
-                onClick={handleSyncClick}
+                onClick={handleGetClick}
                 disabled={!projectName}
             >
-              Sync
+              Get
             </button>
             <button
                 className="button is-primary is-small"
@@ -97,11 +116,12 @@ const ProjectCell:React.FC = () => {
           </div>
         </div>
 
-        <div>
+        <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+          <Select className="project-select is-primary is-small" options={options} />
           <button
               className="button is-family-secondary is-small"
               onClick={handleBundleClick}
-              disabled={!project || !project.synced}
+              disabled={!currentProject || !currentProject.synced}
           >
             Bundle
           </button>
@@ -110,10 +130,10 @@ const ProjectCell:React.FC = () => {
       </div>
 
 
-      {(project && bundlesState[project.localId]) &&
+      {(currentProject && bundlesState[currentProject.localId]) &&
           <div>
             {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
-            <Preview code={bundlesState[project.localId]!.code} err={bundlesState[project.localId]!.err}/>
+            <Preview code={bundlesState[currentProject.localId]!.code} err={bundlesState[currentProject.localId]!.err}/>
           </div>
       }
     </>

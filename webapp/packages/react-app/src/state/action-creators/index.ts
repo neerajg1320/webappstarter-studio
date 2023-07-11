@@ -187,20 +187,42 @@ export const createAndSetProject = (localId: string, name:string, framework: Pro
     }
 }
 
-//
+const apiUri = 'http://localhost:8080/api/v1/projects/';
+const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MTQ4NzE5LCJpYXQiOjE2ODkwNjIzMTksImp0aSI6Ijc5YmJhZjA4N2U0MjQxNzY5MzA0YTM1YTg2ODQzNzFjIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9._VvlR6gqscN42LeQ1lMKGraND3qPCSF6YA9IDI9gJTs";
+const headers = {
+  Authorization: `Bearer ${jwtToken}`
+}
+
+export const fetchProjects = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const {data}: {data: Project[]} = await axios.get(apiUri, {headers});
+      console.log(data);
+      dispatch({
+        type: ActionType.FETCH_PROJECTS_COMPLETE,
+        payload: data
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({
+          type: ActionType.FETCH_PROJECTS_ERROR,
+          payload: err.message
+        });
+      }
+    }
+  };
+}
+
+
 export const createProjectOnServer = (localId:string, name:string, description:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const data = {
       title: name,
       description
     };
-    const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MTQ4NzE5LCJpYXQiOjE2ODkwNjIzMTksImp0aSI6Ijc5YmJhZjA4N2U0MjQxNzY5MzA0YTM1YTg2ODQzNzFjIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9._VvlR6gqscN42LeQ1lMKGraND3qPCSF6YA9IDI9gJTs";
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`
-    }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/projects/', data, {headers});
+      const response = await axios.post(apiUri, data, {headers});
       const {pkid} = response.data
       dispatch(updateProject({localId, id:pkid, synced:true})); //
     } catch (err) {

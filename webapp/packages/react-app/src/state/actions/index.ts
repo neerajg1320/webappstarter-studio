@@ -1,6 +1,6 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
-import {ProjectFrameworks, ProjectPartial} from "../project";
+import {Project, ProjectFrameworks, ProjectPartial} from "../project";
 
 export type Direction = 'up' | 'down';
 
@@ -110,6 +110,16 @@ export interface DeleteProjectAction {
     payload: string
 }
 
+export interface FetchProjectsCompleteAction {
+  type: ActionType.FETCH_PROJECTS_COMPLETE,
+  payload: Project[]
+}
+
+export interface FetchProjectsErrorAction {
+  type: ActionType.FETCH_PROJECTS_ERROR,
+  payload: string
+}
+
 
 export interface SetCurrentProjectAction {
     type: ActionType.SET_CURRENT_PROJECT,
@@ -132,4 +142,6 @@ export type Action =
     | CreateProjectAction
     | UpdateProjectAction
     | DeleteProjectAction
+    | FetchProjectsCompleteAction
+    | FetchProjectsErrorAction
     | SetCurrentProjectAction;        

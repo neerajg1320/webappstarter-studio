@@ -19,4 +19,6 @@ export enum ActionType {
   UPDATE_PROJECT = 'update_project',
   DELETE_PROJECT = 'delete_project',
   SET_CURRENT_PROJECT = 'set_current_project',
+  FETCH_PROJECTS_COMPLETE = 'fetch_projects_complete',
+  FETCH_PROJECTS_ERROR = 'fetch_projects_error',
 }

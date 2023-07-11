@@ -37,3 +37,5 @@ npm install @fortawesome/fontawesome-free@5.15.1 --legacy-peer-deps
 # Section 21, structure of the project. 
 # Chapter 275: Lerna
 
+#
+npm install react-select

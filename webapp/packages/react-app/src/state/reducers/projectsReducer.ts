@@ -2,6 +2,7 @@ import produce from 'immer';
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { Project } from '../project';
+import {randomIdGenerator} from "../id";
 
 // The difference between ProjectsState and CellsState:
 //  - ProjectsState have no order
@@ -44,6 +45,19 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
 
     case ActionType.DELETE_PROJECT:
       delete state.data[action.payload];
+      return state;
+
+    case ActionType.FETCH_PROJECTS_COMPLETE:
+      state.loading = false;
+      if (action.payload.length > 0) {
+        state.data = action.payload.reduce((acc, project) => {
+          // We need to see how this behave. We generate this to stay consistent for localId across cells
+          project.localId = randomIdGenerator();
+          acc[project.localId] = project;
+          return acc;
+        }, {} as ProjectsState['data']);
+      }
+
       return state;
 
     case ActionType.SET_CURRENT_PROJECT:
