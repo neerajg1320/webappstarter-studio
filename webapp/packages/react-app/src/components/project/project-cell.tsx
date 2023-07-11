@@ -4,34 +4,48 @@ import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {randomIdGenerator} from "../../state/id";
 
-const Project:React.FC = () => {
+const ProjectCell:React.FC = () => {
+  const [localId, setLocalId] = useState<string|null>(null);
   const [projectName, setProjectName] = useState<string|null>(null);
   const { createAndSetProject, updateProject, createProjectBundle} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
 
-  // console.log('Project: rendered', JSON.stringify(projectsState));
+  // console.log('ProjectCell: rendered', JSON.stringify(projectsState));
 
   const project = useMemo(() => {
-    if (Object.keys(projectsState.data).length > 0) {
-      return Object.entries(projectsState.data)[0][1];
+    if (Object.keys(projectsState.data).length > 0 && localId) {
+      return projectsState.data[localId];
     }
     return null;
   }, [projectsState]);
 
-  console.log('Project: rendered', JSON.stringify(project));
+  console.log('ProjectCell: rendered', JSON.stringify(project));
 
   const handleSyncClick = () => {
+    console.log(`Need to sync`);
+  }
+
+  const handleCreateClick = () => {
     if (!projectName) {
-      console.error(`Project name is required`)
+      console.error(`Error! projectName is not set`);
       return;
     }
+    const _localId = randomIdGenerator();
+    createAndSetProject(_localId, projectName!, "reactjs");
+    setLocalId(_localId);
+  }
+
+  const handleUpdateClick = () => {
     if (!project) {
-      const localId = randomIdGenerator();
-      createAndSetProject(localId, projectName, "reactjs");
-    } else {
-      updateProject({localId:project.localId, name:projectName});
+      console.error(`Error! No current project is set`);
+      return;
     }
+    if (!projectName) {
+      console.error(`Error! projectName is not set`);
+      return;
+    }
+    updateProject({localId:project.localId, name:projectName});
   }
 
   const handleBundleClick = () => {
@@ -58,13 +72,27 @@ const Project:React.FC = () => {
             <label>Project</label>
             <input type="text" value={projectName||''} onChange={(e) => {setProjectName(e.target.value)}} />
           </div>
-          <div>
+          <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
             <button
                 className="button is-primary is-small"
                 onClick={handleSyncClick}
                 disabled={!projectName}
             >
               Sync
+            </button>
+            <button
+                className="button is-primary is-small"
+                onClick={handleCreateClick}
+                disabled={!projectName}
+            >
+              Create
+            </button>
+            <button
+                className="button is-primary is-small"
+                onClick={handleUpdateClick}
+                disabled={!projectName}
+            >
+              Update
             </button>
           </div>
         </div>
@@ -92,4 +120,4 @@ const Project:React.FC = () => {
   );
 }
 
-export default Project;
+export default ProjectCell;
