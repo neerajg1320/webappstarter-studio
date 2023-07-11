@@ -30,7 +30,6 @@ const Project:React.FC = () => {
       const localId = randomIdGenerator();
       createAndSetProject(localId, projectName, "reactjs");
     } else {
-      const project = Object.entries(projectsState.data)[0][1];
       updateProject({localId:project.localId, name:projectName});
     }
   }
@@ -74,7 +73,7 @@ const Project:React.FC = () => {
           <button
               className="button is-family-secondary is-small"
               onClick={handleBundleClick}
-              disabled={!(project && project.synced)}
+              disabled={!project || !project.synced}
           >
             Bundle
           </button>
