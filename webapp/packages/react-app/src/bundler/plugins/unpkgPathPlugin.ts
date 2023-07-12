@@ -30,7 +30,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
 
       // For <project>/index.js: comes from a project
       // We prepend the fileServer to the path
-      build.onResolve({filter: /^[\w-/]*\/index\.js[x]?$/}, (args: any) => {
+      build.onResolve({filter: /^[\w-/]*\/index\.jsx?$/}, (args: any) => {
         if (debugPlugin) {
           console.log('onResolve', args);
         }
