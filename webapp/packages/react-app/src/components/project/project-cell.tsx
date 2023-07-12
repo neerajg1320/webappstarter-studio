@@ -8,14 +8,14 @@ import {randomIdGenerator} from "../../state/id";
 
 const ProjectCell:React.FC = () => {
   // const [projectOptions, setProjectOptions] = useState<{ value: string; label: string; }[]|null>(null);
-  const [selectedProjectTitle, setSelectedProjectTitle] =
+  const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
   const [projectName, setProjectName] = useState<string|null>(null);
-  const { createAndSetProject, updateProject, createProjectBundle} = useActions();
+  const { createAndSetProject, updateProject, createProjectBundle, setCurrentProjectId} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const { fetchProjects } = useActions();
-
+  
   const options = [
     { value: "blues", label: "Blues" },
     { value: "rock", label: "Rock" },
@@ -43,11 +43,11 @@ const ProjectCell:React.FC = () => {
   // console.log('ProjectCell: rendered, projectOptions:', JSON.stringify(projectOptions, null, 2));
 
   const currentProject = useMemo(() => {
-    if (Object.keys(projectsState.data).length > 0 && selectedProjectTitle) {
-      return projectsState.data[selectedProjectTitle.value];
+    if (Object.keys(projectsState.data).length > 0 && selectedProjectOption) {
+      return projectsState.data[selectedProjectOption.value];
     }
     return null;
-  }, [selectedProjectTitle]);
+  }, [selectedProjectOption]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
   const handleGetClick = () => {
@@ -79,6 +79,15 @@ const ProjectCell:React.FC = () => {
     if (currentProject) {
       // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
       createProjectBundle(currentProject.localId, `${currentProject.title}/index.js`);
+    }
+  }
+
+  const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
+    console.log(selectedOption);
+    setSelectedProjectOption(selectedOption);
+    
+    if (selectedOption) {
+      setCurrentProjectId(selectedOption.value);
     }
   }
 
@@ -126,13 +135,10 @@ const ProjectCell:React.FC = () => {
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
           <Select
-              value={selectedProjectTitle}
+              value={selectedProjectOption}
               className="project-select is-primary is-small"
               options={projectOptions}
-              onChange={(value) => {
-                console.log(value);
-                setSelectedProjectTitle(value);
-              }}
+              onChange={handleProjectSelectionChange}
           />
           <button
               className="button is-family-secondary is-small"

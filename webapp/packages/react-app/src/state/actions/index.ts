@@ -135,6 +135,7 @@ export interface CreateFileAction {
     path: string,
     file: any,
     type: FileTypes,
+    projectId?: string,
   }
 }
 

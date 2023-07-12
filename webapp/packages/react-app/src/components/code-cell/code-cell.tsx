@@ -30,8 +30,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const filesState = useTypedSelector((state) => state.files);
   const [selectedFile, setSelectedFile] = useState<File|null>(null);
+  const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
 
-  console.log(`CodeCell:render filesState:`, filesState);
+  console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)} filesState:`, filesState);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -86,9 +87,14 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       return;
     }
 
+    if (!currentProjectId) {
+      console.error(`We need to set a project`);
+      return;
+    }
+
     console.log(selectedFile);
     const _localId = randomIdGenerator();
-    createFile(_localId, 'src/index.js', selectedFile, 'javascript');
+    createFile(_localId, 'src/index.js', selectedFile, 'javascript', currentProjectId);
   }
 
   return (

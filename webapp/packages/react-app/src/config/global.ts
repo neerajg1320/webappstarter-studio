@@ -5,7 +5,7 @@ export const debugPlugin = false;
 export const debugCache = true;
 export const debugListeners = false;
 
-export const reduxManualTest = true;
+export const reduxManualTest = false;
 
 export const serverConnect = true;
 export const syncCellsToServer = serverConnect && false;

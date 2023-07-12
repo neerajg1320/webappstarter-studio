@@ -39,8 +39,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
       if (syncFilesToServer) {
         if (action.type === ActionType.CREATE_FILE) {
-          const {localId, path, file, type} = action.payload;
-          createFileOnServer(localId, path, file, type)(dispatch, getState);
+          const {localId, path, file, type, projectId} = action.payload;
+          createFileOnServer(localId, path, file, type, projectId)(dispatch, getState);
         }
       }
     }

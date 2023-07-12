@@ -171,7 +171,7 @@ export const deleteProject = (localId:string): DeleteProjectAction => {
     }
 }
 
-export const setCurrentProject = (localId: string): SetCurrentProjectAction => {
+export const setCurrentProjectId = (localId: string): SetCurrentProjectAction => {
     return {
         type: ActionType.SET_CURRENT_PROJECT,
         payload: localId
@@ -184,7 +184,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
         const { projects } = getState();
 
         const firstProject:[string, Project] = Object.entries(projects.data)[0];
-        dispatch(setCurrentProject(firstProject[0]));
+        dispatch(setCurrentProjectId(firstProject[0]));
     }
 }
 
@@ -223,7 +223,7 @@ export const createProjectOnServer = (localId:string, title:string, description:
     };
 
     try {
-      const response = await axios.post(gApiUri, data, {headers: gHeaders});
+      const response = await axios.post(`${gApiUri}/projects/`, data, {headers: gHeaders});
       const {pkid} = response.data
       dispatch(updateProject({localId, id:pkid, synced:true})); //
     } catch (err) {
@@ -238,7 +238,7 @@ export const createProjectOnServer = (localId:string, title:string, description:
   }
 }
 
-export const createFile = (localId: string, path:string, file:File, type: FileTypes): CreateFileAction => {
+export const createFile = (localId: string, path:string, file:File, type: FileTypes, projectId?: string): CreateFileAction => {
   return {
     type: ActionType.CREATE_FILE,
     payload: {
@@ -246,6 +246,7 @@ export const createFile = (localId: string, path:string, file:File, type: FileTy
       path,
       file,
       type,
+      projectId
     }
   }
 }
@@ -265,8 +266,10 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 }
 
 // This action is dispatched from the persistMiddleware.
-export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes) => {
+export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes, projectId?: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const project = getState().projects.currentProjectId;
+
     const formData = new FormData();
     formData.append("path", path);
     formData.append("file", file);
