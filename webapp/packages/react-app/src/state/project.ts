@@ -6,7 +6,9 @@ export interface Project extends ServerObject {
     localId: string;
     title: string;
     framework: ProjectFrameworks;
-    folder: string;
+    folder?: string;
+    entry_file?: number;
+    entry_path?: string;
 }
 
 export interface ProjectPartial extends ServerObjectPartial {
@@ -15,4 +17,6 @@ export interface ProjectPartial extends ServerObjectPartial {
   framework?: ProjectFrameworks;
   remoteId?: string;
   folder?: string;
+  entry_file?: number;
+  entry_path?: string;
 }
