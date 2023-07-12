@@ -25,6 +25,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const cumulativeCode =  useCumulativeCode(cell.id);
   const inputCode = combineCellsCode ? cumulativeCode : cellCode;
   const filePathInputRef = useRef<HTMLInputElement | null>(null);
+  const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -63,6 +64,16 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     createCellBundle(cell.id, inputCode);
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      console.log('No file selected');
+      return;
+    }
+
+    console.log(e.target.files[0]);
+  }
+
+
   return (
     <div>
       <Resizable direction="vertical">
@@ -85,17 +96,26 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </div>
         </div>
       </Resizable>
-      <div style={{display: "flex", justifyContent: "center", gap: "20px", alignItems: "center"}}>
-        <div>
-        <label>File Path:</label>
-        <input ref={filePathInputRef} type="text" onChange={(e) => handleInputChange(e.target.value)}/>
+      <div style={{display: "flex", justifyContent: "center", gap: "60px", alignItems: "center"}}>
+        <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+          <button
+              className="button is-primary is-small"
+              onClick={() => {selectFileInputRef.current!.click()}}
+          >
+            Select File
+          </button>
+          <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
+          <div>
+            <label>File Path:</label>
+            <input ref={filePathInputRef} type="text" onChange={(e) => handleInputChange(e.target.value)}/>
+          </div>
         </div>
-        <button 
-          className="button is-primary is-small"
-          onClick={() => handleBundleClick()}
-        >
-          Bundle
-        </button>
+
+        <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+          <button className="button is-primary is-small" onClick={() => handleBundleClick()}>
+            Bundle
+          </button>
+        </div>
       </div>
     </div>
   );
