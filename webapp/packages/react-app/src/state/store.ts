@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import { reduxManualTest } from '../config/global';
 import { persistMiddleware } from './middlewares/persist-middleware';
+import {ActionType} from "./action-types";
 
 export const store = createStore(
   reducers,
@@ -10,8 +11,32 @@ export const store = createStore(
   applyMiddleware(persistMiddleware, thunk)
 );
 
-
 export const populateStoreManual = () => {
+  populateStoreManualOne();
+  // populateStoreManualThree();
+}
+
+export const populateStoreManualOne = () => {
+  // The import syntax doesn't work inside block
+  const {ActionType} = require("./action-types");
+
+  console.log(store.getState());
+
+  // Manually dispatch actions
+
+  store.dispatch({
+    type: ActionType.INSERT_CELL_AFTER,
+    payload: {
+      id: null,
+      type: 'code',
+      content: "console.log('Make this cool');"
+    }
+  });
+
+  console.log(store.getState());
+}
+
+export const populateStoreManualThree = () => {
   // The import syntax doesn't work inside block
   const {ActionType} = require("./action-types");
 

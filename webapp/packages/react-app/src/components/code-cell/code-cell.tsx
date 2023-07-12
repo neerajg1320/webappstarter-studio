@@ -99,7 +99,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       <div style={{display: "flex", justifyContent: "center", gap: "60px", alignItems: "center"}}>
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
           <button
-              className="button is-primary is-small"
+              className="button is-family-primary is-small"
               onClick={() => {selectFileInputRef.current!.click()}}
           >
             Select File
@@ -113,6 +113,13 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
           <button className="button is-primary is-small" onClick={() => handleBundleClick()}>
+            Save
+          </button>
+          <button
+              className="button is-family-secondary is-small"
+              onClick={() => handleBundleClick()}
+              disabled={!(cellCode && cellCode.length > 0)}
+          >
             Bundle
           </button>
         </div>
