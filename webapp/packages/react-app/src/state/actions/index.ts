@@ -58,14 +58,14 @@ export interface CellBundleCompleteAction {
 export interface ProjectBundleStartAction {
     type: ActionType.PROJECT_BUNDLE_START,
     payload: {
-        projectId: string,
+        projectLocalId: string,
     }
 }
 
 export interface ProjectBundleCompleteAction {
     type: ActionType.PROJECT_BUNDLE_COMPLETE,
     payload: {
-        projectId: string,
+        projectLocalId: string,
         bundle: {
             code: string;
             err: string;
@@ -135,7 +135,7 @@ export interface CreateFileAction {
     path: string,
     file: any,
     type: FileTypes,
-    projectId?: string,
+    projectLocalId?: string,
   }
 }
 

@@ -37,7 +37,7 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
           return state;
           
           case ActionType.PROJECT_BUNDLE_START:
-            state[action.payload.projectId] = {
+            state[action.payload.projectLocalId] = {
                 loading: true,
                 code: '',
                 err: '',
@@ -46,7 +46,7 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
             return state;
   
         case ActionType.PROJECT_BUNDLE_COMPLETE:
-            state[action.payload.projectId] = {
+            state[action.payload.projectLocalId] = {
                 loading: false,
                 code: action.payload.bundle.code,
                 err: action.payload.bundle.err,

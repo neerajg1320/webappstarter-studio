@@ -7,7 +7,7 @@ export interface ReduxFile extends ServerObject {
   path: string;
   type: FileTypes;
   file: File;
-  projectId?: string;
+  projectLocalId?: string;
 }
 
 export interface ReduxFilePartial extends ServerObjectPartial {
@@ -15,5 +15,5 @@ export interface ReduxFilePartial extends ServerObjectPartial {
   title?: string,
   type?: FileTypes,
   file?: any;
-  projectId?: string;
+  projectLocalId?: string;
 }

@@ -79,12 +79,12 @@ export const createCellBundle = (cellId:string, input:string) => {
 }
 
 
-export const createProjectBundle = (projectId:string, input:string) => {
+export const createProjectBundle = (projectLocalId:string, input:string) => {
     return async (dispatch:Dispatch<Action>) => {
         dispatch({
             type: ActionType.PROJECT_BUNDLE_START,
             payload: {
-                projectId,
+                projectLocalId: projectLocalId,
             }
         });
 
@@ -93,7 +93,7 @@ export const createProjectBundle = (projectId:string, input:string) => {
         dispatch({
             type: ActionType.PROJECT_BUNDLE_COMPLETE,
             payload: {
-                projectId,
+                projectLocalId,
                 bundle: result
             }
         });
@@ -239,7 +239,7 @@ export const createProjectOnServer = (localId:string, title:string, description:
   }
 }
 
-export const createFile = (localId: string, path:string, file:File, type: FileTypes, projectId?: string): CreateFileAction => {
+export const createFile = (localId: string, path:string, file:File, type: FileTypes, projectLocalId?: string): CreateFileAction => {
   return {
     type: ActionType.CREATE_FILE,
     payload: {
@@ -247,7 +247,7 @@ export const createFile = (localId: string, path:string, file:File, type: FileTy
       path,
       file,
       type,
-      projectId
+      projectLocalId
     }
   }
 }
@@ -267,14 +267,14 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 }
 
 // This action is dispatched from the persistMiddleware.
-export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes, projectId?: string|number|null) => {
+export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes, projectLocalId?: string|number|null) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
     formData.append("path", path);
     formData.append("file", file);
 
-    if (projectId) {
-      const project = getState().projects.data[projectId];
+    if (projectLocalId) {
+      const project = getState().projects.data[projectLocalId];
       console.log(project)
       if (project.pkid > 0) {
         formData.append("project", project.pkid as unknown as string); // We could use pkid as well

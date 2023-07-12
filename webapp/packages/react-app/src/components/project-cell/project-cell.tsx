@@ -154,7 +154,7 @@ const ProjectCell:React.FC = () => {
 
       {(currentProject && bundlesState[currentProject.localId]) &&
           <div>
-            {/*<pre>{bundlesState[projectId]!.code}</pre>*/}
+            {/*<pre>{bundlesState[currentProject.localId]!.code}</pre>*/}
             <Preview code={bundlesState[currentProject.localId]!.code} err={bundlesState[currentProject.localId]!.err}/>
           </div>
       }
