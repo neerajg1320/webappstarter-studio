@@ -78,7 +78,7 @@ const ProjectCell:React.FC = () => {
   const handleBundleClick = () => {
     if (currentProject) {
       // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
-      createProjectBundle(currentProject.localId, `${currentProject.title}/index.js`);
+      createProjectBundle(currentProject.localId, `${currentProject.folder}/index.js`);
     }
   }
 

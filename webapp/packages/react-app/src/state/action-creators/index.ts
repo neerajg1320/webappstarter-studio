@@ -224,9 +224,9 @@ export const createProjectOnServer = (localId:string, title:string, description:
 
     try {
       const response = await axios.post(`${gApiUri}/projects/`, data, {headers: gHeaders});
-      const {id, pkid} = response.data
+      const {id, pkid, folder} = response.data
       // We are putting pkid in the id.
-      dispatch(updateProject({localId, id, pkid, synced:true}));
+      dispatch(updateProject({localId, id, pkid, folder, synced:true}));
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
@@ -283,7 +283,7 @@ export const createFileOnServer = (localId: string, path:string, file:File, type
 
     try {
       const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
-      const {id, pkid, project} = response.data
+      const {id, pkid} = response.data
       // We are putting pkid in the id
       dispatch(updateFile({localId, id, pkid, synced:true})); //
     } catch (err) {
