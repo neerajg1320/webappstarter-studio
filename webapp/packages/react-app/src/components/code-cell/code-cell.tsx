@@ -1,5 +1,6 @@
 import './code-cell.css';
 import React, {useEffect, useRef, useMemo, useState} from "react";
+import path from 'path';
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { Cell } from "../../state";
@@ -9,6 +10,7 @@ import Preview from "./preview";
 import { useCumulativeCode } from '../../hooks/use-cumulative';
 import {autoBundling, combineCellsCode} from '../../config/global';
 import {randomIdGenerator} from "../../state/id";
+import {replaceFilePart} from "../../utils/path";
 
 
 interface CodeCellProps {
@@ -81,6 +83,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     const _file = e.target.files[0];
     console.log(_file);
     setSelectedFile(_file);
+
+    const fileName = _file.name;
+
+    // here we should keep modify the fileInputPath where we replace fileName part
+    setFilePathInput(replaceFilePart(filePathInput, fileName))
   }
 
   const handleSaveClick = () => {
