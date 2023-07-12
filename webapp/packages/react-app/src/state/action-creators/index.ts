@@ -189,7 +189,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
 }
 
 const gApiUri = 'http://localhost:8080/api/v1';
-const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MTQ4NzE5LCJpYXQiOjE2ODkwNjIzMTksImp0aSI6Ijc5YmJhZjA4N2U0MjQxNzY5MzA0YTM1YTg2ODQzNzFjIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9._VvlR6gqscN42LeQ1lMKGraND3qPCSF6YA9IDI9gJTs";
+const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MjM1MjE3LCJpYXQiOjE2ODkxNDg4MTcsImp0aSI6IjEyOWFhOTc3ZGZiMDRhYmU4OWRiMDg4MTkzZTQ0ZTA3IiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.0I4NEtf1cW7ncU26Ygn3IRI3-rWvIeZTKYyZ2nBhyBs";
 const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
 }
@@ -276,7 +276,7 @@ export const createFileOnServer = (localId: string, path:string, file:File, type
       const project = getState().projects.data[projectId];
       console.log(project)
       if (project.id) {
-        formData.append("project", project.id.toString()); // We could use pkid as well
+        formData.append("project_id", project.id.toString()); // We could use pkid as well
       }
     }
 
