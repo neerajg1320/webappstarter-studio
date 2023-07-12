@@ -32,7 +32,7 @@ const ProjectCell:React.FC = () => {
   const projects = useMemo(() => {
     return Object.entries(projectsState.data).map(entry => entry[1]);
   }, [projectsState.data]);
-  console.log('ProjectCell: rendered, projects:', JSON.stringify(projects, null, 2));
+  // console.log('ProjectCell: rendered, projects:', JSON.stringify(projects, null, 2));
 
 
   const projectOptions = useMemo(() => {
@@ -40,7 +40,7 @@ const ProjectCell:React.FC = () => {
       return {value: prj.localId, label: prj.title};
     })
   }, [projects]);
-  console.log('ProjectCell: rendered, projectOptions:', JSON.stringify(projectOptions, null, 2));
+  // console.log('ProjectCell: rendered, projectOptions:', JSON.stringify(projectOptions, null, 2));
 
   const currentProject = useMemo(() => {
     if (Object.keys(projectsState.data).length > 0 && selectedProjectTitle) {
@@ -48,7 +48,7 @@ const ProjectCell:React.FC = () => {
     }
     return null;
   }, [selectedProjectTitle]);
-  console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
+  // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
   const handleGetClick = () => {
     console.log(`Need to sync`);

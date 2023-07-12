@@ -7,7 +7,7 @@ import path from "path";
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
 export const unpkgPathPlugin = (inputType: BundleInputType) => {
-  console.log(`unpkgPathPlugin: closure created for inputType '${inputType}'`);
+  // console.log(`unpkgPathPlugin: closure created for inputType '${inputType}'`);
   const pkgServer = getPkgServer();
   const fileServer = getFileServer();
   const fileServerPath = getFileServerWithPath();

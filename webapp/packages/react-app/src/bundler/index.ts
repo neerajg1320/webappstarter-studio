@@ -17,7 +17,7 @@ export const bundleFilePath =  async(filePath: string) => {
 // The bundleCodeStr takes a string as input.
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
 const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) => {
-    console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
+    // console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
 
     if (!service) {
         service = await esbuild.startService({
