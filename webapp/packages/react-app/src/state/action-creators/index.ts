@@ -266,13 +266,19 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 }
 
 // This action is dispatched from the persistMiddleware.
-export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes, projectId?: string) => {
+export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes, projectId?: string|number|null) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    const project = getState().projects.currentProjectId;
-
     const formData = new FormData();
     formData.append("path", path);
     formData.append("file", file);
+
+    if (projectId) {
+      const project = getState().projects.data[projectId];
+      console.log(project)
+      if (project.id) {
+        formData.append("project", project.id.toString()); // We could use pkid as well
+      }
+    }
 
     try {
       const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
