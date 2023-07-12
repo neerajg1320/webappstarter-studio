@@ -31,8 +31,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const filesState = useTypedSelector((state) => state.files);
   const [selectedFile, setSelectedFile] = useState<File|null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+  const [filePathInput, setFilePathInput] = useState<string>('src/index.js');
 
-  console.log(`CodeCell:render filesState:${JSON.stringify(filesState, null, 2)}`);
+  // console.log(`CodeCell:render filesState:${JSON.stringify(filesState, null, 2)}`);
   console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   
   useEffect(() => {
@@ -95,7 +96,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
     console.log(selectedFile);
     const _localId = randomIdGenerator();
-    createFile(_localId, 'src/index.js', selectedFile, 'javascript', currentProjectId);
+    createFile(_localId, filePathInput, selectedFile, 'javascript', currentProjectId);
   }
 
   return (
@@ -138,12 +139,16 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </div>
           <div>
             <label>File Path:</label>
-            <input ref={filePathInputRef} type="text" onChange={(e) => handleInputChange(e.target.value)}/>
+            <input type="text" value={filePathInput} onChange={(e) => setFilePathInput(e.target.value)} />
           </div>
         </div>
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
-          <button className="button is-primary is-small" onClick={() => handleSaveClick()}>
+          <button
+              className="button is-primary is-small"
+              onClick={() => handleSaveClick()}
+              disabled={!(selectedFile && filePathInput)}
+          >
             Save
           </button>
           <button
