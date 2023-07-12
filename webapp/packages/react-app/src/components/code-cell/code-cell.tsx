@@ -1,5 +1,5 @@
 import './code-cell.css';
-import React, {useEffect, useRef, useMemo} from "react";
+import React, {useEffect, useRef, useMemo, useState} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { Cell } from "../../state";
@@ -8,6 +8,8 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import { useCumulativeCode } from '../../hooks/use-cumulative';
 import {autoBundling, combineCellsCode} from '../../config/global';
+import {randomIdGenerator} from "../../state/id";
+
 
 interface CodeCellProps {
   cell: Cell
@@ -17,7 +19,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const autoBundle = useMemo(() => {
     return autoBundling;
   }, []);
-  const {updateCell, createCellBundle} = useActions();
+  const {updateCell, createCellBundle, createFileOnServer} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
@@ -26,6 +28,10 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const inputCode = combineCellsCode ? cumulativeCode : cellCode;
   const filePathInputRef = useRef<HTMLInputElement | null>(null);
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
+  const filesState = useTypedSelector((state) => state.files);
+  const [selectedFile, setSelectedFile] = useState<File|null>(null);
+
+  console.log(`CodeCell:render filesState:`, filesState);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -69,10 +75,21 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       console.log('No file selected');
       return;
     }
-
-    console.log(e.target.files[0]);
+    const _file = e.target.files[0];
+    console.log(_file);
+    setSelectedFile(_file);
   }
 
+  const handleSaveClick = () => {
+    if (!selectedFile) {
+      console.error(`We need to select a file`);
+      return;
+    }
+
+    console.log(selectedFile);
+    const _localId = randomIdGenerator();
+    createFileOnServer(_localId, 'src/index.js', selectedFile, 'javascript');
+  }
 
   return (
     <div>
@@ -98,13 +115,16 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       </Resizable>
       <div style={{display: "flex", justifyContent: "center", gap: "60px", alignItems: "center"}}>
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
-          <button
-              className="button is-family-primary is-small"
-              onClick={() => {selectFileInputRef.current!.click()}}
-          >
-            Select File
-          </button>
-          <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
+          <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
+            <button
+                className="button is-family-primary is-small"
+                onClick={() => {selectFileInputRef.current!.click()}}
+            >
+              Select File
+            </button>
+            <span>{selectedFile ? selectedFile.name : "none"}</span>
+            <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
+          </div>
           <div>
             <label>File Path:</label>
             <input ref={filePathInputRef} type="text" onChange={(e) => handleInputChange(e.target.value)}/>
@@ -112,7 +132,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         </div>
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
-          <button className="button is-primary is-small" onClick={() => handleBundleClick()}>
+          <button className="button is-primary is-small" onClick={() => handleSaveClick()}>
             Save
           </button>
           <button
