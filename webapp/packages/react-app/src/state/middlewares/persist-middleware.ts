@@ -1,9 +1,9 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createProject, createProjectOnServer, saveCells} from "../action-creators";
+import {createFileOnServer, createProject, createProjectOnServer, saveCells} from "../action-creators";
 import { RootState } from "../reducers";
-import {syncCellsToServer, syncProjectsToServer} from "../../config/global";
+import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;
@@ -34,6 +34,13 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
         if (action.type === ActionType.CREATE_PROJECT) {
           const {localId, title} = action.payload;
           createProjectOnServer(localId, title, "ProjectCell created from webapp")(dispatch, getState);
+        }
+      }
+
+      if (syncFilesToServer) {
+        if (action.type === ActionType.CREATE_FILE) {
+          const {localId, path, file, type} = action.payload;
+          createFileOnServer(localId, path, file, type)(dispatch, getState);
         }
       }
     }

@@ -188,7 +188,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
     }
 }
 
-const gApiUri = 'http://localhost:8080/api/v1/projects/';
+const gApiUri = 'http://localhost:8080/api/v1';
 const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MTQ4NzE5LCJpYXQiOjE2ODkwNjIzMTksImp0aSI6Ijc5YmJhZjA4N2U0MjQxNzY5MzA0YTM1YTg2ODQzNzFjIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9._VvlR6gqscN42LeQ1lMKGraND3qPCSF6YA9IDI9gJTs";
 const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
@@ -197,7 +197,7 @@ const gHeaders = {
 export const fetchProjects = () => {
   return async (dispatch: Dispatch<Action>) => {
     try {
-      const {data}: {data: Project[]} = await axios.get(gApiUri, {headers: gHeaders});
+      const {data}: {data: Project[]} = await axios.get(`${gApiUri}/projects/`, {headers: gHeaders});
 
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
@@ -264,16 +264,15 @@ export const deleteFile = (localId:string): DeleteFileAction => {
   }
 }
 
+// This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    dispatch(createFile(localId, path, file, type));
-
     const formData = new FormData();
     formData.append("path", path);
     formData.append("file", file);
 
     try {
-      const response = await axios.post(gApiUri, formData, {headers: gHeaders});
+      const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
       const {pkid} = response.data
       dispatch(updateFile({localId, id:pkid, synced:true})); //
     } catch (err) {

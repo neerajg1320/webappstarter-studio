@@ -19,7 +19,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const autoBundle = useMemo(() => {
     return autoBundling;
   }, []);
-  const {updateCell, createCellBundle, createFileOnServer} = useActions();
+  const {updateCell, createCellBundle, createFile} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
@@ -88,7 +88,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
     console.log(selectedFile);
     const _localId = randomIdGenerator();
-    createFileOnServer(_localId, 'src/index.js', selectedFile, 'javascript');
+    createFile(_localId, 'src/index.js', selectedFile, 'javascript');
   }
 
   return (
@@ -113,7 +113,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </div>
         </div>
       </Resizable>
-      <div style={{display: "flex", justifyContent: "center", gap: "60px", alignItems: "center"}}>
+      <div style={{
+          display: "flex", justifyContent: "center", gap: "60px", alignItems: "center",
+          marginTop: "5px"
+        }}
+      >
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
           <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
             <button

@@ -10,6 +10,7 @@ export const reduxManualTest = true;
 export const serverConnect = true;
 export const syncCellsToServer = serverConnect && false;
 export const syncProjectsToServer = serverConnect && true;
+export const syncFilesToServer = serverConnect && true;
 
 export const autoBundling = false;
 
