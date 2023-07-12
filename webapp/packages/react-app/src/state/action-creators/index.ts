@@ -225,7 +225,8 @@ export const createProjectOnServer = (localId:string, title:string, description:
     try {
       const response = await axios.post(`${gApiUri}/projects/`, data, {headers: gHeaders});
       const {pkid} = response.data
-      dispatch(updateProject({localId, id:pkid, synced:true})); //
+      // We are putting pkid in the id.
+      dispatch(updateProject({localId, id:pkid, synced:true}));
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
@@ -274,15 +275,16 @@ export const createFileOnServer = (localId: string, path:string, file:File, type
 
     if (projectId) {
       const project = getState().projects.data[projectId];
-      console.log(project)
+      console.log(project)  
       if (project.id) {
-        formData.append("project_id", project.id.toString()); // We could use pkid as well
+        formData.append("project", project.id as string); // We could use pkid as well
       }
     }
 
     try {
       const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
       const {pkid} = response.data
+      // We are putting pkid in the id
       dispatch(updateFile({localId, id:pkid, synced:true})); //
     } catch (err) {
       if (err instanceof Error) {
