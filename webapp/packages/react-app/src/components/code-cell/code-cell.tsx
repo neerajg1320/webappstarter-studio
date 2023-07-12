@@ -32,7 +32,8 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [selectedFile, setSelectedFile] = useState<File|null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
 
-  console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)} filesState:`, filesState);
+  console.log(`CodeCell:render filesState:${JSON.stringify(filesState, null, 2)}`);
+  console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.

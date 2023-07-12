@@ -23,7 +23,7 @@ const ProjectCell:React.FC = () => {
     { value: "orchestra", label: "Orchestra" },
   ];
 
-  // console.log('ProjectCell: rendered', JSON.stringify(projectsState));
+  // console.log('ProjectCell: rendered', JSON.stringify(projectsState, null, 2));
 
   useEffect(() => {
     fetchProjects();

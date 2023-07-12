@@ -4,7 +4,6 @@ export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' |
 
 export interface ReduxFile extends ServerObject {
   localId: string,
-  id?: number;
   path: string;
   type: FileTypes;
   file: File;
@@ -13,7 +12,6 @@ export interface ReduxFile extends ServerObject {
 
 export interface ReduxFilePartial extends ServerObjectPartial {
   localId: string,
-  id?: number,
   title?: string,
   type?: FileTypes,
   file?: any;

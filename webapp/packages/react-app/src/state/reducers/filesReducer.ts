@@ -28,6 +28,8 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
     case ActionType.CREATE_FILE:
       const file: ReduxFile = {
         ...action.payload,
+        id: '',
+        pkid: -1,
         synced: false
       };
       state.data[file.localId] = file;
