@@ -1,6 +1,5 @@
 import './code-cell.css';
 import React, {useEffect, useRef, useMemo, useState} from "react";
-import path from 'path';
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { Cell } from "../../state";
@@ -28,7 +27,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const cellCode = cellState.content;
   const cumulativeCode =  useCumulativeCode(cell.id);
   const inputCode = combineCellsCode ? cumulativeCode : cellCode;
-  const filePathInputRef = useRef<HTMLInputElement | null>(null);
+  // const filePathInputRef = useRef<HTMLInputElement | null>(null);
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const filesState = useTypedSelector((state) => state.files);
   const [selectedFile, setSelectedFile] = useState<File|null>(null);
@@ -64,12 +63,8 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
     // Don't use cellState for filePath
-    updateCell(cell.id, value, filePathInputRef.current!.value);
+    updateCell(cell.id, value, filePathInput);
   };
-
-  const handleInputChange  = (value:string) => {
-    updateCell(cell.id, cellState.content, value);
-  }
 
   const handleBundleClick = () => {
     createCellBundle(cell.id, inputCode);
