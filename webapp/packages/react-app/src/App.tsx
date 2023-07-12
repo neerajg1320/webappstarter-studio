@@ -1,4 +1,4 @@
-import ProjectCell from "./components/project/project-cell";
+import ProjectCell from "./components/project-cell/project-cell";
 import CellList from "./components/cell-list/cell-list";
 
 const App = () => {
