@@ -21,4 +21,10 @@ export enum ActionType {
   SET_CURRENT_PROJECT = 'set_current_project',
   FETCH_PROJECTS_COMPLETE = 'fetch_projects_complete',
   FETCH_PROJECTS_ERROR = 'fetch_projects_error',
+
+  CREATE_FILE = 'create_file',
+  UPDATE_FILE = 'update_file',
+  DELETE_FILE = 'delete_file',
+  FETCH_FILES_COMPLETE = 'fetch_files_complete',
+  FETCH_FILES_ERROR = 'fetch_files_error',
 }

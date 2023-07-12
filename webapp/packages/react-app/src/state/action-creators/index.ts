@@ -1,13 +1,13 @@
 import {ActionType} from "../action-types";
 import {
-    Action,
-    CreateProjectAction,
-    DeleteCellAction, DeleteProjectAction,
-    Direction,
-    InsertCellAfterAction,
-    MoveCellAction,
-    SetCurrentProjectAction,
-    UpdateCellAction, UpdateProjectAction
+  Action, CreateFileAction,
+  CreateProjectAction,
+  DeleteCellAction, DeleteFileAction, DeleteProjectAction,
+  Direction,
+  InsertCellAfterAction,
+  MoveCellAction,
+  SetCurrentProjectAction,
+  UpdateCellAction, UpdateFileAction, UpdateProjectAction
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import { Dispatch } from "react";
@@ -15,6 +15,7 @@ import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {Project, ProjectFrameworks, ProjectPartial} from "../project";
+import {ReduxFilePartial, FileTypes} from "../file";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -234,5 +235,31 @@ export const createProjectOnServer = (localId:string, title:string, description:
         // });
       }
     }
+  }
+}
+
+export const createFile = (localId: string, path:string, file:File, type: FileTypes): CreateFileAction => {
+  return {
+    type: ActionType.CREATE_FILE,
+    payload: {
+      localId,
+      path,
+      file,
+      type,
+    }
+  }
+}
+
+export const updateFile = (filePartial: ReduxFilePartial): UpdateFileAction => {
+  return {
+    type: ActionType.UPDATE_FILE,
+    payload: filePartial
+  }
+}
+
+export const deleteFile = (localId:string): DeleteFileAction => {
+  return {
+    type: ActionType.DELETE_FILE,
+    payload: localId
   }
 }

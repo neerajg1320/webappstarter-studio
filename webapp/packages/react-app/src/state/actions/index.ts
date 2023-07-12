@@ -1,6 +1,7 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
 import {Project, ProjectFrameworks, ProjectPartial} from "../project";
+import {FileTypes, ReduxFilePartial} from "../file";
 
 export type Direction = 'up' | 'down';
 
@@ -126,6 +127,38 @@ export interface SetCurrentProjectAction {
     payload: string
 }
 
+
+export interface CreateFileAction {
+  type: ActionType.CREATE_FILE,
+  payload: {
+    localId: string,
+    path: string,
+    file: any,
+    type: FileTypes,
+  }
+}
+
+export interface UpdateFileAction {
+  type: ActionType.UPDATE_FILE,
+  payload: ReduxFilePartial
+}
+
+export interface DeleteFileAction {
+  type: ActionType.DELETE_FILE,
+  payload: string
+}
+
+export interface FetchFilesCompleteAction {
+  type: ActionType.FETCH_FILES_COMPLETE,
+  payload: File[]
+}
+
+export interface FetchFilesErrorAction {
+  type: ActionType.FETCH_FILES_ERROR,
+  payload: string
+}
+
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -144,4 +177,9 @@ export type Action =
     | DeleteProjectAction
     | FetchProjectsCompleteAction
     | FetchProjectsErrorAction
-    | SetCurrentProjectAction;        
+    | SetCurrentProjectAction
+    | CreateFileAction
+    | UpdateFileAction
+    | DeleteFileAction
+    | FetchFilesCompleteAction
+    | FetchFilesErrorAction;
