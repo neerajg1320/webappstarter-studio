@@ -139,7 +139,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </button>
           <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
         </div>
-        
+
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>EntryPoint</label>
