@@ -9,7 +9,8 @@ import Preview from "./preview";
 import { useCumulativeCode } from '../../hooks/use-cumulative';
 import {autoBundling, combineCellsCode} from '../../config/global';
 import {randomIdGenerator} from "../../state/id";
-import {replaceFilePart} from "../../utils/path";
+import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
+import {createFileFromString, readFileContent} from "../../utils/file";
 
 
 interface CodeCellProps {
@@ -28,12 +29,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const cumulativeCode =  useCumulativeCode(cell.id);
   const inputCode = combineCellsCode ? cumulativeCode : cellCode;
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  // const filesState = useTypedSelector((state) => state.files);
-  const [selectedFile, setSelectedFile] = useState<File|null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
-  const [filePathInput, setFilePathInput] = useState<string>('src/index.js');
+  const [filePath, setFilePath] = useState<string>('src/index.js');
 
-  // console.log(`CodeCell:render filesState:${JSON.stringify(filesState, null, 2)}`);
   // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   
   useEffect(() => {
@@ -62,42 +60,44 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
     // Don't use cellState for filePath
-    updateCell(cell.id, value, filePathInput);
+    updateCell(cell.id, value, filePath);
   };
 
   const handleBundleClick = () => {
     createCellBundle(cell.id, inputCode);
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       console.log('No file selected');
       return;
     }
-    const _file = e.target.files[0];
-    console.log(_file);
-    setSelectedFile(_file);
 
-    const fileName = _file.name;
+    const file = e.target.files[0];
 
     // here we should keep modify the fileInputPath where we replace fileName part
-    setFilePathInput(replaceFilePart(filePathInput, fileName))
+    setFilePath(replaceFilePart(filePath, file.name))
+    
+    const fileContent = await readFileContent(file);
+    console.log(`fileContent: ${fileContent}`);
   }
 
   const handleSaveClick = () => {
-    if (!selectedFile) {
-      console.error(`We need to select a file`);
-      return;
-    }
-
     if (!currentProjectId) {
       console.error(`We need to set a project`);
       return;
     }
 
-    console.log(selectedFile);
+    if (!cellCode) {
+      console.error(`We need to add code`);
+      return;
+    }
+
+    const fileName = getFileNameFromPath(filePath);
+    const file = createFileFromString(cellCode, fileName);
+
     const _localId = randomIdGenerator();
-    createFile(_localId, filePathInput, selectedFile, 'javascript', currentProjectId);
+    createFile(_localId, filePath, file, 'javascript', currentProjectId);
   }
 
   return (
@@ -127,7 +127,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           marginTop: "5px"
         }}
       >
-        <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
             <button
                 className="button is-family-primary is-small"
@@ -135,20 +135,19 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             >
               Select File
             </button>
-            <span>{selectedFile ? selectedFile.name : "none"}</span>
             <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
           </div>
           <div>
             <label>File Path:</label>
-            <input type="text" value={filePathInput} onChange={(e) => setFilePathInput(e.target.value)} />
+            <input type="text" value={filePath} onChange={(e) => setFilePath(e.target.value)} />
           </div>
         </div>
 
-        <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
-              disabled={!(selectedFile && filePathInput)}
+              disabled={!(cellCode && filePath)}
           >
             Save
           </button>

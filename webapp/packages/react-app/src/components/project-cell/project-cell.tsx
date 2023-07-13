@@ -57,7 +57,7 @@ const ProjectCell:React.FC = () => {
   }
 
   const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
-    console.log(selectedOption);
+    // console.log(selectedOption);
     setSelectedProjectOption(selectedOption);
     
     if (selectedOption) {
