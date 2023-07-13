@@ -8,6 +8,7 @@ export interface ReduxFile extends ServerObject {
   type: FileTypes;
   file: File;
   projectLocalId?: string;
+  project?:number; // This is project.pkid
 }
 
 export interface ReduxFilePartial extends ServerObjectPartial {
@@ -16,4 +17,5 @@ export interface ReduxFilePartial extends ServerObjectPartial {
   type?: FileTypes,
   file?: any;
   projectLocalId?: string;
+  project?:number;
 }

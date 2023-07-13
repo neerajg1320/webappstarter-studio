@@ -318,13 +318,28 @@ export const deleteFilesFromList = (files: (ReduxFile|string)[]) => {
 
 //
 export const fetchFiles = () => {
-  return async (dispatch: Dispatch<Action>) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       const {data}: {data: ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: gHeaders});
 
+      // console.log(getState().projects.data);
+      const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
+        acc[project.pkid] = localId;
+        return acc;
+      }, {});
+      // console.log(projectsPkidToLocalIdMap);
+
+      const files:ReduxFile[] = data.map((file:ReduxFile) => {
+        // file.project is the project pkid
+        if (file.project) {
+          file.projectLocalId = projectsPkidToLocalIdMap[file.project]
+        }
+        return file;
+      });
+
       dispatch({
         type: ActionType.FETCH_FILES_COMPLETE,
-        payload: data
+        payload: files
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -365,9 +380,9 @@ export const createFileOnServer = (
       const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
       console.log(response);
 
-      const {id, pkid} = response.data
+      // const {id, pkid} = response.data
       // We are putting pkid in the id
-      dispatch(updateFile({localId, id, pkid, synced:true})); //
+      dispatch(updateFile({localId, synced:true, ...response.data})); //
 
       if (projectLocalId) {
         if (isEntryPoint) {
