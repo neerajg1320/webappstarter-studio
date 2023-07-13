@@ -9,7 +9,6 @@ import { ReduxFile } from '../file';
 interface FilesState {
   loading: boolean;
   error: string | null;
-  currentFileId: string,
   data: {
     [key: string]: ReduxFile
   }
@@ -18,7 +17,6 @@ interface FilesState {
 const initialState: FilesState = {
   loading: false,
   error: null,
-  currentFileId: '',
   data: {}
 }
 

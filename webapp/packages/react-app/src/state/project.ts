@@ -9,6 +9,8 @@ export interface Project extends ServerObject {
     folder?: string;
     entry_file?: number;
     entry_path?: string;
+    entryFileId?: string|null;
+    entryPath?: string|null;
 }
 
 export interface ProjectPartial extends ServerObjectPartial {
@@ -19,4 +21,6 @@ export interface ProjectPartial extends ServerObjectPartial {
   folder?: string;
   entry_file?: number;
   entry_path?: string;
+  entryFileId?: string|null;
+  entryPath?: string|null;
 }

@@ -189,7 +189,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
 }
 
 const gApiUri = 'http://localhost:8080/api/v1';
-const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MjM1MjE3LCJpYXQiOjE2ODkxNDg4MTcsImp0aSI6IjEyOWFhOTc3ZGZiMDRhYmU4OWRiMDg4MTkzZTQ0ZTA3IiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.0I4NEtf1cW7ncU26Ygn3IRI3-rWvIeZTKYyZ2nBhyBs";
+const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MzIxOTAzLCJpYXQiOjE2ODkyMzU1MDMsImp0aSI6IjdkZGQzNjFhODU3MzRjMmQ5OWRkYTRmOWE4ZjMyOWYxIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.snzIQ7DICL0W-46Dxzw9XfZH5nG0qLaMvaWMRe-CNl8";
 const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
 }
@@ -239,7 +239,14 @@ export const createProjectOnServer = (localId:string, title:string, description:
   }
 }
 
-export const createFile = (localId: string, path:string, file:File, type: FileTypes, projectLocalId?: string): CreateFileAction => {
+export const createFile = (
+    localId: string,
+    path:string,
+    file:File,
+    type: FileTypes,
+    projectLocalId?: string,
+    isEntryPoint?: boolean,
+): CreateFileAction => {
   return {
     type: ActionType.CREATE_FILE,
     payload: {
@@ -247,7 +254,8 @@ export const createFile = (localId: string, path:string, file:File, type: FileTy
       path,
       file,
       type,
-      projectLocalId
+      projectLocalId,
+      isEntryPoint,
     }
   }
 }
@@ -267,7 +275,14 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 }
 
 // This action is dispatched from the persistMiddleware.
-export const createFileOnServer = (localId: string, path:string, file:File, type: FileTypes, projectLocalId?: string|number|null) => {
+export const createFileOnServer = (
+    localId: string,
+    path:string,
+    file:File,
+    type: FileTypes,
+    projectLocalId?: string|null,
+    isEntryPoint?: boolean
+) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
     formData.append("path", path);
@@ -283,9 +298,19 @@ export const createFileOnServer = (localId: string, path:string, file:File, type
 
     try {
       const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
+      console.log(response);
+
       const {id, pkid} = response.data
       // We are putting pkid in the id
       dispatch(updateFile({localId, id, pkid, synced:true})); //
+
+      if (projectLocalId) {
+        if (isEntryPoint) {
+          console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
+
+          dispatch(updateProject({localId: projectLocalId, entryFileId: localId, entryPath: path}))
+        }
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);

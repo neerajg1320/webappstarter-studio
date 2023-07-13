@@ -11,6 +11,8 @@ import {autoBundling, combineCellsCode} from '../../config/global';
 import {randomIdGenerator} from "../../state/id";
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
+import {updateProject} from "../../state/action-creators";
+import {ReduxFile} from "../../state/file";
 
 
 interface CodeCellProps {
@@ -24,14 +26,28 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const {updateCell, createCellBundle, createFile} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
+
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
   const cellCode = cellState.content;
   const cumulativeCode =  useCumulativeCode(cell.id);
   const inputCode = combineCellsCode ? cumulativeCode : cellCode;
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+
+  // TBD: These local states can be done with and taken directly to redux
   const [filePath, setFilePath] = useState<string>('src/index.js');
   const [entryPoint, setEntryPoint] = useState<boolean>(false);
+
+  const [fileLocalId, setFileLocalId] = useState<string|null>(null);
+  const filesState = useTypedSelector((state) => state.files);
+  const fileState = useMemo<ReduxFile|null>(() => {
+    // console.log(`We should update fileState`);
+    if (fileLocalId) {
+      return filesState.data[fileLocalId];
+    }
+    return null;
+  }, [filesState]);
+
 
   // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   
@@ -85,6 +101,12 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     updateCell(cell.id, fileContent, filePath);
   }
 
+  const handleEntryPointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEntryPoint(e.target.checked);
+    console.log(`fileState: ${JSON.stringify(fileState)}`);
+    // updateProject({localId: currentProjectId, entry_file:filePkid, entry_path:filePath})
+  }
+
   const handleSaveClick = () => {
     if (!currentProjectId) {
       console.error(`We need to set a project`);
@@ -100,7 +122,8 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     const file = createFileFromString(cellCode, fileName);
 
     const _localId = randomIdGenerator();
-    createFile(_localId, filePath, file, 'javascript', currentProjectId);
+    setFileLocalId(_localId);
+    createFile(_localId, filePath, file, 'javascript', currentProjectId, entryPoint);
   }
 
   return (
@@ -143,11 +166,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>EntryPoint</label>
-            <input
-                type="checkbox"
-                checked={entryPoint}
-                onChange={(e) => setEntryPoint(e.target.checked)}
-            />
+            <input type="checkbox" checked={entryPoint} onChange={handleEntryPointChange} />
           </div>
           <div>
             <label>File Path:</label>

@@ -41,7 +41,7 @@ const ProjectCell:React.FC = () => {
     }
     return null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProjectOption]);
+  }, [selectedProjectOption, projectsState.data]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
 
@@ -49,10 +49,11 @@ const ProjectCell:React.FC = () => {
   const handleBundleClick = () => {
     if (currentProject) {
       // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
-      // console.log(`${}`);
+      console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
 
-      const projectEntryFile = currentProject.entry_path;
-      createProjectBundle(currentProject.localId, `${currentProject.folder}/${projectEntryFile}`);
+      // TBD: We shall be using server path
+      const projectEntryPoint= currentProject.entry_path;
+      createProjectBundle(currentProject.localId, `${currentProject.folder}/${projectEntryPoint}`);
     }
   }
 
