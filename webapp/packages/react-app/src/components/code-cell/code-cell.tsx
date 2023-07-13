@@ -45,7 +45,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
       return filesState.data[fileLocalId];
     }
     return null;
-  }, [filesState]);
+  }, [filesState, fileLocalId]);
 
 
   // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);

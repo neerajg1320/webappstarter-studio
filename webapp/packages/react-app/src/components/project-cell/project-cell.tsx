@@ -1,5 +1,5 @@
 import "./project-cell.css";
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Select, {SingleValue} from 'react-select';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
@@ -37,20 +37,21 @@ const ProjectCell:React.FC = () => {
   }, [selectedProjectOption, projectsState.data]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
+  // eslint-disable-next-line
   const projectFiles = useMemo(() => {
     if (currentProject) {
       const files = Object.fromEntries(
           Object.entries(filesState.data).filter(entry => entry[1].projectLocalId === currentProject.localId)
       );
-      console.log(`files:`, files);
+      // console.log(`files:`, files);
       return files;
     }
 
     return [];
-  }, [currentProject]);
+  }, [currentProject, filesState.data]);
 
   const handleBundleClick = () => {
-    console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
+    // console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
 
     if (currentProject && currentProject.entry_path) {
       const projectEntryPoint= currentProject.entry_path;

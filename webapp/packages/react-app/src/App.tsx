@@ -8,7 +8,7 @@ import {useTypedSelector} from "./hooks/use-typed-selector";
 const App = () => {
   const { fetchProjects, fetchFiles } = useActions();
   const projectState = useTypedSelector((state) => state.projects);
-  const filesState = useTypedSelector((state) => state.files);
+  // const filesState = useTypedSelector((state) => state.files);
   // console.log('ProjectCell: rendered', JSON.stringify(projectsState, null, 2));
 
   useEffect(() => {
@@ -17,17 +17,12 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    console.log(`projectState:`, projectState);
-
     // Fetch files if projects are fetched
     if (Object.keys(projectState.data).length > 0) {
       fetchFiles();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectState]);
-
-  useEffect(() => {
-    console.log(`filesState:`, filesState);
-  }, [filesState]);
 
   return (
     <div style={{display:"flex", flexDirection:"column", alignItems: "center"}}>
