@@ -18,7 +18,7 @@ export const populateStoreManual = () => {
 
 export const populateStoreManualOne = () => {
   // The import syntax doesn't work inside block
-  const {ActionType} = require("./action-types");
+  // const {ActionType} = require("./action-types");
 
   console.log(store.getState());
 
@@ -38,7 +38,7 @@ export const populateStoreManualOne = () => {
 
 export const populateStoreManualThree = () => {
   // The import syntax doesn't work inside block
-  const {ActionType} = require("./action-types");
+  // const {ActionType} = require("./action-types");
 
   console.log(store.getState());
 

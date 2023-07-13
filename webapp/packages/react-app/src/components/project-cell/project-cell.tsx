@@ -4,29 +4,22 @@ import Select, {SingleValue} from 'react-select';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {randomIdGenerator} from "../../state/id";
 
 const ProjectCell:React.FC = () => {
-  // const [projectOptions, setProjectOptions] = useState<{ value: string; label: string; }[]|null>(null);
+
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
-  const { createAndSetProject, updateProject, createProjectBundle, setCurrentProjectId} = useActions();
+  const { createProjectBundle, setCurrentProjectId } = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const { fetchProjects } = useActions();
   
-  const options = [
-    { value: "blues", label: "Blues" },
-    { value: "rock", label: "Rock" },
-    { value: "jazz", label: "Jazz" },
-    { value: "orchestra", label: "Orchestra" },
-  ];
-
   // console.log('ProjectCell: rendered', JSON.stringify(projectsState, null, 2));
 
   useEffect(() => {
     fetchProjects();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const projects = useMemo(() => {
@@ -47,6 +40,7 @@ const ProjectCell:React.FC = () => {
       return projectsState.data[selectedProjectOption.value];
     }
     return null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProjectOption]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
@@ -55,9 +49,9 @@ const ProjectCell:React.FC = () => {
   const handleBundleClick = () => {
     if (currentProject) {
       // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
-      console.log(`${currentProject.entry_path}`);
+      // console.log(`${}`);
 
-      const projectEntryFile = 'src/index.js';
+      const projectEntryFile = currentProject.entry_path;
       createProjectBundle(currentProject.localId, `${currentProject.folder}/${projectEntryFile}`);
     }
   }

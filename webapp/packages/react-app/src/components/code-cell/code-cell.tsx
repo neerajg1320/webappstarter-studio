@@ -27,9 +27,8 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const cellCode = cellState.content;
   const cumulativeCode =  useCumulativeCode(cell.id);
   const inputCode = combineCellsCode ? cumulativeCode : cellCode;
-  // const filePathInputRef = useRef<HTMLInputElement | null>(null);
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  const filesState = useTypedSelector((state) => state.files);
+  // const filesState = useTypedSelector((state) => state.files);
   const [selectedFile, setSelectedFile] = useState<File|null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
   const [filePathInput, setFilePathInput] = useState<string>('src/index.js');

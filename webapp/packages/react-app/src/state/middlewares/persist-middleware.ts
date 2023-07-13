@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createFileOnServer, createProject, createProjectOnServer, saveCells} from "../action-creators";
+import {createFileOnServer, createProjectOnServer, saveCells} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 

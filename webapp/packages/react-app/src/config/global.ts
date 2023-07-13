@@ -1,7 +1,8 @@
 export const debug = false;
 
 // Cache
-export const cacheEnabled = true;
+// We need to figure a strategy for invalidating Cache entry before we enable it.
+export const cacheEnabled = false;
 export const debugCache = false;
 
 // Redux

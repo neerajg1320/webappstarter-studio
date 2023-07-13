@@ -1,0 +1,2 @@
+- Ignore warning for React dependency
+// eslint-disable-next-line react-hooks/exhaustive-deps

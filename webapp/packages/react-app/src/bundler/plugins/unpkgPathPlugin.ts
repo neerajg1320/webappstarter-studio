@@ -2,7 +2,6 @@ import * as esbuild from 'esbuild-wasm';
 import { debugPlugin } from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
 import {getFileServer, getFileServerWithPath, getPkgServer} from "./remote";
-import path from "path";
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
