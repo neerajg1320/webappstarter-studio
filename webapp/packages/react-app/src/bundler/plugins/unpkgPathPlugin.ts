@@ -40,7 +40,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
       // We prepend the pkgServer to the path.
       // TBD: We have to fix this behaviour
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
-        if (debugPlugin || true) {
+        if (debugPlugin) {
             console.log('onResolve', args);
         }
 
