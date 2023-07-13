@@ -11,7 +11,6 @@ import {autoBundling, combineCellsCode} from '../../config/global';
 import {randomIdGenerator} from "../../state/id";
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
-import {updateProject} from "../../state/action-creators";
 import {ReduxFile} from "../../state/file";
 
 

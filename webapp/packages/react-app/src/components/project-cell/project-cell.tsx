@@ -51,7 +51,7 @@ const ProjectCell:React.FC = () => {
       // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
       console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
 
-      // TBD: We shall be using server path
+      // TBD: We shall be using server path as that is location bundler accesses
       const projectEntryPoint= currentProject.entry_path;
       createProjectBundle(currentProject.localId, `${currentProject.folder}/${projectEntryPoint}`);
     }

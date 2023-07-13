@@ -9,7 +9,7 @@ export const debugCache = false;
 export const reduxManualTest = false;
 
 // ESBuild Plugins
-export const debugPlugin = false;
+export const debugPlugin = true;
 
 // Bundler
 export const autoBundling = false;

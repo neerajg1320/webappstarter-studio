@@ -239,6 +239,23 @@ export const createProjectOnServer = (localId:string, title:string, description:
   }
 }
 
+// This is invoked when we create a file with is_entry_point set
+export const fetchProjectFromServer = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const project = getState().projects.data[localId];
+    try {
+      const response = await axios.get(`${gApiUri}/projects/${project.pkid}/`,{headers: gHeaders});
+      console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
+      const {entry_file, entry_path} = response.data;
+      dispatch(updateProject({localId, entry_file, entry_path}));
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+      }
+    }
+  }
+}
+
 export const createFile = (
     localId: string,
     path:string,
@@ -287,6 +304,7 @@ export const createFileOnServer = (
     const formData = new FormData();
     formData.append("path", path);
     formData.append("file", file);
+    formData.append("is_entry_point", isEntryPoint as unknown as string);
 
     if (projectLocalId) {
       const project = getState().projects.data[projectLocalId];
@@ -307,8 +325,11 @@ export const createFileOnServer = (
       if (projectLocalId) {
         if (isEntryPoint) {
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
-
           dispatch(updateProject({localId: projectLocalId, entryFileId: localId, entryPath: path}))
+
+          const project = getState().projects.data[projectLocalId];
+          console.log(project.pkid);
+          // fetchProjectFromServer(project.pkid)(dispatch,getState);
         }
       }
     } catch (err) {
