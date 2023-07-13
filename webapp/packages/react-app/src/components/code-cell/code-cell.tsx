@@ -31,6 +31,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
   const [filePath, setFilePath] = useState<string>('src/index.js');
+  const [entryPoint, setEntryPoint] = useState<boolean>(false);
 
   // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   
@@ -146,6 +147,14 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         </div>
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
+            <label>EntryPoint</label>
+            <input
+                type="checkbox"
+                checked={entryPoint}
+                onChange={(e) => setEntryPoint(e.target.checked)}
+            />
+          </div>
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
