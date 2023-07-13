@@ -1,7 +1,7 @@
 import produce from 'immer';
-import { Action } from '../actions';
-import { ActionType } from '../action-types';
-import { ReduxFile } from '../file';
+import {Action} from '../actions';
+import {ActionType} from '../action-types';
+import {ReduxFile} from '../file';
 
 // The difference between FilesState and CellsState:
 //  - FilesState have no order
@@ -45,6 +45,12 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       delete state.data[action.payload];
       return state;
 
+    case ActionType.ADD_FILES_TO_LIST:
+      return state;
+
+    case ActionType.DELETE_FILES_FROM_LIST:
+      return state;
+      
     default:
       return state;
   }

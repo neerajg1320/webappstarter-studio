@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createFileOnServer, createProjectOnServer, fetchProjectFromServer, saveCells} from "../action-creators";
+import {createFileOnServer, createProjectOnServer, saveCells} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 
@@ -42,12 +42,6 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           const {localId, path, file, type, projectLocalId, isEntryPoint} = action.payload;
 
           createFileOnServer(localId, path, file, type, projectLocalId, isEntryPoint)(dispatch, getState);
-          if (projectLocalId) {
-            setTimeout(() => {
-              fetchProjectFromServer(projectLocalId)(dispatch, getState)
-            }, 1000);
-
-          }
         }
       }
     }

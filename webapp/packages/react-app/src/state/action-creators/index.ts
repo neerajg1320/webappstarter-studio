@@ -1,21 +1,27 @@
 import {ActionType} from "../action-types";
 import {
-  Action, CreateFileAction,
+  Action,
+  AddFilesToListAction,
+  CreateFileAction,
   CreateProjectAction,
-  DeleteCellAction, DeleteFileAction, DeleteProjectAction,
+  DeleteCellAction,
+  DeleteFileAction,
+  DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
   MoveCellAction,
   SetCurrentProjectAction,
-  UpdateCellAction, UpdateFileAction, UpdateProjectAction
+  UpdateCellAction,
+  UpdateFileAction,
+  UpdateProjectAction
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
-import { Dispatch } from "react";
+import {Dispatch} from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {Project, ProjectFrameworks, ProjectPartial} from "../project";
-import {ReduxFilePartial, FileTypes} from "../file";
+import {FileTypes, ReduxFile, ReduxFilePartial} from "../file";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -246,6 +252,7 @@ export const fetchProjectFromServer = (localId:string) => {
     try {
       const response = await axios.get(`${gApiUri}/projects/${project.pkid}/`,{headers: gHeaders});
       console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
+
       const {entry_file, entry_path} = response.data;
       dispatch(updateProject({localId, entry_file, entry_path}));
     } catch (err) {
@@ -291,6 +298,46 @@ export const deleteFile = (localId:string): DeleteFileAction => {
   }
 }
 
+export const addFilesToList = (files: ReduxFile[]): AddFilesToListAction => {
+  return {
+    type: ActionType.ADD_FILES_TO_LIST,
+    payload: {
+      files
+    }
+  }
+}
+
+export const deleteFilesFromList = (files: (ReduxFile|string)[]) => {
+  return {
+    type: ActionType.DELETE_FILES_FROM_LIST,
+    payload: {
+      files
+    }
+  }
+}
+
+//
+export const fetchFiles = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const {data}: {data: ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: gHeaders});
+
+      dispatch({
+        type: ActionType.FETCH_FILES_COMPLETE,
+        payload: data
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({
+          type: ActionType.FETCH_FILES_ERROR,
+          payload: err.message
+        });
+      }
+    }
+  };
+}
+
+
 // This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (
     localId: string,
@@ -327,9 +374,8 @@ export const createFileOnServer = (
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
           dispatch(updateProject({localId: projectLocalId, entryFileId: localId, entryPath: path}))
 
-          const project = getState().projects.data[projectLocalId];
-          console.log(project.pkid);
-          // fetchProjectFromServer(project.pkid)(dispatch,getState);
+          // This will ensure the dispatch from middleware
+          await fetchProjectFromServer(projectLocalId)(dispatch,getState);
         }
       }
     } catch (err) {

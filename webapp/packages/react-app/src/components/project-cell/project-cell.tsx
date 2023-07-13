@@ -13,14 +13,6 @@ const ProjectCell:React.FC = () => {
   const { createProjectBundle, setCurrentProjectId } = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
-  const { fetchProjects } = useActions();
-  
-  // console.log('ProjectCell: rendered', JSON.stringify(projectsState, null, 2));
-
-  useEffect(() => {
-    fetchProjects();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const projects = useMemo(() => {
     return Object.entries(projectsState.data).map(entry => entry[1]);
