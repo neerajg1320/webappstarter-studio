@@ -147,6 +147,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </div>
         </div>
       </Resizable>
+
       <div style={{
           display: "flex", justifyContent: "center", gap: "60px", alignItems: "center",
           marginTop: "5px"
@@ -174,7 +175,6 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         </div>
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
-
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}

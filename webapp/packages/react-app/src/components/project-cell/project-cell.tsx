@@ -12,6 +12,7 @@ const ProjectCell:React.FC = () => {
 
   const { createProjectBundle, setCurrentProjectId } = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
+  const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
 
   const projects = useMemo(() => {
@@ -36,7 +37,17 @@ const ProjectCell:React.FC = () => {
   }, [selectedProjectOption, projectsState.data]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
+  const projectFiles = useMemo(() => {
+    if (currentProject) {
+      const files = Object.fromEntries(
+          Object.entries(filesState.data).filter(entry => entry[1].projectLocalId === currentProject.localId)
+      );
+      console.log(`files:`, files);
+      return files;
+    }
 
+    return [];
+  }, [currentProject]);
 
   const handleBundleClick = () => {
     console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
@@ -66,7 +77,6 @@ const ProjectCell:React.FC = () => {
         display: "flex", justifyContent:"space-evenly", gap: "40px"
       }}
       >
-
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
           <Select
