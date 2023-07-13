@@ -130,22 +130,16 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           marginTop: "5px"
         }}
       >
-        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
-          <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
-            <button
-                className="button is-family-primary is-small"
-                onClick={() => {selectFileInputRef.current!.click()}}
-            >
-              Select File
-            </button>
-            <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
-          </div>
-          <div>
-            <label>File Path:</label>
-            <input type="text" value={filePath} onChange={(e) => setFilePath(e.target.value)} />
-          </div>
+        <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
+          <button
+              className="button is-family-primary is-small"
+              onClick={() => {selectFileInputRef.current!.click()}}
+          >
+            Select File
+          </button>
+          <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
         </div>
-
+        
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>EntryPoint</label>
@@ -155,6 +149,14 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
                 onChange={(e) => setEntryPoint(e.target.checked)}
             />
           </div>
+          <div>
+            <label>File Path:</label>
+            <input type="text" value={filePath} onChange={(e) => setFilePath(e.target.value)} />
+          </div>
+        </div>
+
+        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
