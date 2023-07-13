@@ -45,7 +45,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           if (projectLocalId) {
             setTimeout(() => {
               fetchProjectFromServer(projectLocalId)(dispatch, getState)
-            }, 2000);
+            }, 1000);
 
           }
         }
