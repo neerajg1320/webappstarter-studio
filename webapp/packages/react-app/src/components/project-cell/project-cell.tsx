@@ -10,7 +10,7 @@ const ProjectCell:React.FC = () => {
   // const [projectOptions, setProjectOptions] = useState<{ value: string; label: string; }[]|null>(null);
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
-  const [projectName, setProjectName] = useState<string|null>(null);
+
   const { createAndSetProject, updateProject, createProjectBundle, setCurrentProjectId} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const bundlesState =  useTypedSelector((state) => state.bundles);
@@ -50,36 +50,13 @@ const ProjectCell:React.FC = () => {
   }, [selectedProjectOption]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
-  const handleGetClick = () => {
-    console.log(`Need to sync`);
-  }
 
-  const handleCreateClick = () => {
-    if (!projectName) {
-      console.error(`Error! projectName is not set`);
-      return;
-    }
-    const _localId = randomIdGenerator();
-    createAndSetProject(_localId, projectName!, "reactjs");
-  }
-
-  const handleUpdateClick = () => {
-    if (!currentProject) {
-      console.error(`Error! No current project is set`);
-      return;
-    }
-    if (!projectName) {
-      console.error(`Error! projectName is not set`);
-      return;
-    }
-    updateProject({localId:currentProject.localId, title:projectName});
-  }
 
   const handleBundleClick = () => {
     if (currentProject) {
       // TBD: The currentProject starting file is assumed to be index.js, we will soon add a check
       console.log(`${currentProject.entry_path}`);
-      
+
       const projectEntryFile = 'src/index.js';
       createProjectBundle(currentProject.localId, `${currentProject.folder}/${projectEntryFile}`);
     }
@@ -102,39 +79,7 @@ const ProjectCell:React.FC = () => {
         display: "flex", justifyContent:"space-evenly", gap: "40px"
       }}
       >
-        <div style={{
-            // border: "2px solid yellow",
-            display: "flex", flexDirection:"row", justifyContent: "space-between", gap: "40px",
-          }}
-        >
-          <div style={{display: "flex", gap: "20px"}}>
-            <label>Project</label>
-            <input type="text" value={projectName||''} onChange={(e) => {setProjectName(e.target.value)}} />
-          </div>
-          <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
-            <button
-                className="button is-primary is-small"
-                onClick={handleGetClick}
-                disabled={!projectName}
-            >
-              Get
-            </button>
-            <button
-                className="button is-primary is-small"
-                onClick={handleCreateClick}
-                disabled={!projectName}
-            >
-              Create
-            </button>
-            <button
-                className="button is-primary is-small"
-                onClick={handleUpdateClick}
-                disabled={!projectName}
-            >
-              Update
-            </button>
-          </div>
-        </div>
+
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
           <Select
