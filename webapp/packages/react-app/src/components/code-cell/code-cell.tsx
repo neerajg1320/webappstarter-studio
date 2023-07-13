@@ -77,9 +77,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
 
     // here we should keep modify the fileInputPath where we replace fileName part
     setFilePath(replaceFilePart(filePath, file.name))
-    
+
     const fileContent = await readFileContent(file);
     console.log(`fileContent: ${fileContent}`);
+
+    updateCell(cell.id, fileContent, filePath);
   }
 
   const handleSaveClick = () => {
