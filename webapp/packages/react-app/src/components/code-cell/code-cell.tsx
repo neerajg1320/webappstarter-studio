@@ -35,7 +35,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [filePathInput, setFilePathInput] = useState<string>('src/index.js');
 
   // console.log(`CodeCell:render filesState:${JSON.stringify(filesState, null, 2)}`);
-  console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
+  // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   
   useEffect(() => {
     // Keep this request out of autoBundling condition.

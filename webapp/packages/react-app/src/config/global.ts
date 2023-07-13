@@ -1,17 +1,21 @@
-export const cacheEnabled = false;
-
 export const debug = false;
-export const debugPlugin = true;
-export const debugCache = true;
-export const debugListeners = false;
 
+// Cache
+export const cacheEnabled = true;
+export const debugCache = false;
+
+// Redux
 export const reduxManualTest = false;
 
+// ESBuild Plugins
+export const debugPlugin = false;
+
+// Bundler
+export const autoBundling = false;
+export const combineCellsCode = false;
+
+// API Server
 export const serverConnect = true;
 export const syncCellsToServer = serverConnect && false;
 export const syncProjectsToServer = serverConnect && true;
 export const syncFilesToServer = serverConnect && true;
-
-export const autoBundling = false;
-
-export const combineCellsCode = false;
