@@ -4,8 +4,8 @@
 }
 
 .project-cell-wrapper {
-    margin: 20px;
     width: 100%;
+    margin: 25px;
     border: 1px solid lightyellow;
-
+    padding: 25px;
 }

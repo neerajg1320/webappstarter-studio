@@ -80,8 +80,7 @@ const ProjectCell:React.FC = () => {
 
   return (
     <div className="project-cell-wrapper">
-      <div style={{width: "100%",}}
-      >
+      <div style={{width: "100%"}}>
         <Resizable direction="vertical">
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
@@ -126,13 +125,15 @@ const ProjectCell:React.FC = () => {
           </div>
         </Resizable>
       </div>
-
-      {(currentProject && bundlesState[currentProject.localId]) &&
-          <div>
-            {/*<pre>{bundlesState[currentProject.localId]!.code}</pre>*/}
-            <Preview code={bundlesState[currentProject.localId]!.code} err={bundlesState[currentProject.localId]!.err}/>
-          </div>
-      }
+      {/* TBD: We can try to make this resizable as well */}
+      <div style={{height:"200px"}}>
+        {(currentProject && bundlesState[currentProject.localId]) &&
+            <div style={{height: "100%"}}>
+              {/*<pre>{bundlesState[currentProject.localId]!.code}</pre>*/}
+              <Preview code={bundlesState[currentProject.localId]!.code} err={bundlesState[currentProject.localId]!.err}/>
+            </div>
+        }
+      </div>
     </div>
   );
 }
