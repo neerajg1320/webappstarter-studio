@@ -133,7 +133,7 @@ export interface CreateFileAction {
   payload: {
     localId: string,
     path: string,
-    file: any,
+    localFile: any,
     type: FileTypes,
     projectLocalId?: string,
     isEntryPoint?: boolean,

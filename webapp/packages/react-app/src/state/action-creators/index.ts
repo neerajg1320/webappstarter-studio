@@ -266,7 +266,7 @@ export const fetchProjectFromServer = (localId:string) => {
 export const createFile = (
     localId: string,
     path:string,
-    file:File,
+    localFile:File,
     type: FileTypes,
     projectLocalId?: string,
     isEntryPoint?: boolean,
@@ -276,7 +276,7 @@ export const createFile = (
     payload: {
       localId,
       path,
-      file,
+      localFile,
       type,
       projectLocalId,
       isEntryPoint,
@@ -352,12 +352,53 @@ export const fetchFiles = () => {
   };
 }
 
+export const fetchFileIds = ([localIds]: [string]) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    if (!localIds || localIds.length < 1) {
+      console.log('fetchFileIds(): No ids specified');
+      return;
+    }
+
+    const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
+    try {
+      const {data}: {data: ReduxFile[]} = await axios.get(`${gApiUri}/files/${fileStates[0].file}`, {headers: gHeaders});
+
+      // console.log(getState().projects.data);
+      const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
+        acc[project.pkid] = localId;
+        return acc;
+      }, {});
+      // console.log(projectsPkidToLocalIdMap);
+
+      const serverFiles:ReduxFile[] = data.map((file:ReduxFile) => {
+        // file.project is the project pkid
+        if (file.project) {
+          file.projectLocalId = projectsPkidToLocalIdMap[file.project]
+        }
+        return file;
+      });
+
+      dispatch({
+        type: ActionType.FETCH_FILES_COMPLETE,
+        payload: serverFiles
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({
+          type: ActionType.FETCH_FILES_ERROR,
+          payload: err.message
+        });
+      }
+    }
+  }
+}
+
 
 // This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (
     localId: string,
     path:string,
-    file:File,
+    localFile:File,
     type: FileTypes,
     projectLocalId?: string|null,
     isEntryPoint?: boolean
@@ -365,7 +406,7 @@ export const createFileOnServer = (
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
     formData.append("path", path);
-    formData.append("file", file);
+    formData.append("file", localFile);
     formData.append("is_entry_point", isEntryPoint as unknown as string);
 
     if (projectLocalId) {
