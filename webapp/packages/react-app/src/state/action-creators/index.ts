@@ -363,7 +363,7 @@ export const fetchFileContents = ([localIds]: [string]) => {
     console.log(`fileStates:`, fileStates);
 
     try {
-      const {data}: {data: string} = await axios.get(fileStates[0].file!, {headers: gHeaders});
+      const {data}: {data: string} = await axios.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
 
       dispatch({
         type: ActionType.UPDATE_FILE,

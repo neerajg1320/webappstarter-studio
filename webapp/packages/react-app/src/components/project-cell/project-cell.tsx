@@ -69,7 +69,12 @@ const ProjectCell:React.FC = () => {
     const fileState = filesState.data[fileLocalId];
     setEditedFile(fileState);
     console.log(`fileState=`, filesState);
-    fetchFileContents([fileLocalId]);
+
+    if (fileState.contentSynced) {
+      setEditorContent(fileState.content!);
+    } else {
+      fetchFileContents([fileLocalId]);
+    }
   }
 
   useEffect(() => {
