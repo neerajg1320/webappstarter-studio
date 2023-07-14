@@ -8,6 +8,7 @@ import Resizable from "../code-cell/resizable";
 import CodeEditor from "../code-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile} from "../../state/file";
+import {readFileContent} from "../../utils/file";
 
 const ProjectCell:React.FC = () => {
 
@@ -66,7 +67,10 @@ const ProjectCell:React.FC = () => {
   }
 
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
-    setEditedFile(filesState.data[fileLocalId]);
+    const fileState = filesState.data[fileLocalId];
+    setEditedFile(fileState);
+    console.log(`fileState=`, filesState);
+    // const fileContent = readFileContent()
   }
 
   useEffect(() => {

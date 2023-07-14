@@ -12,7 +12,7 @@ interface FilesTreeProps {
 const FilesTree: React.FC<FilesTreeProps> = ({project, onSelectedFileChange}) => {
   const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  console.log(project);
+  // console.log(`project:`, project);
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
