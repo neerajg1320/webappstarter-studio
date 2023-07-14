@@ -4,6 +4,9 @@ import Select, {SingleValue} from 'react-select';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import Resizable from "../code-cell/resizable";
+import CodeEditor from "../code-cell/code-editor";
+import FilesTree from "../files-tree/files-tree";
 
 const ProjectCell:React.FC = () => {
 
@@ -14,6 +17,10 @@ const ProjectCell:React.FC = () => {
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
+
+  // Temporary till we fix layout
+  const [cellContent, setCellContent] = useState<string>(`console.log("hello");`);
+
 
   const projects = useMemo(() => {
     return Object.entries(projectsState.data).map(entry => entry[1]);
@@ -70,33 +77,55 @@ const ProjectCell:React.FC = () => {
     }
   }
 
+
   return (
-    <>
-      <div style={{
-        // border: "2px solid white",
-        margin: "20px", width: "80%",
-        display: "flex", justifyContent:"space-evenly", gap: "40px"
-      }}
+    <div className="project-cell-wrapper">
+      <div style={{width: "100%",}}
       >
-
-        <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
-          <Select
-              value={selectedProjectOption}
-              className="project-select is-primary is-small"
-              options={projectOptions}
-              onChange={handleProjectSelectionChange}
-          />
-          <button
-              className="button is-family-secondary is-small"
-              onClick={handleBundleClick}
-              disabled={!currentProject || !currentProject.synced}
-          >
-            Bundle
-          </button>
-        </div>
-
+        <Resizable direction="vertical">
+          <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
+            <Resizable direction="horizontal">
+              <CodeEditor initialValue={cellContent} onChange={setCellContent} />
+            </Resizable>
+            {/* <pre>{code}</pre> */}
+            <div>
+              <div style={{
+                width: "100%",
+                display:"flex", flexDirection:"column", gap:"20px"
+              }}
+              >
+                <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
+                  <Select
+                      value={selectedProjectOption}
+                      className="project-select is-primary is-small"
+                      options={projectOptions}
+                      onChange={handleProjectSelectionChange}
+                  />
+                  <button
+                      className="button is-family-secondary is-small"
+                      onClick={handleBundleClick}
+                      disabled={!currentProject || !currentProject.synced}
+                  >
+                    Bundle
+                  </button>
+                </div>
+                <div>
+                  {currentProject ? <FilesTree project={currentProject} /> : <p>Select Project</p>}
+                </div>
+              </div>
+              {/*  !bundle || bundle.loading*/}
+              {/*      ?*/}
+              {/*      <div className="progress-cover">*/}
+              {/*        <progress className="progress is-small is-primary" max="100">*/}
+              {/*          Loading*/}
+              {/*        </progress>*/}
+              {/*      </div>*/}
+              {/*      : <Preview code={bundle.code} err={bundle.err}/>*/}
+              {/*}*/}
+            </div>
+          </div>
+        </Resizable>
       </div>
-
 
       {(currentProject && bundlesState[currentProject.localId]) &&
           <div>
@@ -104,7 +133,7 @@ const ProjectCell:React.FC = () => {
             <Preview code={bundlesState[currentProject.localId]!.code} err={bundlesState[currentProject.localId]!.err}/>
           </div>
       }
-    </>
+    </div>
   );
 }
 

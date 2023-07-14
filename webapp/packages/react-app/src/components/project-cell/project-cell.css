@@ -2,3 +2,10 @@
     width: 150px;
     color: black
 }
+
+.project-cell-wrapper {
+    margin: 20px;
+    width: 100%;
+    border: 1px solid lightyellow;
+
+}
