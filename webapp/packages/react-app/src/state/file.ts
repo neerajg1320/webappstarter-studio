@@ -8,6 +8,8 @@ export interface ReduxFile extends ServerObject {
   localId: string,
   path: string;
   type: FileTypes;
+  content: string|null;
+  contentSynced: boolean;
   localFile?: File;
   file?: string;
   projectLocalId?: string;
@@ -18,6 +20,8 @@ export interface ReduxFilePartial extends ServerObjectPartial {
   localId: string,
   title?: string,
   type?: FileTypes,
+  content?: string;
+  contentSynced?: boolean;
   localFile?: File;
   file?: string;
   projectLocalId?: string;

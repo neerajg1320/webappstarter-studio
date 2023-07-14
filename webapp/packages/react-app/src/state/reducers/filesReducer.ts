@@ -29,7 +29,9 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         ...action.payload,
         id: '',
         pkid: -1,
-        synced: false
+        synced: false,
+        content: null,
+        contentSynced: false
       };
       state.data[file.localId] = file;
       return state;
@@ -60,6 +62,8 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           file.localId = randomIdGenerator();
           file.synced = true;
+          file.content = null;
+          file.contentSynced = false;
           acc[file.localId] = file;
           return acc;
         }, {} as FilesState['data']);
