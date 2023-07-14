@@ -352,7 +352,7 @@ export const fetchFiles = () => {
   };
 }
 
-export const fetchFileIds = ([localIds]: [string]) => {
+export const fetchFileContents = ([localIds]: [string]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (!localIds || localIds.length < 1) {
       console.log('fetchFileIds(): No ids specified');
@@ -360,27 +360,18 @@ export const fetchFileIds = ([localIds]: [string]) => {
     }
 
     const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
+    console.log(`fileStates:`, fileStates);
+
     try {
-      const {data}: {data: ReduxFile[]} = await axios.get(`${gApiUri}/files/${fileStates[0].file}`, {headers: gHeaders});
-
-      // console.log(getState().projects.data);
-      const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
-        acc[project.pkid] = localId;
-        return acc;
-      }, {});
-      // console.log(projectsPkidToLocalIdMap);
-
-      const serverFiles:ReduxFile[] = data.map((file:ReduxFile) => {
-        // file.project is the project pkid
-        if (file.project) {
-          file.projectLocalId = projectsPkidToLocalIdMap[file.project]
-        }
-        return file;
-      });
+      const {data}: {data: string} = await axios.get(fileStates[0].file!, {headers: gHeaders});
 
       dispatch({
-        type: ActionType.FETCH_FILES_COMPLETE,
-        payload: serverFiles
+        type: ActionType.UPDATE_FILE,
+        payload: {
+          localId: fileStates[0].localId,
+          content: data,
+          contentSynced: true
+        }
       });
     } catch (err) {
       if (err instanceof Error) {

@@ -21,7 +21,7 @@ const ProjectCell:React.FC = () => {
   const [editedFile, setEditedFile] = useState<ReduxFile|null>(null);
   // Temporary till we fix layout
   const [editorContent, setEditorContent] = useState<string>('');
-
+  const { fetchFileContents } = useActions();
 
   const projects = useMemo(() => {
     return Object.entries(projectsState.data).map(entry => entry[1]);
@@ -69,6 +69,7 @@ const ProjectCell:React.FC = () => {
     const fileState = filesState.data[fileLocalId];
     setEditedFile(fileState);
     console.log(`fileState=`, filesState);
+    fetchFileContents([fileLocalId]);
   }
 
   useEffect(() => {
