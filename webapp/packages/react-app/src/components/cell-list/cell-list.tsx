@@ -5,6 +5,7 @@ import AddCell from "./add-cell/add-cell";
 import CellListItem from "./cell-list-item/cell-list-item";
 import { useActions } from '../../hooks/use-actions';
 import {syncCellsToServer} from '../../config/global';
+import ProjectCell from "../project-cell/project-cell";
 
 const CellList:React.FC = () => {
   const { fetchCells } = useActions();
@@ -29,6 +30,7 @@ const CellList:React.FC = () => {
   
   return (
     <div className="cell-list">
+      <ProjectCell />
       <AddCell prevCellId={null} forceVisible={cells.length === 0}/>
       <div>{renderedCells}</div>
     </div>

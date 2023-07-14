@@ -27,7 +27,7 @@ const App = () => {
   return (
     <div style={{display:"flex", flexDirection:"column", alignItems: "center"}}>
       <ProjectResource />
-      <ProjectCell />
+
       <div style={{width: "100%", marginTop: "10px"}}>
         <CellList />
       </div>

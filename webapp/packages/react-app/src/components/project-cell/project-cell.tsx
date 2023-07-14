@@ -44,19 +44,6 @@ const ProjectCell:React.FC = () => {
   }, [selectedProjectOption, projectsState.data]);
   // console.log('ProjectCell: rendered, currentProject:', JSON.stringify(currentProject, null, 2));
 
-  // eslint-disable-next-line
-  const projectFiles = useMemo(() => {
-    if (currentProject) {
-      const files = Object.fromEntries(
-          Object.entries(filesState.data).filter(entry => entry[1].projectLocalId === currentProject.localId)
-      );
-      // console.log(`files:`, files);
-      return files;
-    }
-
-    return [];
-  }, [currentProject, filesState.data]);
-
   const handleBundleClick = () => {
     // console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
 
@@ -112,15 +99,6 @@ const ProjectCell:React.FC = () => {
                   {currentProject ? <FilesTree project={currentProject} /> : <p>Select Project</p>}
                 </div>
               </div>
-              {/*  !bundle || bundle.loading*/}
-              {/*      ?*/}
-              {/*      <div className="progress-cover">*/}
-              {/*        <progress className="progress is-small is-primary" max="100">*/}
-              {/*          Loading*/}
-              {/*        </progress>*/}
-              {/*      </div>*/}
-              {/*      : <Preview code={bundle.code} err={bundle.err}/>*/}
-              {/*}*/}
             </div>
           </div>
         </Resizable>

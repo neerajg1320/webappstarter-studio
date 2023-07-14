@@ -195,7 +195,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
 }
 
 const gApiUri = 'http://localhost:8080/api/v1';
-const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5MzIxOTAzLCJpYXQiOjE2ODkyMzU1MDMsImp0aSI6IjdkZGQzNjFhODU3MzRjMmQ5OWRkYTRmOWE4ZjMyOWYxIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.snzIQ7DICL0W-46Dxzw9XfZH5nG0qLaMvaWMRe-CNl8";
+const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5NDA4OTE2LCJpYXQiOjE2ODkzMjI1MTYsImp0aSI6ImUyMDliMzMwZTdkZjRkY2FhMDFmMzdhZjBmZjBmMzM5IiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.YJwY4WOmqIsDA5LMuwKlx1P6VbkvNx2YTuJomHOcXi0";
 const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
 }
