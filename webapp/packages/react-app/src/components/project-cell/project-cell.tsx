@@ -1,5 +1,5 @@
 import "./project-cell.css";
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Select, {SingleValue} from 'react-select';
 import Preview from "../code-cell/preview";
 import {useActions} from "../../hooks/use-actions";
@@ -7,6 +7,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../code-cell/resizable";
 import CodeEditor from "../code-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
+import {ReduxFile} from "../../state/file";
 
 const ProjectCell:React.FC = () => {
 
@@ -17,9 +18,9 @@ const ProjectCell:React.FC = () => {
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
-
+  const [editedFile, setEditedFile] = useState<ReduxFile|null>(null);
   // Temporary till we fix layout
-  const [cellContent, setCellContent] = useState<string>(`console.log("hello");`);
+  const [editorContent, setEditorContent] = useState<string>('');
 
 
   const projects = useMemo(() => {
@@ -64,6 +65,13 @@ const ProjectCell:React.FC = () => {
     }
   }
 
+  const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
+    setEditedFile(filesState.data[fileLocalId]);
+  }
+
+  useEffect(() => {
+    console.log(`ProjectCell: editedFile:`, editedFile);
+  }, [editedFile]);
 
   return (
     <div className="project-cell-wrapper">
@@ -71,7 +79,7 @@ const ProjectCell:React.FC = () => {
         <Resizable direction="vertical">
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
-              <CodeEditor initialValue={cellContent} onChange={setCellContent} />
+              <CodeEditor initialValue={editorContent} onChange={setEditorContent} />
             </Resizable>
             {/* <pre>{code}</pre> */}
             <div>
@@ -96,7 +104,13 @@ const ProjectCell:React.FC = () => {
                   </button>
                 </div>
                 <div>
-                  {currentProject ? <FilesTree project={currentProject} /> : <p>Select Project</p>}
+                  {currentProject
+                      ? <FilesTree
+                          project={currentProject}
+                          onSelectedFileChange={handleFileTreeSelectedFileChange}
+                      />
+                      : <p>Select Project</p>}
+
                 </div>
               </div>
             </div>
