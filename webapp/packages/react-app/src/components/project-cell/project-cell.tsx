@@ -7,8 +7,6 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../code-cell/resizable";
 import CodeEditor from "../code-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
-import {ReduxFile} from "../../state/file";
-import {file} from "jscodeshift";
 
 const ProjectCell:React.FC = () => {
 
@@ -20,6 +18,7 @@ const ProjectCell:React.FC = () => {
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
+
   // Temporary till we fix layout
   const [editorContent, setEditorContent] = useState<string>('');
   const { fetchFileContents } = useActions();
@@ -74,7 +73,7 @@ const ProjectCell:React.FC = () => {
 
   useEffect(() => {
     if (!editedFileLocalId) {
-      console.log(`editedFileLocalId is '${editedFileLocalId}'`);
+      // console.log(`editedFileLocalId is '${editedFileLocalId}'`);
       return;
     }
 
