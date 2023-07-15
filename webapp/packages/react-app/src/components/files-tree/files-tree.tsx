@@ -29,7 +29,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({project, onSelectedFileChange}) =>
   }, [project, filesState.data]);
 
   const handleSelectFileClick = (fileLocalId:string) => {
-    console.log(fileLocalId);
+    // console.log(fileLocalId);
     setSelectedFileLocalId(fileLocalId);
     onSelectedFileChange(fileLocalId);
   }

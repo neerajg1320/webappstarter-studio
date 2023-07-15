@@ -8,6 +8,7 @@ import Resizable from "../code-cell/resizable";
 import CodeEditor from "../code-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile} from "../../state/file";
+import {file} from "jscodeshift";
 
 const ProjectCell:React.FC = () => {
 
@@ -18,7 +19,7 @@ const ProjectCell:React.FC = () => {
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
-  const [editedFile, setEditedFile] = useState<ReduxFile|null>(null);
+  const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Temporary till we fix layout
   const [editorContent, setEditorContent] = useState<string>('');
   const { fetchFileContents } = useActions();
@@ -66,20 +67,41 @@ const ProjectCell:React.FC = () => {
   }
 
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
-    const fileState = filesState.data[fileLocalId];
-    setEditedFile(fileState);
-    console.log(`fileState=`, filesState);
 
-    if (fileState.contentSynced) {
-      setEditorContent(fileState.content!);
-    } else {
-      fetchFileContents([fileLocalId]);
-    }
+    setEditedFileLocalId(fileLocalId);
+    // console.log(`fileState=`, filesState);
   }
 
   useEffect(() => {
-    console.log(`ProjectCell: editedFile:`, editedFile);
-  }, [editedFile]);
+    if (!editedFileLocalId) {
+      console.log(`editedFileLocalId is '${editedFileLocalId}'`);
+      return;
+    }
+
+    console.log(`filesState:`, filesState);
+
+    const fileState = filesState.data[editedFileLocalId];
+    if (!fileState) {
+      console.error(`fileState is '${fileState}' for fileId '${editedFileLocalId}'`);
+      return;
+    }
+
+    if (!fileState.contentSynced) {
+      fetchFileContents([editedFileLocalId]);
+    }
+
+    setEditorContent(fileState.content || '');
+  }, [editedFileLocalId, filesState]);
+
+  const resetComponent = () => {
+    setEditedFileLocalId(null);
+    setEditorContent('');
+  }
+
+  // If the current Project changes then we need to reset component
+  useEffect(() => {
+    resetComponent();
+  }, [currentProject]);
 
   return (
     <div className="project-cell-wrapper">

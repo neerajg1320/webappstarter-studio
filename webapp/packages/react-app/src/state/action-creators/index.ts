@@ -360,7 +360,7 @@ export const fetchFileContents = ([localIds]: [string]) => {
     }
 
     const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
-    console.log(`fileStates:`, fileStates);
+    // console.log(`fileStates:`, fileStates);
 
     try {
       const {data}: {data: string} = await axios.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
