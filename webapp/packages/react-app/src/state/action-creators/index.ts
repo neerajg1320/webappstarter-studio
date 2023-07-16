@@ -452,18 +452,23 @@ export const createFileOnServer = (
 // This action is dispatched from the persistMiddleware.
 export const updateFileOnServer = (
     localId: string,
-    path:string,
-    localFile:File,
-    type: FileTypes,
+    path?:string,
+    localFile?:File,
+    type?: FileTypes,
     projectLocalId?: string|null,
     isEntryPoint?: boolean
 ) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
-    formData.append("path", path);
-    formData.append("file", localFile);
-    formData.append("is_entry_point", isEntryPoint as unknown as string);
-
+    if (path) {
+      formData.append("path", path);
+    }
+    if (localFile) {
+      formData.append("file", localFile);
+    }
+    if (isEntryPoint) {
+      formData.append("is_entry_point", isEntryPoint as unknown as string);
+    }
     if (projectLocalId) {
       const project = getState().projects.data[projectLocalId];
       console.log(project)

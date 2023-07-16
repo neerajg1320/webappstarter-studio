@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createFileOnServer, createProjectOnServer, saveCells} from "../action-creators";
+import {createFileOnServer, createProjectOnServer, saveCells, updateFileOnServer} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 import {ReduxFile} from "../file";
@@ -54,7 +54,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
           createFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
         } else if (action.type === ActionType.UPDATE_FILE) {
-          const {localId, isServerResponse} = action.payload;
+          // const {localId, isServerResponse} = action.payload;
+          const {localId, path, localFile, type, projectLocalId, isEntryPoint, isServerResponse} = action.payload;
 
           const fileState: ReduxFile = getState().files.data[localId];
           if (!fileState) {
@@ -67,6 +68,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           } else {
             if (fileState.pkid > 0) {
               console.log(`We need to support updateFileOnServer`);
+              updateFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
             }
           }
         }

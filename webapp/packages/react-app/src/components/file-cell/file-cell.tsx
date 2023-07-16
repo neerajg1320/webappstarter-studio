@@ -118,7 +118,7 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
 
   const handleFilePathChange = (filePath:string) => {
     setFilePath(filePath);
-    setFileUpdateParital((prev) => Object.assign(prev, {filePath}))
+    setFileUpdateParital((prev) => Object.assign(prev, {path: filePath}))
   }
 
   const handleSaveClick = () => {
