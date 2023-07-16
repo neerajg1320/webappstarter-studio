@@ -195,7 +195,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
 }
 
 const gApiUri = 'http://localhost:8080/api/v1';
-const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5NDk5NDQ2LCJpYXQiOjE2ODk0MTMwNDYsImp0aSI6IjI4Y2MwZjFhNDlkZDQxZmE4M2IxNTg1MjUzNzZjNWM1IiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.tCYTb9EW_LWIPnbz2KZ_gRMW-wlACphG_B3nt0kZ-xI";
+const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5NTg5MjE0LCJpYXQiOjE2ODk1MDI4MTQsImp0aSI6IjRjYTVkN2Y5Njk2ZTQwNjk5NDgxYjg1YWY5NWZkZTFhIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.Aykj64dnf4IVgzKK6IlipdW5d1rEXS4YsEZHkr67KKU";
 const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
 }
@@ -411,6 +411,69 @@ export const createFileOnServer = (
 
     try {
       const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
+      console.log(response);
+
+      // const {id, pkid} = response.data
+      // We are putting pkid in the id
+      // We can put a field here response t
+      dispatch(updateFile({
+        localId,
+        synced:true,
+        isServerResponse: true,
+        ...response.data
+      })); //
+
+      if (projectLocalId) {
+        if (isEntryPoint) {
+          console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
+          dispatch(updateProject({
+            localId: projectLocalId,
+            entryFileId: localId,
+            entryPath: path,
+            isServerResponse: true,
+          }))
+
+          // This will ensure the dispatch from middleware
+          await fetchProjectFromServer(projectLocalId)(dispatch,getState);
+        }
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+        // dispatch({
+        //   type: ActionType.SAVE_CELLS_ERROR,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
+}
+
+// This action is dispatched from the persistMiddleware.
+export const updateFileOnServer = (
+    localId: string,
+    path:string,
+    localFile:File,
+    type: FileTypes,
+    projectLocalId?: string|null,
+    isEntryPoint?: boolean
+) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const formData = new FormData();
+    formData.append("path", path);
+    formData.append("file", localFile);
+    formData.append("is_entry_point", isEntryPoint as unknown as string);
+
+    if (projectLocalId) {
+      const project = getState().projects.data[projectLocalId];
+      console.log(project)
+      if (project.pkid > 0) {
+        formData.append("project", project.pkid as unknown as string); // We could use pkid as well
+      }
+    }
+
+    try {
+      const response = await axios.patch(`${gApiUri}/files/`, formData, {headers: gHeaders});
       console.log(response);
 
       // const {id, pkid} = response.data
