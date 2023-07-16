@@ -36,6 +36,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   // TBD: These local states can be done with and taken directly to redux
   const [filePath, setFilePath] = useState<string>('src/index.js');
   const [entryPoint, setEntryPoint] = useState<boolean>(false);
+  const [fileUpdatePartial, setFileUpdateParital] = useState({});
 
   const fileLocalId = useMemo<string>(() => {
     return randomIdGenerator();
@@ -83,9 +84,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const onEditorChange = (value:string) => {
     // Don't use cellState for filePath
     updateCell(cell.id, value, filePath);
-    if (fileState) {
-      fileState.contentSynced = false;
-    }
+    setFileUpdateParital((prev) => Object.assign(prev, {content: value}))
   };
 
   const handleBundleClick = () => {
@@ -107,19 +106,19 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     console.log(`fileContent: ${fileContent}`);
 
     updateCell(cell.id, fileContent, filePath);
-    if (fileState) {
-      fileState.contentSynced = false;
-    }
+    setFileUpdateParital((prev) => Object.assign(prev, {content: fileContent}))
   }
 
-  const handleEntryPointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEntryPoint(e.target.checked);
-    console.log(`fileState: ${JSON.stringify(fileState)}`);
+  const handleEntryPointChange = (checked: boolean) => {
+    setEntryPoint(checked);
+    // console.log(`fileState: ${JSON.stringify(fileState)}`);
     // updateProject({localId: currentProjectId, entry_file:filePkid, entry_path:filePath})
+    setFileUpdateParital((prev) => Object.assign(prev, {isEntryPoint: checked}));
   }
 
   const handleFilePathChange = (filePath:string) => {
     setFilePath(filePath);
+    setFileUpdateParital((prev) => Object.assign(prev, {filePath}))
   }
 
   const handleSaveClick = () => {
@@ -137,12 +136,17 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     const file = createFileFromString(cellContents, fileName);
 
     if (fileState?.pkid && fileState?.pkid > 0) {
-      updateFile({localId: fileLocalId});
+      if (fileUpdatePartial) {
+        console.log(`fileUpdatePartial:`, fileUpdatePartial);
+        updateFile({localId: fileLocalId});
+      }
     } else {
       // This is the only place where we are interacting with file
       // This has to change
       createFile(fileLocalId, filePath, file, 'javascript', currentProjectId, entryPoint);
     }
+
+    setFileUpdateParital({});
   }
 
   return (
@@ -152,7 +156,6 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           <Resizable direction="horizontal">
             <CodeEditor initialValue={cell.content} onChange={onEditorChange} />
           </Resizable>
-          {/* <pre>{code}</pre> */}
           <div className="progress-wrapper">
             {
               !bundle || bundle.loading 
@@ -167,6 +170,8 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </div>
         </div>
       </Resizable>
+
+      <pre>{JSON.stringify(fileUpdatePartial, null, 2)}</pre>
 
       {/* This portion has been added to support a file with cell. */}
       <div style={{
@@ -192,7 +197,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>EntryPoint</label>
-            <input type="checkbox" checked={entryPoint} onChange={handleEntryPointChange} />
+            <input
+                type="checkbox"
+                checked={fileState && fileState.isEntryPoint || false}
+                onChange={(e) => handleEntryPointChange(e.target.checked)}
+            />
           </div>
           <div>
             <label>File Path:</label>

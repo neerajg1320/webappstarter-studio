@@ -111,7 +111,7 @@ const ProjectCell:React.FC = () => {
               <CodeEditor initialValue={editorContent} onChange={setEditorContent} />
             </Resizable>
             {/* <pre>{code}</pre> */}
-            <div>
+            <div style={{overflow:"scroll"}}>
               <div style={{
                 width: "100%",
                 display:"flex", flexDirection:"column", gap:"20px"
