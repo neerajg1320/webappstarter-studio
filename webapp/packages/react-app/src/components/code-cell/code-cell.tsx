@@ -168,6 +168,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
         </div>
       </Resizable>
 
+      {/* This portion has been added to support a file with cell. */}
       <div style={{
           display: "flex", justifyContent: "center", gap: "60px", alignItems: "center",
           marginTop: "5px"
