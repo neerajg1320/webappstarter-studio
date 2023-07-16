@@ -1,5 +1,5 @@
 import { Cell } from "../../../state";
-import CodeCell from "../../code-cell/code-cell";
+import FileCell from "../../file-cell/file-cell";
 import TextEditor from "../../text-cell/text-editor";
 import ActionBar from './action-bar';
 import './cell-list-item.css';
@@ -16,7 +16,7 @@ const CellListItem:React.FC<CellListItemProps> = ({cell}) => {
       <div className="action-bar-wrapper">
         <ActionBar id={cell.id}/>
       </div>
-      <CodeCell cell={cell} />
+      <FileCell cell={cell} />
     </>
   } else {
     child = <>

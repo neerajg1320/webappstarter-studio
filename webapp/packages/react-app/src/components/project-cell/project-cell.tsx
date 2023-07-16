@@ -1,11 +1,11 @@
 import "./project-cell.css";
 import React, {useEffect, useMemo, useState} from 'react';
 import Select, {SingleValue} from 'react-select';
-import Preview from "../code-cell/preview";
+import Preview from "../file-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import Resizable from "../code-cell/resizable";
-import CodeEditor from "../code-cell/code-editor";
+import Resizable from "../file-cell/resizable";
+import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 
 const ProjectCell:React.FC = () => {
@@ -77,7 +77,7 @@ const ProjectCell:React.FC = () => {
       return;
     }
 
-    console.log(`filesState:`, filesState);
+    // console.log(`filesState:`, filesState);
 
     const fileState = filesState.data[editedFileLocalId];
     if (!fileState) {
@@ -146,6 +146,7 @@ const ProjectCell:React.FC = () => {
           </div>
         </Resizable>
       </div>
+
       {/* TBD: We can try to make this resizable as well */}
       <div style={{height:"200px"}}>
         {(currentProject && bundlesState[currentProject.localId]) &&

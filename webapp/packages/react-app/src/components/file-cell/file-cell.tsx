@@ -1,4 +1,4 @@
-import './code-cell.css';
+import './file-cell.css';
 import React, {useEffect, useRef, useMemo, useState} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
@@ -18,7 +18,7 @@ interface CodeCellProps {
   cell: Cell
 }
 
-const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
+const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
   const autoBundle = useMemo(() => {
     return autoBundling;
   }, []);
@@ -52,7 +52,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   }, [filesListState, fileLocalId]);
 
 
-  // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
+  // console.log(`FileCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
   useEffect(() => {
 
   }, [])
@@ -230,4 +230,4 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   );
 };
 
-export default CodeCell;
+export default FileCell;
