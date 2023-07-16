@@ -54,7 +54,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
           createFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
         } else if (action.type === ActionType.UPDATE_FILE) {
-          const {localId, serverUpdate} = action.payload;
+          const {localId, isServerResponse} = action.payload;
 
           const fileState: ReduxFile = getState().files.data[localId];
           if (!fileState) {
@@ -62,7 +62,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
             return;
           }
 
-          if (serverUpdate) {
+          if (isServerResponse) {
             console.log('Update received from server')
           } else {
             if (fileState.pkid > 0) {

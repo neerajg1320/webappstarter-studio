@@ -371,7 +371,7 @@ export const fetchFileContents = ([localIds]: [string]) => {
           localId: fileStates[0].localId,
           content: data,
           contentSynced: true,
-          serverUpdate: true,
+          isServerResponse: true,
         }
       });
     } catch (err) {
@@ -419,7 +419,7 @@ export const createFileOnServer = (
       dispatch(updateFile({
         localId,
         synced:true,
-        serverUpdate: true,
+        isServerResponse: true,
         ...response.data
       })); //
 
@@ -430,7 +430,7 @@ export const createFileOnServer = (
             localId: projectLocalId,
             entryFileId: localId,
             entryPath: path,
-            serverUpdate: true,
+            isServerResponse: true,
           }))
 
           // This will ensure the dispatch from middleware

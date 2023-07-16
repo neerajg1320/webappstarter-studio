@@ -32,7 +32,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         synced: false,
         content: null,
         contentSynced: false,
-        serverUpdate: false,
+        isServerResponse: false,
       };
       state.data[file.localId] = file;
       return state;
