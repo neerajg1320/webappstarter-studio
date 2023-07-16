@@ -12,6 +12,7 @@ import {randomIdGenerator} from "../../state/id";
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
 import {ReduxFile} from "../../state/file";
+import {file} from "jscodeshift";
 
 
 interface CodeCellProps {
@@ -114,11 +115,13 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
     // console.log(`fileState: ${JSON.stringify(fileState)}`);
     // updateProject({localId: currentProjectId, entry_file:filePkid, entry_path:filePath})
     setFileUpdateParital((prev) => Object.assign(prev, {isEntryPoint: checked}));
+    updateFile({localId: fileLocalId, isEntryPoint: checked})
   }
 
   const handleFilePathChange = (filePath:string) => {
     setFilePath(filePath);
     setFileUpdateParital((prev) => Object.assign(prev, {path: filePath}))
+    updateFile({localId: fileLocalId, path: filePath})
   }
 
   const handleSaveClick = () => {
