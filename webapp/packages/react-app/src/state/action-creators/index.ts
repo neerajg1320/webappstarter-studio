@@ -339,7 +339,7 @@ export const fetchFiles = () => {
 
       dispatch({
         type: ActionType.FETCH_FILES_COMPLETE,
-        payload: files
+        payload: files,
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -370,14 +370,15 @@ export const fetchFileContents = ([localIds]: [string]) => {
         payload: {
           localId: fileStates[0].localId,
           content: data,
-          contentSynced: true
+          contentSynced: true,
+          serverUpdate: true,
         }
       });
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
           type: ActionType.FETCH_FILES_ERROR,
-          payload: err.message
+          payload: err.message,
         });
       }
     }
@@ -414,12 +415,23 @@ export const createFileOnServer = (
 
       // const {id, pkid} = response.data
       // We are putting pkid in the id
-      dispatch(updateFile({localId, synced:true, ...response.data})); //
+      // We can put a field here response t
+      dispatch(updateFile({
+        localId,
+        synced:true,
+        serverUpdate: true,
+        ...response.data
+      })); //
 
       if (projectLocalId) {
         if (isEntryPoint) {
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
-          dispatch(updateProject({localId: projectLocalId, entryFileId: localId, entryPath: path}))
+          dispatch(updateProject({
+            localId: projectLocalId,
+            entryFileId: localId,
+            entryPath: path,
+            serverUpdate: true,
+          }))
 
           // This will ensure the dispatch from middleware
           await fetchProjectFromServer(projectLocalId)(dispatch,getState);

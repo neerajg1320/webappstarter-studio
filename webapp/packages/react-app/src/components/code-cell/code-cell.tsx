@@ -22,14 +22,14 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const autoBundle = useMemo(() => {
     return autoBundling;
   }, []);
-  const {updateCell, createCellBundle, createFile} = useActions();
+  const {updateCell, createCellBundle, createFile, updateFile, deleteFile} = useActions();
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
   const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
-  const cellCode = cellState.content;
+  const cellContents = cellState.content;
   const cumulativeCode =  useCumulativeCode(cell.id);
-  const inputCode = combineCellsCode ? cumulativeCode : cellCode;
+  const inputCode = combineCellsCode ? cumulativeCode : cellContents;
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
 
@@ -37,19 +37,25 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [filePath, setFilePath] = useState<string>('src/index.js');
   const [entryPoint, setEntryPoint] = useState<boolean>(false);
 
-  const [fileLocalId, setFileLocalId] = useState<string|null>(null);
-  const filesState = useTypedSelector((state) => state.files);
+  const fileLocalId = useMemo<string>(() => {
+    return randomIdGenerator();
+  }, []);
+
+  const filesListState = useTypedSelector((state) => state.files);
   const fileState = useMemo<ReduxFile|null>(() => {
     // console.log(`We should update fileState`);
     if (fileLocalId) {
-      return filesState.data[fileLocalId];
+      return filesListState.data[fileLocalId];
     }
     return null;
-  }, [filesState, fileLocalId]);
+  }, [filesListState, fileLocalId]);
 
 
   // console.log(`CodeCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
-  
+  useEffect(() => {
+
+  }, [])
+
   useEffect(() => {
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
@@ -77,6 +83,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const onEditorChange = (value:string) => {
     // Don't use cellState for filePath
     updateCell(cell.id, value, filePath);
+    if (fileState) {
+      fileState.contentSynced = false;
+    }
   };
 
   const handleBundleClick = () => {
@@ -98,6 +107,9 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     console.log(`fileContent: ${fileContent}`);
 
     updateCell(cell.id, fileContent, filePath);
+    if (fileState) {
+      fileState.contentSynced = false;
+    }
   }
 
   const handleEntryPointChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,23 +118,31 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     // updateProject({localId: currentProjectId, entry_file:filePkid, entry_path:filePath})
   }
 
+  const handleFilePathChange = (filePath:string) => {
+    setFilePath(filePath);
+  }
+
   const handleSaveClick = () => {
     if (!currentProjectId) {
       console.error(`We need to set a project`);
       return;
     }
 
-    if (!cellCode) {
+    if (!cellContents) {
       console.error(`We need to add code`);
       return;
     }
 
     const fileName = getFileNameFromPath(filePath);
-    const file = createFileFromString(cellCode, fileName);
+    const file = createFileFromString(cellContents, fileName);
 
-    const _localId = randomIdGenerator();
-    setFileLocalId(_localId);
-    createFile(_localId, filePath, file, 'javascript', currentProjectId, entryPoint);
+    if (fileState?.pkid && fileState?.pkid > 0) {
+      updateFile({localId: fileLocalId});
+    } else {
+      // This is the only place where we are interacting with file
+      // This has to change
+      createFile(fileLocalId, filePath, file, 'javascript', currentProjectId, entryPoint);
+    }
   }
 
   return (
@@ -153,6 +173,11 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           marginTop: "5px"
         }}
       >
+        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+          <span>localId: {fileLocalId}</span>
+          <span>Pkid: {fileState?.pkid}</span>
+        </div>
+
         <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
           <button
               className="button is-family-primary is-small"
@@ -170,7 +195,7 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           </div>
           <div>
             <label>File Path:</label>
-            <input type="text" value={filePath} onChange={(e) => setFilePath(e.target.value)} />
+            <input type="text" value={filePath} onChange={(e) => handleFilePathChange(e.target.value)} />
           </div>
         </div>
 
@@ -178,14 +203,14 @@ const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
-              disabled={!(cellCode && filePath)}
+              disabled={!(cellContents && filePath)}
           >
             Save
           </button>
           <button
               className="button is-family-secondary is-small"
               onClick={() => handleBundleClick()}
-              disabled={!(cellCode && cellCode.length > 0)}
+              disabled={!(cellContents && cellContents.length > 0)}
           >
             Bundle
           </button>
