@@ -67,8 +67,9 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
             console.log('Update received from server')
           } else {
             if (fileState.pkid > 0) {
-              console.log(`We need to support updateFileOnServer`);
-              updateFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
+              console.log(`We need to support updateFileOnServer`, action.payload);
+              console.log(path);
+              updateFileOnServer(localId, fileState.pkid, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
             }
           }
         }

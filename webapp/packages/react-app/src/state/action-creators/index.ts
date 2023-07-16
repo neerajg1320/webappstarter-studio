@@ -452,6 +452,7 @@ export const createFileOnServer = (
 // This action is dispatched from the persistMiddleware.
 export const updateFileOnServer = (
     localId: string,
+    pkid: number,
     path?:string,
     localFile?:File,
     type?: FileTypes,
@@ -461,6 +462,7 @@ export const updateFileOnServer = (
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
     if (path) {
+      console.log(`Adde path: ${path}`)
       formData.append("path", path);
     }
     if (localFile) {
@@ -478,7 +480,7 @@ export const updateFileOnServer = (
     }
 
     try {
-      const response = await axios.patch(`${gApiUri}/files/`, formData, {headers: gHeaders});
+      const response = await axios.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: gHeaders});
       console.log(response);
 
       // const {id, pkid} = response.data

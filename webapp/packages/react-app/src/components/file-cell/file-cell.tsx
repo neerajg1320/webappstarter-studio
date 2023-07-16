@@ -138,10 +138,11 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
     if (fileState?.pkid && fileState?.pkid > 0) {
       if (fileUpdatePartial) {
         console.log(`fileUpdatePartial:`, fileUpdatePartial);
-        updateFile(Object.assign({localId: fileLocalId}, fileUpdatePartial));
+        updateFile(Object.assign({localId: fileLocalId, localFile:file}, fileUpdatePartial));
       }
     } else {
-      // This is the only place where we are interacting with file
+
+
       // This has to change
       createFile(fileLocalId, filePath, file, 'javascript', currentProjectId, entryPoint);
     }
