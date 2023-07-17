@@ -12,7 +12,8 @@ interface ProjectCellProps {
   reduxProject: ReduxProject;
 }
 const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
-
+  console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
+  
   const { createProjectBundle } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
@@ -29,8 +30,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       return;
     }
 
-    // console.log(`filesState:`, filesState);
-
     const fileState = filesState.data[editedFileLocalId];
     if (!fileState) {
       console.error(`fileState is '${fileState}' for fileId '${editedFileLocalId}'`);
@@ -46,7 +45,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }, [editedFileLocalId, filesState]);
 
   if (!reduxProject) {
-    return <h1>reduxProject:{reduxProject} is not defind</h1>
+    return <h1>reduxProject:{reduxProject} is not defined</h1>
   }
 
   const handleBundleClick = () => {
