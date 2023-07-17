@@ -60,7 +60,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
     setEditorContent(fileState.content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editedFileLocalId, filesState]);
+  }, [editedFileLocalId, projectFiles]);
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>

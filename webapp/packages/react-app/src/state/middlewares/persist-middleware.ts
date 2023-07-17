@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createFileOnServer, createProjectOnServer, saveCells, updateFileOnServer} from "../action-creators";
+import {createProjectOnServer, saveCells} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
-import {ReduxFile} from "../file";
+
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;
@@ -56,9 +56,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
         } else if (action.type === ActionType.UPDATE_FILE) {
 
         }
-
-        // We should create a new action called SAVE_FILE. The server business should be handled in that.
       }
+
     }
   }
 }

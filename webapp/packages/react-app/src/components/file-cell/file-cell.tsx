@@ -5,7 +5,7 @@ import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
-import {autoBundling} from '../../config/global';
+import {autoBundling, debugRedux} from '../../config/global';
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
 import {ReduxFile, ReduxFilePartial} from "../../state/file";
@@ -30,8 +30,10 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
 
+  if (debugRedux) {
+    console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
+  }
 
-  console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
 
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -171,6 +173,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <span>localId: {reduxFile.localId}</span>
           <span>Pkid: {reduxFile.pkid}</span>
+          <span>Project: {reduxFile.projectLocalId}</span>
         </div>
 
         <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
