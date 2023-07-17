@@ -1,3 +1,4 @@
+import './App.css';
 import {ProjectResource} from "./components/project-resource/project-resource";
 import React, {useEffect, useMemo, useState} from "react";
 import {useActions} from "./hooks/use-actions";
@@ -82,9 +83,8 @@ const App = () => {
       </div>
 
       <div style={{width: "100%", marginTop: "10px"}}>
-        {/*{selectedProject && <ProjectCell reduxProject={selectedProject}/>}*/}
-        {(filesList && filesList.length>0) && <CellList items={filesList}
-        />}
+        {selectedProject && <ProjectCell reduxProject={selectedProject}/>}
+        {/*{(filesList && filesList.length>0) && <CellList items={filesList} />}*/}
       </div>
     </div>
   );
