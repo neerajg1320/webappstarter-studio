@@ -25,6 +25,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   const { fetchFileContents } = useActions();
 
   useEffect(() => {
+    setEditorContent('');
+  }, [reduxProject]);
+
+  useEffect(() => {
     if (!editedFileLocalId) {
       // console.log(`editedFileLocalId is '${editedFileLocalId}'`);
       return;
