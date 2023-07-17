@@ -39,7 +39,6 @@ const App = () => {
     if (debugRedux) {
       console.log(`filesState:`, filesState);
     }
-
     if (selectedProject && filesState) {
       return Object.entries(filesState.data).map(([k, v]) => v).filter(file => {
         return file.projectLocalId && file.projectLocalId === selectedProject.localId;
@@ -47,8 +46,6 @@ const App = () => {
     }
     return null;
   }, [filesState, selectedProject]);
-
-  console.log('ProjectCell: rendered allFiles', projectFiles);
 
   useEffect(() => {
     fetchProjectsAndFiles();

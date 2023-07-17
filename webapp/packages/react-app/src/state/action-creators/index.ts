@@ -22,6 +22,7 @@ import axios from 'axios';
 import {RootState} from "../reducers";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
 import {FileTypes, ReduxFile, ReduxFilePartial} from "../file";
+import {randomIdGenerator} from "../id";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -342,7 +343,8 @@ export const deleteFilesFromList = (files: (ReduxFile|string)[]) => {
 export const fetchFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
-      const {data}: {data: ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: gHeaders});
+      // Later we can created a combined object
+      const {data}:{data:ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: gHeaders});
 
       // console.log(getState().projects.data);
       const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
@@ -351,10 +353,20 @@ export const fetchFiles = () => {
       }, {});
       // console.log(projectsPkidToLocalIdMap);
 
-      const files:ReduxFile[] = data.map((file:ReduxFile) => {
+      // We need to do change this once we create a combined or server object
+      const files = data.map((file) => {
+        file.localId = randomIdGenerator();
+
         // file.project is the project pkid
         if (file.project) {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
+
+          // We check if this is entry file for the project
+          // const project = getState().projects.data[file.projectLocalId];
+          // if (project.entry_file === file.pkid) {
+          //   console.log(`file: '${file.localId}' is entry point for project '${project.localId}'`);
+          //   project.entryFileLocalId = file.localId;
+          // }
         }
         return file;
       });

@@ -22,9 +22,9 @@ const initialState: FilesState = {
 }
 
 const reducer = produce((state: FilesState = initialState, action: Action): FilesState => {
-  console.log(`filesReducer: ${JSON.stringify(action.type)}`)
   switch(action.type) {
     case ActionType.CREATE_FILE:
+      console.log(`filesReducer: ${JSON.stringify(action)}`);
       const file: ReduxFile = {
         reduxType: 'file',
         fileType: 'javascript',
@@ -59,18 +59,22 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       return state;
 
     case ActionType.FETCH_FILES_COMPLETE:
+      console.log(`filesReducer:`, action);
       state.loading = false;
 
       if (action.payload.length > 0) {
         state.data = action.payload.reduce((acc, file) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
-          file.localId = randomIdGenerator();
+          // file.localId = randomIdGenerator();
           file.synced = true;
-          file.content = null;
-          file.contentSynced = false;
+          // file.content = null;
+          // file.contentSynced = false;
+
           acc[file.localId] = file;
           return acc;
         }, {} as FilesState['data']);
+
+
       }
 
       return state;
