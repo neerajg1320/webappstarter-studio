@@ -286,6 +286,7 @@ export const fetchProjectFromServer = (localId:string) => {
   }
 }
 
+// See if we can call this from fetchFiles
 export const createFile = (
     localId: string,
     path:string,
@@ -360,13 +361,6 @@ export const fetchFiles = () => {
         // file.project is the project pkid
         if (file.project) {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
-
-          // We check if this is entry file for the project
-          // const project = getState().projects.data[file.projectLocalId];
-          // if (project.entry_file === file.pkid) {
-          //   console.log(`file: '${file.localId}' is entry point for project '${project.localId}'`);
-          //   project.entryFileLocalId = file.localId;
-          // }
         }
         return file;
       });
@@ -549,6 +543,26 @@ export const updateFileOnServer = (
         //   payload: err.message
         // });
       }
+    }
+  }
+}
+
+
+export const saveFile = (filePartial: ReduxFilePartial) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log(`saveFile:`, filePartial);
+    // const {localId, isServerResponse} = action.payload;
+    const {localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint, isServerResponse} = filePartial;
+
+    if (!pkid || pkid < 0) {
+      if (path && localFile && fileType) {
+        createFileOnServer(localId, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
+      } else {
+        console.error(`Error! path:${path} localFile:${localFile} fileType:${fileType} should be defined`);
+      }
+
+    } else {
+      updateFileOnServer(localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
     }
   }
 }

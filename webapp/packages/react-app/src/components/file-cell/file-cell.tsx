@@ -8,7 +8,8 @@ import Preview from "./preview";
 import {autoBundling} from '../../config/global';
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
-import {ReduxFile} from "../../state/file";
+import {ReduxFile, ReduxFilePartial} from "../../state/file";
+import {saveFile} from "../../state/action-creators";
 
 interface CodeCellProps {
   reduxFile: ReduxFile
@@ -22,16 +23,16 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   const {createCellBundle, updateFile} = useActions();
 
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+  // const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
 
   // TBD: These local states can be done with and taken directly to redux
-  const [fileUpdatePartial, setFileUpdateParital] = useState({});
+  const [fileUpdatePartial, setFileUpdateParital] = useState<ReduxFilePartial>({} as ReduxFilePartial);
 
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
 
 
-  console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
+  // console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
 
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -113,10 +114,6 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   }
 
   const handleSaveClick = () => {
-    if (!currentProjectId) {
-      console.error(`We need to set a project`);
-      return;
-    }
 
     if (!reduxFile.content) {
       console.error(`We need to add code`);
@@ -127,17 +124,19 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     const file = createFileFromString(reduxFile.content, fileName);
 
     if (reduxFile.pkid && reduxFile.pkid > 0) {
-      if (fileUpdatePartial) {
+      if (Object.keys(fileUpdatePartial).length > 0) {
         console.log(`fileUpdatePartial:`, fileUpdatePartial);
-        updateFile(Object.assign({localId: reduxFile.localId, localFile:file}, fileUpdatePartial));
+        saveFile(fileUpdatePartial)
+        // updateFile(Object.assign({localId: reduxFile.localId, localFile:file}, fileUpdatePartial));
       }
     } else {
       // This has to change as this is causing screwup :). This has to be done at the beginning
       // This has to happen either in useEffect(, []) or has to happen before component is created.
       // createFile(fileState.localId, filePath, file, 'javascript', currentProjectId, entryPoint);
+      saveFile(reduxFile);
     }
 
-    setFileUpdateParital({});
+    setFileUpdateParital({} as ReduxFilePartial);
   }
 
   return (
@@ -161,8 +160,6 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
           </div>
         </div>
       </Resizable>
-
-      <pre>{JSON.stringify(fileUpdatePartial, null, 2)}</pre>
 
       {/* This portion has been added to support a file with cell. */}
       <div style={{
@@ -204,7 +201,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
-              disabled={!(reduxFile.content && reduxFile.path)}
+              disabled={!(Object.keys(fileUpdatePartial).length > 0)}
           >
             Save
           </button>
@@ -216,6 +213,10 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
             Bundle
           </button>
         </div>
+      </div>
+
+      <div style={{height: "100px"}}>
+        <pre>{JSON.stringify(fileUpdatePartial, null, 2)}</pre>
       </div>
     </div>
   );

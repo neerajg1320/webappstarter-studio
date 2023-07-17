@@ -22,7 +22,7 @@ export interface ReduxFilePartial extends ServerObjectPartial {
   localId: string,
   path?: string,
   fileType?: FileTypes,
-  content?: string;
+  content?: string|null;
   contentSynced?: boolean;
   localFile?: File;
   file?: string;
