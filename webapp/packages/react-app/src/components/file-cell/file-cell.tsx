@@ -127,21 +127,10 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     if (reduxFile.pkid && reduxFile.pkid > 0) {
       if (Object.keys(fileUpdatePartial).length > 0) {
         console.log(`fileUpdatePartial:`, fileUpdatePartial);
-        fileUpdatePartial['localFile'] = file;
-        saveFile(Object.assign({localId: reduxFile.localId, pkid: reduxFile.pkid}, fileUpdatePartial))
-        // updateFile(Object.assign({localId: reduxFile.localId, localFile:file}, fileUpdatePartial));
+        saveFile(Object.assign({localId: reduxFile.localId, pkid: reduxFile.pkid, localFile: file}, fileUpdatePartial))
       }
     } else {
-      // This has to change as this is causing screwup :). This has to be done at the beginning
-      // This has to happen either in useEffect(, []) or has to happen before component is created.
-      // createFile(fileState.localId, filePath, file, 'javascript', currentProjectId, entryPoint);
-
-      // We got error with this
-      //reduxFile['localFile'] = file;
-
-
       const createFilePartial = {...reduxFile, ...fileUpdatePartial, localFile: file};
-
       saveFile(createFilePartial);
     }
 
