@@ -31,9 +31,8 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
 
   if (debugRedux) {
-    console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
+    console.log(`FileCell:render reduxFile:${JSON.stringify(reduxFile, null, 2)}`);
   }
-
 
   useEffect(() => {
     // Keep this request out of autoBundling condition.
