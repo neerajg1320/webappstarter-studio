@@ -7,14 +7,14 @@ import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
-import CellList from "../cell-list/cell-list";
+import FileList from "../cell-list/file-list";
 import {debugRedux} from "../../config/global";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
 }
 const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
-  if (debugRedux || true) {
+  if (debugRedux) {
     console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
   }
 
@@ -91,12 +91,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
             {/* <pre>{code}</pre> */}
             <div style={{overflow:"scroll"}}>
               <div style={{
-                width: "100%",
-                display:"flex", flexDirection:"column", gap:"20px"
+                width: "100%", height: "100%",
+                display:"flex", flexDirection:"column", gap:"20px", justifyContent: "space-between",
               }}
               >
-                <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
-
+                <div>
+                  <FilesTree
+                      project={reduxProject}
+                      onSelectedFileChange={handleFileTreeSelectedFileChange}
+                  />
+                </div>
+                <div style={{display:"flex", flexDirection:"row", gap:"10px", padding: "10px"}}>
                   <button
                       className="button is-family-secondary is-small"
                       onClick={handleBundleClick}
@@ -105,12 +110,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                     Bundle
                   </button>
                 </div>
-                <div>
-                  <FilesTree
-                      project={reduxProject}
-                      onSelectedFileChange={handleFileTreeSelectedFileChange}
-                  />
-                </div>
+
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
         }
       </div>
       <div style={{width: "100%", height: "100%"}}>
-        {projectFiles && <CellList items={projectFiles} />}
+        {projectFiles && <FileList files={projectFiles} />}
       </div>
     </div>
   );

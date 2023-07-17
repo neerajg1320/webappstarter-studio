@@ -7,7 +7,7 @@ import ProjectCell from "./components/project-cell/project-cell";
 import Select, {SingleValue} from "react-select";
 import {ReduxFile, ReduxProject} from "./state";
 import {debugRedux} from "./config/global";
-import CellList from "./components/cell-list/cell-list";
+import FileList from "./components/cell-list/file-list";
 
 const App = () => {
   if (debugRedux) {

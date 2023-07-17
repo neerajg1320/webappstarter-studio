@@ -290,8 +290,8 @@ export const fetchProjectFromServer = (localId:string) => {
 export const createFile = (
     localId: string,
     path:string,
-    localFile:File,
     type: FileTypes,
+    localFile?:File,
     projectLocalId?: string,
     isEntryPoint?: boolean,
 ): CreateFileAction => {

@@ -1,18 +1,19 @@
-import './cell-list.css';
+import './file-list.css';
 import {Fragment, useEffect, useMemo} from "react";
-import AddCell from "./add-cell/add-cell";
+import AddFile from "./add-cell/add-file";
 import CellListItem from "./cell-list-item/cell-list-item";
 import { useActions } from '../../hooks/use-actions';
 import {syncCellsToServer} from '../../config/global';
-import {CellItem} from "../../state";
+import {ReduxFile, ReduxProject} from "../../state";
 
 
-interface CellListProps {
-  items: (CellItem)[]
+interface FileListProps {
+  project: ReduxProject;
+  files: ReduxFile[];
 };
 
 
-const CellList:React.FC<CellListProps> = ({items}) => {
+const FileList:React.FC<FileListProps> = ({project, files}) => {
   const { fetchCells } = useActions();
 
   useEffect(() => {
@@ -27,24 +28,24 @@ const CellList:React.FC<CellListProps> = ({items}) => {
   // });
 
   const renderedItems = useMemo(() => {
-    if (items.length > 0) {
-      return items.map(item => (
+    if (files.length > 0) {
+      return files.map(item => (
           <Fragment key={item.localId}>
             <CellListItem item={item} />
-            <AddCell prevCellId={item.localId} forceVisible={false}/>
+            <AddFile prevFileId={item.localId} forceVisible={false}/>
           </Fragment>
       ));
     }
     return [];
-  }, [items]);
+  }, [files]);
 
   return (
     <div className="cell-list">
-      <AddCell prevCellId={null} forceVisible={items.length === 0}/>
+      <AddFile prevFileId={null} forceVisible={files.length === 0}/>
       <div>{renderedItems}</div>
     </div>
   
   );
 }
 
-export default CellList;
+export default FileList;
