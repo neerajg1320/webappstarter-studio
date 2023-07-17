@@ -23,9 +23,15 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
+  const editedFile = useMemo<ReduxFile|null>(() => {
+    if (editedFileLocalId) {
+      return filesState.data[editedFileLocalId];
+    }
+    return null;
+  }, [editedFileLocalId, filesState]);
 
   // Temporary till we fix layout
-  const [editorContent, setEditorContent] = useState<string>('');
+  // const [editorContent, setEditorContent] = useState<string>('');
   const { fetchFileContents } = useActions();
 
   const projectFiles = useMemo<ReduxFile[]|null>(() => {
@@ -41,7 +47,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }, [filesState, reduxProject]);
 
   useEffect(() => {
-    setEditorContent('');
+    setEditedFileLocalId(null);
   }, [reduxProject]);
 
   useEffect(() => {
@@ -58,7 +64,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       fetchFileContents([editedFileLocalId]);
     }
 
-    setEditorContent(fileState.content || '');
+    // setEditorContent(fileState.content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editedFileLocalId, filesState]);
 
@@ -80,13 +86,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     setEditedFileLocalId(fileLocalId);
   }
 
+  const handleEditorChange = (value:string) => {
+
+  }
+
   return (
     <div className="project-cell-wrapper">
       <div style={{width: "100%"}}>
         <Resizable direction="vertical">
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
-              <CodeEditor initialValue={editorContent} onChange={setEditorContent} />
+              <CodeEditor initialValue={editedFile?.content || ''} onChange={handleEditorChange} />
             </Resizable>
             {/* <pre>{code}</pre> */}
             <div style={{overflow:"scroll"}}>
