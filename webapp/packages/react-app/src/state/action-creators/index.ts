@@ -551,7 +551,7 @@ export const updateFileOnServer = (
 export const saveFile = (filePartial: ReduxFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     console.log(`saveFile:`, filePartial);
-    const {localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint, isServerResponse} = filePartial;
+    const {localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint} = filePartial;
 
     if (!pkid || pkid < 0) {
       if (path && localFile && fileType) {

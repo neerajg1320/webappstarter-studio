@@ -14,8 +14,10 @@ interface ProjectCellProps {
   reduxProject: ReduxProject;
 }
 const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
-  console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
-  
+  if (debugRedux || true) {
+    console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
+  }
+
   const { createProjectBundle } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
@@ -44,13 +46,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
   useEffect(() => {
     if (!editedFileLocalId) {
-      // console.log(`editedFileLocalId is '${editedFileLocalId}'`);
       return;
     }
 
     const fileState = filesState.data[editedFileLocalId];
     if (!fileState) {
-      console.error(`fileState is '${fileState}' for fileId '${editedFileLocalId}'`);
       return;
     }
 

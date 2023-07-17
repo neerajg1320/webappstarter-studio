@@ -1,9 +1,7 @@
 import FileCell from "../../file-cell/file-cell";
 import ActionBar from './action-bar';
 import './cell-list-item.css';
-import {CellItem, isReduxFile, isReduxProject, ReduxFile} from "../../../state";
-import {JSX} from "react";
-
+import {CellItem, ReduxFile} from "../../../state";
 
 interface CellListItemProps {
   item: CellItem;

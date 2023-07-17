@@ -2,7 +2,6 @@ import produce from 'immer';
 import {Action} from '../actions';
 import {ActionType} from '../action-types';
 import {ReduxFile} from '../file';
-import {randomIdGenerator} from "../id";
 
 // The difference between FilesState and CellsState:
 //  - FilesState have no order
