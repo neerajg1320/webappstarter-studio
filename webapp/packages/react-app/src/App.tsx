@@ -74,8 +74,7 @@ const App = () => {
 
       <div style={{width: "100%", marginTop: "10px"}}>
         {selectedProject && <ProjectCell reduxProject={selectedProject}/>}
-        {/*<CellList items={projectFiles}/>*/}
-        <span>CellList to be rendered here</span>
+        <span>CellList was rendered here</span>
       </div>
     </div>
   );

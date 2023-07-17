@@ -18,6 +18,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   const autoBundle = useMemo(() => {
     return autoBundling;
   }, []);
+
   const {createCellBundle, updateFile} = useActions();
 
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);

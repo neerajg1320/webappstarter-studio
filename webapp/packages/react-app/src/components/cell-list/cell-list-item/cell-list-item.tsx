@@ -10,27 +10,16 @@ interface CellListItemProps {
 }
 
 const CellListItem:React.FC<CellListItemProps> = ({item}) => {
-  let cell: JSX.Element;
-  if (isReduxFile(item)) {
-    cell = <FileCell reduxFile={item} />;
-  } else if (isReduxProject(item)) {
-    cell = <span>Project Cell rendered from CellListItem</span>
-  } else {
-    cell = <span>Invalid item of type:{item}</span>
-  }
-
-  const child = <>
-    <div className="action-bar-wrapper">
-      <ActionBar id={item.localId}/>
-    </div>
-    {
-      cell
-    }
-  </>
-
   return (
     <div className="cell-list-item">
-      {child}
+      <div className="action-bar-wrapper">
+        {/*<ActionBar id={item.localId}/>*/}
+        <div>
+          {/*<pre>{JSON.stringify(item, null, 2)}</pre>*/}
+          {/*{isReduxFile(item) && <FileCell reduxFile={item} />}*/}
+          {isReduxFile(item) ? <h1>ReduxFile: {item.localId}</h1> : <h2>ReduxType:{item.reduxType}</h2>}
+        </div>
+      </div>
     </div>
   );
 }

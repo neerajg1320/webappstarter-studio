@@ -1,12 +1,14 @@
 import "./project-cell.css";
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Preview from "../file-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
-import {ReduxProject} from "../../state";
+import {ReduxFile, ReduxProject} from "../../state";
+import CellList from "../cell-list/cell-list";
+import {debugRedux} from "../../config/global";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
@@ -23,6 +25,18 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   // Temporary till we fix layout
   const [editorContent, setEditorContent] = useState<string>('');
   const { fetchFileContents } = useActions();
+
+  const projectFiles = useMemo<ReduxFile[]|null>(() => {
+    if (debugRedux) {
+      console.log(`filesState:`, filesState);
+    }
+    if (reduxProject && filesState) {
+      return Object.entries(filesState.data).map(([k, v]) => v).filter(file => {
+        return file.projectLocalId && file.projectLocalId === reduxProject.localId;
+      });
+    }
+    return null;
+  }, [filesState, reduxProject]);
 
   useEffect(() => {
     setEditorContent('');
@@ -111,6 +125,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               <Preview code={bundlesState[reduxProject.localId]!.code} err={bundlesState[reduxProject.localId]!.err}/>
             </div>
         }
+      </div>
+      <div style={{width: "100%"}}>
+        {projectFiles && <CellList items={projectFiles} />}
       </div>
     </div>
   );

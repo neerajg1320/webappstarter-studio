@@ -66,6 +66,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         state.data = action.payload.reduce((acc, file) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           // file.localId = randomIdGenerator();
+          file.reduxType = 'file';
           file.synced = true;
           // file.content = null;
           // file.contentSynced = false;
