@@ -71,7 +71,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
         value={initialValue}
         editorDidMount={onEditorDidMount}
         theme='dark'
-        height="100%"
+        height="calc(100% - 20px)"
         options={{
           wordWrap: "on",
           minimap: {enabled: false},

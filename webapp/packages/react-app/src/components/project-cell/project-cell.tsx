@@ -9,6 +9,7 @@ import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
 import FileList from "../cell-list/file-list";
 import {debugRedux} from "../../config/global";
+import FileControlBar from "../file-cell/file-control-bar";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
@@ -95,7 +96,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
         <Resizable direction="vertical">
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
-              <CodeEditor initialValue={editedFile?.content || ''} onChange={handleEditorChange} />
+              <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
+                {editedFile && <FileControlBar reduxFile={editedFile} />}
+                <CodeEditor initialValue={editedFile?.content || ''} onChange={handleEditorChange} />
+              </div>
             </Resizable>
             {/* <pre>{code}</pre> */}
             <div style={{overflow:"scroll"}}>
@@ -135,9 +139,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
             </div>
         }
       </div>
-      {/*<div style={{width: "100%", height: "100%"}}>*/}
-      {/*  {projectFiles && <FileList project={reduxProject} files={projectFiles} />}*/}
-      {/*</div>*/}
+      <div style={{width: "100%", height: "100%"}}>
+        {projectFiles && <FileList project={reduxProject} files={projectFiles} />}
+      </div>
     </div>
   );
 }

@@ -84,7 +84,6 @@ const App = () => {
 
       <div style={{width: "100%", marginTop: "10px"}}>
         {selectedProject && <ProjectCell reduxProject={selectedProject}/>}
-        {/*{(filesList && filesList.length>0) && <CellList items={filesList} />}*/}
       </div>
     </div>
   );
