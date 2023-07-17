@@ -22,7 +22,7 @@ const initialState: FilesState = {
 }
 
 const reducer = produce((state: FilesState = initialState, action: Action): FilesState => {
-  // console.log(`filesReducer: ${JSON.stringify(action)}`)
+  console.log(`filesReducer: ${JSON.stringify(action.type)}`)
   switch(action.type) {
     case ActionType.CREATE_FILE:
       const file: ReduxFile = {

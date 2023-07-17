@@ -16,21 +16,19 @@ import {file} from "jscodeshift";
 
 
 interface CodeCellProps {
-  cell: Cell
+  // cell: Cell
 }
 
-const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
+const FileCell: React.FC<CodeCellProps> = () => {
   const autoBundle = useMemo(() => {
     return autoBundling;
   }, []);
   const {updateCell, createCellBundle, createFile, updateFile, deleteFile} = useActions();
-  // The bundle prop is being used in the Preview component below.
-  const bundle = useTypedSelector((state) => state.bundles[cell.id]);
 
-  const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
-  const cellContents = cellState.content;
-  const cumulativeCode =  useCumulativeCode(cell.id);
-  const inputCode = combineCellsCode ? cumulativeCode : cellContents;
+  // const cellState = useTypedSelector((state) => state.cells.data[cell.id]);
+  // const cellContents = cellState.content;
+  // const cumulativeCode =  useCumulativeCode(cell.id);
+  // const inputCode = combineCellsCode ? cumulativeCode : cellContents;
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
 
@@ -52,17 +50,25 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
     return null;
   }, [filesListState, fileLocalId]);
 
+  // The bundle prop is being used in the Preview component below.
+  const bundle = useTypedSelector((state) => state.bundles[fileLocalId]);
 
-  // console.log(`FileCell:render currentProjectId:${JSON.stringify(currentProjectId, null, 2)}`);
+
+  console.log(`FileCell:render fileState:${JSON.stringify(fileState, null, 2)}`);
   useEffect(() => {
-
+    createFile(fileLocalId, filePath, createFileFromString('', ''), 'javascript');
   }, [])
 
   useEffect(() => {
+    // if (!fileState || !fileState.content) {
+    //   console.log(`Error! no file content found`);
+    //   return;
+    // }
+
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
-      createCellBundle(cell.id, inputCode);
+      createCellBundle(fileLocalId, fileState?.content || '');
       return;
     }
 
@@ -70,7 +76,12 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
       // In subsequent attempts we wait for debounce time before bundling
       const timer = setTimeout(async () => {
         // console.log("Calling bundle");
-        createCellBundle(cell.id, inputCode);
+        if (!fileState || !fileState.content) {
+          console.log(`Error! no file content found`);
+          return;
+        }
+
+        createCellBundle(fileLocalId, fileState.content);
       }, 1000)
 
       return() => {
@@ -79,17 +90,24 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputCode, cell.id, createCellBundle, autoBundle]);
+  }, [fileState?.content, fileLocalId, createCellBundle, autoBundle]);
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
+    console.log(`onEditorChange:${value}`);
+
     // Don't use cellState for filePath
-    updateCell(cell.id, value, filePath);
+    // updateCell(cell.id, value, filePath);
     setFileUpdateParital((prev) => Object.assign(prev, {content: value}))
+    updateFile({localId:fileLocalId, content:value})
   };
 
   const handleBundleClick = () => {
-    createCellBundle(cell.id, inputCode);
+    if (!fileState || !fileState.content) {
+      console.log(`Error! no file contents found`)
+      return;
+    }
+    createCellBundle(fileLocalId, fileState.content);
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +124,7 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
     const fileContent = await readFileContent(file);
     console.log(`fileContent: ${fileContent}`);
 
-    updateCell(cell.id, fileContent, filePath);
+    // updateCell(cell.id, fileContent, filePath);
     setFileUpdateParital((prev) => Object.assign(prev, {content: fileContent}))
   }
 
@@ -130,13 +148,13 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
       return;
     }
 
-    if (!cellContents) {
+    if (!fileState?.content) {
       console.error(`We need to add code`);
       return;
     }
 
     const fileName = getFileNameFromPath(filePath);
-    const file = createFileFromString(cellContents, fileName);
+    const file = createFileFromString(fileState.content, fileName);
 
     if (fileState?.pkid && fileState?.pkid > 0) {
       if (fileUpdatePartial) {
@@ -144,10 +162,9 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
         updateFile(Object.assign({localId: fileLocalId, localFile:file}, fileUpdatePartial));
       }
     } else {
-
-
-      // This has to change
-      createFile(fileLocalId, filePath, file, 'javascript', currentProjectId, entryPoint);
+      // This has to change as this is causing screwup :). This has to be done at the beginning
+      // This has to happen either in useEffect(, []) or has to happen before component is created.
+      // createFile(fileLocalId, filePath, file, 'javascript', currentProjectId, entryPoint);
     }
 
     setFileUpdateParital({});
@@ -158,7 +175,7 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
       <Resizable direction="vertical">
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
-            <CodeEditor initialValue={cell.content} onChange={onEditorChange} />
+            <CodeEditor initialValue={fileState?.content || ''} onChange={onEditorChange} />
           </Resizable>
           <div className="progress-wrapper">
             {
@@ -217,14 +234,14 @@ const FileCell: React.FC<CodeCellProps> = ({ cell }) => {
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
-              disabled={!(cellContents && filePath)}
+              disabled={!(fileState?.content && filePath)}
           >
             Save
           </button>
           <button
               className="button is-family-secondary is-small"
               onClick={() => handleBundleClick()}
-              disabled={!(cellContents && cellContents.length > 0)}
+              disabled={!(fileState?.content && fileState?.content.length > 0)}
           >
             Bundle
           </button>

@@ -462,7 +462,7 @@ export const updateFileOnServer = (
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
     if (path) {
-      console.log(`Adde path: ${path}`)
+      console.log(`Added path: ${path}`)
       formData.append("path", path);
     }
     if (localFile) {
