@@ -5,8 +5,11 @@ import {useTypedSelector} from "./hooks/use-typed-selector";
 import ProjectCell from "./components/project-cell/project-cell";
 import Select, {SingleValue} from "react-select";
 import {ReduxFile, ReduxProject} from "./state";
+import {debugRedux} from "./config/global";
 
 const App = () => {
+  console.log(`App: render`);
+
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
   const { fetchProjectsAndFiles } = useActions();
@@ -21,6 +24,10 @@ const App = () => {
   }, [projectsState]);
 
   const selectedProject = useMemo<ReduxProject|null>(() => {
+    if (debugRedux) {
+      console.log(`projectsState:`, projectsState);
+    }
+
     if (selectedProjectOption) {
       const {value} = selectedProjectOption;
       return Object.entries(projectsState.data).map(([k,v]) => v).filter(prj => prj.localId === value)[0];
@@ -29,6 +36,10 @@ const App = () => {
   }, [projectsState, selectedProjectOption]);
 
   const projectFiles = useMemo<ReduxFile[]|null>(() => {
+    if (debugRedux) {
+      console.log(`filesState:`, filesState);
+    }
+
     if (selectedProject && filesState) {
       return Object.entries(filesState.data).map(([k, v]) => v).filter(file => {
         return file.projectLocalId && file.projectLocalId === selectedProject.localId;

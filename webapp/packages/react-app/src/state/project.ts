@@ -10,7 +10,7 @@ export interface ReduxProject extends ServerObject {
   folder?: string;
   entry_file?: number;
   entry_path?: string;
-  entryFileId?: string|null;
+  entryFileLocalId?: string|null;
   entryPath?: string|null;
 }
 
@@ -22,6 +22,6 @@ export interface ReduxProjectPartial extends ServerObjectPartial {
   folder?: string;
   entry_file?: number;
   entry_path?: string;
-  entryFileId?: string|null;
+  entryFileLocalId?: string|null;
   entryPath?: string|null;
 }

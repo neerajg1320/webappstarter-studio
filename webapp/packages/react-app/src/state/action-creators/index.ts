@@ -450,7 +450,7 @@ export const createFileOnServer = (
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
           dispatch(updateProject({
             localId: projectLocalId,
-            entryFileId: localId,
+            entryFileLocalId: localId,
             entryPath: path,
             isServerResponse: true,
           }))
@@ -520,7 +520,7 @@ export const updateFileOnServer = (
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
           dispatch(updateProject({
             localId: projectLocalId,
-            entryFileId: localId,
+            entryFileLocalId: localId,
             entryPath: path,
             isServerResponse: true,
           }))
