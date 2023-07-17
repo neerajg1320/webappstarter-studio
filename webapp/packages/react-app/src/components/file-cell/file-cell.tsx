@@ -25,7 +25,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   // const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
 
   // TBD: These local states can be done with and taken directly to redux
-  const [fileUpdatePartial, setFileUpdateParital] = useState<ReduxFilePartial>({} as ReduxFilePartial);
+  const [fileUpdatePartial, setFileUpdatePartial] = useState<ReduxFilePartial>({} as ReduxFilePartial);
 
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
@@ -64,11 +64,16 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
-    // console.log(`onEditorChange:${value}`);
+    console.log(`onEditorChange:${value}`);
+    console.log(`reduxFile.content:${reduxFile.content}`);
 
-    // Don't use cellState for filePath
-    // updateCell(cell.id, value, filePath);
-    setFileUpdateParital((prev) => Object.assign(prev, {content: value}))
+    if (value !== reduxFile.content) {
+      setFileUpdatePartial((prev) => Object.assign(prev, {content: value}))
+    } else {
+      setFileUpdatePartial(({content, ...remaining}) => remaining)
+    }
+
+
     updateFile({localId:reduxFile.localId, content:value})
   };
 
@@ -97,19 +102,19 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     console.log(`fileContent: ${fileContent}`);
 
     // updateCell(cell.id, fileContent, filePath);
-    setFileUpdateParital((prev) => Object.assign(prev, {content: fileContent}))
+    setFileUpdatePartial((prev) => Object.assign(prev, {content: fileContent}))
   }
 
   const handleEntryPointChange = (checked: boolean) => {
     // console.log(`fileState: ${JSON.stringify(fileState)}`);
     // updateProject({localId: currentProjectId, entry_file:filePkid, entry_path:filePath})
-    setFileUpdateParital((prev) => Object.assign(prev, {isEntryPoint: checked}));
+    setFileUpdatePartial((prev) => Object.assign(prev, {isEntryPoint: checked}));
     updateFile({localId: reduxFile.localId, isEntryPoint: checked})
   }
 
   const handleFilePathChange = (filePath:string) => {
     // setFilePath(filePath);
-    setFileUpdateParital((prev) => Object.assign(prev, {path: filePath}))
+    setFileUpdatePartial((prev) => Object.assign(prev, {path: filePath}))
     updateFile({localId: reduxFile.localId, path: filePath})
   }
 
@@ -133,7 +138,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       saveFile(createFilePartial);
     }
 
-    setFileUpdateParital({} as ReduxFilePartial);
+    setFileUpdatePartial({} as ReduxFilePartial);
   }
 
   return (

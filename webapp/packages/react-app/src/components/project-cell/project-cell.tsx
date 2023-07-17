@@ -29,7 +29,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   const { fetchFileContents } = useActions();
 
   const projectFiles = useMemo<ReduxFile[]|null>(() => {
-    if (debugRedux) {
+    if (debugRedux || true) {
       console.log(`filesState:`, filesState);
     }
     if (reduxProject && filesState) {
@@ -60,7 +60,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
     setEditorContent(fileState.content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editedFileLocalId, projectFiles]);
+  }, [editedFileLocalId, filesState]);
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>
