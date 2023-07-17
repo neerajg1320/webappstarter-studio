@@ -130,14 +130,7 @@ export interface SetCurrentProjectAction {
 
 export interface CreateFileAction {
   type: ActionType.CREATE_FILE,
-  payload: {
-    localId: string,
-    path: string,
-    localFile: any,
-    type: FileTypes,
-    projectLocalId?: string,
-    isEntryPoint?: boolean,
-  }
+  payload: ReduxFilePartial
 }
 
 export interface UpdateFileAction {

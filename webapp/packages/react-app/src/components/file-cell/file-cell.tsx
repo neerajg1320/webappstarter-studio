@@ -135,8 +135,14 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       // This has to change as this is causing screwup :). This has to be done at the beginning
       // This has to happen either in useEffect(, []) or has to happen before component is created.
       // createFile(fileState.localId, filePath, file, 'javascript', currentProjectId, entryPoint);
-      reduxFile['localFile'] = file;
-      saveFile(reduxFile);
+
+      // We got error with this
+      //reduxFile['localFile'] = file;
+
+
+      const createFilePartial = {...reduxFile, ...fileUpdatePartial, localFile: file};
+
+      saveFile(createFilePartial);
     }
 
     setFileUpdateParital({} as ReduxFilePartial);

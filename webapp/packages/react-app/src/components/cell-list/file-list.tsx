@@ -32,7 +32,7 @@ const FileList:React.FC<FileListProps> = ({project, files}) => {
       return files.map(item => (
           <Fragment key={item.localId}>
             <CellListItem item={item} />
-            <AddFile project={project} forceVisible={false}/>
+            <AddFile reduxProject={project} forceVisible={false}/>
           </Fragment>
       ));
     }
@@ -41,7 +41,7 @@ const FileList:React.FC<FileListProps> = ({project, files}) => {
 
   return (
     <div className="cell-list">
-      <AddFile project={project} forceVisible={files.length === 0}/>
+      <AddFile reduxProject={project} forceVisible={files.length === 0}/>
       <div>{renderedItems}</div>
     </div>
   

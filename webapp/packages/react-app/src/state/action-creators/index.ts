@@ -287,24 +287,10 @@ export const fetchProjectFromServer = (localId:string) => {
 }
 
 // See if we can call this from fetchFiles
-export const createFile = (
-    localId: string,
-    path:string,
-    type: FileTypes,
-    localFile?:File,
-    projectLocalId?: string,
-    isEntryPoint?: boolean,
-): CreateFileAction => {
+export const createFile = (filePartial:ReduxFilePartial): CreateFileAction => {
   return {
     type: ActionType.CREATE_FILE,
-    payload: {
-      localId,
-      path,
-      localFile,
-      type,
-      projectLocalId,
-      isEntryPoint,
-    }
+    payload: filePartial
   }
 }
 
