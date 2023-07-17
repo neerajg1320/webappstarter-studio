@@ -6,6 +6,7 @@ import ProjectCell from "./components/project-cell/project-cell";
 import Select, {SingleValue} from "react-select";
 import {ReduxFile, ReduxProject} from "./state";
 import {debugRedux} from "./config/global";
+import CellList from "./components/cell-list/cell-list";
 
 const App = () => {
   console.log(`App: render`);
@@ -16,6 +17,12 @@ const App = () => {
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
+  const filesList = useMemo<ReduxFile[]|null>(() => {
+    if (filesState) {
+      return Object.entries(filesState.data).map(([k,v]) => v);
+    }
+    return null;
+  }, [filesState]);
 
   const projectOptions = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v).map(prj => {
@@ -73,8 +80,9 @@ const App = () => {
       </div>
 
       <div style={{width: "100%", marginTop: "10px"}}>
-        {selectedProject && <ProjectCell reduxProject={selectedProject}/>}
-        <span>CellList was rendered here</span>
+        {/*{selectedProject && <ProjectCell reduxProject={selectedProject}/>}*/}
+        {(filesList && filesList.length>0) && <CellList items={filesList}
+        />}
       </div>
     </div>
   );

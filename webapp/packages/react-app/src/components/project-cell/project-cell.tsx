@@ -126,7 +126,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
             </div>
         }
       </div>
-      <div style={{width: "100%"}}>
+      <div style={{width: "100%", height: "100%"}}>
         {projectFiles && <CellList items={projectFiles} />}
       </div>
     </div>

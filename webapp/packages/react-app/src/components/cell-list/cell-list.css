@@ -1,6 +1,9 @@
 .cell-list {
   /* top horizonal bottom */
   margin: 0 25px 20vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .react-draggable-transparent-selection .cell-list {
