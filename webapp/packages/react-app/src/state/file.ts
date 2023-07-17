@@ -5,9 +5,10 @@ export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' |
 // localFile: the uploaded file
 // file: link sent by server
 export interface ReduxFile extends ServerObject {
+  reduxType: 'file',
   localId: string,
   path: string;
-  type: FileTypes;
+  fileType: FileTypes;
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -20,7 +21,7 @@ export interface ReduxFile extends ServerObject {
 export interface ReduxFilePartial extends ServerObjectPartial {
   localId: string,
   path?: string,
-  type?: FileTypes,
+  fileType?: FileTypes,
   content?: string;
   contentSynced?: boolean;
   localFile?: File;

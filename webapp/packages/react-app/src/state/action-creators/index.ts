@@ -20,7 +20,7 @@ import {Dispatch} from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
-import {Project, ProjectFrameworks, ProjectPartial} from "../project";
+import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
 import {FileTypes, ReduxFile, ReduxFilePartial} from "../file";
 
 
@@ -162,7 +162,7 @@ export const createProject = (localId: string, title:string, framework: ProjectF
     }
 }
 
-export const updateProject = (projectPartial: ProjectPartial): UpdateProjectAction => {
+export const updateProject = (projectPartial: ReduxProjectPartial): UpdateProjectAction => {
   // console.log(`updateProject: ${JSON.stringify(projectPartial)}`);
   return {
       type: ActionType.UPDATE_PROJECT,
@@ -189,7 +189,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
         dispatch(createProject(localId, title, framework));
         const { projects } = getState();
 
-        const firstProject:[string, Project] = Object.entries(projects.data)[0];
+        const firstProject:[string, ReduxProject] = Object.entries(projects.data)[0];
         dispatch(setCurrentProjectId(firstProject[0]));
     }
 }
@@ -200,10 +200,32 @@ const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
 }
 
+
+export const fetchProjectsAndFiles = () => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    try {
+      const {data:projects}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers: gHeaders});
+      dispatch({
+        type: ActionType.FETCH_PROJECTS_COMPLETE,
+        payload: projects
+      });
+
+      fetchFiles()(dispatch, getState);
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({
+          type: ActionType.FETCH_PROJECTS_ERROR,
+          payload: err.message
+        });
+      }
+    }
+  };
+}
+
 export const fetchProjects = () => {
   return async (dispatch: Dispatch<Action>) => {
     try {
-      const {data}: {data: Project[]} = await axios.get(`${gApiUri}/projects/`, {headers: gHeaders});
+      const {data}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers: gHeaders});
 
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,

@@ -1,11 +1,11 @@
 import './files-tree.css';
-import {Project} from "../../state/project";
+import {ReduxProject} from "../../state/project";
 import {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 
 interface FilesTreeProps {
-  project: Project
+  project: ReduxProject
   onSelectedFileChange: (fileLocalId:string) => void
 }
 

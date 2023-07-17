@@ -1,6 +1,6 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
-import {Project, ProjectFrameworks, ProjectPartial} from "../project";
+import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
 import {FileTypes, ReduxFile, ReduxFilePartial} from "../file";
 
 export type Direction = 'up' | 'down';
@@ -103,7 +103,7 @@ export interface CreateProjectAction {
 
 export interface UpdateProjectAction {
     type: ActionType.UPDATE_PROJECT,
-    payload: ProjectPartial
+    payload: ReduxProjectPartial
 }
 
 export interface DeleteProjectAction {
@@ -113,7 +113,7 @@ export interface DeleteProjectAction {
 
 export interface FetchProjectsCompleteAction {
   type: ActionType.FETCH_PROJECTS_COMPLETE,
-  payload: Project[]
+  payload: ReduxProject[]
 }
 
 export interface FetchProjectsErrorAction {

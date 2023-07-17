@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
-import { Project } from '../project';
+import { ReduxProject } from '../project';
 import {randomIdGenerator} from "../id";
 
 // The difference between ProjectsState and CellsState:
@@ -12,7 +12,7 @@ interface ProjectsState {
   error: string | null;
   currentProjectId: string,
   data: {
-    [key: string]: Project
+    [key: string]: ReduxProject
   }
 }
 
@@ -27,11 +27,13 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
   // console.log(`projectsReducer: ${JSON.stringify(action)}`)
   switch(action.type) {
     case ActionType.CREATE_PROJECT:
-      const project: Project = {
+      const project: ReduxProject = {
+        reduxType: 'project',
         ...action.payload,
         id: '',
         pkid: -1,
-        synced: false
+        synced: false,
+        isServerResponse: false
       };
       state.data[project.localId] = project;
       return state;

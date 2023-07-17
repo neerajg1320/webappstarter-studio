@@ -26,6 +26,8 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
   switch(action.type) {
     case ActionType.CREATE_FILE:
       const file: ReduxFile = {
+        reduxType: 'file',
+        fileType: 'javascript',
         ...action.payload,
         id: '',
         pkid: -1,

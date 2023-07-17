@@ -55,7 +55,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           // createFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
         } else if (action.type === ActionType.UPDATE_FILE) {
           // const {localId, isServerResponse} = action.payload;
-          const {localId, pkid, path, localFile, type, projectLocalId, isEntryPoint, isServerResponse} = action.payload;
+          const {localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint, isServerResponse} = action.payload;
 
           const fileState: ReduxFile = getState().files.data[localId];
           if (!fileState) {
@@ -64,7 +64,12 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }
 
           if (!pkid) {
-            createFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
+            if (path && localFile && fileType) {
+              createFileOnServer(localId, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
+            } else {
+              console.error(`Error! path:${path} localFile:${localFile} fileType:${fileType} should be defined`);
+            }
+
           } else {
             if (isServerResponse) {
               console.log('Update received from server')
@@ -72,7 +77,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
               if (fileState.pkid > 0) {
                 console.log(`We need to support updateFileOnServer`, action.payload);
                 console.log(path);
-                updateFileOnServer(localId, fileState.pkid, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
+                updateFileOnServer(localId, fileState.pkid, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
               }
             }
           }

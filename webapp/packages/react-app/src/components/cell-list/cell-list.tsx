@@ -1,13 +1,18 @@
 import './cell-list.css';
-import { Fragment, useEffect } from "react";
-import { useTypedSelector } from "../../hooks/use-typed-selector";
+import {Fragment, useEffect, useMemo} from "react";
 import AddCell from "./add-cell/add-cell";
 import CellListItem from "./cell-list-item/cell-list-item";
 import { useActions } from '../../hooks/use-actions';
 import {syncCellsToServer} from '../../config/global';
-import ProjectCell from "../project-cell/project-cell";
+import {CellItem} from "../../state";
 
-const CellList:React.FC = () => {
+
+interface CellListProps {
+  items: (CellItem)[]
+};
+
+
+const CellList:React.FC<CellListProps> = ({items}) => {
   const { fetchCells } = useActions();
 
   useEffect(() => {
@@ -17,22 +22,26 @@ const CellList:React.FC = () => {
   // eslint-disable-next-line
   }, []);
 
-  const cells = useTypedSelector(({cells: {order, data}}) => {
-    return order.map((id) => data[id])
-  });
+  // const cells = useTypedSelector(({cells: {order, data}}) => {
+  //   return order.map((id) => data[id])
+  // });
 
-  const renderedCells = cells.map(cell => (
-    <Fragment key={cell.id}>
-      <CellListItem cell={cell} />
-      <AddCell prevCellId={cell.id} forceVisible={false}/>
-    </Fragment>
-  ));
-  
+  const renderedItems = useMemo(() => {
+    if (items.length > 0) {
+      return items.map(item => (
+          <Fragment key={item.localId}>
+            <CellListItem item={item} />
+            <AddCell prevCellId={item.localId} forceVisible={false}/>
+          </Fragment>
+      ));
+    }
+    return [];
+  }, [items]);
+
   return (
     <div className="cell-list">
-      <ProjectCell />
-      <AddCell prevCellId={null} forceVisible={cells.length === 0}/>
-      <div>{renderedCells}</div>
+      <AddCell prevCellId={null} forceVisible={items.length === 0}/>
+      <div>{renderedItems}</div>
     </div>
   
   );
