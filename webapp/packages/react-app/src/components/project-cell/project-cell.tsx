@@ -64,7 +64,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       fetchFileContents([editedFileLocalId]);
     }
 
-    // setEditorContent(fileState.content || '');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editedFileLocalId, filesState]);
 

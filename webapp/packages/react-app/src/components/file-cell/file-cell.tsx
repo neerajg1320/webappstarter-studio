@@ -62,9 +62,9 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduxFile.content, reduxFile.localId, createCellBundle, autoBundle]);
 
-  // onEditorChange goes to another component hence cellState doesn't work properly in it.
-  const onEditorChange = (value:string) => {
-    console.log(`onEditorChange:${value}`);
+  // handleEditorChange goes to another component hence cellState doesn't work properly in it.
+  const handleEditorChange = (value:string) => {
+    console.log(`handleEditorChange:${value}`);
     console.log(`reduxFile.content:${reduxFile.content}`);
 
     if (value !== reduxFile.content) {
@@ -146,7 +146,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       <Resizable direction="vertical">
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
-            <CodeEditor initialValue={reduxFile.content || ''} onChange={onEditorChange} />
+            <CodeEditor initialValue={reduxFile.content || ''} onChange={handleEditorChange} />
           </Resizable>
           <div className="progress-wrapper">
             {

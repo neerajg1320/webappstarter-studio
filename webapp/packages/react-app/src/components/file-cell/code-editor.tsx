@@ -13,13 +13,17 @@ interface CodeEditorProps {
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
+  console.log(`CodeEditor:render  initialValue: ${initialValue}`);
   const editorRef = useRef<any>();
 
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
     editorRef.current = monacoEditor;
 
     monacoEditor.onDidChangeModelContent(() => {
-      onChange(getValue());
+      const newValue = getValue();
+      console.log(`initialValue: ${initialValue}`);
+      console.log(`newValue: ${newValue}`);
+      onChange(newValue);
     });
 
     // Use two spaces for tabs
