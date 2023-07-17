@@ -347,6 +347,7 @@ export const fetchFiles = () => {
         // file.project is the project pkid
         if (file.project) {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
+          file.isEntryPoint = file.is_entry_point;
         }
         return file;
       });
