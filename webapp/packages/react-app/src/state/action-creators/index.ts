@@ -551,7 +551,6 @@ export const updateFileOnServer = (
 export const saveFile = (filePartial: ReduxFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     console.log(`saveFile:`, filePartial);
-    // const {localId, isServerResponse} = action.payload;
     const {localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint, isServerResponse} = filePartial;
 
     if (!pkid || pkid < 0) {
@@ -560,7 +559,6 @@ export const saveFile = (filePartial: ReduxFilePartial) => {
       } else {
         console.error(`Error! path:${path} localFile:${localFile} fileType:${fileType} should be defined`);
       }
-
     } else {
       updateFileOnServer(localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
     }

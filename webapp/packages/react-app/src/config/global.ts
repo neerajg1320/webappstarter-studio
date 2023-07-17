@@ -7,7 +7,7 @@ export const debugCache = false;
 
 // Redux
 export const reduxManualTest = false;
-export const debugRedux = true;
+export const debugRedux = false;
 
 // ESBuild Plugins
 export const debugPlugin = false;

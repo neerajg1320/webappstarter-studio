@@ -9,7 +9,6 @@ import {autoBundling} from '../../config/global';
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
 import {ReduxFile, ReduxFilePartial} from "../../state/file";
-import {saveFile} from "../../state/action-creators";
 
 interface CodeCellProps {
   reduxFile: ReduxFile
@@ -20,7 +19,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     return autoBundling;
   }, []);
 
-  const {createCellBundle, updateFile} = useActions();
+  const {createCellBundle, updateFile, saveFile} = useActions();
 
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   // const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
@@ -32,7 +31,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
 
 
-  // console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
+  console.log(`FileCell:render fileState:${JSON.stringify(reduxFile, null, 2)}`);
 
   useEffect(() => {
     // Keep this request out of autoBundling condition.
@@ -64,7 +63,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
 
   // onEditorChange goes to another component hence cellState doesn't work properly in it.
   const onEditorChange = (value:string) => {
-    console.log(`onEditorChange:${value}`);
+    // console.log(`onEditorChange:${value}`);
 
     // Don't use cellState for filePath
     // updateCell(cell.id, value, filePath);
@@ -126,13 +125,15 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     if (reduxFile.pkid && reduxFile.pkid > 0) {
       if (Object.keys(fileUpdatePartial).length > 0) {
         console.log(`fileUpdatePartial:`, fileUpdatePartial);
-        saveFile(fileUpdatePartial)
+        fileUpdatePartial['localFile'] = file;
+        saveFile(Object.assign({localId: reduxFile.localId, pkid: reduxFile.pkid}, fileUpdatePartial))
         // updateFile(Object.assign({localId: reduxFile.localId, localFile:file}, fileUpdatePartial));
       }
     } else {
       // This has to change as this is causing screwup :). This has to be done at the beginning
       // This has to happen either in useEffect(, []) or has to happen before component is created.
       // createFile(fileState.localId, filePath, file, 'javascript', currentProjectId, entryPoint);
+      reduxFile['localFile'] = file;
       saveFile(reduxFile);
     }
 

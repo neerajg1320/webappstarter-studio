@@ -9,7 +9,9 @@ import {debugRedux} from "./config/global";
 import CellList from "./components/cell-list/cell-list";
 
 const App = () => {
-  console.log(`App: render`);
+  if (debugRedux) {
+    console.log(`App: render`);
+  }
 
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
