@@ -41,14 +41,11 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
     fileUpdatePartial['content'] = fileContent;
 
-    // updateCell(cell.id, fileContent, filePath);
     updateFile(fileUpdatePartial);
     setFileSavePartial((prev) => Object.assign(prev, {content: fileContent}))
   }
 
   const handleEntryPointChange = (checked: boolean) => {
-    // console.log(`fileState: ${JSON.stringify(fileState)}`);
-    // updateProject({localId: currentProjectId, entry_file:filePkid, entry_path:filePath})
     setFileSavePartial((prev) => Object.assign(prev, {isEntryPoint: checked}));
     updateFile({localId: reduxFile.localId, isEntryPoint: checked})
   }
@@ -60,7 +57,6 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   }
 
   const handleSaveClick = () => {
-
     if (!reduxFile.content) {
       console.error(`We need to add code`);
       return;

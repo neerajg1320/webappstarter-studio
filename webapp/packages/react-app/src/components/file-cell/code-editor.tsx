@@ -8,12 +8,13 @@ import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
 
 interface CodeEditorProps {
+  localId: string;
   initialValue: string;
   onChange(value:string): void;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
-  console.log(`CodeEditor:render  initialValue: ${initialValue}`);
+const CodeEditor: React.FC<CodeEditorProps> = ({localId, initialValue, onChange}) => {
+  console.log(`CodeEditor[${localId}]:render  initialValue: ${initialValue}`);
   const editorRef = useRef<any>();
 
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {

@@ -56,11 +56,11 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduxFile.content, reduxFile.localId, createCellBundle, autoBundle]);
+  }, [reduxFile.content, autoBundle]);
 
   // handleEditorChange goes to another component hence cellState doesn't work properly in it.
   const handleEditorChange = (value:string) => {
-    console.log(`handleEditorChange:${value}`);
+    console.log(`[${reduxFile.localId}]handleEditorChange:${value}`);
     console.log(`reduxFile.content:${reduxFile.content}`);
 
     setFileUpdatePartial((prev) => Object.assign(prev, {content: value}))
@@ -74,7 +74,10 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       <Resizable direction="vertical">
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
-            <CodeEditor initialValue={reduxFile.content || ''} onChange={handleEditorChange} />
+            <CodeEditor localId={reduxFile.localId}
+                        initialValue={reduxFile.content || ''}
+                        onChange={handleEditorChange}
+            />
           </Resizable>
           <div className="progress-wrapper">
             {
@@ -101,4 +104,4 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   );
 };
 
-export default FileCell;
+export default React.memo(FileCell);

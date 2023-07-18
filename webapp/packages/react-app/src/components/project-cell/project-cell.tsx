@@ -98,7 +98,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
             <Resizable direction="horizontal">
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
                 {editedFile && <FileControlBar reduxFile={editedFile} />}
-                <CodeEditor initialValue={editedFile?.content || ''} onChange={handleEditorChange} />
+                <CodeEditor
+                    localId={editedFile?.localId || 'null'}
+                    initialValue={editedFile?.content || ''}
+                    onChange={handleEditorChange}
+                />
               </div>
             </Resizable>
             {/* <pre>{code}</pre> */}
