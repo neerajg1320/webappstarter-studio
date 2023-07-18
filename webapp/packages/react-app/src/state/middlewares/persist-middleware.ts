@@ -59,6 +59,16 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           // The middleware take the responsibility of syncing
           // console.log(`middleware: `, action.payload)
           const {localId, path, content, isEntryPoint} = action.payload;
+          const fileState = getState().files.data[localId];
+
+          console.log('fileState:', fileState);
+          console.log('action.payload', action.payload);
+
+          const {isServerResponse} = action.payload;
+          if (isServerResponse) {
+            console.log(`Server Response Detected`);
+            return;
+          }
 
           const saveFilePartial:ReduxSaveFilePartial = {localId};
 
@@ -71,9 +81,10 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }
 
           if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
-            const fileName = localId;
-            const file = createFileFromString(content, fileName);
-            saveFilePartial['file']= file;
+              console.log(`File '${fileState.path}' content is updated`);
+              const fileName = localId;
+              const file = createFileFromString(content, fileName);
+              saveFilePartial['file']= file;
           }
 
           dispatch(updateFileSavePartial(saveFilePartial));

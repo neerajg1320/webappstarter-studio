@@ -49,6 +49,7 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   file?: string;
   project?:number;
   is_entry_point?: boolean;
+  saveFilePartial?: ReduxSaveFilePartial;
 }
 
 export interface ReduxSaveFilePartial {

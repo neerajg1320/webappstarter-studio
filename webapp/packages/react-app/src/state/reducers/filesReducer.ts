@@ -31,6 +31,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         pkid: -1,
         synced: false,
         isServerResponse: false,
+        requestInitiated: false,
         saveFilePartial: {localId},
         ...action.payload,
       };
@@ -79,6 +80,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           file.synced = true;
           // file.content = null;
           // file.contentSynced = false;
+          file.requestInitiated = false;
           file.saveFilePartial = {localId: file.localId}
 
           acc[file.localId] = file;

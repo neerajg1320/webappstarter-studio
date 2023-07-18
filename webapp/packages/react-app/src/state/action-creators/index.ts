@@ -196,7 +196,7 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
 }
 
 const gApiUri = 'http://localhost:8080/api/v1';
-const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5Njc1Njc3LCJpYXQiOjE2ODk1ODkyNzcsImp0aSI6IjgxY2Q5NmQ4ODAzMDQwMDc5MDAzODc2ZWQxY2IzZGRkIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.CPz0MGgRJC6uCv6iuqRUeiEGKZ8Mqhzxu7qH-8fL03Q";
+const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5NzYyMzIzLCJpYXQiOjE2ODk2NzU5MjMsImp0aSI6ImQ1OGMxYTc2MGM3NzQ1YzU5ZWE1MjlhMTYxNDc1NjU0IiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.t4ATmNsq5madmlvkbJJ3d9nPegKUJsF1lGC-YFKHtmg";
 const gHeaders = {
   Authorization: `Bearer ${gJwtToken}`
 }
@@ -411,6 +411,7 @@ export const saveFiles = ([localIds]: [string]) => {
           content: data,
           contentSynced: true,
           isServerResponse: true,
+          saveFilePartial: {localId:fileStates[0].localId}
         }
       });
     } catch (err) {
@@ -436,6 +437,14 @@ export const fetchFileContents = (localIds: [string]) => {
     const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
     // console.log(`fileStates:`, fileStates);
 
+    dispatch({
+      type: ActionType.UPDATE_FILE,
+      payload: {
+        localId: fileStates[0].localId,
+        requestInitiated: true,
+      }
+    });
+
     try {
       const {data}: {data: string} = await axios.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
 
@@ -446,6 +455,8 @@ export const fetchFileContents = (localIds: [string]) => {
           content: data,
           contentSynced: true,
           isServerResponse: true,
+          requestInitiated: false,
+          saveFilePartial: {localId:fileStates[0].localId}
         }
       });
     } catch (err) {
@@ -545,6 +556,7 @@ export const updateFileOnServer = (saveFilePartial: ReduxSaveFilePartial) => {
         localId,
         synced:true,
         isServerResponse: true,
+        saveFilePartial: {localId},
         ...response.data
       })); //
 

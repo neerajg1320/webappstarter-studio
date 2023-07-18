@@ -96,6 +96,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       <FileCellControlBar reduxFile={reduxFile} />
 
       <div style={{height: "100px"}}>
+        <h4>saveFilePartial</h4>
         <pre>{JSON.stringify(reduxFile.saveFilePartial, null, 2)}</pre>
       </div>
     </div>
