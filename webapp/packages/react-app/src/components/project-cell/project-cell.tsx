@@ -89,12 +89,13 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     setEditedFileLocalId(fileLocalId);
   }
 
-  const handleEditorChange = (value:string) => {
+  // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
+  const handleEditorChange = useCallback((value:string) => {
     if (editedFileRef.current && editedFileRef.current.localId) {
       console.log(`file[${editedFileRef.current.localId}]: value=${value}`)
       updateFile({localId: editedFileRef.current.localId, content:value});
     }
-  };
+  }, []);
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>
@@ -109,9 +110,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
                 {editedFile && <FileControlBar reduxFile={editedFile} />}
                 <CodeEditor
-                    localId={editedFile?.localId || 'null'}
-                    initialValue={editedFile?.content || ''}
-                    onChange={(value) => handleEditorChange(value)}
+                    // localId={editedFile?.localId || 'null'}
+                    // initialValue={editedFile?.content || ''}
+                    initialValue={'Helo there '}
+                    onChange={handleEditorChange}
                 />
               </div>
             </Resizable>

@@ -72,9 +72,9 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       <Resizable direction="vertical">
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
-            <CodeEditor localId={reduxFile.localId}
+            <CodeEditor
                         initialValue={reduxFile.content || ''}
-                        onChange={handleEditorChange}
+                        // onChange={handleEditorChange}
             />
           </Resizable>
           <div className="progress-wrapper">
