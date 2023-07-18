@@ -24,6 +24,7 @@ import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
 import {FileTypes, ReduxFile, ReduxCreateFilePartial, ReduxUpdateFilePartial, ReduxSaveFilePartial} from "../file";
 import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
+import {createFileFromString} from "../../utils/file";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -376,18 +377,27 @@ export const fetchFiles = () => {
 }
 
 
-export const saveFile = (filePartial: ReduxCreateFilePartial|ReduxSaveFilePartial) => {
+export const saveFile = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(`saveFile:`, filePartial);
+    const fileState = getState().files.data[localId];
 
-    const {pkid} = filePartial;
+    if (!fileState) {
+      console.error(`Error! file id '${localId}' not found in store`)
+    }
 
-    // We have to use member based type narrowing
+    // Here we use member based type narrowing
+    const {pkid} = fileState;
     if (!pkid || pkid < 0) {
-        createFileOnServer(filePartial as ReduxCreateFilePartial)(dispatch, getState);
-
+      createFileOnServer(fileState as ReduxCreateFilePartial)(dispatch, getState);
     } else {
-      updateFileOnServer(filePartial as ReduxSaveFilePartial)(dispatch, getState);
+      if (Object.keys(fileState.saveFilePartial).length < 2) {
+        console.log(`Warning! nothing needs to be saved. Disable save controls`);
+      }
+
+      if (Object.keys(fileState.saveFilePartial).includes('content') && fileState.content) {
+        fileState.saveFilePartial['file'] = createFileFromString(fileState.content, fileState.localId);
+      }
+      updateFileOnServer(pkid, fileState.saveFilePartial)(dispatch, getState);
     }
   }
 }
@@ -533,8 +543,10 @@ export const createFileOnServer = (filePartial: ReduxCreateFilePartial) => {
 }
 
 // This action is dispatched from the persistMiddleware.
-export const updateFileOnServer = (saveFilePartial: ReduxSaveFilePartial) => {
+export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log('saveFilePartial:', saveFilePartial);
+
     const formData = new FormData();
     if (Object.keys(saveFilePartial).includes('path')) {
       formData.append("path", saveFilePartial.path!);
@@ -546,7 +558,7 @@ export const updateFileOnServer = (saveFilePartial: ReduxSaveFilePartial) => {
       formData.append("is_entry_point", saveFilePartial.is_entry_point! as unknown as string);
     }
 
-    const {localId, pkid} = saveFilePartial;
+    const {localId} = saveFilePartial;
 
     try {
       const response = await axios.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: gHeaders});

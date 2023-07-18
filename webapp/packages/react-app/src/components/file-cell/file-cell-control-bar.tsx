@@ -60,28 +60,12 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   }
 
   const handleSaveClick = () => {
-    if (!reduxFile.content) {
-      console.error(`We need to add code`);
+    if (!reduxFile.path) {
+      console.error(`Error! path not specified`)
       return;
     }
 
-    if (reduxFile.path) {
-      const fileName = getFileNameFromPath(reduxFile.path);
-      const file = createFileFromString(reduxFile.content, fileName);
-
-      // Call saveFile(reduxFile.localId)
-
-      // if (reduxFile.pkid && reduxFile.pkid > 0) {
-      //   if (Object.keys(saveFilePartial).length > 0) {
-      //     console.log(`fileUpdatePartial:`, saveFilePartial);
-      //     saveFile(Object.assign({localId: reduxFile.localId, pkid: reduxFile.pkid, localFile: file}, saveFilePartial))
-      //   }
-      // } else {
-      //   const createFilePartial = {...reduxFile, ...saveFilePartial, localFile: file};
-      //   saveFile(createFilePartial);
-      // }
-    }
-
+    saveFile(reduxFile.localId);
   }
 
 
