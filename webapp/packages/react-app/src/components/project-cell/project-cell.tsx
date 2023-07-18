@@ -1,5 +1,5 @@
 import "./project-cell.css";
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import Preview from "../file-cell/preview";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -19,17 +19,22 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
   }
 
-  const { createProjectBundle } = useActions();
+  const { createProjectBundle, updateFile } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
+  // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
+  const editedFileRef = useRef<ReduxFile|null>(null);
+
   const editedFile = useMemo<ReduxFile|null>(() => {
     if (editedFileLocalId) {
+      editedFileRef.current = filesState.data[editedFileLocalId];
       return filesState.data[editedFileLocalId];
     }
     return null;
   }, [editedFileLocalId, filesState]);
+
 
   // Temporary till we fix layout
   // const [editorContent, setEditorContent] = useState<string>('');
@@ -52,6 +57,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }, [reduxProject]);
 
   useEffect(() => {
+    console.log(`editedFileLocalId: ${editedFileLocalId}`);
     if (!editedFileLocalId) {
       return;
     }
@@ -68,9 +74,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editedFileLocalId, filesState]);
 
-  if (!reduxProject) {
-    return <h1>reduxProject:{reduxProject} is not defined</h1>
-  }
 
   const handleBundleClick = () => {
     // console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
@@ -87,7 +90,14 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }
 
   const handleEditorChange = (value:string) => {
+    if (editedFileRef.current && editedFileRef.current.localId) {
+      console.log(`file[${editedFileRef.current.localId}]: value=${value}`)
+      updateFile({localId: editedFileRef.current.localId, content:value});
+    }
+  };
 
+  if (!reduxProject) {
+    return <h1>reduxProject:{reduxProject} is not defined</h1>
   }
 
   return (
@@ -101,7 +111,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 <CodeEditor
                     localId={editedFile?.localId || 'null'}
                     initialValue={editedFile?.content || ''}
-                    onChange={handleEditorChange}
+                    onChange={(value) => handleEditorChange(value)}
                 />
               </div>
             </Resizable>
@@ -143,9 +153,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
             </div>
         }
       </div>
-      <div style={{width: "100%", height: "100%"}}>
-        {projectFiles && <FileList project={reduxProject} files={projectFiles} />}
-      </div>
+      {/*<div style={{width: "100%", height: "100%"}}>*/}
+      {/*  {projectFiles && <FileList project={reduxProject} files={projectFiles} />}*/}
+      {/*</div>*/}
     </div>
   );
 }

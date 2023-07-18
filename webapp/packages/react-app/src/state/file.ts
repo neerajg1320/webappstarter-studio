@@ -17,6 +17,7 @@ export interface ReduxFile extends ServerObject {
   project?:number; // This is project.pkid
   isEntryPoint?: boolean;
   is_entry_point?: boolean; // This is from server
+  fileSavePartial: ReduxFileSavePartial;
 }
 
 export interface ReduxFilePartial extends ServerObjectPartial {
@@ -30,5 +31,12 @@ export interface ReduxFilePartial extends ServerObjectPartial {
   projectLocalId?: string;
   project?:number;
   isEntryPoint?: boolean;
+  is_entry_point?: boolean;
+}
+
+export interface ReduxFileSavePartial {
+  localId: string;
+  file?: File;
+  path?: string;
   is_entry_point?: boolean;
 }

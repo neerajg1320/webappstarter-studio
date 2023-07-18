@@ -24,26 +24,39 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
   switch(action.type) {
     case ActionType.CREATE_FILE:
       console.log(`filesReducer: ${JSON.stringify(action)}`);
+      var {localId} = action.payload;
       const file: ReduxFile = {
         reduxType: 'file',
         fileType: 'javascript',
-        ...action.payload,
         id: '',
         pkid: -1,
         synced: false,
         content: null,
         contentSynced: false,
         isServerResponse: false,
+        fileSavePartial: {localId},
+        ...action.payload,
       };
-      state.data[file.localId] = file;
+      state.data[localId] = file;
       return state;
 
     case ActionType.UPDATE_FILE:
       // console.log(`filesReducer: ${JSON.stringify(action)}`);
-      const {localId} = action.payload;
+      var {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],
         ...action.payload
+      }
+      return state;
+
+    case ActionType.UPDATE_FILE_SAVE_PARTIAL:
+      var {localId} = action.payload;
+      state.data[localId] = {
+        ...state.data[localId],
+        fileSavePartial: {
+          ...state.data[localId].fileSavePartial,
+          ...action.payload,
+        }
       }
       return state;
 
@@ -69,6 +82,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           file.synced = true;
           // file.content = null;
           // file.contentSynced = false;
+          file.fileSavePartial = {localId: file.localId}
 
           acc[file.localId] = file;
           return acc;

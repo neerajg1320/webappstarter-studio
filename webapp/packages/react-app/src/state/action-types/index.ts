@@ -26,6 +26,9 @@ export enum ActionType {
   UPDATE_FILE = 'update_file',
   DELETE_FILE = 'delete_file',
 
+  UPDATE_FILE_SAVE_PARTIAL = 'update_file_save_partial',
+  SAVE_FILE = 'save_file',
+
   ADD_FILES_TO_LIST = 'add_files_to_list',
   DELETE_FILES_FROM_LIST = 'delete_files_from_list',
 

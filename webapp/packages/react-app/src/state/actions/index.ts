@@ -1,7 +1,7 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
-import {FileTypes, ReduxFile, ReduxFilePartial} from "../file";
+import {FileTypes, ReduxFile, ReduxFilePartial, ReduxFileSavePartial} from "../file";
 
 export type Direction = 'up' | 'down';
 
@@ -138,6 +138,11 @@ export interface UpdateFileAction {
   payload: ReduxFilePartial
 }
 
+export interface UpdateFileSavePartialAction {
+  type: ActionType.UPDATE_FILE_SAVE_PARTIAL,
+  payload: ReduxFileSavePartial
+}
+
 export interface DeleteFileAction {
   type: ActionType.DELETE_FILE,
   payload: string
@@ -189,6 +194,7 @@ export type Action =
     | SetCurrentProjectAction
     | CreateFileAction
     | UpdateFileAction
+    | UpdateFileSavePartialAction
     | DeleteFileAction
     | AddFilesToListAction
     | DeleteFilesFromList

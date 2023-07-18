@@ -1,9 +1,11 @@
 import { Dispatch } from "redux";
 import { Action } from "../actions";
 import { ActionType } from "../action-types";
-import {createProjectOnServer, saveCells} from "../action-creators";
+import {createProjectOnServer, saveCells, updateFileSavePartial} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
+import {ReduxFileSavePartial} from "../file";
+import {createFileFromString} from "../../utils/file";
 
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
@@ -11,7 +13,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
   return (next: (action: Action) => void) => {
     return (action: Action) => {
-      // console.log(`persistMiddleware: ${JSON.stringify(action)}`);
+      // console.log(`persistMiddleware: ${JSON.stringify(action, null, 2)}`);
 
       next(action);
 
@@ -54,7 +56,27 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
           // createFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
         } else if (action.type === ActionType.UPDATE_FILE) {
+          // The middleware take the responsibility of syncing
+          // console.log(`middleware: `, action.payload)
+          const {localId, path, content, isEntryPoint} = action.payload;
 
+          const fileSavePartial:ReduxFileSavePartial = {localId};
+
+          if (Object.keys(action.payload).includes('path')) {
+            fileSavePartial['path']= path;
+          }
+
+          if (Object.keys(action.payload).includes('isEntryPoint')) {
+            fileSavePartial['is_entry_point']= isEntryPoint;
+          }
+
+          if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
+            const fileName = localId;
+            const file = createFileFromString(content, fileName);
+            fileSavePartial['file']= file;
+          }
+
+          dispatch(updateFileSavePartial(fileSavePartial));
         }
       }
 

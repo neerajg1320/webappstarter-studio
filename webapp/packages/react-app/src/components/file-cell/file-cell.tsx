@@ -21,7 +21,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   const {createCellBundle, updateFile} = useActions();
 
   // TBD: These local states can be done with and taken directly to redux
-  const [fileUpdatePartial, setFileUpdatePartial] = useState<ReduxFilePartial>({} as ReduxFilePartial);
+  const [fileSavePartial, setFileSavePartial] = useState<ReduxFilePartial>({} as ReduxFilePartial);
 
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
@@ -63,7 +63,8 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     console.log(`[${reduxFile.localId}]handleEditorChange:${value}`);
     console.log(`reduxFile.content:${reduxFile.content}`);
 
-    setFileUpdatePartial((prev) => Object.assign(prev, {content: value}))
+    // TBD: To be taken into redux state
+    setFileSavePartial((prev) => Object.assign(prev, {content: value}))
 
     updateFile({localId:reduxFile.localId, content:value})
   };
@@ -98,7 +99,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       <FileControlBar reduxFile={reduxFile} />
 
       <div style={{height: "100px"}}>
-        <pre>{JSON.stringify(fileUpdatePartial, null, 2)}</pre>
+        <pre>{JSON.stringify(fileSavePartial, null, 2)}</pre>
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ import {
   MoveCellAction,
   SetCurrentProjectAction,
   UpdateCellAction,
-  UpdateFileAction,
+  UpdateFileAction, UpdateFileSavePartialAction,
   UpdateProjectAction
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
@@ -21,7 +21,7 @@ import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
-import {FileTypes, ReduxFile, ReduxFilePartial} from "../file";
+import {FileTypes, ReduxFile, ReduxFilePartial, ReduxFileSavePartial} from "../file";
 import {randomIdGenerator} from "../id";
 
 
@@ -298,6 +298,13 @@ export const updateFile = (filePartial: ReduxFilePartial): UpdateFileAction => {
   return {
     type: ActionType.UPDATE_FILE,
     payload: filePartial
+  }
+}
+
+export const updateFileSavePartial = (fileSavePartial: ReduxFileSavePartial): UpdateFileSavePartialAction => {
+  return {
+    type: ActionType.UPDATE_FILE_SAVE_PARTIAL,
+    payload: fileSavePartial
   }
 }
 
