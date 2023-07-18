@@ -4,6 +4,7 @@ import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
 import {replaceFilePart} from "../../utils/path";
 import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
+import {debugComponent} from "../../config/global";
 
 interface FileControlBarProps {
   reduxFile: ReduxFile;
@@ -15,9 +16,11 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
 
   const handleBundleClick = () => {
-    console.log(reduxFile.content);
+    if (debugComponent) {
+      console.log(reduxFile.content);
+    }
 
-    if (!reduxFile || !reduxFile.content) {
+    if (!reduxFile.content) {
       console.log(`Error! no file contents found`)
       return;
     }

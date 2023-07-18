@@ -30,6 +30,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     console.log(`ProjectCell:render reduxProject`, reduxProject);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
   const { createProjectBundle, updateProject, updateFile } = useActions();
 
@@ -79,6 +80,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
       updateFile({localId: _editedFile.localId, content:value});
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
@@ -144,13 +147,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
-                <div style={{
-                  height: "60px",
-                  padding:"0 10px",
-                  border: "1px solid yellow",
-                  display: "flex",
-                }}
-                >
+                <div className="file-cell-control-bar-wrapper">
                   {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 </div>
 

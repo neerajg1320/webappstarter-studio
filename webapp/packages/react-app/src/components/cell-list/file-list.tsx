@@ -37,6 +37,7 @@ const FileList:React.FC<FileListProps> = ({project, files}) => {
       ));
     }
     return [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files]);
 
   return (

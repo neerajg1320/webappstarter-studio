@@ -21,7 +21,7 @@ import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
-import {FileTypes, ReduxFile, ReduxCreateFilePartial, ReduxUpdateFilePartial, ReduxSaveFilePartial} from "../file";
+import {ReduxFile, ReduxCreateFilePartial, ReduxUpdateFilePartial, ReduxSaveFilePartial} from "../file";
 import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";

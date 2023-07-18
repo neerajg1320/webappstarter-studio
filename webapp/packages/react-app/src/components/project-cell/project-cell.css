@@ -3,3 +3,9 @@
     border: 1px solid gray;
     padding: 10px;
 }
+
+.file-cell-control-bar-wrapper {
+  height: 60px;
+  padding: 0 10px;
+  display: flex;
+}
