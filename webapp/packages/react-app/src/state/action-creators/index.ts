@@ -390,14 +390,16 @@ export const saveFile = (localId: string) => {
     if (!pkid || pkid < 0) {
       createFileOnServer(fileState as ReduxCreateFilePartial)(dispatch, getState);
     } else {
-      if (Object.keys(fileState.saveFilePartial).length < 2) {
+      let _saveFilePartial = {...fileState.saveFilePartial};
+
+      if (Object.keys(_saveFilePartial).length < 2) {
         console.log(`Warning! nothing needs to be saved. Disable save controls`);
       }
 
-      if (Object.keys(fileState.saveFilePartial).includes('content') && fileState.content) {
-        fileState.saveFilePartial['file'] = createFileFromString(fileState.content, fileState.localId);
+      if (Object.keys(_saveFilePartial).includes('content') && fileState.content) {
+        _saveFilePartial['file'] = createFileFromString(fileState.content, fileState.localId);
       }
-      updateFileOnServer(pkid, fileState.saveFilePartial)(dispatch, getState);
+      updateFileOnServer(pkid, _saveFilePartial)(dispatch, getState);
     }
   }
 }
