@@ -128,12 +128,16 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
             >
               <div style={{
                 width: "100%", height: "100%",
-                display:"flex", flexDirection:"column", gap:"20px", justifyContent: "space-between",
+                display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between",
               }}
               >
                 {/* File Tree Operations*/}
                 <FileTreeControlBar reduxProject={reduxProject} />
-                <div>
+                <div style={{
+                    border: "1px solid lightcyan",
+                    flexGrow: 1
+                  }}
+                >
                   <FilesTree
                       project={reduxProject}
                       onSelectedFileChange={handleFileTreeSelectedFileChange}

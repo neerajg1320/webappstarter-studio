@@ -1,3 +1,4 @@
+import './file-tree-control-bar.css';
 import React from "react";
 import {ReduxProject} from "../../state";
 
@@ -6,12 +7,7 @@ interface FileTreeControlBarProps {
 }
 const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject}) => {
   return (
-      <div style={{
-        height: "20px", width: "100%",
-        border:"1px solid yellow",
-        display: "flex", flexDirection:"row", justifyContent: "flex-end"
-      }}
-      >
+      <div className="file-tree-control-bar">
 
       </div>
   );
