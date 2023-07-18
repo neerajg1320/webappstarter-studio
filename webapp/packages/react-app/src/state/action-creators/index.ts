@@ -23,6 +23,7 @@ import {RootState} from "../reducers";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
 import {FileTypes, ReduxFile, ReduxCreateFilePartial, ReduxUpdateFilePartial, ReduxSaveFilePartial} from "../file";
 import {randomIdGenerator} from "../id";
+import {debugRedux} from "../../config/global";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -427,7 +428,9 @@ export const saveFiles = ([localIds]: [string]) => {
 
 export const fetchFileContents = (localIds: [string]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(`fetchFileContents: ${localIds[0]}`);
+    if (debugRedux) {
+      console.log(`fetchFileContents: ${localIds[0]}`);
+    }
 
     if (!localIds || localIds.length < 1) {
       console.log('fetchFileIds(): No ids specified');

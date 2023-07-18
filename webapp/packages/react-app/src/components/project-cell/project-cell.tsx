@@ -7,7 +7,7 @@ import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
-import {debugRedux} from "../../config/global";
+import {debugComponent, debugRedux} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileTreeControlBar, {FileTreeEvent} from "../files-tree/file-tree-control-bar";
 
@@ -54,7 +54,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     // console.log('editedFile:', editedFile);
 
     if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
-      console.log(`file[${_editedFile.localId}]: value=${value}`)
+      if (debugComponent) {
+        console.log(`file[${_editedFile.localId}]: value=${value}`)
+      }
 
       updateFile({localId: _editedFile.localId, content:value});
     }
@@ -66,7 +68,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }, [reduxProject]);
 
   useEffect( () => {
-    console.log(`editedFile:`, editedFile);
+    if (debugComponent) {
+      console.log(`editedFile:`, editedFile);
+    }
+
     if (!editedFile) {
       return;
     }

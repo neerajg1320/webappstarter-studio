@@ -68,7 +68,9 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
           const {isServerResponse} = action.payload;
           if (isServerResponse) {
-            console.log(`Server Response Detected`);
+            if (debugRedux) {
+              console.log(`Server Response Detected`);
+            }
             return;
           }
 

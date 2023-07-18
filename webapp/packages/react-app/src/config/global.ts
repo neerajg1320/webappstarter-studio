@@ -21,3 +21,6 @@ export const serverConnect = true;
 export const syncCellsToServer = serverConnect && false;
 export const syncProjectsToServer = serverConnect && true;
 export const syncFilesToServer = serverConnect && true;
+
+// React Components
+export const debugComponent = false;

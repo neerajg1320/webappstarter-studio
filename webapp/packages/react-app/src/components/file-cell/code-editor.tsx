@@ -6,6 +6,7 @@ import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
+import {debugComponent} from "../../config/global";
 
 interface CodeEditorProps {
   // localId: string;
@@ -14,18 +15,23 @@ interface CodeEditorProps {
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
-
   const editorRef = useRef<any>();
 
   useEffect(() => {
-    console.log(`CodeEditor: useEffect([]) created`);
+    if (debugComponent) {
+      console.log(`CodeEditor: useEffect([]) created`);
+    }
 
     return () => {
-      console.log(`CodeEditor: destroyed`)
+      if (debugComponent) {
+        console.log(`CodeEditor: destroyed`)
+      }
     }
   }, []);
 
-  console.log(`CodeEditor[${''}]:render`);
+  if (debugComponent) {
+    console.log(`CodeEditor[${''}]:render`);
+  }
 
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
     editorRef.current = monacoEditor;
