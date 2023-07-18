@@ -585,6 +585,7 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
         ...response.data
       })); //
 
+      // TBD: We need to fix this logic
       // const {projectLocalId, isEntryPoint, path}  = saveFilePartial;
       // if (projectLocalId) {
       //   if (isEntryPoint) {
