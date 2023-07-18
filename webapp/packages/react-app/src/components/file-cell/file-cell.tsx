@@ -6,8 +6,6 @@ import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import {autoBundling, debugRedux} from '../../config/global';
-import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
-import {createFileFromString, readFileContent} from "../../utils/file";
 import {ReduxFile, ReduxFilePartial} from "../../state/file";
 import FileControlBar from "./file-control-bar";
 
@@ -20,7 +18,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     return autoBundling;
   }, []);
 
-  const {createCellBundle, updateFile, saveFile} = useActions();
+  const {createCellBundle, updateFile} = useActions();
 
   // TBD: These local states can be done with and taken directly to redux
   const [fileUpdatePartial, setFileUpdatePartial] = useState<ReduxFilePartial>({} as ReduxFilePartial);
@@ -69,9 +67,6 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
 
     updateFile({localId:reduxFile.localId, content:value})
   };
-
-
-
 
 
   return (
