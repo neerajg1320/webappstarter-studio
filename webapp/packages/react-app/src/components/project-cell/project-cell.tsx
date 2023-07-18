@@ -21,7 +21,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }
 
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
-  const { createProjectBundle, updateFile } = useActions();
+  const { createProjectBundle, updateProject, updateFile } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
@@ -104,6 +104,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
     if (reduxProject.entry_path) {
       createProjectBundle(reduxProject.localId, `${reduxProject.folder}/${reduxProject.entry_path}`);
+      updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }
@@ -177,10 +178,13 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
       {/* TBD: We can try to make this resizable as well */}
       <div style={{height:"200px"}}>
-        {(bundlesState[reduxProject.localId]) &&
+        {(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
-              {/*<pre>{bundlesState[currentProject.localId]!.code}</pre>*/}
-              <Preview code={bundlesState[reduxProject.localId]!.code} err={bundlesState[reduxProject.localId]!.err}/>
+              {/*<pre>{bundlesState[currentProject.bundleLocalId]!.code}</pre>*/}
+              <Preview
+                  code={bundlesState[reduxProject.bundleLocalId]!.code}
+                  err={bundlesState[reduxProject.bundleLocalId]!.err}
+              />
             </div>
         }
       </div>
