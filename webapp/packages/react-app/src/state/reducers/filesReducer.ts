@@ -33,7 +33,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         isServerResponse: false,
         requestInitiated: false,
         saveFilePartial: {localId},
-        isEditAllowed: false,
+        isEditAllowed: true,
         ...action.payload,
       };
       state.data[localId] = file;
@@ -77,11 +77,13 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         state.data = action.payload.reduce((acc, file) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           // file.localId = randomIdGenerator();
+
+          // We do not allow edit till the content is synced
           file.isEditAllowed = false;
           file.reduxType = 'file';
           file.synced = true;
-          // file.content = null;
-          // file.contentSynced = false;
+          file.content = null;
+          file.contentSynced = false;
           file.requestInitiated = false;
           file.saveFilePartial = {localId: file.localId}
 

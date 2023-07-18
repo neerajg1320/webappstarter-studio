@@ -487,16 +487,19 @@ export const fetchFileContents = (localIds: [string]) => {
 
 
 // This action is dispatched from the persistMiddleware.
-export const createFileOnServer = (filePartial: ReduxCreateFilePartial) => {
+export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    const {localId} = filePartial;
-    const formData = new FormData();
-    formData.append("path", filePartial.path || '');
-    formData.append("file", filePartial.localFile!);
-    formData.append("is_entry_point", filePartial.isEntryPoint! as unknown as string);
+    console.log(`fileCreatePartial:`, fileCreatePartial);
 
-    if (filePartial.projectLocalId) {
-      const project = getState().projects.data[filePartial.projectLocalId];
+    const {localId} = fileCreatePartial;
+
+    const formData = new FormData();
+    formData.append("path", fileCreatePartial.path || '');
+    formData.append("file", fileCreatePartial.localFile!);
+    formData.append("is_entry_point", fileCreatePartial.isEntryPoint! as unknown as string);
+
+    if (fileCreatePartial.projectLocalId) {
+      const project = getState().projects.data[fileCreatePartial.projectLocalId];
       console.log(project)
       if (project.pkid > 0) {
         formData.append("project", project.pkid as unknown as string); // We could use pkid as well
@@ -517,7 +520,7 @@ export const createFileOnServer = (filePartial: ReduxCreateFilePartial) => {
         ...response.data
       })); //
 
-      const {projectLocalId, isEntryPoint, path}  = filePartial;
+      const {projectLocalId, isEntryPoint, path}  = fileCreatePartial;
       if (projectLocalId) {
         if (isEntryPoint) {
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
