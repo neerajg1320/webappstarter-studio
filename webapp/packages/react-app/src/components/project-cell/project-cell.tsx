@@ -20,6 +20,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
   }
 
+  const [showCellsList, setShowCellsList] = useState<boolean>(false);
   const { createProjectBundle, updateFile } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
@@ -189,9 +190,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
         {editedFile && <pre>{JSON.stringify(editedFile.saveFilePartial, null, 2)}</pre>}
       </div>
 
-      <div style={{width: "100%", height: "100%"}}>
-        {projectFiles && <FileList project={reduxProject} files={projectFiles} />}
-      </div>
+      {showCellsList &&
+        <div style={{width: "100%", height: "100%"}}>
+          {projectFiles && <FileList project={reduxProject} files={projectFiles} />}
+        </div>
+      }
     </div>
   );
 }
