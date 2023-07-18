@@ -1,0 +1,7 @@
+.file-cell-control-bar {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  align-items: center;
+  margin-top: 5px;
+}

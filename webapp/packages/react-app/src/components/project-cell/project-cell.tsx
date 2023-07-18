@@ -9,7 +9,7 @@ import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
 import FileList from "../cell-list/file-list";
 import {debugRedux} from "../../config/global";
-import FileControlBar from "../file-cell/file-control-bar";
+import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileTreeControlBar, {FileTreeEvent} from "../files-tree/file-tree-control-bar";
 
 interface ProjectCellProps {
@@ -114,7 +114,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
-                {editedFile && <FileControlBar reduxFile={editedFile} />}
+                {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 <CodeEditor
                     // localId={editedFile?.localId || 'null'}
                     initialValue={editedFile?.content || ''}

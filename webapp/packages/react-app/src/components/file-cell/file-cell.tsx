@@ -7,7 +7,7 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import {autoBundling, debugRedux} from '../../config/global';
 import {ReduxFile} from "../../state/file";
-import FileControlBar from "./file-control-bar";
+import FileCellControlBar from "./file-cell-control-bar";
 
 interface CodeCellProps {
   reduxFile: ReduxFile
@@ -93,7 +93,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       </Resizable>
 
       {/* This portion has been added to support a file with cell. */}
-      <FileControlBar reduxFile={reduxFile} />
+      <FileCellControlBar reduxFile={reduxFile} />
 
       <div style={{height: "100px"}}>
         <pre>{JSON.stringify(reduxFile.saveFilePartial, null, 2)}</pre>

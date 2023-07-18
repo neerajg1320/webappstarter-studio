@@ -1,3 +1,4 @@
+import "./file-cell-control-bar.css";
 import React, {useRef, useState} from "react";
 import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
@@ -8,7 +9,7 @@ interface FileControlBarProps {
   reduxFile: ReduxFile;
 }
 
-const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
+const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const { updateFile, saveFile, createCellBundle } = useActions();
 
@@ -82,11 +83,7 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
 
   return (
-      <div style={{
-        display: "flex", justifyContent: "center", gap: "60px", alignItems: "center",
-        marginTop: "5px"
-      }}
-      >
+      <div className="file-cell-control-bar">
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <span>localId: {reduxFile.localId}</span>
           <span>Pkid: {reduxFile.pkid}</span>
@@ -138,4 +135,4 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   );
 }
 
-export default FileControlBar;
+export default FileCellControlBar;
