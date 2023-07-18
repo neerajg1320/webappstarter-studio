@@ -119,12 +119,26 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               </div>
             </Resizable>
             {/* <pre>{code}</pre> */}
-            <div style={{overflow:"scroll"}}>
+            <div style={{
+                overflow:"scroll",
+                border: "1px solid lightblue",
+                flexGrow: 1
+              }}
+            >
               <div style={{
                 width: "100%", height: "100%",
                 display:"flex", flexDirection:"column", gap:"20px", justifyContent: "space-between",
               }}
               >
+                {/* File operations*/}
+                <div style={{
+                    height: "20px", width: "100%",
+                    border:"1px solid yellow",
+                    display: "flex", flexDirection:"row", justifyContent: "flex-end"
+                  }}
+                >
+
+                </div>
                 <div>
                   <FilesTree
                       project={reduxProject}
