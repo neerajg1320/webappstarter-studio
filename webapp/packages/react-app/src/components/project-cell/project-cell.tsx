@@ -10,6 +10,7 @@ import {ReduxFile, ReduxProject} from "../../state";
 import {debugComponent, debugRedux} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileTreeControlBar, {FileTreeEvent} from "../files-tree/file-tree-control-bar";
+import FileList from "../cell-list/file-list";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
@@ -27,6 +28,20 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
 
+  // The following is used in the FileList component
+  // eslint-disable-next-line
+  const projectFiles:ReduxFile[] = useMemo(() => {
+    if (reduxProject) {
+      const files = Object.entries(filesState.data)
+          .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
+          .map(([k, v]) => v);
+
+      // console.log(`files:`, files);
+      return files;
+    }
+
+    return [];
+  }, [reduxProject, filesState.data]);
 
   const editedFile = useMemo<ReduxFile|null>(() => {
     if (editedFileLocalId) {
@@ -40,13 +55,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   // Temporary till we fix layout
   // const [editorContent, setEditorContent] = useState<string>('');
   const { fetchFileContents } = useActions();
-
-  const editorIntialContent = useMemo<string>(() => {
-    if (editedFile) {
-      return editedFile.content || '';
-    }
-    return 'Start Coding';
-  }, [JSON.stringify(editedFile?.content || '')]);
 
   // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
   const handleEditorChange = useCallback((value:string) => {
@@ -121,8 +129,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
                 {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 <CodeEditor
-                    // localId={editedFile?.localId || 'null'}
-                    // initialValue={editorIntialContent}
                     initialValue={editedFile?.content || "Start Coding"}
                     onChange={handleEditorChange}
                 />
@@ -183,9 +189,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
         {editedFile && <pre>{JSON.stringify(editedFile.saveFilePartial, null, 2)}</pre>}
       </div>
 
-      {/*<div style={{width: "100%", height: "100%"}}>*/}
-      {/*  {projectFiles && <FileList project={reduxProject} files={projectFiles} />}*/}
-      {/*</div>*/}
+      <div style={{width: "100%", height: "100%"}}>
+        {projectFiles && <FileList project={reduxProject} files={projectFiles} />}
+      </div>
     </div>
   );
 }

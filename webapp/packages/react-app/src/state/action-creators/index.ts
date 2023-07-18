@@ -388,7 +388,11 @@ export const saveFile = (localId: string) => {
     // Here we use member based type narrowing
     const {pkid} = fileState;
     if (!pkid || pkid < 0) {
-      createFileOnServer(fileState as ReduxCreateFilePartial)(dispatch, getState);
+      let _createFilePartial:ReduxCreateFilePartial = {...fileState};
+      if (Object.keys(_createFilePartial).includes('content') && fileState.content) {
+        _createFilePartial['localFile'] = createFileFromString(fileState.content, fileState.localId);
+      }
+      createFileOnServer(_createFilePartial)(dispatch, getState);
     } else {
       let _saveFilePartial = {...fileState.saveFilePartial};
 

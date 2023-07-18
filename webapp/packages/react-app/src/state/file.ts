@@ -7,8 +7,8 @@ export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' |
 export interface ReduxFile extends ServerObject {
   reduxType: 'file',
   localId: string,
-  path?: string;
-  fileType?: FileTypes;
+  path: string;
+  fileType: FileTypes;
   content: string|null;
   contentSynced: boolean;
   localFile?: File;

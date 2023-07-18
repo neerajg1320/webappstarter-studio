@@ -14,6 +14,8 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   const { updateFile, saveFile, createCellBundle } = useActions();
 
   const handleBundleClick = () => {
+    console.log(reduxFile.content);
+
     if (!reduxFile || !reduxFile.content) {
       console.log(`Error! no file contents found`)
       return;
