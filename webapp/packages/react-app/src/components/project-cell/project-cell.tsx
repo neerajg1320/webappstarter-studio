@@ -7,7 +7,7 @@ import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
-import {debugComponent, debugRedux} from "../../config/global";
+import {debugComponent} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileTreeControlBar, {FileTreeEvent} from "../files-tree/file-tree-control-bar";
 import FileList from "../cell-list/file-list";
@@ -16,8 +16,18 @@ interface ProjectCellProps {
   reduxProject: ReduxProject;
 }
 const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
-  if (debugRedux) {
-    console.log(`reduxProject`, JSON.stringify(reduxProject, null, 2));
+  useEffect(() => {
+    if (debugComponent) {
+      console.log('ProjectCell: useEffect[] firstRender');
+    }
+
+    return () => {
+      console.log('ProjectCell: destroyed');
+    }
+  }, []);
+
+  if (debugComponent) {
+    console.log(`ProjectCell:render reduxProject`, reduxProject);
   }
 
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
@@ -73,8 +83,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
 
   useEffect(() => {
+    console.log(`ProjectCell: useEffect([reduxProject])`)
     setEditedFileLocalId(null);
-  }, [reduxProject]);
+  }, [reduxProject.localId]);
 
   useEffect( () => {
     if (debugComponent) {
@@ -111,6 +122,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }
 
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
+    console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
     setEditedFileLocalId(fileLocalId);
   }
 
@@ -129,6 +141,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
+                <p>{editedFile?.path}</p>
                 {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 <CodeEditor
                     initialValue={editedFile?.content || "Start Coding"}

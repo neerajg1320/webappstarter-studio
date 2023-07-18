@@ -398,6 +398,7 @@ export const saveFile = (localId: string) => {
 
       if (Object.keys(_saveFilePartial).length < 2) {
         console.log(`Warning! nothing needs to be saved. Disable save controls`);
+        return;
       }
 
       if (Object.keys(_saveFilePartial).includes('content') && fileState.content) {
