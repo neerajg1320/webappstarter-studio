@@ -141,8 +141,16 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
               <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
-                <p>{editedFile?.path}</p>
-                {editedFile && <FileCellControlBar reduxFile={editedFile} />}
+                <div style={{
+                  height: "60px",
+                  padding:"0 10px",
+                  border: "1px solid yellow",
+                  display: "flex",
+                }}
+                >
+                  {editedFile && <FileCellControlBar reduxFile={editedFile} />}
+                </div>
+
                 <CodeEditor
                     initialValue={editedFile?.content || "Start Coding"}
                     onChange={handleEditorChange}

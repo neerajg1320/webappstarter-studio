@@ -79,7 +79,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           <span>localId: {reduxFile.localId}</span>
           <span>Pkid: {reduxFile.pkid}</span>
-          <span>Project: {reduxFile.projectLocalId}</span>
+          {/*<span>Project: {reduxFile.projectLocalId}</span>*/}
         </div>
 
         <div style={{display:"flex", flexDirection:"column", gap:"5px", alignItems: "center"}}>
