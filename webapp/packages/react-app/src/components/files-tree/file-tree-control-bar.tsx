@@ -4,9 +4,14 @@ import {ReduxProject} from "../../state";
 import {useActions} from "../../hooks/use-actions";
 import {randomIdGenerator} from "../../state/id";
 
+export interface FileTreeEvent {
+  name: string;
+  data: any;
+}
+
 interface FileTreeControlBarProps {
   reduxProject: ReduxProject;
-  onEvent: () => {};
+  onEvent: (event:FileTreeEvent) => void;
 }
 
 const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onEvent}) => {
