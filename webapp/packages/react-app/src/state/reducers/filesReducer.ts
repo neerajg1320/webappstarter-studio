@@ -27,14 +27,11 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       var {localId} = action.payload;
       const file: ReduxFile = {
         reduxType: 'file',
-        fileType: 'javascript',
         id: '',
         pkid: -1,
         synced: false,
-        content: null,
-        contentSynced: false,
         isServerResponse: false,
-        fileSavePartial: {localId},
+        saveFilePartial: {localId},
         ...action.payload,
       };
       state.data[localId] = file;
@@ -53,8 +50,8 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       var {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],
-        fileSavePartial: {
-          ...state.data[localId].fileSavePartial,
+        saveFilePartial: {
+          ...state.data[localId].saveFilePartial,
           ...action.payload,
         }
       }
@@ -82,7 +79,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           file.synced = true;
           // file.content = null;
           // file.contentSynced = false;
-          file.fileSavePartial = {localId: file.localId}
+          file.saveFilePartial = {localId: file.localId}
 
           acc[file.localId] = file;
           return acc;

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {ReduxFile, ReduxFilePartial} from "../../state";
+import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
@@ -11,7 +11,6 @@ interface FileControlBarProps {
 const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const { updateFile, saveFile, createCellBundle } = useActions();
-  const [fileSavePartial, setFileSavePartial] = useState<ReduxFilePartial>({} as ReduxFilePartial);
 
   const handleBundleClick = () => {
     if (!reduxFile || !reduxFile.content) {
@@ -29,7 +28,7 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
     const file = e.target.files[0];
 
-    const fileUpdatePartial:ReduxFilePartial= {localId: reduxFile.localId};
+    const fileUpdatePartial:ReduxUpdateFilePartial= {localId: reduxFile.localId};
 
     if (reduxFile.path) {
       const filePath = replaceFilePart(reduxFile.path, file.name);
@@ -42,17 +41,17 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
     fileUpdatePartial['content'] = fileContent;
 
     updateFile(fileUpdatePartial);
-    setFileSavePartial((prev) => Object.assign(prev, {content: fileContent}))
+    // setFileSavePartial((prev) => Object.assign(prev, {content: fileContent}))
   }
 
   const handleEntryPointChange = (checked: boolean) => {
-    setFileSavePartial((prev) => Object.assign(prev, {isEntryPoint: checked}));
+    // setFileSavePartial((prev) => Object.assign(prev, {isEntryPoint: checked}));
     updateFile({localId: reduxFile.localId, isEntryPoint: checked})
   }
 
   const handleFilePathChange = (filePath:string) => {
     // setFilePath(filePath);
-    setFileSavePartial((prev) => Object.assign(prev, {path: filePath}))
+    // setFileSavePartial((prev) => Object.assign(prev, {path: filePath}))
     updateFile({localId: reduxFile.localId, path: filePath})
   }
 
@@ -66,18 +65,19 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
       const fileName = getFileNameFromPath(reduxFile.path);
       const file = createFileFromString(reduxFile.content, fileName);
 
-      if (reduxFile.pkid && reduxFile.pkid > 0) {
-        if (Object.keys(fileSavePartial).length > 0) {
-          console.log(`fileUpdatePartial:`, fileSavePartial);
-          saveFile(Object.assign({localId: reduxFile.localId, pkid: reduxFile.pkid, localFile: file}, fileSavePartial))
-        }
-      } else {
-        const createFilePartial = {...reduxFile, ...fileSavePartial, localFile: file};
-        saveFile(createFilePartial);
-      }
+      // Call saveFile(reduxFile.localId)
+
+      // if (reduxFile.pkid && reduxFile.pkid > 0) {
+      //   if (Object.keys(saveFilePartial).length > 0) {
+      //     console.log(`fileUpdatePartial:`, saveFilePartial);
+      //     saveFile(Object.assign({localId: reduxFile.localId, pkid: reduxFile.pkid, localFile: file}, saveFilePartial))
+      //   }
+      // } else {
+      //   const createFilePartial = {...reduxFile, ...saveFilePartial, localFile: file};
+      //   saveFile(createFilePartial);
+      // }
     }
 
-    setFileSavePartial({} as ReduxFilePartial);
   }
 
 
@@ -122,7 +122,7 @@ const FileControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
-              disabled={!(Object.keys(fileSavePartial).length > 0)}
+              disabled={!(Object.keys(reduxFile.saveFilePartial).length > 0)}
           >
             Save
           </button>

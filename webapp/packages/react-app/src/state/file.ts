@@ -17,25 +17,43 @@ export interface ReduxFile extends ServerObject {
   project?:number; // This is project.pkid
   isEntryPoint?: boolean;
   is_entry_point?: boolean; // This is from server
-  fileSavePartial: ReduxFileSavePartial;
+  saveFilePartial: ReduxSaveFilePartial;
 }
 
-export interface ReduxFilePartial extends ServerObjectPartial {
+export interface ReduxCreateFilePartial extends ServerObjectPartial {
+  localId: string,
+  path: string,
+  fileType: FileTypes,
+  content: string|null;
+  contentSynced: boolean;
+  localFile?: File;
+  projectLocalId?: string;
+  isEntryPoint?: boolean;
+  // Following are received from server
+  file?: string;
+  project?:number;
+  is_entry_point?: boolean;
+}
+
+export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   localId: string,
   path?: string,
   fileType?: FileTypes,
   content?: string|null;
   contentSynced?: boolean;
   localFile?: File;
-  file?: string;
   projectLocalId?: string;
-  project?:number;
   isEntryPoint?: boolean;
+
+  // Following are received from server
+  file?: string;
+  project?:number;
   is_entry_point?: boolean;
 }
 
-export interface ReduxFileSavePartial {
+export interface ReduxSaveFilePartial {
   localId: string;
+  pkid?:string;
   file?: File;
   path?: string;
   is_entry_point?: boolean;

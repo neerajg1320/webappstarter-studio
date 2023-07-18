@@ -4,7 +4,7 @@ import { ActionType } from "../action-types";
 import {createProjectOnServer, saveCells, updateFileSavePartial} from "../action-creators";
 import { RootState } from "../reducers";
 import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
-import {ReduxFileSavePartial} from "../file";
+import {ReduxSaveFilePartial} from "../file";
 import {createFileFromString} from "../../utils/file";
 
 
@@ -60,23 +60,23 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           // console.log(`middleware: `, action.payload)
           const {localId, path, content, isEntryPoint} = action.payload;
 
-          const fileSavePartial:ReduxFileSavePartial = {localId};
+          const saveFilePartial:ReduxSaveFilePartial = {localId};
 
           if (Object.keys(action.payload).includes('path')) {
-            fileSavePartial['path']= path;
+            saveFilePartial['path']= path;
           }
 
           if (Object.keys(action.payload).includes('isEntryPoint')) {
-            fileSavePartial['is_entry_point']= isEntryPoint;
+            saveFilePartial['is_entry_point']= isEntryPoint;
           }
 
           if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
             const fileName = localId;
             const file = createFileFromString(content, fileName);
-            fileSavePartial['file']= file;
+            saveFilePartial['file']= file;
           }
 
-          dispatch(updateFileSavePartial(fileSavePartial));
+          dispatch(updateFileSavePartial(saveFilePartial));
         }
       }
 

@@ -21,7 +21,7 @@ import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
-import {FileTypes, ReduxFile, ReduxFilePartial, ReduxFileSavePartial} from "../file";
+import {FileTypes, ReduxFile, ReduxCreateFilePartial, ReduxUpdateFilePartial, ReduxSaveFilePartial} from "../file";
 import {randomIdGenerator} from "../id";
 
 
@@ -287,24 +287,24 @@ export const fetchProjectFromServer = (localId:string) => {
 }
 
 // See if we can call this from fetchFiles
-export const createFile = (filePartial:ReduxFilePartial): CreateFileAction => {
+export const createFile = (filePartial:ReduxCreateFilePartial): CreateFileAction => {
   return {
     type: ActionType.CREATE_FILE,
     payload: filePartial
   }
 }
 
-export const updateFile = (filePartial: ReduxFilePartial): UpdateFileAction => {
+export const updateFile = (filePartial:ReduxUpdateFilePartial): UpdateFileAction => {
   return {
     type: ActionType.UPDATE_FILE,
     payload: filePartial
   }
 }
 
-export const updateFileSavePartial = (fileSavePartial: ReduxFileSavePartial): UpdateFileSavePartialAction => {
+export const updateFileSavePartial = (saveFilePartial: ReduxSaveFilePartial): UpdateFileSavePartialAction => {
   return {
     type: ActionType.UPDATE_FILE_SAVE_PARTIAL,
-    payload: fileSavePartial
+    payload: saveFilePartial
   }
 }
 
@@ -374,6 +374,56 @@ export const fetchFiles = () => {
   };
 }
 
+
+export const saveFile = (filePartial: ReduxCreateFilePartial|ReduxSaveFilePartial) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log(`saveFile:`, filePartial);
+
+    const {pkid} = filePartial;
+
+    // We have to use member based type narrowing
+    if (!pkid || pkid < 0) {
+        createFileOnServer(filePartial as ReduxCreateFilePartial)(dispatch, getState);
+
+    } else {
+      updateFileOnServer(filePartial as ReduxSaveFilePartial)(dispatch, getState);
+    }
+  }
+}
+
+export const saveFiles = ([localIds]: [string]) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    if (!localIds || localIds.length < 1) {
+      console.log('fetchFileIds(): No ids specified');
+      return;
+    }
+
+    const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
+    console.log(`fileStates:`, fileStates);
+
+    try {
+      const {data}: {data: string} = await axios.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
+
+      dispatch({
+        type: ActionType.UPDATE_FILE,
+        payload: {
+          localId: fileStates[0].localId,
+          content: data,
+          contentSynced: true,
+          isServerResponse: true,
+        }
+      });
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({
+          type: ActionType.FETCH_FILES_ERROR,
+          payload: err.message,
+        });
+      }
+    }
+  }
+}
+
 export const fetchFileContents = ([localIds]: [string]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (!localIds || localIds.length < 1) {
@@ -409,22 +459,16 @@ export const fetchFileContents = ([localIds]: [string]) => {
 
 
 // This action is dispatched from the persistMiddleware.
-export const createFileOnServer = (
-    localId: string,
-    path:string,
-    localFile:File,
-    type: FileTypes,
-    projectLocalId?: string|null,
-    isEntryPoint?: boolean
-) => {
+export const createFileOnServer = (filePartial: ReduxCreateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const {localId} = filePartial;
     const formData = new FormData();
-    formData.append("path", path);
-    formData.append("file", localFile);
-    formData.append("is_entry_point", isEntryPoint as unknown as string);
+    formData.append("path", filePartial.path || '');
+    formData.append("file", filePartial.localFile!);
+    formData.append("is_entry_point", filePartial.isEntryPoint! as unknown as string);
 
-    if (projectLocalId) {
-      const project = getState().projects.data[projectLocalId];
+    if (filePartial.projectLocalId) {
+      const project = getState().projects.data[filePartial.projectLocalId];
       console.log(project)
       if (project.pkid > 0) {
         formData.append("project", project.pkid as unknown as string); // We could use pkid as well
@@ -445,6 +489,7 @@ export const createFileOnServer = (
         ...response.data
       })); //
 
+      const {projectLocalId, isEntryPoint, path}  = filePartial;
       if (projectLocalId) {
         if (isEntryPoint) {
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
@@ -472,34 +517,20 @@ export const createFileOnServer = (
 }
 
 // This action is dispatched from the persistMiddleware.
-export const updateFileOnServer = (
-    localId: string,
-    pkid: number,
-    path?:string,
-    localFile?:File,
-    type?: FileTypes,
-    projectLocalId?: string|null,
-    isEntryPoint?: boolean
-) => {
+export const updateFileOnServer = (saveFilePartial: ReduxSaveFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const formData = new FormData();
-    if (path) {
-      console.log(`Added path: ${path}`)
-      formData.append("path", path);
+    if (Object.keys(saveFilePartial).includes('path')) {
+      formData.append("path", saveFilePartial.path!);
     }
-    if (localFile) {
-      formData.append("file", localFile);
+    if (Object.keys(saveFilePartial).includes('file')) {
+      formData.append("file", saveFilePartial.file!);
     }
-    if (isEntryPoint) {
-      formData.append("is_entry_point", isEntryPoint as unknown as string);
+    if (Object.keys(saveFilePartial).includes('is_entry_point')) {
+      formData.append("is_entry_point", saveFilePartial.is_entry_point! as unknown as string);
     }
-    if (projectLocalId) {
-      const project = getState().projects.data[projectLocalId];
-      console.log(project)
-      if (project.pkid > 0) {
-        formData.append("project", project.pkid as unknown as string); // We could use pkid as well
-      }
-    }
+
+    const {localId, pkid} = saveFilePartial;
 
     try {
       const response = await axios.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: gHeaders});
@@ -515,20 +546,21 @@ export const updateFileOnServer = (
         ...response.data
       })); //
 
-      if (projectLocalId) {
-        if (isEntryPoint) {
-          console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
-          dispatch(updateProject({
-            localId: projectLocalId,
-            entryFileLocalId: localId,
-            entryPath: path,
-            isServerResponse: true,
-          }))
-
-          // This will ensure the dispatch from middleware
-          await fetchProjectFromServer(projectLocalId)(dispatch,getState);
-        }
-      }
+      // const {projectLocalId, isEntryPoint, path}  = saveFilePartial;
+      // if (projectLocalId) {
+      //   if (isEntryPoint) {
+      //     console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
+      //     dispatch(updateProject({
+      //       localId: projectLocalId,
+      //       entryFileLocalId: localId,
+      //       entryPath: path,
+      //       isServerResponse: true,
+      //     }))
+      //
+      //     // This will ensure the dispatch from middleware
+      //     await fetchProjectFromServer(projectLocalId)(dispatch,getState);
+      //   }
+      // }
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
@@ -542,19 +574,4 @@ export const updateFileOnServer = (
 }
 
 
-export const saveFile = (filePartial: ReduxFilePartial) => {
-  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(`saveFile:`, filePartial);
-    const {localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint} = filePartial;
 
-    if (!pkid || pkid < 0) {
-      if (path && localFile && fileType) {
-        createFileOnServer(localId, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
-      } else {
-        console.error(`Error! path:${path} localFile:${localFile} fileType:${fileType} should be defined`);
-      }
-    } else {
-      updateFileOnServer(localId, pkid, path, localFile, fileType, projectLocalId, isEntryPoint)(dispatch, getState);
-    }
-  }
-}

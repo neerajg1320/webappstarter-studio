@@ -6,7 +6,7 @@ import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import {autoBundling, debugRedux} from '../../config/global';
-import {ReduxFile, ReduxFilePartial} from "../../state/file";
+import {ReduxFile} from "../../state/file";
 import FileControlBar from "./file-control-bar";
 
 interface CodeCellProps {
@@ -19,9 +19,6 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
   }, []);
 
   const {createCellBundle, updateFile} = useActions();
-
-  // TBD: These local states can be done with and taken directly to redux
-  const [fileSavePartial, setFileSavePartial] = useState<ReduxFilePartial>({} as ReduxFilePartial);
 
   // The bundle prop is being used in the Preview component below.
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
@@ -64,7 +61,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     console.log(`reduxFile.content:${reduxFile.content}`);
 
     // TBD: To be taken into redux state
-    setFileSavePartial((prev) => Object.assign(prev, {content: value}))
+    // setFileSavePartial((prev) => Object.assign(prev, {content: value}))
 
     updateFile({localId:reduxFile.localId, content:value})
   };
@@ -99,7 +96,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       <FileControlBar reduxFile={reduxFile} />
 
       <div style={{height: "100px"}}>
-        <pre>{JSON.stringify(fileSavePartial, null, 2)}</pre>
+        <pre>{JSON.stringify(reduxFile.saveFilePartial, null, 2)}</pre>
       </div>
     </div>
   );
