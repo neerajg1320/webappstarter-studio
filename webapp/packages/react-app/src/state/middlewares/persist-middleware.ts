@@ -83,9 +83,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }
 
           if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
-              const fileName = localId;
-              const file = createFileFromString(content, fileName);
-              saveFilePartial['file']= file;
+              saveFilePartial['content']= content;
           }
 
           dispatch(updateFileSavePartial(saveFilePartial));
