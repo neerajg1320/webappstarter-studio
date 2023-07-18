@@ -1,8 +1,8 @@
 import "./file-cell-control-bar.css";
-import React, {useRef, useState} from "react";
-import {ReduxFile, ReduxProject, ReduxUpdateFilePartial,} from "../../state";
-import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
-import {createFileFromString, readFileContent} from "../../utils/file";
+import React, {useRef} from "react";
+import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
+import {replaceFilePart} from "../../utils/path";
+import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
 
 interface FileControlBarProps {

@@ -1,12 +1,12 @@
 import './file-cell.css';
-import React, {useEffect, useRef, useMemo, useState} from "react";
+import React, {useEffect, useMemo} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import Preview from "./preview";
 import {autoBundling, debugRedux} from '../../config/global';
-import {ReduxFile} from "../../state/file";
+import {ReduxFile} from "../../state";
 import FileCellControlBar from "./file-cell-control-bar";
 
 interface CodeCellProps {

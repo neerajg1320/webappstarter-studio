@@ -5,8 +5,6 @@ import {createProjectOnServer, saveCells, updateFileSavePartial} from "../action
 import { RootState } from "../reducers";
 import {debugRedux, syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 import {ReduxSaveFilePartial} from "../file";
-import {createFileFromString} from "../../utils/file";
-
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;
@@ -19,7 +17,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
       if (syncCellsToServer) {
         if ([
-          ActionType.MOVE_CELL, 
+          ActionType.MOVE_CELL,
           ActionType.UPDATE_CELL,
           ActionType.INSERT_CELL_AFTER,
           ActionType.DELETE_CELL

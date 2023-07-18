@@ -5,9 +5,8 @@ import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
 import ProjectCell from "./components/project-cell/project-cell";
 import Select, {SingleValue} from "react-select";
-import {ReduxFile, ReduxProject} from "./state";
+import {ReduxProject} from "./state";
 import {debugRedux} from "./config/global";
-import FileList from "./components/cell-list/file-list";
 
 const App = () => {
   if (debugRedux) {
@@ -19,13 +18,6 @@ const App = () => {
   const { fetchProjectsAndFiles } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
-  const filesState = useTypedSelector((state) => state.files);
-  const filesList = useMemo<ReduxFile[]|null>(() => {
-    if (filesState) {
-      return Object.entries(filesState.data).map(([k,v]) => v);
-    }
-    return null;
-  }, [filesState]);
 
   const projectOptions = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v).map(prj => {
@@ -45,17 +37,6 @@ const App = () => {
     return null;
   }, [projectsState, selectedProjectOption]);
 
-  const projectFiles = useMemo<ReduxFile[]|null>(() => {
-    if (debugRedux) {
-      console.log(`filesState:`, filesState);
-    }
-    if (selectedProject && filesState) {
-      return Object.entries(filesState.data).map(([k, v]) => v).filter(file => {
-        return file.projectLocalId && file.projectLocalId === selectedProject.localId;
-      });
-    }
-    return null;
-  }, [filesState, selectedProject]);
 
   useEffect(() => {
     fetchProjectsAndFiles();

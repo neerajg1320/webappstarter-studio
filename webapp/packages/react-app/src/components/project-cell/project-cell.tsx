@@ -122,7 +122,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }
 
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
-    console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
+    if (debugComponent) {
+      console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
+    }
+
     setEditedFileLocalId(fileLocalId);
   }
 
