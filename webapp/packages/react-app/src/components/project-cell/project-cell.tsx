@@ -10,6 +10,7 @@ import {ReduxFile, ReduxProject} from "../../state";
 import FileList from "../cell-list/file-list";
 import {debugRedux} from "../../config/global";
 import FileControlBar from "../file-cell/file-control-bar";
+import FileTreeControlBar from "../files-tree/file-tree-control-bar";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
@@ -130,15 +131,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 display:"flex", flexDirection:"column", gap:"20px", justifyContent: "space-between",
               }}
               >
-                {/* File operations*/}
-                <div style={{
-                    height: "20px", width: "100%",
-                    border:"1px solid yellow",
-                    display: "flex", flexDirection:"row", justifyContent: "flex-end"
-                  }}
-                >
-
-                </div>
+                {/* File Tree Operations*/}
+                <FileTreeControlBar reduxProject={reduxProject} />
                 <div>
                   <FilesTree
                       project={reduxProject}
