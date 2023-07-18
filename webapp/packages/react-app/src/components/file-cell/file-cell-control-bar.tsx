@@ -1,6 +1,6 @@
 import "./file-cell-control-bar.css";
 import React, {useRef, useState} from "react";
-import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
+import {ReduxFile, ReduxProject, ReduxUpdateFilePartial,} from "../../state";
 import {getFileNameFromPath, replaceFilePart} from "../../utils/path";
 import {createFileFromString, readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
@@ -11,7 +11,8 @@ interface FileControlBarProps {
 
 const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  const { updateFile, saveFile, createCellBundle } = useActions();
+  const { updateFile, saveFile, createCellBundle, updateProject } = useActions();
+
 
   const handleBundleClick = () => {
     console.log(reduxFile.content);
@@ -20,6 +21,11 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
       console.log(`Error! no file contents found`)
       return;
     }
+
+    if (reduxFile.projectLocalId) {
+      updateProject({localId:reduxFile.projectLocalId, bundleLocalId: reduxFile.localId});
+    }
+
     createCellBundle(reduxFile.localId, reduxFile.content);
   }
 
@@ -31,7 +37,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
     const file = e.target.files[0];
 
-    const fileUpdatePartial:ReduxUpdateFilePartial= {localId: reduxFile.localId};
+    const fileUpdatePartial:ReduxUpdateFilePartial = {localId: reduxFile.localId};
 
     if (reduxFile.path) {
       const filePath = replaceFilePart(reduxFile.path, file.name);
@@ -44,7 +50,6 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
     fileUpdatePartial['content'] = fileContent;
 
     updateFile(fileUpdatePartial);
-    // setFileSavePartial((prev) => Object.assign(prev, {content: fileContent}))
   }
 
   const handleEntryPointChange = (checked: boolean) => {
@@ -56,8 +61,6 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   }
 
   const handleFilePathChange = (filePath:string) => {
-    // setFilePath(filePath);
-    // setFileSavePartial((prev) => Object.assign(prev, {path: filePath}))
     updateFile({localId: reduxFile.localId, path: filePath})
   }
 
