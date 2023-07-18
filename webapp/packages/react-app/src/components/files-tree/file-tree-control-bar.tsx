@@ -1,6 +1,8 @@
 import './file-tree-control-bar.css';
 import React from "react";
 import {ReduxProject} from "../../state";
+import {useActions} from "../../hooks/use-actions";
+import {randomIdGenerator} from "../../state/id";
 
 interface FileTreeControlBarProps {
   reduxProject: ReduxProject;
@@ -8,8 +10,19 @@ interface FileTreeControlBarProps {
 }
 
 const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onEvent}) => {
+  const {createFile} = useActions();
+
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    console.log("We need to add file");
+    // console.log("We need to add file");
+    createFile({
+      localId: randomIdGenerator(),
+      path: 'src/untitled.js',
+      fileType: 'javascript',
+      content: 'Write here',
+      contentSynced: false,
+      projectLocalId: reduxProject.localId,
+      isEntryPoint: false,
+    });
   }
 
   return (
