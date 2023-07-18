@@ -56,7 +56,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     setEditedFileLocalId(null);
   }, [reduxProject]);
 
-  useEffect(() => {
+  useEffect( () => {
     console.log(`editedFileLocalId: ${editedFileLocalId}`);
     if (!editedFileLocalId) {
       return;
@@ -68,6 +68,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     }
 
     if (!fileState.contentSynced) {
+      // This causes two renders as this is asynchronous call
       fetchFileContents([editedFileLocalId]);
     }
 
@@ -92,7 +93,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
   const handleEditorChange = useCallback((value:string) => {
     if (editedFileRef.current && editedFileRef.current.localId) {
-      console.log(`file[${editedFileRef.current.localId}]: value=${value}`)
+      // console.log(`file[${editedFileRef.current.localId}]: value=${value}`)
       updateFile({localId: editedFileRef.current.localId, content:value});
     }
   }, []);
@@ -111,8 +112,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 {editedFile && <FileControlBar reduxFile={editedFile} />}
                 <CodeEditor
                     // localId={editedFile?.localId || 'null'}
-                    // initialValue={editedFile?.content || ''}
-                    initialValue={'Helo there '}
+                    initialValue={editedFile?.content || ''}
+                    // initialValue={'Helo there '}
                     onChange={handleEditorChange}
                 />
               </div>

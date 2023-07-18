@@ -424,8 +424,10 @@ export const saveFiles = ([localIds]: [string]) => {
   }
 }
 
-export const fetchFileContents = ([localIds]: [string]) => {
+export const fetchFileContents = (localIds: [string]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log(`fetchFileContents: ${localIds[0]}`);
+
     if (!localIds || localIds.length < 1) {
       console.log('fetchFileIds(): No ids specified');
       return;

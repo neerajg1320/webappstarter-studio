@@ -13,18 +13,21 @@ interface CodeEditorProps {
   onChange?: (value:string) => void;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({initialValue}) => {
-  console.log(`CodeEditor[${''}]:render  initialValue: ${initialValue}`);
+const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
+  console.log(`CodeEditor[${''}]:render`);
   const editorRef = useRef<any>();
 
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
     editorRef.current = monacoEditor;
 
+    // Note the initial value in the listener is always blank. It doesn't get updated on rerenders
     monacoEditor.onDidChangeModelContent(() => {
       const newValue = getValue();
-      console.log(`initialValue: ${initialValue}`);
-      console.log(`newValue: ${newValue}`);
-      // onChange(newValue);
+      // console.log(`initialValue: ${initialValue}`);
+      // console.log(`newValue: ${newValue}`);
+      if (onChange) {
+        onChange(newValue);
+      }
     });
 
     // Use two spaces for tabs
