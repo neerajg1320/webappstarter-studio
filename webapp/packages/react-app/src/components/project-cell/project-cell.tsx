@@ -7,7 +7,6 @@ import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
-import FileList from "../cell-list/file-list";
 import {debugRedux} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileTreeControlBar, {FileTreeEvent} from "../files-tree/file-tree-control-bar";
@@ -28,6 +27,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
 
+
   const editedFile = useMemo<ReduxFile|null>(() => {
     if (editedFileLocalId) {
       editedFileRef.current = filesState.data[editedFileLocalId];
@@ -46,50 +46,43 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       return editedFile.content || '';
     }
     return 'Start Coding';
-  }, [editedFileLocalId, filesState]);
+  }, [JSON.stringify(editedFile?.content || '')]);
 
   // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
   const handleEditorChange = useCallback((value:string) => {
-    if (editedFileRef.current && editedFileRef.current.localId) {
-      console.log(`file[${editedFileRef.current.localId}]: value=${value}`)
-      updateFile({localId: editedFileRef.current.localId, content:value});
+    const _editedFile = editedFileRef.current;
+    // console.log('editedFile:', editedFile);
+
+    if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
+      console.log(`file[${_editedFile.localId}]: value=${value}`)
+
+      updateFile({localId: _editedFile.localId, content:value});
     }
   }, []);
 
-  const projectFiles = useMemo<ReduxFile[]|null>(() => {
-    if (debugRedux || true) {
-      console.log(`filesState:`, filesState);
-    }
-    if (reduxProject && filesState) {
-      return Object.entries(filesState.data).map(([k, v]) => v).filter(file => {
-        return file.projectLocalId && file.projectLocalId === reduxProject.localId;
-      });
-    }
-    return null;
-  }, [filesState, reduxProject]);
 
   useEffect(() => {
     setEditedFileLocalId(null);
   }, [reduxProject]);
 
   useEffect( () => {
-    console.log(`editedFileLocalId: ${editedFileLocalId}`);
-    if (!editedFileLocalId) {
+    console.log(`editedFile:`, editedFile);
+    if (!editedFile) {
       return;
     }
 
-    const fileState = filesState.data[editedFileLocalId];
-    if (!fileState) {
-      return;
-    }
-
-    if (!fileState.contentSynced && !fileState.requestInitiated) {
+    if (!editedFile.contentSynced && !editedFile.requestInitiated) {
       // This causes two renders as this is asynchronous call
-      fetchFileContents([editedFileLocalId]);
+      fetchFileContents([editedFile.localId]);
     }
 
+    if (editedFile.contentSynced) {
+      updateFile({localId:editedFile.localId, isEditAllowed:true})
+    }
+
+    // Note we have to make sure that we do not use editedFile with JSON.stringify
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editedFileLocalId, filesState]);
+  }, [JSON.stringify(editedFile)]);
 
 
   const handleBundleClick = () => {
@@ -105,8 +98,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
     setEditedFileLocalId(fileLocalId);
   }
-
-
 
   const handleFileTreeControlEvent = (event: FileTreeEvent) => {
 
@@ -126,8 +117,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 <CodeEditor
                     // localId={editedFile?.localId || 'null'}
-                    initialValue={editorIntialContent}
-                    // initialValue={'Helo there '}
+                    // initialValue={editorIntialContent}
+                    initialValue={editedFile?.content || "Start Coding"}
                     onChange={handleEditorChange}
                 />
               </div>

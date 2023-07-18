@@ -46,8 +46,11 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   }
 
   const handleEntryPointChange = (checked: boolean) => {
-    // setFileSavePartial((prev) => Object.assign(prev, {isEntryPoint: checked}));
     updateFile({localId: reduxFile.localId, isEntryPoint: checked})
+  }
+
+  const handleFileEditableChange = (checked: boolean) => {
+    updateFile({localId: reduxFile.localId, isEditAllowed: checked})
   }
 
   const handleFilePathChange = (filePath:string) => {
@@ -101,6 +104,14 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
         </div>
 
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
+            <label>Editable</label>
+            <input
+                type="checkbox"
+                checked={(reduxFile && reduxFile.isEditAllowed) || false}
+                onChange={(e) => handleFileEditableChange(e.target.checked)}
+            />
+          </div>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>EntryPoint</label>
             <input

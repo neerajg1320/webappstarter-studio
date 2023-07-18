@@ -10,18 +10,30 @@ import Highlighter from 'monaco-jsx-highlighter';
 interface CodeEditorProps {
   // localId: string;
   initialValue: string;
-  onChange?: (value:string) => void;
+  onChange?: (value:string) => void | null;
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
-  console.log(`CodeEditor[${''}]:render`);
+
   const editorRef = useRef<any>();
+
+  useEffect(() => {
+    console.log(`CodeEditor: useEffect([]) created`);
+
+    return () => {
+      console.log(`CodeEditor: destroyed`)
+    }
+  }, []);
+
+  console.log(`CodeEditor[${''}]:render`);
 
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
     editorRef.current = monacoEditor;
 
     // Note the initial value in the listener is always blank. It doesn't get updated on rerenders
-    monacoEditor.onDidChangeModelContent(() => {
+    monacoEditor.onDidChangeModelContent((e) => {
+      // https://github.com/microsoft/monaco-editor/issues/432
+
       const newValue = getValue();
       // console.log(`initialValue: ${initialValue}`);
       // console.log(`newValue: ${newValue}`);
@@ -29,6 +41,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
         onChange(newValue);
       }
     });
+
 
     // Use two spaces for tabs
     monacoEditor.getModel()?.updateOptions({tabSize: 2});

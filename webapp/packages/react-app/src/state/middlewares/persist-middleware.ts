@@ -3,7 +3,7 @@ import { Action } from "../actions";
 import { ActionType } from "../action-types";
 import {createProjectOnServer, saveCells, updateFileSavePartial} from "../action-creators";
 import { RootState } from "../reducers";
-import {syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
+import {debugRedux, syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 import {ReduxSaveFilePartial} from "../file";
 import {createFileFromString} from "../../utils/file";
 
@@ -61,8 +61,10 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           const {localId, path, content, isEntryPoint} = action.payload;
           const fileState = getState().files.data[localId];
 
-          console.log('fileState:', fileState);
-          console.log('action.payload', action.payload);
+          if (debugRedux) {
+            console.log('fileState:', fileState);
+            console.log('action.payload', action.payload);
+          }
 
           const {isServerResponse} = action.payload;
           if (isServerResponse) {
@@ -81,7 +83,6 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }
 
           if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
-              console.log(`File '${fileState.path}' content is updated`);
               const fileName = localId;
               const file = createFileFromString(content, fileName);
               saveFilePartial['file']= file;

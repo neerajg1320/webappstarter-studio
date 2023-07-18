@@ -33,7 +33,8 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         id: '',
         pkid: -1,
         synced: false,
-        isServerResponse: false
+        isServerResponse: false,
+        requestInitiated: false,
       };
       state.data[project.localId] = project;
       return state;
