@@ -1,6 +1,6 @@
 .file-tree-item {
-  margin:2px 4px;
-
+  padding:0 2px;
+  /*border: 1px solid yellow;*/
 }
 
 .file-tree-item.selected-file {

@@ -3,6 +3,7 @@ import {ReduxProject} from "../../state/project";
 import {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
+import {useActions} from "../../hooks/use-actions";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -13,6 +14,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
   const [editEnabled, setEditEnabled] = useState<boolean>(false);
   const filesState = useTypedSelector((state) => state.files);
+  const {updateFile} = useActions();
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -37,7 +39,18 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   const handleSelectFileDoubleClick = (fileLocalId:string) => {
     console.log(`handleSelectFileDoubleClick()`, fileLocalId);
     setSelectedFileLocalId(fileLocalId);
-    onSelectedFileChange(fileLocalId);
+
+    setEditEnabled(true);
+  }
+
+  const handleFilePathChange = (localId:string, value:string) => {
+    console.log(`${localId}: value=${value}`);
+    updateFile({localId, path:value});
+  }
+
+  const handleInputBlur = () => {
+    console.log(`onBlur:`)
+    setEditEnabled(false);
   }
 
   return (
@@ -52,8 +65,16 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
                     onClick={() => handleSelectFileClick(file.localId)}
                     onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
                 >
-                  {file.path}
-                </li>);
+                  {selectedFileLocalId === file.localId && editEnabled
+                    ? <input
+                          value={file.path}
+                          onChange={(e) => handleFilePathChange(file.localId, e.target.value)}
+                          onBlur={handleInputBlur}
+                      />
+                    : <span>{file.path}</span>
+                  }
+                </li>
+              );
             })
           }
         </ul>
