@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import axios from "axios";
-import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
+import {debugPlugin, debugCache, cacheEnabled, cellFileNamePattern} from "../../config/global";
 import localforage from "localforage";
 import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
@@ -96,8 +96,7 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
 
       let result: esbuild.OnLoadResult;
 
-      // if (args.path === '__cell.js') {
-      if (isRegexMatch(/__cell.jsx?/, args.path)) {
+      if (isRegexMatch(cellFileNamePattern, args.path)) {
           result  = {
               loader: 'jsx',
               contents: inputCodeOrFilePath,

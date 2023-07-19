@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild-wasm';
-import { debugPlugin } from '../../config/global';
+import {cellFileNamePattern, debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
 import {getFileServer, getFileServerWithPath, getPkgServer} from "./remote";
 
@@ -20,7 +20,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
       // TBD: Check if we can put an if condition between following two
 
       // For index.js, comes from a cell
-      build.onResolve({filter: /^__cell.js?$/}, (args: any) => {
+      build.onResolve({filter: cellFileNamePattern}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);
         }

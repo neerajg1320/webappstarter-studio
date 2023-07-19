@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import { unpkgPathPlugin } from './plugins/unpkgPathPlugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import {BundleInputType} from "../state/bundle";
-import {combineCellsCode} from "../config/global";
+import {cellFileName, combineCellsCode} from "../config/global";
 
 let service: esbuild.Service;
 
@@ -31,7 +31,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
         const builderServiceOptions: esbuild.BuildOptions = {
             // The following will be replaced by fetchPlugin to code for a cell
             // For filePath the fetchPlugin will download file from fileServer
-            entryPoints: inputType === 'cell' ? ['__cell.js'] : [codeOrFilePath],
+            entryPoints: inputType === 'cell' ? [cellFileName] : [codeOrFilePath],
             bundle: true,
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it

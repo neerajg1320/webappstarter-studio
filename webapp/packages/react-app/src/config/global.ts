@@ -15,6 +15,8 @@ export const debugPlugin = true;
 // Bundler
 export const autoBundling = false;
 export const combineCellsCode = false;
+export const cellFileNamePattern = /__cell.jsx?/;
+export const cellFileName = '__cell.jsx';
 
 // API Server
 export const serverConnect = true;
