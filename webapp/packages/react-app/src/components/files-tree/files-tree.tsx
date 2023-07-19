@@ -2,13 +2,13 @@ import './files-tree.css';
 import {ReduxProject} from "../../state/project";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {ReduxCreateFilePartial, ReduxFile} from "../../state/file";
+import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {getCopyPath, getFilePathParts, joinFileParts} from "../../utils/path";
+import {getCopyPath, getFilePathParts} from "../../utils/path";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -43,7 +43,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     if (debugComponent) {
       console.log(`FilesTree: projectFiles:`, projectFiles);
     }
-    
+
     if (reduxProject.entryFileLocalId) {
       setSelectedFileLocalId(reduxProject.entryFileLocalId);
     } else {

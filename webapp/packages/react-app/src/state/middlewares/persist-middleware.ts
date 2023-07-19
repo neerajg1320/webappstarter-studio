@@ -4,7 +4,7 @@ import { ActionType } from "../action-types";
 import {createProjectOnServer, saveCells, updateFileSavePartial} from "../action-creators";
 import { RootState } from "../reducers";
 import {debugRedux, syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
-import {ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
+import {ReduxSaveFilePartial} from "../file";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;

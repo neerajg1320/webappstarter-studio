@@ -2,7 +2,6 @@ import * as esbuild from 'esbuild-wasm';
 import {cellFileNamePattern, debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
 import {getFileServer, getPkgServer} from "./remote";
-import {isRegexMatch} from "../../utils/regex";
 
 const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
   if (debugPlugin && false) {

@@ -9,7 +9,6 @@ import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
 import {debugComponent} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
-import FileTreeControlBar, {FileTreeEvent} from "../files-tree/file-tree-control-bar";
 import FileList from "../cell-list/file-list";
 
 interface ProjectCellProps {

@@ -1,8 +1,6 @@
 import './file-tree-control-bar.css';
 import React from "react";
 import {ReduxProject} from "../../state";
-import {useActions} from "../../hooks/use-actions";
-import {randomIdGenerator} from "../../state/id";
 
 export enum FileTreeEventType {
   NEW_FILE = 'new_file',
