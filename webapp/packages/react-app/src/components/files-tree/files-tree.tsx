@@ -8,7 +8,7 @@ import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {getCopyPath, getFilePathParts} from "../../utils/path";
+import {getCopyPath} from "../../utils/path";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -33,7 +33,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     }
 
     return [];
-  }, [reduxProject.localId, filesState.data]);
+  }, [reduxProject, filesState.data]);
 
   if (debugComponent  ) {
     console.log(`FileTree:render projectFiles:`, projectFiles);
@@ -49,12 +49,15 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     } else {
       console.log(`attribute 'entryFileLocalId' not set in projet '${reduxProject.title}'`)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduxProject.localId]);
 
   useEffect(() => {
     if (selectedFileLocalId) {
       onSelectedFileChange(selectedFileLocalId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFileLocalId]);
 
   const handleSelectFileClick = (fileLocalId:string) => {
@@ -114,10 +117,6 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           }
 
           const newFileLocalId = randomIdGenerator();
-
-          const {dirname, basename} = getFilePathParts(origFile.path);
-          const newBasename = getCopyPath(basename);
-          // const newPath = joinFileParts(dirname, newBasename);
           const newPath = getCopyPath(origFile.path);
 
           createFile({
