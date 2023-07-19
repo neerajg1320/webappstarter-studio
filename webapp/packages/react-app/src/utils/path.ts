@@ -1,4 +1,5 @@
 import path from 'path';
+import {getRegexMatches, isRegexMatch} from "./regex";
 
 export const replaceFilePart = (inputPath:string, fileName:string): string => {
   const dir = path.dirname(inputPath);
@@ -37,8 +38,22 @@ export const getFileBasenameParts = (inputName:string): {name:string, ext:string
   return {name, ext};
 }
 
-export const getCopyBasename = (inputPath:string): string => {
+export const getCopyPath = (inputPath:string): string => {
   const {dirname, basename} = getFilePathParts(inputPath);
   const {name, ext} = getFileBasenameParts(basename)
-  return path.join(dirname, [name + '1',ext].join('.'));
+
+  console.log(`getCopyPath: ${dirname}  ${basename}  ${name}  ${ext}`);
+
+  let alphaPart = name;
+  let numPart = 0;
+  if (isRegexMatch(/^.*\d+$/, name)) {
+    const matches = getRegexMatches(/^(.*)(\d+)$/, name)
+    if (matches) {
+      // console.log(matches);
+      // matches[0] is the full match
+      alphaPart = matches[1];
+      numPart = parseInt(matches[2]);
+    }
+  }
+  return path.join(dirname, [`${alphaPart}${numPart + 1}`,ext].join('.'));
 }
