@@ -12,7 +12,7 @@ export enum FileTreeEventType {
 
 export interface FileTreeEvent {
   name: FileTreeEventType;
-  localId: string;
+  localId?: string;
 }
 
 interface FileTreeControlBarProps {
@@ -24,22 +24,15 @@ interface FileTreeControlBarProps {
 const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
                                                                 selectedFileLocalId,
                                                                 onEvent}) => {
-  const {createFile} = useActions();
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    // console.log("We need to add file");
-    // const fileLocalId = randomIdGenerator();
-    // createFile({
-    //   localId: fileLocalId,
-    //   path: 'src/',
-    //   fileType: 'javascript',
-    //   content: '',
-    //   contentSynced: false,
-    //   projectLocalId: reduxProject.localId,
-    //   isEntryPoint: false,
-    // });
+    onEvent({name: FileTreeEventType.NEW_FILE});
+  }
 
-    onEvent({name: FileTreeEventType.NEW_FILE, localId:'00000'});
+  const handleCopyFile: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (selectedFileLocalId) {
+      onEvent({name: FileTreeEventType.COPY_FILE, localId: selectedFileLocalId});
+    }
   }
 
   const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -55,7 +48,7 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
               <i className="fas fa-plus" />
           </span>
         </button>
-        <button className="button is-family-secondary is-small" onClick={() => {}}>
+        <button className="button is-family-secondary is-small" onClick={handleCopyFile}>
           <span className="icon">
               <i className="fas fa-copy" />
           </span>

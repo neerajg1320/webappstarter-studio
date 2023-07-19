@@ -2,12 +2,13 @@ import './files-tree.css';
 import {ReduxProject} from "../../state/project";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {ReduxFile} from "../../state/file";
+import {ReduxCreateFilePartial, ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
+import {getCopyBasename, getFileParts, joinFileParts} from "../../utils/path";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -102,8 +103,39 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         setEditPathEnabled(true);
         break;
 
+      case FileTreeEventType.COPY_FILE:
+        if (event.localId) {
+          const origFile = filesState.data[event.localId];
+          if (!origFile) {
+            console.log(`Error! original file '${event.localId}' not found`);
+            break;
+          }
+
+          const newFileLocalId = randomIdGenerator();
+
+          const {dirname, basename} = getFileParts(origFile.path);
+          const newBasename = getCopyBasename(basename);
+          const newPath = joinFileParts(dirname, newBasename);
+
+          createFile({
+            localId: newFileLocalId,
+            path: newPath,
+            fileType: 'javascript',
+            content: '',
+            contentSynced: false,
+            projectLocalId: reduxProject.localId,
+            isEntryPoint: false,
+          });
+
+          setSelectedFileLocalId(newFileLocalId);
+          setEditPathEnabled(true);
+        }
+        break;
+
       case FileTreeEventType.DELETE_FILE:
-        removeFile(event.localId);
+        if (event.localId) {
+          removeFile(event.localId);
+        }
         break;
     }
   }
