@@ -210,8 +210,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       </div>
 
       <div style={{height: "100px"}}>
-        <h4>saveFilePartial</h4>
-        {editedFile && <pre>{JSON.stringify(editedFile.saveFilePartial, null, 2)}</pre>}
+
+        {editedFile &&
+          <div style={{height: "100%"}}>
+            <h4>file.content</h4>
+            <pre>{editedFile.content}</pre>
+
+            <h4>saveFilePartial.content</h4>
+            <pre>{editedFile.saveFilePartial.content}</pre>
+            {/*<pre>{JSON.stringify(editedFile.saveFilePartial, null, 2)}</pre>*/}
+          </div>
+        }
       </div>
 
       {showCellsList &&
