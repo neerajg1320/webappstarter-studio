@@ -6,6 +6,7 @@ import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {isRegexMatch} from "../../utils/regex";
+import {debugComponent} from "../../config/global";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -30,7 +31,11 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     }
 
     return [];
-  }, [reduxProject, filesState.data]);
+  }, [reduxProject.localId, filesState.data]);
+
+  if (debugComponent) {
+    console.log(`FileTree:render projectFiles:`, projectFiles);
+  }
 
   useEffect(() => {
     console.log(`FilesTree: projectFiles:`, projectFiles);
