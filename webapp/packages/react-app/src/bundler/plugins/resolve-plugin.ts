@@ -1,14 +1,13 @@
 import * as esbuild from 'esbuild-wasm';
 import {cellFileNamePattern, debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
-import {getFileServer, getFileServerWithPath, getPkgServer} from "./remote";
+import {getFileServer, getPkgServer} from "./remote";
 
 const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
   console.log(`getServerFromArgs: `, args);
 
   const pkgServer = getPkgServer();
   const projectServer = getFileServer();
-  const projectServerPath = getFileServerWithPath();
 
   let server;
 
@@ -23,7 +22,7 @@ const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>
   // When path is not relative then we resolve to package server in all cases other than starting file
   } else {
     if (args.importer === '') {
-      server = projectServerPath;
+      server = projectServer;
     } else {
       server = pkgServer;
     }
@@ -52,15 +51,6 @@ export const resolvePlugin = (inputType: BundleInputType) => {
         }
         return { path: args.path, namespace: 'a'}
       });
-
-      // For <project>/index.js: comes from a project
-      // We prepend the projectServer to the path
-      // build.onResolve({filter: /^[\w-/]*\/index\.jsx?$/}, (args: any) => {
-      //   if (debugPlugin) {
-      //     console.log('onResolve', args);
-      //   }
-      //   return { path: `${fileServerPath}/${args.path}`, namespace: 'a'}
-      // });
 
       // For relative paths like ./xxx or ../xxx
       // We prepend the pkgServer to the path.

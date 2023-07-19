@@ -117,7 +117,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     // console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
 
     if (reduxProject.entry_path) {
-      createProjectBundle(reduxProject.localId, `${reduxProject.folder}/${reduxProject.entry_path}`);
+      createProjectBundle(reduxProject.localId, `mediafiles/user_1/${reduxProject.folder}/${reduxProject.entry_path}`);
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
