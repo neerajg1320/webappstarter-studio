@@ -167,9 +167,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between",
               }}
               >
-                {/* File Tree Operations*/}
-
-
                 <div style={{
                     border: "1px solid lightcyan",
                     flexGrow: 1
