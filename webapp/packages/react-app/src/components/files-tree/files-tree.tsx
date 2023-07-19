@@ -5,6 +5,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
+import {isRegexMatch} from "../../utils/regex";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -64,7 +65,15 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }
 
   const handleInputBlur = () => {
-    console.log(`onBlur:`)
+    if (selectedFileLocalId) {
+      const reduxFile = filesState.data[selectedFileLocalId];
+      console.log(`onBlur: file.path:${reduxFile.path}`);
+      // If the path is a folder path we do not allow it as yet i.e folders have to be created by creating file in them
+      if (isRegexMatch(/^.*\/$/, reduxFile.path)) {
+        console.log('Error! No file name specified');
+        removeFile(selectedFileLocalId);
+      }
+    }
     setEditPathEnabled(false);
   }
 
