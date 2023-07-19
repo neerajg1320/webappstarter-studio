@@ -42,6 +42,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
 
     case ActionType.UPDATE_FILE:
       // console.log(`filesReducer: ${JSON.stringify(action)}`);
+      // eslint-disable-next-line @typescript-eslint/no-redeclare
       var {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],
@@ -50,6 +51,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       return state;
 
     case ActionType.UPDATE_FILE_SAVE_PARTIAL:
+      // eslint-disable-next-line @typescript-eslint/no-redeclare
       var {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],
