@@ -5,8 +5,8 @@ import {getFileServer, getFileServerWithPath, getPkgServer} from "./remote";
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const unpkgPathPlugin = (inputType: BundleInputType) => {
-  // console.log(`unpkgPathPlugin: closure created for inputType '${inputType}'`);
+export const resolvePlugin = (inputType: BundleInputType) => {
+  // console.log(`resolvePlugin: closure created for inputType '${inputType}'`);
   const pkgServer = getPkgServer();
   const fileServer = getFileServer();
   const fileServerPath = getFileServerWithPath();
@@ -19,7 +19,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
 
       // TBD: Check if we can put an if condition between following two
 
-      // For index.js, comes from a cell
+      // detection of hard coded file name for cell. 
       build.onResolve({filter: cellFileNamePattern}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);

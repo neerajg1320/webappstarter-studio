@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild-wasm';
-import { unpkgPathPlugin } from './plugins/unpkgPathPlugin';
+import { resolvePlugin } from './plugins/resolve-plugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import {BundleInputType} from "../state/bundle";
 import {cellFileName, combineCellsCode} from "../config/global";
@@ -36,7 +36,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
-                unpkgPathPlugin(inputType),
+                resolvePlugin(inputType),
                 fetchPlugin(codeOrFilePath, inputType)
             ],
             define: {
