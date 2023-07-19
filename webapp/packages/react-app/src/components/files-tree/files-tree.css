@@ -1,7 +1,8 @@
 .file-tree-item {
-    margin:2px 4px;
+  margin:2px 4px;
+
 }
 
 .file-tree-item.selected-file {
-    background-color: grey;
+  background-color: grey;
 }
