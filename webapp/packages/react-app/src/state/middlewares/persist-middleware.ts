@@ -11,11 +11,9 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
   return (next: (action: Action) => void) => {
     return (action: Action) => {
-      console.log(`persistMiddleware: ${JSON.stringify(action, null, 2)}`);
+      // console.log(`persistMiddleware: ${JSON.stringify(action, null, 2)}`);
 
       next(action);
-
-      console.log(`persistMiddleware after: ${JSON.stringify(action, null, 2)}`);
 
       if (syncCellsToServer) {
         if ([
@@ -51,12 +49,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
       }
 
       if (syncFilesToServer) {
-        console.log(`syncFilesToServer:`, action);
-        if (action.type === ActionType.CREATE_FILE) {
-          // const {localId, path, localFile, type, projectLocalId, isEntryPoint} = action.payload;
-
-          // createFileOnServer(localId, path, localFile, type, projectLocalId, isEntryPoint)(dispatch, getState);
-        } else if (action.type === ActionType.UPDATE_FILE) {
+        if (action.type === ActionType.UPDATE_FILE) {
           // The middleware take the responsibility of syncing
           // console.log(`middleware: `, action.payload)
           const {localId, path, content, isEntryPoint} = action.payload;
@@ -80,24 +73,14 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           if (Object.keys(action.payload).includes('path')) {
             saveFilePartial['path']= path;
           }
-
           if (Object.keys(action.payload).includes('isEntryPoint')) {
             saveFilePartial['is_entry_point']= isEntryPoint;
           }
-
           if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
               saveFilePartial['content']= content;
           }
 
           dispatch(updateFileSavePartial(saveFilePartial));
-        } else if (action.type === ActionType.DELETE_FILE) {
-          console.log(`DELETE_FILE:`, action);
-
-          const fileState = getState().files.data[action.payload];
-          if (!fileState) {
-            console.error("Error! file '${action.payload} state not found");
-          }
-
         }
       }
     }

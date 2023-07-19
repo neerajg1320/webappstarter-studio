@@ -21,7 +21,13 @@ import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
-import {ReduxFile, ReduxCreateFilePartial, ReduxUpdateFilePartial, ReduxSaveFilePartial} from "../file";
+import {
+  ReduxFile,
+  ReduxCreateFilePartial,
+  ReduxUpdateFilePartial,
+  ReduxSaveFilePartial,
+  ReduxDeleteFilePartial
+} from "../file";
 import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
@@ -385,7 +391,7 @@ export const saveFile = (localId: string) => {
       console.error(`Error! file id '${localId}' not found in store`)
     }
 
-    // Here we use member based type narrowing
+    // Here we can use member based type narrowing
     const {pkid} = fileState;
     if (!pkid || pkid < 0) {
       let _createFilePartial:ReduxCreateFilePartial = {...fileState};
@@ -409,36 +415,20 @@ export const saveFile = (localId: string) => {
   }
 }
 
-export const saveFiles = ([localIds]: [string]) => {
+export const removeFile = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    if (!localIds || localIds.length < 1) {
-      console.log('fetchFileIds(): No ids specified');
-      return;
+    console.log(`removeFile:`, localId);
+
+    dispatch(updateFile({localId, deleteMarked: true}));
+    const fileState = getState().files.data[localId];
+
+    if (!fileState) {
+      console.error(`Error! file id '${localId}' not found in store`)
     }
 
-    const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
-    console.log(`fileStates:`, fileStates);
-
-    try {
-      const {data}: {data: string} = await axios.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
-
-      dispatch({
-        type: ActionType.UPDATE_FILE,
-        payload: {
-          localId: fileStates[0].localId,
-          content: data,
-          contentSynced: true,
-          isServerResponse: true,
-          saveFilePartial: {localId:fileStates[0].localId}
-        }
-      });
-    } catch (err) {
-      if (err instanceof Error) {
-        dispatch({
-          type: ActionType.FETCH_FILES_ERROR,
-          payload: err.message,
-        });
-      }
+    const {pkid} = fileState;
+    if (pkid && pkid > 0) {
+      deleteFileFromServer(pkid, {localId})(dispatch, getState);
     }
   }
 }
@@ -613,5 +603,31 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
   }
 }
 
+export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDeleteFilePartial) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log('saveFilePartial:', deleteFilePartial);
+
+    const {localId} = deleteFilePartial;
+
+    try {
+      const response = await axios.delete(`${gApiUri}/files/${pkid}/`,{headers: gHeaders});
+      console.log(response);
+
+      // const {id, pkid} = response.data
+      // We are putting pkid in the id
+      // We can put a field here response t
+      dispatch(deleteFile(localId)); //
+
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+        // dispatch({
+        //   type: ActionType.SAVE_CELLS_ERROR,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
+}
 
 

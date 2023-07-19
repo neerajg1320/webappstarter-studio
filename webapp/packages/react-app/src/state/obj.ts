@@ -3,6 +3,7 @@ export interface ServerObject {
   pkid: number,
   synced: boolean,
   isServerResponse: boolean,
+  deleteMarked: boolean,
   requestInitiated: boolean,
 }
 
@@ -11,5 +12,6 @@ export interface ServerObjectPartial {
   pkid?: number,
   synced?: boolean,
   isServerResponse?: boolean,
+  deleteMarked?: boolean,
   requestInitiated?: boolean,
 }

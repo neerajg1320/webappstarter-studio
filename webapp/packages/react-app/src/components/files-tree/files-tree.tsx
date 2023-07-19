@@ -16,7 +16,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {updateFile, deleteFile} = useActions();
+  const {updateFile, removeFile} = useActions();
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -68,7 +68,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         break;
 
       case FileTreeEventType.DELETE_FILE:
-        deleteFile(event.localId);
+        removeFile(event.localId);
         break;
     }
   }
@@ -90,9 +90,10 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         ? <ul>
           {
             projectFiles.map(file => {
+              const extraFileClasses = ((file.localId === selectedFileLocalId) ? "selected-file" : "");
               return (
                 <li key={file.localId}
-                    className={"file-tree-item " + ((file.localId === selectedFileLocalId) ? "selected-file" : "")}
+                    className={"file-tree-item " + extraFileClasses}
                     onClick={() => handleSelectFileClick(file.localId)}
                     onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
                 >

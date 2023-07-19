@@ -65,3 +65,8 @@ export interface ReduxSaveFilePartial {
   path?: string;
   is_entry_point?: boolean;
 }
+
+export interface ReduxDeleteFilePartial {
+  localId: string;
+  pkid?:string;
+}

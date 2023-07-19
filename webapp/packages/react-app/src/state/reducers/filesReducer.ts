@@ -34,13 +34,14 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         requestInitiated: false,
         saveFilePartial: {localId},
         isEditAllowed: true,
+        deleteMarked: false,
         ...action.payload,
       };
       state.data[localId] = file;
       return state;
 
     case ActionType.UPDATE_FILE:
-      // console.log(`filesReducer: ${JSON.stringify(action)}`);
+      console.log(`filesReducer: ${JSON.stringify(action)}`);
       var {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],
@@ -85,6 +86,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           file.content = null;
           file.contentSynced = false;
           file.requestInitiated = false;
+          file.deleteMarked = false;
           file.saveFilePartial = {localId: file.localId}
 
           acc[file.localId] = file;
