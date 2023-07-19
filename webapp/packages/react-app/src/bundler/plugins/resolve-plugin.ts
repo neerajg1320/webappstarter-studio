@@ -5,7 +5,9 @@ import {getFileServer, getPkgServer} from "./remote";
 import {isRegexMatch} from "../../utils/regex";
 
 const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
-  console.log(`getServerFromArgs: `, args);
+  if (debugPlugin && false) {
+    console.log(`getServerFromArgs: `, args);
+  }
 
   const pkgServer = getPkgServer();
   const projectServer = getFileServer();
