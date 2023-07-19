@@ -20,7 +20,7 @@ export const unpkgPathPlugin = (inputType: BundleInputType) => {
       // TBD: Check if we can put an if condition between following two
 
       // For index.js, comes from a cell
-      build.onResolve({filter: /^index\.js[x]?$/}, (args: any) => {
+      build.onResolve({filter: /^__cell.js?$/}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);
         }

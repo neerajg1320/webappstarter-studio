@@ -31,7 +31,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
         const builderServiceOptions: esbuild.BuildOptions = {
             // The following will be replaced by fetchPlugin to code for a cell
             // For filePath the fetchPlugin will download file from fileServer
-            entryPoints: inputType === 'cell' ? ['index.js'] : [codeOrFilePath],
+            entryPoints: inputType === 'cell' ? ['__cell.js'] : [codeOrFilePath],
             bundle: true,
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it

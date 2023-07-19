@@ -95,7 +95,7 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
 
       let result: esbuild.OnLoadResult;
 
-      if (args.path === 'index.js') {
+      if (args.path === '__cell.js') {
           result  = {
               loader: 'jsx',
               contents: inputCodeOrFilePath,
