@@ -2,6 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import {cellFileNamePattern, debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
 import {getFileServer, getPkgServer} from "./remote";
+import {isRegexMatch} from "../../utils/regex";
 
 const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
   console.log(`getServerFromArgs: `, args);
@@ -17,7 +18,7 @@ const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>
     } else if (args.importer.includes(projectServer)) {
       server = projectServer;
     } else {
-      console.error(`Error! unexpected importer in relative path '${args.importer}'`);
+      console.error(`Error! unexpected importer '${args.importer}' in relative path '${args.path}'`);
     }
   // When path is not relative then we resolve to package server in all cases other than starting file
   } else {

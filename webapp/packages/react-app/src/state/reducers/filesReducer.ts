@@ -41,7 +41,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       return state;
 
     case ActionType.UPDATE_FILE:
-      console.log(`filesReducer: ${JSON.stringify(action)}`);
+      // console.log(`filesReducer: ${JSON.stringify(action)}`);
       var {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],

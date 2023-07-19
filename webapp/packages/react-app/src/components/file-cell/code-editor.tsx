@@ -30,7 +30,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange, disabled
     }
   }, []);
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled}`);
   }
 
