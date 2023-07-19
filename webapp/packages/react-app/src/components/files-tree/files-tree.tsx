@@ -61,18 +61,24 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }, [selectedFileLocalId]);
 
   const handleSelectFileClick = (fileLocalId:string) => {
-    // console.log(fileLocalId);
+    if (debugComponent) {
+      console.log(fileLocalId);
+    }
     setSelectedFileLocalId(fileLocalId);
   }
 
   const handleSelectFileDoubleClick = (fileLocalId:string) => {
-    console.log(`handleSelectFileDoubleClick()`, fileLocalId);
+    if (debugComponent) {
+      console.log(`handleSelectFileDoubleClick()`, fileLocalId);
+    }
     setSelectedFileLocalId(fileLocalId);
     setEditPathEnabled(true);
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
-    console.log(`${localId}: value=${value}`);
+    if (debugComponent) {
+      console.log(`${localId}: value=${value}`);
+    }
     updateFile({localId, path:value});
   }
 
