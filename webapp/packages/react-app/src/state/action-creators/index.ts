@@ -419,16 +419,17 @@ export const removeFile = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     console.log(`removeFile:`, localId);
 
-    dispatch(updateFile({localId, deleteMarked: true}));
     const fileState = getState().files.data[localId];
-
     if (!fileState) {
       console.error(`Error! file id '${localId}' not found in store`)
     }
 
     const {pkid} = fileState;
     if (pkid && pkid > 0) {
+      dispatch(updateFile({localId, deleteMarked: true}));
       deleteFileFromServer(pkid, {localId})(dispatch, getState);
+    } else {
+      dispatch(deleteFile(localId));
     }
   }
 }
