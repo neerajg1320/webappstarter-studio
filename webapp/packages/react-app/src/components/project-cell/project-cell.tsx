@@ -86,7 +86,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
 
   useEffect(() => {
-    console.log(`ProjectCell: useEffect([reduxProject])`)
+    if (debugComponent) {
+      console.log(`ProjectCell: useEffect([reduxProject])`)
+    }
+
     setEditedFileLocalId(null);
   }, [reduxProject.localId]);
 

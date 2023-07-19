@@ -25,12 +25,19 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
           .map(([k, v]) => v);
 
-      // console.log(`files:`, files);
       return files;
     }
 
     return [];
   }, [reduxProject, filesState.data]);
+
+  useEffect(() => {
+    if (reduxProject.entryFileLocalId) {
+      setSelectedFileLocalId(reduxProject.entryFileLocalId);
+    } else {
+      console.log(`attribute 'entryFileLocalId' not set in projet '${reduxProject.title}'`)
+    }
+  }, [reduxProject.localId]);
 
   useEffect(() => {
     if (selectedFileLocalId) {
