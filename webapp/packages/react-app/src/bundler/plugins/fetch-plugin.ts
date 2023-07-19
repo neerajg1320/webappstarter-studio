@@ -3,6 +3,7 @@ import axios from "axios";
 import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
 import localforage from "localforage";
 import {BundleInputType} from "../../state/bundle";
+import {isRegexMatch} from "../../utils/regex";
 
 const refereceCode = false;
 let fileCache: LocalForage;
@@ -95,7 +96,8 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
 
       let result: esbuild.OnLoadResult;
 
-      if (args.path === '__cell.js') {
+      // if (args.path === '__cell.js') {
+      if (isRegexMatch(/__cell.jsx?/, args.path)) {
           result  = {
               loader: 'jsx',
               contents: inputCodeOrFilePath,
