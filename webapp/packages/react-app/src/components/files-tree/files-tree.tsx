@@ -32,6 +32,8 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }, [reduxProject, filesState.data]);
 
   useEffect(() => {
+    console.log(`FilesTree: projectFiles:`, projectFiles);
+
     if (reduxProject.entryFileLocalId) {
       setSelectedFileLocalId(reduxProject.entryFileLocalId);
     } else {

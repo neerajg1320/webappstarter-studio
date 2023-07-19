@@ -344,6 +344,8 @@ export const fetchFiles = () => {
         if (file.project) {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
           file.isEntryPoint = file.is_entry_point;
+
+          dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
         return file;
       });
