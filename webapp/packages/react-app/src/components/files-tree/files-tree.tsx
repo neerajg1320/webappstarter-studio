@@ -59,7 +59,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }
 
   return (
-    <div>
+    <div style={{height:"100%"}}>
       <FileTreeControlBar
           reduxProject={reduxProject}
           onEvent={handleFileTreeControlEvent}
@@ -87,8 +87,13 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
             })
           }
         </ul>
-        : <div>
-            No Files Found
+        : <div style={{
+              height: "100%",
+              // border: "1px solid lightblue",
+              display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
+            }}
+          >
+            <span>Create a File</span>
         </div>
       }
     </div>
