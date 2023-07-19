@@ -178,7 +178,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                   }}
                 >
                   <FilesTree
-                      project={reduxProject}
+                      reduxProject={reduxProject}
                       onSelectedFileChange={handleFileTreeSelectedFileChange}
                   />
                 </div>

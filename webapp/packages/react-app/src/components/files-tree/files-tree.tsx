@@ -5,20 +5,20 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 
 interface FilesTreeProps {
-  project: ReduxProject
+  reduxProject: ReduxProject
   onSelectedFileChange: (fileLocalId:string) => void
 }
 
-const FilesTree: React.FC<FilesTreeProps> = ({project, onSelectedFileChange}) => {
+const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange}) => {
   const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
   const filesState = useTypedSelector((state) => state.files);
   // console.log(`project:`, project);
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
-    if (project) {
+    if (reduxProject) {
       const files = Object.entries(filesState.data)
-          .filter(([k, v]) => v.projectLocalId === project.localId)
+          .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
           .map(([k, v]) => v);
 
       // console.log(`files:`, files);
@@ -26,7 +26,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({project, onSelectedFileChange}) =>
     }
 
     return [];
-  }, [project, filesState.data]);
+  }, [reduxProject, filesState.data]);
 
   const handleSelectFileClick = (fileLocalId:string) => {
     // console.log(fileLocalId);
