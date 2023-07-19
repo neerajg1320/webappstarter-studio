@@ -19,7 +19,7 @@ export const resolvePlugin = (inputType: BundleInputType) => {
 
       // TBD: Check if we can put an if condition between following two
 
-      // detection of hard coded file name for cell. 
+      // detection of hard coded file name for cell.
       build.onResolve({filter: cellFileNamePattern}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);

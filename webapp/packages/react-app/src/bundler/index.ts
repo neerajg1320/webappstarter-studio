@@ -6,6 +6,18 @@ import {cellFileName, combineCellsCode} from "../config/global";
 
 let service: esbuild.Service;
 
+export const getESBuildService = async (): Promise<esbuild.Service> => {
+  if (!service) {
+    service = await esbuild.startService({
+      worker: true,
+      // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
+      wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm'
+    });
+  }
+
+  return service;
+}
+
 export const bundleCodeStr = async(rawCode: string) => {
     return bundleCode(rawCode, 'cell');
 }
@@ -18,14 +30,8 @@ export const bundleFilePath =  async(filePath: string) => {
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
 const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) => {
     // console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
-
-    if (!service) {
-        service = await esbuild.startService({
-            worker: true,
-            // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
-            wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm'
-        });
-    }
+  
+    let esbuildService = await getESBuildService();
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
@@ -50,7 +56,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) =>
             builderServiceOptions.jsxFragment = '_React.Fragment';
         }
 
-        const result = await service.build(builderServiceOptions);
+        const result = await esbuildService.build(builderServiceOptions);
 
         return {
             code: result.outputFiles![0].text,
