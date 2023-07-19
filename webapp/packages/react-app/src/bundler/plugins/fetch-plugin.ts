@@ -33,14 +33,11 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
     // This check if the file is in the cache. If present then returns the cached result.
     // If not then it returns nothing. This forces the esbuild to look at subsequent onLoad handlers.
     build.onLoad({filter: /.*/}, async (args: any) => {
-      if (debugPlugin) {
-          console.log('onLoad', args);
-      }
 
       // If we have already fetched this file then return from cache
       // We use args.path as key in the cache
       if (cacheEnabled) {
-          const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
+        const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(args.path);
           if (cachedResult) {
               if (debugCache) {
                   console.log(`loaded ${args.path} from cache`);
