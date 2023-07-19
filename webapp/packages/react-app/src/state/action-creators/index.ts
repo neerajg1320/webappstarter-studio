@@ -1,7 +1,6 @@
 import {ActionType} from "../action-types";
 import {
   Action,
-  AddFilesToListAction,
   CreateFileAction,
   CreateProjectAction,
   DeleteCellAction,
@@ -320,24 +319,6 @@ export const deleteFile = (localId:string): DeleteFileAction => {
   return {
     type: ActionType.DELETE_FILE,
     payload: localId
-  }
-}
-
-export const addFilesToList = (files: ReduxFile[]): AddFilesToListAction => {
-  return {
-    type: ActionType.ADD_FILES_TO_LIST,
-    payload: {
-      files
-    }
-  }
-}
-
-export const deleteFilesFromList = (files: (ReduxFile|string)[]) => {
-  return {
-    type: ActionType.DELETE_FILES_FROM_LIST,
-    payload: {
-      files
-    }
   }
 }
 

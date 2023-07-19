@@ -64,12 +64,6 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       delete state.data[action.payload];
       return state;
 
-    case ActionType.ADD_FILES_TO_LIST:
-      return state;
-
-    case ActionType.DELETE_FILES_FROM_LIST:
-      return state;
-
     case ActionType.FETCH_FILES_COMPLETE:
       console.log(`filesReducer:`, action);
       state.loading = false;

@@ -148,19 +148,6 @@ export interface DeleteFileAction {
   payload: string
 }
 
-export interface AddFilesToListAction {
-  type: ActionType.ADD_FILES_TO_LIST
-  payload: {
-    files: ReduxFile[]
-  }
-}
-
-export interface DeleteFilesFromList {
-  type: ActionType.DELETE_FILES_FROM_LIST
-  payload: {
-    files: (ReduxFile|string)[]
-  }
-}
 
 export interface FetchFilesCompleteAction {
   type: ActionType.FETCH_FILES_COMPLETE,
@@ -196,7 +183,5 @@ export type Action =
     | UpdateFileAction
     | UpdateFileSavePartialAction
     | DeleteFileAction
-    | AddFilesToListAction
-    | DeleteFilesFromList
     | FetchFilesCompleteAction
     | FetchFilesErrorAction;
