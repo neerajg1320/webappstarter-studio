@@ -1,10 +1,10 @@
 import './files-tree.css';
 import {ReduxProject} from "../../state/project";
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
-import FileTreeControlBar, {FileTreeEvent} from "./file-tree-control-bar";
+import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -13,9 +13,10 @@ interface FilesTreeProps {
 
 const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange}) => {
   const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
-  const [editEnabled, setEditEnabled] = useState<boolean>(false);
+  const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
+  const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {updateFile} = useActions();
+  const {updateFile, deleteFile} = useActions();
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -31,17 +32,21 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     return [];
   }, [reduxProject, filesState.data]);
 
+  useEffect(() => {
+    if (selectedFileLocalId) {
+      onSelectedFileChange(selectedFileLocalId);
+    }
+  }, [selectedFileLocalId]);
+
   const handleSelectFileClick = (fileLocalId:string) => {
     // console.log(fileLocalId);
     setSelectedFileLocalId(fileLocalId);
-    onSelectedFileChange(fileLocalId);
   }
 
   const handleSelectFileDoubleClick = (fileLocalId:string) => {
     console.log(`handleSelectFileDoubleClick()`, fileLocalId);
     setSelectedFileLocalId(fileLocalId);
-
-    setEditEnabled(true);
+    setEditPathEnabled(true);
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
@@ -51,19 +56,36 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
 
   const handleInputBlur = () => {
     console.log(`onBlur:`)
-    setEditEnabled(false);
+    setEditPathEnabled(false);
   }
 
   const handleFileTreeControlEvent = (event: FileTreeEvent) => {
     console.log(`handleFileTreeControlEvent():`, event);
+    switch(event.name) {
+      case FileTreeEventType.NEW_FILE:
+        setSelectedFileLocalId(event.localId);
+        setEditPathEnabled(true);
+        break;
+
+      case FileTreeEventType.DELETE_FILE:
+        deleteFile(event.localId);
+        break;
+    }
   }
 
   return (
-    <div style={{height:"100%"}}>
+    <div style={{
+        height:"100%",
+        display: "flex", flexDirection: "column",
+        // border: "3px solid red",
+      }}
+    >
       <FileTreeControlBar
           reduxProject={reduxProject}
+          selectedFileLocalId={selectedFileLocalId}
           onEvent={handleFileTreeControlEvent}
       />
+
       {(projectFiles && projectFiles.length>0)
         ? <ul>
           {
@@ -74,8 +96,10 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
                     onClick={() => handleSelectFileClick(file.localId)}
                     onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
                 >
-                  {selectedFileLocalId === file.localId && editEnabled
+                  {selectedFileLocalId === file.localId && editPathEnabled
                     ? <input
+                          autoFocus
+                          ref={fileNameInputRef}
                           value={file.path}
                           onChange={(e) => handleFilePathChange(file.localId, e.target.value)}
                           onBlur={handleInputBlur}
@@ -89,7 +113,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         </ul>
         : <div style={{
               height: "100%",
-              // border: "1px solid lightblue",
+              // border: "3px solid lightblue",
               display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
             }}
           >

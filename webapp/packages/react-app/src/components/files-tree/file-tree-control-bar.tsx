@@ -6,7 +6,8 @@ import {randomIdGenerator} from "../../state/id";
 
 export enum FileTreeEventType {
   NEW_FILE = 'new_file',
-  COPY_FILE = 'copy_file'
+  COPY_FILE = 'copy_file',
+  DELETE_FILE = 'delete_file',
 }
 
 export interface FileTreeEvent {
@@ -16,10 +17,13 @@ export interface FileTreeEvent {
 
 interface FileTreeControlBarProps {
   reduxProject: ReduxProject;
+  selectedFileLocalId: string|null;
   onEvent: (event:FileTreeEvent) => void;
 }
 
-const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onEvent}) => {
+const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
+                                                                selectedFileLocalId,
+                                                                onEvent}) => {
   const {createFile} = useActions();
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -27,15 +31,21 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onE
     const fileLocalId = randomIdGenerator();
     createFile({
       localId: fileLocalId,
-      path: 'src/untitled.js',
+      path: 'src/',
       fileType: 'javascript',
-      content: 'Write here',
+      content: '',
       contentSynced: false,
       projectLocalId: reduxProject.localId,
       isEntryPoint: false,
     });
 
     onEvent({name: FileTreeEventType.NEW_FILE, localId:fileLocalId});
+  }
+
+  const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (selectedFileLocalId) {
+      onEvent({name: FileTreeEventType.DELETE_FILE, localId: selectedFileLocalId});
+    }
   }
 
   return (
@@ -48,6 +58,11 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onE
         <button className="button is-family-secondary is-small" onClick={() => {}}>
           <span className="icon">
               <i className="fas fa-copy" />
+          </span>
+        </button>
+        <button className="button is-family-secondary is-small" onClick={handleDeleteFile}>
+          <span className="icon">
+              <i className="fas fa-trash" />
           </span>
         </button>
       </div>
