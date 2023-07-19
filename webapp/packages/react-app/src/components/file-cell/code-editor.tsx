@@ -12,9 +12,10 @@ interface CodeEditorProps {
   // localId: string;
   initialValue: string;
   onChange?: (value:string) => void | null;
+  disabled?: boolean;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange, disabled}) => {
   const editorRef = useRef<any>();
 
   useEffect(() => {
@@ -29,8 +30,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
     }
   }, []);
 
-  if (debugComponent) {
-    console.log(`CodeEditor[${''}]:render`);
+  if (debugComponent || true) {
+    console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled}`);
   }
 
   const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
@@ -83,29 +84,42 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange}) => {
 
   return (
     <div className="editor-wrapper">
-      <button 
-        className="button button-format is-primary is-small" 
-        onClick={handleFormatClick}
-      >
-        Format
-      </button>
-      <MonacoEditor 
-        language='javascript'
-        value={initialValue}
-        editorDidMount={onEditorDidMount}
-        theme='dark'
-        height="calc(100% - 20px)"
-        options={{
-          wordWrap: "on",
-          minimap: {enabled: false},
-          showUnused: false,
-          folding: false,
-          lineNumbersMinChars: 3,
-          fontSize: 16,
-          scrollBeyondLastLine: false,
-          automaticLayout: true,
-        }} 
-      />
+      {disabled
+          ?
+          <div style={{
+              height: "100%",
+              display:"flex", flexDirection: "column", justifyContent:"center", alignItems: "center"
+            }}
+          >
+            <h3>Select a File</h3>
+          </div>
+          :
+          <>
+            <button
+                className="button button-format is-primary is-small"
+                onClick={handleFormatClick}
+            >
+              Format
+            </button>
+            <MonacoEditor
+                language='javascript'
+                value={initialValue}
+                editorDidMount={onEditorDidMount}
+                theme='dark'
+                height="calc(100% - 20px)"
+                options={{
+                  wordWrap: "on",
+                  minimap: {enabled: false},
+                  showUnused: false,
+                  folding: false,
+                  lineNumbersMinChars: 3,
+                  fontSize: 16,
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
+            />
+          </>
+      }
     </div>
   );
 }

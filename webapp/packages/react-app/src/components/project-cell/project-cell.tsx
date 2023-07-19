@@ -152,8 +152,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 </div>
 
                 <CodeEditor
-                    initialValue={editedFile?.content || "Start Coding"}
+                    initialValue={editedFile?.content || ""}
                     onChange={handleEditorChange}
+                    disabled={!editedFile}
                 />
               </div>
             </Resizable>
