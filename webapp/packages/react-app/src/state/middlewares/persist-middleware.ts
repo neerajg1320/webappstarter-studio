@@ -12,6 +12,15 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
   return (next: (action: Action) => void) => {
     return (action: Action) => {
       // console.log(`persistMiddleware: ${JSON.stringify(action, null, 2)}`);
+      if (syncFilesToServer) {
+        if (action.type === ActionType.UPDATE_FILE) {
+          const {localId, path, content, isEntryPoint} = action.payload;
+          const fileState = getState().files.data[localId];
+          if (content !== fileState.content) {
+            console.log(`file '${fileState.path}'`)
+          }
+        }
+      }
 
       next(action);
 
@@ -65,6 +74,11 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
             if (debugRedux) {
               console.log(`Server Response Detected`);
             }
+            return;
+          }
+
+          if (content === fileState.content) {
+            console.log(`The content is not changed`);
             return;
           }
 
