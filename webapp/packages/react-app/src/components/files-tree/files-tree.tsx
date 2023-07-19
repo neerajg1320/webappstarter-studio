@@ -7,6 +7,7 @@ import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
+import {randomIdGenerator} from "../../state/id";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -18,7 +19,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {updateFile, removeFile} = useActions();
+  const {createFile, updateFile, removeFile} = useActions();
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -33,7 +34,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     return [];
   }, [reduxProject.localId, filesState.data]);
 
-  if (debugComponent) {
+  if (debugComponent  ) {
     console.log(`FileTree:render projectFiles:`, projectFiles);
   }
 
@@ -86,7 +87,18 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     console.log(`handleFileTreeControlEvent():`, event);
     switch(event.name) {
       case FileTreeEventType.NEW_FILE:
-        setSelectedFileLocalId(event.localId);
+        const fileLocalId = randomIdGenerator();
+        createFile({
+          localId: fileLocalId,
+          path: 'src/',
+          fileType: 'javascript',
+          content: '',
+          contentSynced: false,
+          projectLocalId: reduxProject.localId,
+          isEntryPoint: false,
+        });
+
+        setSelectedFileLocalId(fileLocalId);
         setEditPathEnabled(true);
         break;
 

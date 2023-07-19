@@ -378,8 +378,8 @@ export const saveFile = (localId: string) => {
     const {pkid} = fileState;
     if (!pkid || pkid < 0) {
       let _createFilePartial:ReduxCreateFilePartial = {...fileState};
-      if (Object.keys(_createFilePartial).includes('content') && fileState.content) {
-        _createFilePartial['localFile'] = createFileFromString(fileState.content, fileState.localId);
+      if (Object.keys(_createFilePartial).includes('content')) {
+        _createFilePartial['localFile'] = createFileFromString(fileState.content || '', fileState.localId);
       }
       createFileOnServer(_createFilePartial)(dispatch, getState);
     } else {
@@ -390,8 +390,8 @@ export const saveFile = (localId: string) => {
         return;
       }
 
-      if (Object.keys(_saveFilePartial).includes('content') && fileState.content) {
-        _saveFilePartial['file'] = createFileFromString(fileState.content, fileState.localId);
+      if (Object.keys(_saveFilePartial).includes('content')) {
+        _saveFilePartial['file'] = createFileFromString(fileState.content || '', fileState.localId);
       }
       updateFileOnServer(pkid, _saveFilePartial)(dispatch, getState);
     }

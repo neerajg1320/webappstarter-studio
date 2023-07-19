@@ -28,18 +28,18 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     // console.log("We need to add file");
-    const fileLocalId = randomIdGenerator();
-    createFile({
-      localId: fileLocalId,
-      path: 'src/',
-      fileType: 'javascript',
-      content: '',
-      contentSynced: false,
-      projectLocalId: reduxProject.localId,
-      isEntryPoint: false,
-    });
+    // const fileLocalId = randomIdGenerator();
+    // createFile({
+    //   localId: fileLocalId,
+    //   path: 'src/',
+    //   fileType: 'javascript',
+    //   content: '',
+    //   contentSynced: false,
+    //   projectLocalId: reduxProject.localId,
+    //   isEntryPoint: false,
+    // });
 
-    onEvent({name: FileTreeEventType.NEW_FILE, localId:fileLocalId});
+    onEvent({name: FileTreeEventType.NEW_FILE, localId:'00000'});
   }
 
   const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {
