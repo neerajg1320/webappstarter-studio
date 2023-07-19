@@ -8,7 +8,7 @@ import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {getCopyBasename, getFileParts, joinFileParts} from "../../utils/path";
+import {getCopyBasename, getFilePathParts, joinFileParts} from "../../utils/path";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -113,10 +113,11 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
 
           const newFileLocalId = randomIdGenerator();
 
-          const {dirname, basename} = getFileParts(origFile.path);
+          const {dirname, basename} = getFilePathParts(origFile.path);
           const newBasename = getCopyBasename(basename);
-          const newPath = joinFileParts(dirname, newBasename);
-
+          // const newPath = joinFileParts(dirname, newBasename);
+          const newPath = getCopyBasename(origFile.path);
+          
           createFile({
             localId: newFileLocalId,
             path: newPath,
