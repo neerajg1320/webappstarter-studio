@@ -8,7 +8,7 @@ import {getFileServer, getFileServerWithPath, getPkgServer} from "./remote";
 export const resolvePlugin = (inputType: BundleInputType) => {
   // console.log(`resolvePlugin: closure created for inputType '${inputType}'`);
   const pkgServer = getPkgServer();
-  const fileServer = getFileServer();
+  const projectServer = getFileServer();
   const fileServerPath = getFileServerWithPath();
 
 
@@ -28,7 +28,7 @@ export const resolvePlugin = (inputType: BundleInputType) => {
       });
 
       // For <project>/index.js: comes from a project
-      // We prepend the fileServer to the path
+      // We prepend the projectServer to the path
       build.onResolve({filter: /^[\w-/]*\/index\.jsx?$/}, (args: any) => {
         if (debugPlugin) {
           console.log('onResolve', args);
@@ -44,19 +44,20 @@ export const resolvePlugin = (inputType: BundleInputType) => {
             console.log('onResolve', args);
         }
 
+        let server;
         if (args.importer.includes(pkgServer)) {
-          return {
-            path: new URL(args.path, pkgServer + args.resolveDir + '/').href,
-            namespace: 'a'
-          };
+          server =  pkgServer;
+        } else if (args.importer.includes(projectServer)) {
+          server =  projectServer;
+        } else {
+          console.error(`Error! unexpected importer '${args.importer}'`);
+          return;
         }
-        if (args.importer.includes(fileServer)) {
-          return {
-            path: new URL(args.path, fileServer + args.resolveDir + '/').href,
-            namespace: 'a'
-          };
-        }
-        console.error(`Error! unexpected importer '${args.importer}'`);
+
+        return {
+          path: new URL(args.path, server + args.resolveDir + '/').href,
+          namespace: 'a'
+        };
       });
 
       // For anything else
