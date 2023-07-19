@@ -1,9 +1,10 @@
 import './files-tree.css';
 import {ReduxProject} from "../../state/project";
-import {useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
+import FileTreeControlBar, {FileTreeEvent} from "./file-tree-control-bar";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -53,9 +54,17 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     setEditEnabled(false);
   }
 
+  const handleFileTreeControlEvent = (event: FileTreeEvent) => {
+    console.log(`handleFileTreeControlEvent():`, event);
+  }
+
   return (
     <div>
-      {projectFiles
+      <FileTreeControlBar
+          reduxProject={reduxProject}
+          onEvent={handleFileTreeControlEvent}
+      />
+      {(projectFiles && projectFiles.length>0)
         ? <ul>
           {
             projectFiles.map(file => {
@@ -78,7 +87,9 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
             })
           }
         </ul>
-        : <h1>No Files Found</h1>
+        : <div>
+            No Files Found
+        </div>
       }
     </div>
   )

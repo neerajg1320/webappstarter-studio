@@ -4,9 +4,14 @@ import {ReduxProject} from "../../state";
 import {useActions} from "../../hooks/use-actions";
 import {randomIdGenerator} from "../../state/id";
 
+export enum FileTreeEventType {
+  NEW_FILE = 'new_file',
+  COPY_FILE = 'copy_file'
+}
+
 export interface FileTreeEvent {
-  name: string;
-  data: any;
+  name: FileTreeEventType;
+  localId: string;
 }
 
 interface FileTreeControlBarProps {
@@ -19,8 +24,9 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onE
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     // console.log("We need to add file");
+    const fileLocalId = randomIdGenerator();
     createFile({
-      localId: randomIdGenerator(),
+      localId: fileLocalId,
       path: 'src/untitled.js',
       fileType: 'javascript',
       content: 'Write here',
@@ -28,6 +34,8 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject, onE
       projectLocalId: reduxProject.localId,
       isEntryPoint: false,
     });
+
+    onEvent({name: FileTreeEventType.NEW_FILE, localId:fileLocalId});
   }
 
   return (

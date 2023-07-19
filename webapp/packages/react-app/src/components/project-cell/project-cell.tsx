@@ -132,9 +132,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     setEditedFileLocalId(fileLocalId);
   }
 
-  const handleFileTreeControlEvent = (event: FileTreeEvent) => {
-
-  }
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>
@@ -171,7 +168,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               }}
               >
                 {/* File Tree Operations*/}
-                <FileTreeControlBar reduxProject={reduxProject} onEvent={handleFileTreeControlEvent}/>
+
+
                 <div style={{
                     border: "1px solid lightcyan",
                     flexGrow: 1
