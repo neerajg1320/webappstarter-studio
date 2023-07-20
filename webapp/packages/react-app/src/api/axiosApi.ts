@@ -1,25 +1,29 @@
 import axios from 'axios';
-import {serverApiBaseUrl} from "../config/global";
+import {serverApiBaseUrl, serverMediaBaseUrl} from "../config/global";
+
+export const axiosInstance = axios.create({
+  // baseURL: serverMediaBaseUrl
+});
 
 export const axiosApiInstance = axios.create({
   baseURL: serverApiBaseUrl
-})
+});
 
-export interface AxiosInterceptorHeaders {
-  Authorization?: string;
-}
-
-// const axiosInterceptorHeaders:AxiosInterceptorHeaders = {};
 
 export const setAuthentication = (jwtToken: string) => {
   console.log(`setAuthentication: jwtToken:`, jwtToken);
-  // if (jwtToken) {
-  //   axiosInterceptorHeaders['Authorization'] = `Bearer ${jwtToken}`
-  // }
 
-  axiosApiInstance.interceptors.request.use(config => {
-      config.headers['Authorization'] = `Bearer ${jwtToken}`;
-      return config;
+  axiosApiInstance.interceptors.request.use(request => {
+      console.log(`request intercepted:`, request);
+
+      // The following is a workaround
+      if (request.url?.includes('mediafiles')) {
+        console.log(`Auth token not added for mediafiles. Need to put a better solution`)
+      } else {
+        request.headers['Authorization'] = `Bearer ${jwtToken}`;
+      }
+
+      return request;
     },
     error => {
       return Promise.reject(error);

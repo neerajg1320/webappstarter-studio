@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild-wasm";
-import axios from "axios";
+import {axiosInstance} from "../../api/axiosApi";
 import {debugPlugin, debugCache, cacheEnabled, cellFileNamePattern} from "../../config/global";
 import localforage from "localforage";
 import {BundleInputType} from "../../state/bundle";
@@ -53,7 +53,7 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
       }
 
       // Fetch the package from repo
-      const {data, request} = await axios.get(args.path);
+      const {data, request} = await axiosInstance.get(args.path);
 
       // start: The custom part for css
       const escapedCssStr = data
@@ -101,7 +101,7 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
 
       } else {
           // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
-          const { data, request } = await axios.get(args.path);
+          const { data, request } = await axiosInstance.get(args.path);
 
           if (debugPlugin) {
               console.log(`request.responseURL:${request.responseURL}`);

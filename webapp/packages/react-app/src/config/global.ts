@@ -20,6 +20,7 @@ export const cellFileName = '__cell.jsx';
 
 // API Server
 export const serverApiBaseUrl = 'http://localhost:8080/api/v1';
+export const serverMediaBaseUrl = 'http://localhost:8080/mediafiles';
 export const serverConnect = true;
 export const syncCellsToServer = serverConnect && false;
 export const syncProjectsToServer = serverConnect && true;
