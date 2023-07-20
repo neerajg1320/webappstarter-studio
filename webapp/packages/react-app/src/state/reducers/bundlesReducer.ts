@@ -25,7 +25,7 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
       ActionType.PROJECT_BUNDLE_START,
       ActionType.PROJECT_BUNDLE_COMPLETE,
     ].includes(action.type)) {
-      console.log(`PROJECT_BUNDLE_COMPLETE:`, action);
+      console.log(`bundlesReducer:`, action);
     }
   }
 

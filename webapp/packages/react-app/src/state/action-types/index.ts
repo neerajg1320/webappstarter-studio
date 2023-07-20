@@ -30,4 +30,9 @@ export enum ActionType {
 
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
+
+  LOGIN_REQUEST_START = 'login_request_start',
+  LOGIN_REQUEST_SUCCESS = 'login_request_completed',
+  LOGIN_REQUEST_FAILED = 'login_request_failed',
+  LOGOUT_REQUEST = 'logout_request'
 }

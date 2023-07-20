@@ -8,10 +8,12 @@ import {
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
+  LoginRequestStartAction, LoginRequestSuccessAction,
   MoveCellAction,
   SetCurrentProjectAction,
   UpdateCellAction,
-  UpdateFileAction, UpdateFileSavePartialAction,
+  UpdateFileAction,
+  UpdateFileSavePartialAction,
   UpdateProjectAction
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
@@ -19,17 +21,18 @@ import {Dispatch} from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
 import axios from 'axios';
 import {RootState} from "../reducers";
-import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
+import {ProjectFrameworks, ReduxProject, ReduxProjectPartial} from "../project";
 import {
-  ReduxFile,
   ReduxCreateFilePartial,
-  ReduxUpdateFilePartial,
+  ReduxDeleteFilePartial,
+  ReduxFile,
   ReduxSaveFilePartial,
-  ReduxDeleteFilePartial
+  ReduxUpdateFilePartial
 } from "../file";
 import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
+import {ReduxUser} from "../user";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -211,8 +214,14 @@ const gHeaders = {
 
 export const fetchProjectsAndFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log(getState().auth);
+
+    const headers = {
+      Authorization: `Bearer ${getState().auth.jwtToken}`
+    }
+
     try {
-      const {data:projects}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers: gHeaders});
+      const {data:projects}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers});
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
         payload: projects
@@ -612,6 +621,50 @@ export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDelete
       }
     }
   }
+}
+
+export const loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
+  return {
+    type: ActionType.LOGIN_REQUEST_START,
+    payload: {
+      email,
+      password
+    }
+  };
+}
+
+export const loginRequestSuccess = (
+    accessToken:string,
+    refreshToken:string,
+    user:ReduxUser,
+): LoginRequestSuccessAction => {
+  return {
+    type: ActionType.LOGIN_REQUEST_SUCCESS,
+    payload: {
+      accessToken,
+      refreshToken,
+      user
+    }
+  };
+}
+
+export const authenticateUser = (email:string, password:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    dispatch(loginRequestStart(email, password));
+
+    const {status, data} = await axios.post(`${gApiUri}/auth/login/`, {email, password});
+    if (status === 200) {
+      const {refresh_token, access_token, user} = data;
+      console.log(refresh_token, access_token, user);
+
+      dispatch(loginRequestSuccess(access_token, refresh_token, {
+        pkid: user.pk,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name
+      }));
+    }
+  };
 }
 
 

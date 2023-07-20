@@ -2,6 +2,7 @@ import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
 import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
+import {ReduxUser} from "../user";
 
 export type Direction = 'up' | 'down';
 
@@ -159,6 +160,34 @@ export interface FetchFilesErrorAction {
   payload: string
 }
 
+export interface LoginRequestStartAction {
+  type: ActionType.LOGIN_REQUEST_START
+  payload: {
+    email: string,
+    password: string
+  }
+}
+
+export interface LoginRequestSuccessAction {
+  type: ActionType.LOGIN_REQUEST_SUCCESS
+  payload: {
+    accessToken: string,
+    refreshToken: string,
+    user: ReduxUser
+  }
+}
+
+export interface LoginRequestFailedAction {
+  type: ActionType.LOGIN_REQUEST_FAILED,
+  payload: {
+    non_field_errors: string[]
+  }
+}
+
+export interface LogoutRequestAction {
+  type: ActionType.LOGOUT_REQUEST,
+  payload: null;
+}
 
 export type Action =
     | MoveCellAction
@@ -184,4 +213,9 @@ export type Action =
     | UpdateFileSavePartialAction
     | DeleteFileAction
     | FetchFilesCompleteAction
-    | FetchFilesErrorAction;
+    | FetchFilesErrorAction
+    | LoginRequestStartAction
+    | LoginRequestSuccessAction
+    | LoginRequestFailedAction
+    | LogoutRequestAction
+    ;
