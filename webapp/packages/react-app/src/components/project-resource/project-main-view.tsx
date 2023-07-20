@@ -1,6 +1,6 @@
 import ProjectCell from "../project-cell/project-cell";
 import React, {useCallback, useMemo, useState} from "react";
-import ProjectResourceDashboard from "../project-resource/project-resource-dashboard";
+import ProjectResourceDashboard from "./project-resource-dashboard";
 import {ReduxProject} from "../../state";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 
