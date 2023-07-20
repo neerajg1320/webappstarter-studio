@@ -14,7 +14,7 @@ const AppNavLayout = () => {
       <div style={{
           height: "80vh",
           width:"100%", padding:"0 40px",
-          border:"3px solid yellow",
+          // border:"3px solid yellow",
           display: "flex", flexDirection:"column", gap:"20px"
         }}
       >
