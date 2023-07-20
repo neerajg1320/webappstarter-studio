@@ -8,7 +8,7 @@ import {ReduxProject} from "../../state";
 // It also allows us to select a project for working
 
 interface ProjectsDashboardProps {
-  onProjectChange?: (project:ReduxProject) => void;
+  onProjectChange?: (localId:string) => void;
 }
 
 const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
@@ -29,7 +29,7 @@ const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectCha
   const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
     setSelectedProjectOption(selectedOption);
     if (onProjectChange && selectedOption) {
-      onProjectChange(projectsState.data[selectedOption.value]);
+      onProjectChange(selectedOption.value);
     }
   }
 

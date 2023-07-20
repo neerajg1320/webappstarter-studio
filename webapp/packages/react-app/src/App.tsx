@@ -7,7 +7,7 @@ import ProjectCell from "./components/project-cell/project-cell";
 import Select, {SingleValue} from "react-select";
 import {ReduxProject} from "./state";
 import {debugRedux} from "./config/global";
-import MainView from "./components/main-view/main-view";
+import ProjectMainView from "./components/main-view/project-main-view";
 
 const App = () => {
   if (debugRedux) {
@@ -26,7 +26,7 @@ const App = () => {
 
   return (
     <div style={{display:"flex", flexDirection:"column", alignItems: "center"}}>
-      <MainView />
+      <ProjectMainView />
     </div>
   );
 }

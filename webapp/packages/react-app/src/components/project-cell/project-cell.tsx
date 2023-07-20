@@ -93,7 +93,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }, [reduxProject.localId]);
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`bundlesState:`, bundlesState);
     }
   }, [bundlesState]);
@@ -205,12 +205,12 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       <div style={{height:"200px"}}>
         {/*{(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&*/}
         <span>reduxProject.bundleLocalId:'{reduxProject.bundleLocalId}'</span>
-        {(reduxProject.localId && bundlesState[reduxProject.localId]) &&
+        {(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
               {/*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*/}
               <Preview
-                  code={bundlesState[reduxProject.localId]!.code}
-                  err={bundlesState[reduxProject.localId]!.err}
+                  code={bundlesState[reduxProject.bundleLocalId]!.code}
+                  err={bundlesState[reduxProject.bundleLocalId]!.err}
               />
             </div>
         }
