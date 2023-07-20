@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {randomIdGenerator} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
 
-export const ProjectResource:React.FC = () => {
+export const ProjectCreate:React.FC = () => {
   const [projectName, setProjectName] = useState<string|null>(null);
   const { createAndSetProject } = useActions();
 

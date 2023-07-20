@@ -61,6 +61,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           project.reduxType = 'project'
           project.localId = randomIdGenerator();
           project.synced = true;
+          project.deleteMarked = true;
           acc[project.localId] = project;
           return acc;
         }, {} as ProjectsState['data']);
