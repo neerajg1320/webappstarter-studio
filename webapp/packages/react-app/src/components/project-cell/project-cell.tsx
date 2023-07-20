@@ -204,7 +204,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       {/* TBD: We can try to make this resizable as well */}
       <div style={{height:"200px"}}>
         {/*{(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&*/}
-        <span>reduxProject.bundleLocalId:'{reduxProject.bundleLocalId}'</span>
+        {/*<span>reduxProject.bundleLocalId:'{reduxProject.bundleLocalId}'</span>*/}
         {(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
               {/*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*/}

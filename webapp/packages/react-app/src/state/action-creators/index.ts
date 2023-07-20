@@ -8,7 +8,7 @@ import {
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
-  LoginRequestStartAction, LoginRequestSuccessAction,
+  LoginRequestStartAction, LoginRequestSuccessAction, LogoutRequestAction,
   MoveCellAction,
   SetCurrentProjectAction,
   UpdateCellAction,
@@ -640,6 +640,13 @@ export const loginRequestSuccess = (
       refreshToken,
       user
     }
+  };
+}
+
+export const logoutRequestStart = (): LogoutRequestAction => {
+  return {
+    type: ActionType.LOGOUT_REQUEST,
+    payload: null
   };
 }
 

@@ -1,8 +1,14 @@
 import { Outlet, Link } from "react-router-dom";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {useActions} from "../../hooks/use-actions";
 
 const AppNavLayout = () => {
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
+  const {logoutRequestStart} = useActions();
+
+  const handleLogoutClick = () => {
+    logoutRequestStart();
+  };
 
   return (
       <div style={{
@@ -40,6 +46,9 @@ const AppNavLayout = () => {
                       </a>
                       <a className="navbar-item">
                         Contact info
+                      </a>
+                      <a className="navbar-item" onClick={() => handleLogoutClick()}>
+                        Logout
                       </a>
                     </div>
                   </div>
