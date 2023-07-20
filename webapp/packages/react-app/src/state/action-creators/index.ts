@@ -33,6 +33,7 @@ import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUser} from "../user";
+import {axiosApiInstance} from "../../api/axiosApi";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -205,10 +206,9 @@ export const createAndSetProject = (localId: string, title:string, framework: Pr
     }
 }
 
-const gApiUri = 'http://localhost:8080/api/v1';
-const gJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjg5ODQ4OTIxLCJpYXQiOjE2ODk3NjI1MjEsImp0aSI6ImFiMzU5NThmNWI2NTQ0MWZiMTE5ZWE5NTAzZTU3YmYwIiwidXNlcl9pZCI6ImE1MTU3MWNjLWY5YjMtNGY0ZC1iMTEwLWJjNGE1NWE1MGI0YiJ9.9IF_4zECUYxtcc1y1toq6JR5uP_DzGmdnqVPSQhUAnQ";
-const gHeaders = {
-  Authorization: `Bearer ${gJwtToken}`
+
+const gApiUri = '';
+const __rm__gHeaders = {
 }
 
 
@@ -221,7 +221,7 @@ export const fetchProjectsAndFiles = () => {
     }
 
     try {
-      const {data:projects}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers});
+      const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, {headers});
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
         payload: projects
@@ -242,7 +242,7 @@ export const fetchProjectsAndFiles = () => {
 export const fetchProjects = () => {
   return async (dispatch: Dispatch<Action>) => {
     try {
-      const {data}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers: gHeaders});
+      const {data}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers: __rm__gHeaders});
 
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
@@ -268,7 +268,7 @@ export const createProjectOnServer = (localId:string, title:string, description:
     };
 
     try {
-      const response = await axios.post(`${gApiUri}/projects/`, data, {headers: gHeaders});
+      const response = await axios.post(`${gApiUri}/projects/`, data, {headers: __rm__gHeaders});
       const {id, pkid, folder} = response.data
       // We are putting pkid in the id.
       dispatch(updateProject({localId, id, pkid, folder, synced:true}));
@@ -289,7 +289,7 @@ export const fetchProjectFromServer = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const project = getState().projects.data[localId];
     try {
-      const response = await axios.get(`${gApiUri}/projects/${project.pkid}/`,{headers: gHeaders});
+      const response = await axios.get(`${gApiUri}/projects/${project.pkid}/`,{headers: __rm__gHeaders});
       console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
 
       const {entry_file, entry_path} = response.data;
@@ -336,7 +336,7 @@ export const fetchFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       // Later we can created a combined object
-      const {data}:{data:ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: gHeaders});
+      const {data}:{data:ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: __rm__gHeaders});
 
       // console.log(getState().projects.data);
       const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
@@ -495,7 +495,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
     }
 
     try {
-      const response = await axios.post(`${gApiUri}/files/`, formData, {headers: gHeaders});
+      const response = await axios.post(`${gApiUri}/files/`, formData, {headers: __rm__gHeaders});
       console.log(response);
 
       // const {id, pkid} = response.data
@@ -554,7 +554,7 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
     const {localId} = saveFilePartial;
 
     try {
-      const response = await axios.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: gHeaders});
+      const response = await axios.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: __rm__gHeaders});
       console.log(response);
 
       // const {id, pkid} = response.data
@@ -603,7 +603,7 @@ export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDelete
     const {localId} = deleteFilePartial;
 
     try {
-      const response = await axios.delete(`${gApiUri}/files/${pkid}/`,{headers: gHeaders});
+      const response = await axios.delete(`${gApiUri}/files/${pkid}/`,{headers: __rm__gHeaders});
       console.log(response);
 
       // const {id, pkid} = response.data
@@ -652,7 +652,7 @@ export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     dispatch(loginRequestStart(email, password));
 
-    const {status, data} = await axios.post(`${gApiUri}/auth/login/`, {email, password});
+    const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
     if (status === 200) {
       const {refresh_token, access_token, user} = data;
       console.log(refresh_token, access_token, user);
