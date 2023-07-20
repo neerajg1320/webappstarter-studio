@@ -5,7 +5,7 @@ const ProjectNavLayout = () => {
       <>
         <nav className="navbar">
           <div  className="navbar-menu">
-            
+
             <div className="navbar-start">
               <a className="navbar-item">
                 <Link to="/">Projects</Link>
