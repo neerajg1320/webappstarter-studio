@@ -1,11 +1,11 @@
 import ProjectCell from "../project-cell/project-cell";
 import React, {useCallback, useMemo, useState} from "react";
-import ProjectGridSelection from "./project-grid-selection";
+import ProjectGridSelection from "../project-resource/project-grid-selection";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProjectNavLayout from "./project-nav-layout";
+import AppNavLayout from "./app-nav-layout";
 
-const ProjectMainView = () => {
+const AppMainView = () => {
   const [selectedProjectLocalId, setSelectedProjectLocalId] = useState<string|null>(null);
   const projectsState = useTypedSelector((state) => state.projects);
 
@@ -22,7 +22,7 @@ const ProjectMainView = () => {
   return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ProjectNavLayout />}>
+          <Route path="/" element={<AppNavLayout />}>
             <Route index element={<ProjectGridSelection onProjectChange={handleProjectChange}/>} />
             <Route path="editor" element={selectedProject && <ProjectCell reduxProject={selectedProject}/>} />
           </Route>
@@ -32,4 +32,4 @@ const ProjectMainView = () => {
 
 }
 
-export default ProjectMainView;
+export default AppMainView;

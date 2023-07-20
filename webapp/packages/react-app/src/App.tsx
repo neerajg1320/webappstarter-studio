@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
 import {debugRedux} from "./config/global";
-import ProjectMainView from "./components/project-resource/project-main-view";
+import AppMainView from "./components/app-main/app-main-view";
 
 
 const App = () => {
@@ -32,7 +32,7 @@ const App = () => {
         display:"flex", flexDirection:"column", alignItems: "center", justifyContent: "space-between"
       }}
     >
-      <ProjectMainView />
+      <AppMainView />
     </div>
   );
 }

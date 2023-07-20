@@ -1,6 +1,6 @@
 import { Outlet, Link } from "react-router-dom";
 
-const ProjectNavLayout = () => {
+const AppNavLayout = () => {
   return (
       <div style={{
           height: "80vh",
@@ -60,4 +60,4 @@ const ProjectNavLayout = () => {
   )
 };
 
-export default ProjectNavLayout;
+export default AppNavLayout;
