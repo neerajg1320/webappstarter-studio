@@ -1,8 +1,9 @@
 import ProjectCell from "../project-cell/project-cell";
 import React, {useCallback, useMemo, useState} from "react";
 import ProjectResourceDashboard from "./project-resource-dashboard";
-import {ReduxProject} from "../../state";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProjectNavLayout from "./project-nav-layout";
 
 const ProjectMainView = () => {
   const [selectedProjectLocalId, setSelectedProjectLocalId] = useState<string|null>(null);
@@ -18,16 +19,17 @@ const ProjectMainView = () => {
     setSelectedProjectLocalId(localId);
   }, []);
 
-
   return (
-    <>
-      <ProjectResourceDashboard onProjectChange={handleProjectChange}/>
-
-      <div style={{width: "100%", marginTop: "10px"}}>
-        {selectedProject && <ProjectCell reduxProject={selectedProject}/>}
-      </div>
-    </>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ProjectNavLayout />}>
+            <Route index element={<ProjectResourceDashboard onProjectChange={handleProjectChange}/>} />
+            <Route path="editor" element={selectedProject && <ProjectCell reduxProject={selectedProject}/>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
   );
+
 }
 
 export default ProjectMainView;
