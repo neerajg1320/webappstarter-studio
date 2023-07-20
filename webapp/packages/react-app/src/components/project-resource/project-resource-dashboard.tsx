@@ -4,11 +4,14 @@ import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxProject} from "../../state";
 
+// This component shows us the projects available for a user
+// It also allows us to select a project for working
+
 interface ProjectsDashboardProps {
   onProjectChange?: (project:ReduxProject) => void;
 }
 
-const ProjectsDashboard:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
+const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
   const projectsState = useTypedSelector((state) => state.projects);
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
@@ -42,4 +45,4 @@ const ProjectsDashboard:React.FC<ProjectsDashboardProps> = ({onProjectChange}) =
   );
 }
 
-export default ProjectsDashboard;
+export default ProjectResourceDashboard;
