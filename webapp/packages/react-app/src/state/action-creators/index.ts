@@ -33,7 +33,7 @@ import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUser} from "../user";
-import {axiosApiInstance} from "../../api/axiosApi";
+import {axiosApiInstance, setAuthentication} from "../../api/axiosApi";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -214,14 +214,10 @@ const __rm__gHeaders = {
 
 export const fetchProjectsAndFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(getState().auth);
-
-    const headers = {
-      Authorization: `Bearer ${getState().auth.jwtToken}`
-    }
+    // console.log(getState().auth);
 
     try {
-      const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, {headers});
+      const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, );
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
         payload: projects
@@ -242,11 +238,10 @@ export const fetchProjectsAndFiles = () => {
 export const fetchProjects = () => {
   return async (dispatch: Dispatch<Action>) => {
     try {
-      const {data}: {data: ReduxProject[]} = await axios.get(`${gApiUri}/projects/`, {headers: __rm__gHeaders});
-
+      const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, );
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
-        payload: data
+        payload: projects
       });
     } catch (err) {
       if (err instanceof Error) {
@@ -336,7 +331,7 @@ export const fetchFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       // Later we can created a combined object
-      const {data}:{data:ReduxFile[]} = await axios.get(`${gApiUri}/files/`, {headers: __rm__gHeaders});
+      const {data}:{data:ReduxFile[]} = await axiosApiInstance.get(`/files/`);
 
       // console.log(getState().projects.data);
       const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
@@ -663,6 +658,8 @@ export const authenticateUser = (email:string, password:string) => {
         first_name: user.first_name,
         last_name: user.last_name
       }));
+
+      setAuthentication(access_token);
     }
   };
 }
