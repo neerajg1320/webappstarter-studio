@@ -1,6 +1,6 @@
 import ProjectCell from "../project-cell/project-cell";
 import React, {useCallback, useMemo, useState} from "react";
-import ProjectResourceDashboard from "./project-resource-dashboard";
+import ProjectGridSelection from "./project-grid-selection";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ProjectNavLayout from "./project-nav-layout";
@@ -23,7 +23,7 @@ const ProjectMainView = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ProjectNavLayout />}>
-            <Route index element={<ProjectResourceDashboard onProjectChange={handleProjectChange}/>} />
+            <Route index element={<ProjectGridSelection onProjectChange={handleProjectChange}/>} />
             <Route path="editor" element={selectedProject && <ProjectCell reduxProject={selectedProject}/>} />
           </Route>
         </Routes>

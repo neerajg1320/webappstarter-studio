@@ -2,7 +2,13 @@ import { Outlet, Link } from "react-router-dom";
 
 const ProjectNavLayout = () => {
   return (
-      <>
+      <div style={{
+          height: "80vh",
+          width:"100%", padding:"0 40px",
+          border:"3px solid yellow",
+          display: "flex", flexDirection:"column", gap:"20px"
+        }}
+      >
         <nav className="navbar">
           <div  className="navbar-menu">
 
@@ -50,7 +56,7 @@ const ProjectNavLayout = () => {
         </nav>
 
         <Outlet />
-      </>
+      </div>
   )
 };
 

@@ -11,7 +11,7 @@ interface ProjectsDashboardProps {
   onProjectChange?: (localId:string) => void;
 }
 
-const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
+const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
@@ -63,4 +63,4 @@ const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectCha
   );
 }
 
-export default ProjectResourceDashboard;
+export default ProjectGridSelection;
