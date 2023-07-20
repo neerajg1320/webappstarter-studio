@@ -12,15 +12,19 @@ interface ProjectsDashboardProps {
 }
 
 const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
-  const projectsState = useTypedSelector((state) => state.projects);
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
+  const projectsState = useTypedSelector((state) => state.projects);
+  const projectFiles = useMemo(() => {
+    return Object.entries(projectsState.data).map(([k,v]) => v)
+  }, [projectsState.data]);
+
   const projectOptions = useMemo(() => {
-    return Object.entries(projectsState.data).map(([k,v]) => v).map(prj => {
+    return projectFiles.map(prj => {
       return {value: prj.localId, label: prj.title};
     })
-  }, [projectsState]);
+  }, [projectFiles]);
 
   const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
     setSelectedProjectOption(selectedOption);
@@ -41,6 +45,20 @@ const ProjectResourceDashboard:React.FC<ProjectsDashboardProps> = ({onProjectCha
             options={projectOptions}
             onChange={handleProjectSelectionChange}
         />
+
+        {/*{(projectFiles)*/}
+        {/*    ?*/}
+        {/*    <div className="columns">*/}
+        {/*      {projectFiles.map(prj => {*/}
+        {/*          return <span className="column">{prj.title}</span>;*/}
+        {/*        })*/}
+        {/*      }*/}
+        {/*    </div>*/}
+        {/*    :*/}
+        {/*    <div>*/}
+
+        {/*}*/}
+
       </div>
   );
 }

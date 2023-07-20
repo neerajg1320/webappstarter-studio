@@ -92,6 +92,12 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     setEditedFileLocalId(null);
   }, [reduxProject.localId]);
 
+  useEffect(() => {
+    if (debugComponent || true) {
+      console.log(`bundlesState:`, bundlesState);
+    }
+  }, [bundlesState]);
+
   useEffect( () => {
     if (debugComponent) {
       console.log(`editedFile:`, editedFile);
@@ -116,11 +122,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
 
   const handleBundleClick = () => {
-    // console.log(`currentProject: ${JSON.stringify(currentProject, null, 2)}`);
+    console.log(`reduxProject:`, reduxProject);
 
     if (reduxProject.entry_path) {
-      createProjectBundle(reduxProject.localId, `mediafiles/user_1/${reduxProject.folder}/${reduxProject.entry_path}`);
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
+      createProjectBundle(reduxProject.localId, `mediafiles/user_1/${reduxProject.folder}/${reduxProject.entry_path}`);
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }
@@ -197,12 +203,14 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
       {/* TBD: We can try to make this resizable as well */}
       <div style={{height:"200px"}}>
-        {(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+        {/*{(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&*/}
+        <span>reduxProject.bundleLocalId:'{reduxProject.bundleLocalId}'</span>
+        {(reduxProject.localId && bundlesState[reduxProject.localId]) &&
             <div style={{height: "100%"}}>
-              {/*<pre>{bundlesState[currentProject.bundleLocalId]!.code}</pre>*/}
+              {/*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*/}
               <Preview
-                  code={bundlesState[reduxProject.bundleLocalId]!.code}
-                  err={bundlesState[reduxProject.bundleLocalId]!.err}
+                  code={bundlesState[reduxProject.localId]!.code}
+                  err={bundlesState[reduxProject.localId]!.err}
               />
             </div>
         }
