@@ -14,28 +14,12 @@ interface ProjectsDashboardProps {
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
-  const showOldViewDeprecated = false;
-  const [selectedProjectOption, setSelectedProjectOption] =
-      useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
   const projectsState = useTypedSelector((state) => state.projects);
   const projectList = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v)
   }, [projectsState.data]);
 
-  const projectOptions = useMemo(() => {
-    return projectList.map(prj => {
-      return {value: prj.localId, label: prj.title};
-    })
-  }, [projectList]);
-
-  const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
-    setSelectedProjectOption(selectedOption);
-    if (propOnProjectChange && selectedOption) {
-      propOnProjectChange(selectedOption.value);
-      navigate('/edit_project');
-    }
-  }
 
   const handleProjectCardClick = (localId:string) => {
     console.log(`handleProjectCardClick:`, localId);
@@ -62,7 +46,6 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
           display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end"
         }}>
           <div style={{
-            // border: "1px solid lightyellow",
             borderRadius: "15px",
             display: "flex",
           }}>

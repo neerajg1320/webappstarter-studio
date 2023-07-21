@@ -34,7 +34,6 @@ export const ProjectNew:React.FC = () => {
     }
     const _localId = randomIdGenerator();
     await createAndSetProject(_localId, projectTitle!, selectedFrameworkOption?.value as ProjectFrameworks);
-    console.log("Project Created");
     navigate('/edit_project');
   }
 

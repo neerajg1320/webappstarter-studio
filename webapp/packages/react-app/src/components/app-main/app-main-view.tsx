@@ -5,19 +5,20 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {BrowserRouter, Routes, Route, useNavigate} from "react-router-dom";
 import AppRouterLayout from "./app-router-layout";
 import {ProjectNew} from "../project-resource/project-new";
+import {useActions} from "../../hooks/use-actions";
 
 const AppMainView = () => {
-  const [selectedProjectLocalId, setSelectedProjectLocalId] = useState<string|null>(null);
+  // This has to be removed from here and we have to use the current project in the redux state
+  // const [selectedProjectLocalId, setSelectedProjectLocalId] = useState<string|null>(null);
+  const { setCurrentProjectId } = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
-
-  const selectedProject = useMemo(() => {
-    if (selectedProjectLocalId && projectsState.data) {
-      return projectsState.data[selectedProjectLocalId]
-    }
-  }, [projectsState.data, selectedProjectLocalId])
+  const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+  const currentProject = useMemo(() => {
+    return projectsState.data[currentProjectId]
+  }, [projectsState.data, currentProjectId]);
 
   const handleProjectChange = useCallback((localId:string) => {
-    setSelectedProjectLocalId(localId);
+    setCurrentProjectId(localId);
   }, []);
 
   return (
@@ -25,7 +26,7 @@ const AppMainView = () => {
         <Routes>
           <Route path="/" element={<AppRouterLayout />}>
             <Route index element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
-            <Route path="edit_project" element={selectedProject && <ProjectCell reduxProject={selectedProject}/>} />
+            <Route path="edit_project" element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
             <Route path="new_project" element={<ProjectNew />} />
           </Route>
         </Routes>
