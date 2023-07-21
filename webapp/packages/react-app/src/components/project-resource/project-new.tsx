@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {randomIdGenerator} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
 
-export const ProjectCreate:React.FC = () => {
+export const ProjectNew:React.FC = () => {
   const [projectName, setProjectName] = useState<string|null>(null);
   const { createAndSetProject } = useActions();
 
@@ -35,7 +35,7 @@ export const ProjectCreate:React.FC = () => {
                 onClick={handleCreateClick}
                 disabled={!projectName}
             >
-              Create
+              Save
             </button>
           </div>
         </div>

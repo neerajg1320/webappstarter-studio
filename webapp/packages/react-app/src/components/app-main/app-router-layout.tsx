@@ -2,7 +2,7 @@ import {Outlet, Link, useNavigate} from "react-router-dom";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 
-const AppNavLayout = () => {
+const AppRouterLayout = () => {
   const showEditorNavItem = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const {logoutRequestStart} = useActions();
@@ -13,15 +13,10 @@ const AppNavLayout = () => {
     navigate("/dashboard");
   };
 
-  const handleCloseProjectClick = () => {
-    navigate(-1);
-  }
-
   return (
       <div style={{
           height: "80vh",
           width:"100%", padding:"0 40px",
-          // border:"3px solid yellow",
           display: "flex", flexDirection:"column", gap:"20px"
         }}
       >
@@ -105,4 +100,4 @@ const AppNavLayout = () => {
   )
 };
 
-export default AppNavLayout;
+export default AppRouterLayout;

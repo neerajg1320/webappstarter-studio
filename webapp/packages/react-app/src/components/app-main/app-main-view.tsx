@@ -1,9 +1,10 @@
 import ProjectCell from "../project-cell/project-cell";
 import React, {useCallback, useMemo, useState} from "react";
-import ProjectGridSelection from "../project-resource/project-grid-selection";
+import ProjectListGrid from "../project-resource/project-list-grid";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {BrowserRouter, Routes, Route, useNavigate} from "react-router-dom";
-import AppNavLayout from "./app-nav-layout";
+import AppRouterLayout from "./app-router-layout";
+import {ProjectNew} from "../project-resource/project-new";
 
 const AppMainView = () => {
   const [selectedProjectLocalId, setSelectedProjectLocalId] = useState<string|null>(null);
@@ -22,9 +23,10 @@ const AppMainView = () => {
   return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AppNavLayout />}>
-            <Route index element={<ProjectGridSelection onProjectChange={handleProjectChange}/>} />
-            <Route path="editor" element={selectedProject && <ProjectCell reduxProject={selectedProject}/>} />
+          <Route path="/" element={<AppRouterLayout />}>
+            <Route index element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
+            <Route path="edit_project" element={selectedProject && <ProjectCell reduxProject={selectedProject}/>} />
+            <Route path="new_project" element={<ProjectNew />} />
           </Route>
         </Routes>
       </BrowserRouter>

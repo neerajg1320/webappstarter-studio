@@ -6,7 +6,7 @@ interface ProjectCardProps {
   onClick?: (localId:string) => void
 }
 
-const ProjectCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:propOnClick}) => {
+const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:propOnClick}) => {
   const handleCardClick = () => {
     if (propOnClick) {
       propOnClick(reduxProject.localId);
@@ -46,4 +46,4 @@ const ProjectCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:propOnCli
   );
 }
 
-export default ProjectCard;
+export default ProjectListItemCard;
