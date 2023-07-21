@@ -3,6 +3,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 
 const AppNavLayout = () => {
+  const showEditorNavItem = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const {logoutRequestStart} = useActions();
 
@@ -42,9 +43,11 @@ const AppNavLayout = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="navbar-item">
-                    <Link to="/editor">Editor </Link>
-                  </div>
+                  {showEditorNavItem &&
+                    <div className="navbar-item">
+                      <Link to="/editor">Editor </Link>
+                    </div>
+                  }
                 </>
               }
 

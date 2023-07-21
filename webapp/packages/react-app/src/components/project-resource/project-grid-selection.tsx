@@ -3,6 +3,7 @@ import Select, {SingleValue} from "react-select";
 import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxProject} from "../../state";
+import {useNavigate} from "react-router-dom";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -12,6 +13,7 @@ interface ProjectsDashboardProps {
 }
 
 const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
+  const navigate = useNavigate();
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
@@ -31,6 +33,8 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
     if (onProjectChange && selectedOption) {
       onProjectChange(selectedOption.value);
     }
+
+    navigate('/editor');
   }
 
   return (
