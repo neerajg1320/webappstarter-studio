@@ -1,5 +1,5 @@
 .app-router-view {
-  border: 4px solid yellow;
+  /*border: 4px solid yellow;*/
   min-height: 80vh;
   display: flex;
   flex-direction: column;
