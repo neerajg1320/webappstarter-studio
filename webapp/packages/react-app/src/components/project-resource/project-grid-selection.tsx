@@ -38,12 +38,14 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
     navigate('/editor');
   }
 
+  const handleProjectCardClick = (localId:string) => {
+    console.log(`handleProjectCardClick:`, localId);
+  }
+
   return (
       <div style={{
-
         width: "100%",
         display:"flex", flexDirection: "column", alignItems: "center", gap: "20px",
-        // border: "1px solid lightyellow"
       }}
       >
         {/*// The current project view which has to be removed*/}
@@ -65,11 +67,15 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
           width: "90%", height: "60vh",
           border: "1px solid lightblue",
           borderRadius: "15px",
-          marginTop: "40px"
-
+          marginTop: "40px",
+          padding: "40px",
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "40px",
+          overflowX: "scroll"
         }}>
           {projectList &&
-              projectList.map(prj => <ProjectCard reduxProject={prj}/>)
+              projectList.map(prj => <ProjectCard key={prj.localId} reduxProject={prj} onClick={handleProjectCardClick}/>)
           }
         </div>
 
