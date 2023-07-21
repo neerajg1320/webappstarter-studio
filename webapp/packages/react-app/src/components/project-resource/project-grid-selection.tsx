@@ -4,6 +4,7 @@ import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxProject} from "../../state";
 import {useNavigate} from "react-router-dom";
+import ProjectCard from "./project-card";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -18,15 +19,15 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
   const projectsState = useTypedSelector((state) => state.projects);
-  const projectFiles = useMemo(() => {
+  const projectList = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v)
   }, [projectsState.data]);
 
   const projectOptions = useMemo(() => {
-    return projectFiles.map(prj => {
+    return projectList.map(prj => {
       return {value: prj.localId, label: prj.title};
     })
-  }, [projectFiles]);
+  }, [projectList]);
 
   const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
     setSelectedProjectOption(selectedOption);
@@ -61,14 +62,15 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
         </div>
 
         <div style={{
-
           width: "90%", height: "60vh",
           border: "1px solid lightblue",
           borderRadius: "15px",
           marginTop: "40px"
 
         }}>
-
+          {projectList &&
+              projectList.map(prj => <ProjectCard reduxProject={prj}/>)
+          }
         </div>
 
       </div>
