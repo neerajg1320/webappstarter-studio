@@ -17,7 +17,9 @@ export const setAuthentication = (jwtToken: string) => {
   }
 
   axiosApiInstance.interceptors.request.use(request => {
-      console.log(`request intercepted:`, request);
+      if (debugAxios) {
+        console.log(`request intercepted:`, request);
+      }
 
       // The following is a workaround
       // The axios library has a bug around applying headers in middleware.

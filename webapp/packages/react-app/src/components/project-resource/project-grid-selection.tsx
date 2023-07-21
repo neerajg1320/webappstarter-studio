@@ -14,6 +14,7 @@ interface ProjectsDashboardProps {
 
 const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
+  const showOldViewDeprecated = false;
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
 
@@ -51,25 +52,27 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange:
       }}
       >
         {/*// The current project view which has to be removed*/}
-        <div style={{
-          width: "80%",
-          border: "1px solid lightblue",
-          display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "space-between"
-        }}>
-          <ProjectCreate />
-          <Select
-              value={selectedProjectOption}
-              className="project-select is-primary is-small"
-              options={projectOptions}
-              onChange={handleProjectSelectionChange}
-          />
-        </div>
+        {showOldViewDeprecated &&
+          <div style={{
+            width: "80%",
+            border: "1px solid lightblue",
+            display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
+          }}>
+            <ProjectCreate/>
+            <Select
+                value={selectedProjectOption}
+                className="project-select is-primary is-small"
+                options={projectOptions}
+                onChange={handleProjectSelectionChange}
+            />
+          </div>
+        }
 
         <div style={{
           width: "90%", height: "60vh",
           border: "1px solid lightblue",
           borderRadius: "15px",
-          marginTop: "40px",
+          marginTop: "60px",
           padding: "40px",
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
