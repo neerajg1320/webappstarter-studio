@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import {Outlet, Link, useNavigate} from "react-router-dom";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 
@@ -6,10 +6,16 @@ const AppNavLayout = () => {
   const showEditorNavItem = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const {logoutRequestStart} = useActions();
+  const navigate = useNavigate();
 
   const handleLogoutClick = () => {
     logoutRequestStart();
+    navigate("/dashboard");
   };
+
+  const handleCloseProjectClick = () => {
+    navigate(-1);
+  }
 
   return (
       <div style={{
@@ -42,6 +48,9 @@ const AppNavLayout = () => {
                         Project 3
                       </div>
                     </div>
+                  </div>
+                  <div className="navbar-item" >
+                    <Link to="../">Close </Link>
                   </div>
                   {showEditorNavItem &&
                     <div className="navbar-item">
