@@ -33,7 +33,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
     setSelectedProjectOption(selectedOption);
     if (propOnProjectChange && selectedOption) {
       propOnProjectChange(selectedOption.value);
-      navigate('/editor');
+      navigate('/edit_project');
     }
   }
 
@@ -41,7 +41,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
     console.log(`handleProjectCardClick:`, localId);
     if (propOnProjectChange) {
       propOnProjectChange(localId);
-      navigate('/editor');
+      navigate('/edit_project');
     }
   }
 
