@@ -2,9 +2,8 @@ import {ProjectCreate} from "./project-create";
 import Select, {SingleValue} from "react-select";
 import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {ReduxProject} from "../../state";
-import {useNavigate} from "react-router-dom";
 import ProjectCard from "./project-card";
+import {useNavigate} from "react-router-dom";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -13,7 +12,7 @@ interface ProjectsDashboardProps {
   onProjectChange?: (localId:string) => void;
 }
 
-const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}) => {
+const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
   const [selectedProjectOption, setSelectedProjectOption] =
       useState<SingleValue<{ value: string; label: string; } | null>>(null);
@@ -31,15 +30,18 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
 
   const handleProjectSelectionChange = (selectedOption:SingleValue<{value: string, label: string}>) => {
     setSelectedProjectOption(selectedOption);
-    if (onProjectChange && selectedOption) {
-      onProjectChange(selectedOption.value);
+    if (propOnProjectChange && selectedOption) {
+      propOnProjectChange(selectedOption.value);
+      navigate('/editor');
     }
-
-    navigate('/editor');
   }
 
   const handleProjectCardClick = (localId:string) => {
     console.log(`handleProjectCardClick:`, localId);
+    if (propOnProjectChange) {
+      propOnProjectChange(localId);
+      navigate('/editor');
+    }
   }
 
   return (

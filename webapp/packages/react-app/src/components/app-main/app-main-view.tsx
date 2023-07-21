@@ -2,7 +2,7 @@ import ProjectCell from "../project-cell/project-cell";
 import React, {useCallback, useMemo, useState} from "react";
 import ProjectGridSelection from "../project-resource/project-grid-selection";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Routes, Route, useNavigate} from "react-router-dom";
 import AppNavLayout from "./app-nav-layout";
 
 const AppMainView = () => {
