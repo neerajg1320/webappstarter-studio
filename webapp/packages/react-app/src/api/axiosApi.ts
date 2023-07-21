@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {serverApiBaseUrl, serverMediaBaseUrl} from "../config/global";
+import {debugAxios, serverApiBaseUrl} from "../config/global";
 
 export const axiosInstance = axios.create({
   // baseURL: serverMediaBaseUrl
@@ -10,13 +10,19 @@ export const axiosApiInstance = axios.create({
 });
 
 
+
 export const setAuthentication = (jwtToken: string) => {
-  console.log(`setAuthentication: jwtToken:`, jwtToken);
+  if (debugAxios) {
+    console.log(`setAuthentication: jwtToken:`, jwtToken);
+  }
 
   axiosApiInstance.interceptors.request.use(request => {
       console.log(`request intercepted:`, request);
 
       // The following is a workaround
+      // The axios library has a bug around applying headers in middleware.
+      // The headers are applied to all instances.
+      // In fact the other vars like baseUrl are also applied to all instances
       if (request.url?.includes('mediafiles')) {
         console.log(`Auth token not added for mediafiles. Need to put a better solution`)
       } else {

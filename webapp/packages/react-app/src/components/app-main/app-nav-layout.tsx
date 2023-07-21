@@ -22,45 +22,59 @@ const AppNavLayout = () => {
           <div  className="navbar-menu">
 
             <div className="navbar-start">
-              <a className="navbar-item">
-                <Link to="/">Projects</Link>
-              </a>
-              <a className="navbar-item">
+              <div className="navbar-item has-dropdown is-hoverable">
+                <div className="navbar-link">
+                  <Link to="/">Projects</Link>
+                </div>
+
+                <div className="navbar-dropdown">
+                  <div className="navbar-item">
+                    Project 1
+                  </div>
+                  <div className="navbar-item">
+                    Project 2
+                  </div>
+                  <div className="navbar-item">
+                    Project 3
+                  </div>
+                </div>
+              </div>
+              <div className="navbar-item">
                 <Link to="/editor">Editor </Link>
-              </a>
+              </div>
             </div>
 
             <div className="navbar-end">
               {isAuthenticated ?
                   <div className="navbar-item has-dropdown is-hoverable">
-                    <a className="navbar-link">
+                    <div className="navbar-link">
                       User
-                    </a>
+                    </div>
 
                     <div className="navbar-dropdown">
-                      <a className="navbar-item">
+                      <div className="navbar-item">
                         Profile
-                      </a>
-                      <a className="navbar-item">
+                      </div>
+                      <div className="navbar-item">
                         Messages
-                      </a>
-                      <a className="navbar-item">
+                      </div>
+                      <div className="navbar-item">
                         Contact info
-                      </a>
-                      <a className="navbar-item" onClick={() => handleLogoutClick()}>
+                      </div>
+                      <div className="navbar-item" onClick={() => handleLogoutClick()}>
                         Logout
-                      </a>
+                      </div>
                     </div>
                   </div>
                 :
                   <div className="navbar-item">
                     <div>
-                      <a className="button is-family-secondary">
+                      <div className="button is-family-secondary">
                         <strong>Login</strong>
-                      </a>
-                      <a className="button is-primary">
+                      </div>
+                      <div className="button is-primary">
                         <strong>Sign up</strong>
-                      </a>
+                      </div>
                     </div>
                   </div>
               }
