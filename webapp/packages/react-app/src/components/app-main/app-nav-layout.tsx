@@ -22,26 +22,32 @@ const AppNavLayout = () => {
           <div  className="navbar-menu">
 
             <div className="navbar-start">
-              <div className="navbar-item has-dropdown is-hoverable">
-                <div className="navbar-link">
-                  <Link to="/">Projects</Link>
-                </div>
+              {
+                isAuthenticated &&
+                <>
+                  <div className="navbar-item has-dropdown is-hoverable">
+                    <div className="navbar-link">
+                      <Link to="/">Projects</Link>
+                    </div>
 
-                <div className="navbar-dropdown">
-                  <div className="navbar-item">
-                    Project 1
+                    <div className="navbar-dropdown">
+                      <div className="navbar-item">
+                        Project 1
+                      </div>
+                      <div className="navbar-item">
+                        Project 2
+                      </div>
+                      <div className="navbar-item">
+                        Project 3
+                      </div>
+                    </div>
                   </div>
                   <div className="navbar-item">
-                    Project 2
+                    <Link to="/editor">Editor </Link>
                   </div>
-                  <div className="navbar-item">
-                    Project 3
-                  </div>
-                </div>
-              </div>
-              <div className="navbar-item">
-                <Link to="/editor">Editor </Link>
-              </div>
+                </>
+              }
+
             </div>
 
             <div className="navbar-end">

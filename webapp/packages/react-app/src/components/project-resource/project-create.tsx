@@ -17,13 +17,11 @@ export const ProjectCreate:React.FC = () => {
 
   return (
       <div style={{
-          width: "80%", margin: "20px",
           display: "flex", flexDirection: "row", justifyContent: "flex-end"
         }}
       >
         <div style={{
           border: "2px solid yellow",
-          width: "40%",
           display: "flex", flexDirection:"row", justifyContent: "space-between", gap: "40px",
         }}
         >

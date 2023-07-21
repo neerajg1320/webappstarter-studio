@@ -35,29 +35,37 @@ const ProjectGridSelection:React.FC<ProjectsDashboardProps> = ({onProjectChange}
 
   return (
       <div style={{
-        display:"flex", flexDirection:"row", width:"100%", alignItems: "center",
+
+        width: "100%",
+        display:"flex", flexDirection: "column", alignItems: "center", gap: "20px",
+        // border: "1px solid lightyellow"
       }}
       >
-        <ProjectCreate />
-        <Select
-            value={selectedProjectOption}
-            className="project-select is-primary is-small"
-            options={projectOptions}
-            onChange={handleProjectSelectionChange}
-        />
+        {/*// The current project view which has to be removed*/}
+        <div style={{
+          width: "80%",
+          border: "1px solid lightblue",
+          display:"flex", flexDirection:"row", alignItems: "center", justifyContent: "space-between"
+        }}>
+          <ProjectCreate />
+          <Select
+              value={selectedProjectOption}
+              className="project-select is-primary is-small"
+              options={projectOptions}
+              onChange={handleProjectSelectionChange}
+          />
+        </div>
 
-        {/*{(projectFiles)*/}
-        {/*    ?*/}
-        {/*    <div className="columns">*/}
-        {/*      {projectFiles.map(prj => {*/}
-        {/*          return <span className="column">{prj.title}</span>;*/}
-        {/*        })*/}
-        {/*      }*/}
-        {/*    </div>*/}
-        {/*    :*/}
-        {/*    <div>*/}
+        <div style={{
 
-        {/*}*/}
+          width: "90%", height: "60vh",
+          border: "1px solid lightblue",
+          borderRadius: "15px",
+          marginTop: "40px"
+
+        }}>
+
+        </div>
 
       </div>
   );
