@@ -1,3 +1,4 @@
+import './app-router-layout.css';
 import {Outlet, Link, useNavigate} from "react-router-dom";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
@@ -95,7 +96,10 @@ const AppRouterLayout = () => {
           </div>
         </nav>
 
-        <Outlet />
+        <div className="outlet app-router-view">
+          <Outlet />
+        </div>
+
       </div>
   )
 };

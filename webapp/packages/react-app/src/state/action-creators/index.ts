@@ -199,10 +199,10 @@ export const setCurrentProjectId = (localId: string): SetCurrentProjectAction =>
 export const createAndSetProject = (localId: string, title:string, framework: ProjectFrameworks) => {
     return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
         dispatch(createProject(localId, title, framework));
-        const { projects } = getState();
+        // const { projects } = getState();
 
-        const firstProject:[string, ReduxProject] = Object.entries(projects.data)[0];
-        dispatch(setCurrentProjectId(firstProject[0]));
+        // const firstProject:[string, ReduxProject] = Object.entries(projects.data)[0];
+        dispatch(setCurrentProjectId(localId));
     }
 }
 

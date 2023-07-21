@@ -1,0 +1,24 @@
+.project-value-list {
+  width: 50%;
+  border: 2px dashed yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items:center;
+  gap: 40px;
+}
+.project-value-list label {
+  width: 30%;
+  margin-left: 20%;
+}
+
+.project-value {
+  width: 100%;
+}
+
+.project-value-list .value {
+  width: 30%;
+}
+.project-value-list .select {
+  color: black;
+}

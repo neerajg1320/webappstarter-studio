@@ -51,34 +51,23 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
   return (
       <div style={{
+        height: "100%",
         display:"flex", flexDirection: "column", alignItems: "center", gap: "20px", justifyContent: "center"
       }}
       >
-        {/*// The current project view which has to be removed*/}
-        {showOldViewDeprecated &&
-          <div style={{
-            width: "100%",
-            border: "1px solid lightblue",
-            display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"
-          }}>
-            <ProjectNew/>
-            <Select
-                value={selectedProjectOption}
-                className="project-select is-primary is-small"
-                options={projectOptions}
-                onChange={handleProjectSelectionChange}
-            />
-          </div>
-        }
-
-        <div style={{marginTop: "40px"}}></div>
         <div style={{
+          height: "20%",
           width: "100%",
-          display: "flex", flexDirection: "row", justifyContent: "flex-end"
+          padding: "0 20px",
+          display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-end"
         }}>
-          <div>
+          <div style={{
+            // border: "1px solid lightyellow",
+            borderRadius: "15px",
+            display: "flex",
+          }}>
             <button className="button is-family-secondary"
-                    style={{backgroundColor: "cornflowerblue", borderRadius: "5px", marginBottom: "20px"}}
+                    style={{backgroundColor: "cornflowerblue", borderRadius: "5px"}}
                     onClick={handleNewProjectClick}
             >
               New Project
@@ -86,6 +75,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
           </div>
         </div>
         <div style={{
+          height: "80%",
           width: "100%",
           border: "1px solid lightblue",
           borderRadius: "15px",
@@ -93,13 +83,12 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gap: "40px",
-          overflowX: "scroll"
+          overflowY: "scroll",
         }}>
           {projectList &&
               projectList.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} onClick={handleProjectCardClick}/>)
           }
         </div>
-
       </div>
   );
 }
