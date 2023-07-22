@@ -26,7 +26,8 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
     <div className="card" style={{
         borderRadius: "10px", padding: "15px 10px 5px",
         backgroundColor: "cornflowerblue",
-        cursor: "pointer"
+        cursor: "pointer",
+        display: "flex", flexDirection: "column", justifyContent: "space-evenly"
       }}
       onClick={handleCardClick}
     >
@@ -38,7 +39,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
           <img />
         </div>
       </div>
-      <div className="card-content">
+      <div className="card-content" style={{flexGrow: 1}}>
         <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
           <span style={{width:"50%"}}>Folder:</span><span>{reduxProject.folder}</span>
         </div>
@@ -48,13 +49,13 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
       </div>
       <div className="card-footer" style={{
         display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
       }}>
         <button
             className="button is-family-secondary is-small"
             onClick={handleDeleteProjectClick}
             style={{
-              backgroundColor: "transparent", border: "transparent"
+              backgroundColor: "transparent", border: "transparent",
             }}
         >
           <span className="icon">

@@ -51,14 +51,19 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           const {localId, title} = action.payload;
           createProjectOnServer(localId, title, "ProjectCell created from webapp")(dispatch, getState);
         } else if (action.type === ActionType.UPDATE_PROJECT) {
-          const {localId} = action.payload;
-          const projectState = getState().projects.data[localId]
-          if (!projectState) {
-            console.error(`projectState is '${projectState}' for localId:${localId}`);
-            return;
-          }
-          if (projectState.pkid > 0) {
-            console.log(`We need to support updateProjectOnServer`);
+          const {localId, entryFileLocalId, bundleLocalId, isServerResponse, ...remaining} = action.payload;
+
+          // For the remaining fields we need to send a server request
+          if (Object.keys(remaining).length > 0) {
+            const projectState = getState().projects.data[localId]
+            if (!projectState) {
+              console.error(`projectState is '${projectState}' for localId:${localId}`);
+              return;
+            }
+
+            if (projectState.pkid > 0) {
+              console.log(`We need to support updateProjectOnServer`, remaining);
+            }
           }
         }
       }

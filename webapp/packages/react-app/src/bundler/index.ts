@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import { resolvePlugin } from './plugins/resolve-plugin';
 import { fetchPlugin } from './plugins/fetch-plugin';
 import {BundleInputType} from "../state/bundle";
-import {cellFileName, combineCellsCode} from "../config/global";
+import {cellFileName, combineCellsCode, debugBundler} from "../config/global";
 
 let service: esbuild.Service;
 
@@ -29,7 +29,9 @@ export const bundleFilePath =  async(filePath: string) => {
 // The bundleCodeStr takes a string as input.
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
 const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType) => {
-    console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
+    if (debugBundler) {
+      console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
+    }
 
     let esbuildService = await getESBuildService();
 

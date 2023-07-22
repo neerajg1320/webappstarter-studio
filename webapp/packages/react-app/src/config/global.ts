@@ -13,6 +13,7 @@ export const debugRedux = false;
 export const debugPlugin = false;
 
 // Bundler
+export const debugBundler = false;
 export const autoBundling = false;
 export const combineCellsCode = false;
 export const cellFileNamePattern = /__cell.jsx?/;
@@ -31,3 +32,4 @@ export const debugAxios = false;
 
 // React Components
 export const debugComponent = false;
+export const debugProject = false;

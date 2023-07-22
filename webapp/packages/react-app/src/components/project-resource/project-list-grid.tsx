@@ -4,6 +4,7 @@ import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
+import {debugProject} from "../../config/global";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -22,7 +23,10 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
 
   const handleProjectCardClick = (localId:string) => {
-    console.log(`handleProjectCardClick:`, localId);
+    if (debugProject) {
+      console.log(`handleProjectCardClick:`, localId);
+    }
+
     if (propOnProjectChange) {
       propOnProjectChange(localId);
       navigate('/edit_project');
