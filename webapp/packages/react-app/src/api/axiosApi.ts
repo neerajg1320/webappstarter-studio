@@ -11,7 +11,7 @@ export const axiosApiInstance = axios.create({
 
 
 
-export const setAuthentication = (jwtToken: string) => {
+export const setAxiosAuthToken = (jwtToken: string) => {
   if (debugAxios) {
     console.log(`setAuthentication: jwtToken:`, jwtToken);
   }

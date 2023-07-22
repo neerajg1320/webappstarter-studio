@@ -7,7 +7,7 @@ import {
   DeleteFileAction,
   DeleteProjectAction,
   Direction,
-  InsertCellAfterAction,
+  InsertCellAfterAction, LoginRequestFailedAction,
   LoginRequestStartAction, LoginRequestSuccessAction, LogoutRequestAction,
   MoveCellAction,
   SetCurrentProjectAction,
@@ -33,7 +33,9 @@ import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUser} from "../user";
-import {axiosApiInstance, setAuthentication} from "../../api/axiosApi";
+import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
+import {fetchAuthFromLocalStorage, saveAuthToLocalStorage} from "../../local-storage/local-storage";
+import {AuthInfo} from "../auth";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -670,17 +672,18 @@ export const loginRequestStart = (email:string, password:string): LoginRequestSt
   };
 }
 
-export const loginRequestSuccess = (
-    accessToken:string,
-    refreshToken:string,
-    user:ReduxUser,
-): LoginRequestSuccessAction => {
+export const loginRequestSuccess = (authInfo: AuthInfo): LoginRequestSuccessAction => {
   return {
     type: ActionType.LOGIN_REQUEST_SUCCESS,
+    payload: authInfo
+  };
+}
+
+export const loginRequestFailed = (errors: string[]): LoginRequestFailedAction => {
+  return {
+    type: ActionType.LOGIN_REQUEST_FAILED,
     payload: {
-      accessToken,
-      refreshToken,
-      user
+      non_field_errors: errors
     }
   };
 }
@@ -694,23 +697,36 @@ export const logoutRequestStart = (): LogoutRequestAction => {
 
 export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    dispatch(loginRequestStart(email, password));
+    let authInfo:AuthInfo|null = fetchAuthFromLocalStorage();
+    console.log(authInfo);
 
-    const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
-    if (status === 200) {
-      const {refresh_token, access_token, user} = data;
-      console.log(refresh_token, access_token, user);
+    // If not found in storage then we authenticate with the server
+    if (!authInfo) {
+      dispatch(loginRequestStart(email, password));
 
-      dispatch(loginRequestSuccess(access_token, refresh_token, {
-        pkid: user.pk,
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name
-      }));
+      const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
+      if (status === 200) {
+        const {refresh_token, access_token, user} = data;
+        console.log(refresh_token, access_token, user);
+        const reduxUser:ReduxUser = {
+          pkid: user.pk,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name
+        };
+        authInfo = {accessToken:access_token, refreshToken:refresh_token, user: reduxUser};
 
-      setAuthentication(access_token);
+        saveAuthToLocalStorage(authInfo);
+      } else {
+        const {non_field_errors} = data;
+        dispatch(loginRequestFailed(non_field_errors));
+      }
     }
+
+    // Set the Axios and redux storage after successful authentication
+    if (authInfo) {
+      dispatch(loginRequestSuccess(authInfo));
+      setAxiosAuthToken(authInfo.accessToken);
+    } 
   };
 }
-
-
