@@ -29,3 +29,8 @@ export interface ReduxProjectPartial extends ServerObjectPartial {
   entry_path?: string;
   entryPath?: string|null;
 }
+
+export interface ReduxDeleteProjectPartial {
+  localId: string;
+  pkid?:string;
+}

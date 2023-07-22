@@ -21,7 +21,7 @@ import {Dispatch} from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
 // import axios from 'axios';
 import {RootState} from "../reducers";
-import {ProjectFrameworks, ReduxProject, ReduxProjectPartial} from "../project";
+import {ProjectFrameworks, ReduxDeleteProjectPartial, ReduxProject, ReduxProjectPartial} from "../project";
 import {
   ReduxCreateFilePartial,
   ReduxDeleteFilePartial,
@@ -293,6 +293,48 @@ export const fetchProjectFromServer = (localId:string) => {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
       }
+    }
+  }
+}
+
+export const deleteProjectFromServer = (pkid:number, deleteProjectPartial: ReduxDeleteProjectPartial) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log('deleteProjectFromServer:', deleteProjectPartial);
+
+    const {localId} = deleteProjectPartial;
+
+    try {
+      const response = await axiosApiInstance.delete(`${gApiUri}/projects/${pkid}/`,{headers: __rm__gHeaders});
+      console.log(response);
+
+      dispatch(deleteProject(localId)); //
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+        // dispatch({
+        //   type: ActionType.SAVE_CELLS_ERROR,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
+}
+
+export const removeProject = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    console.log(`removeProject:`, localId);
+
+    const projectState = getState().projects.data[localId];
+    if (!projectState) {
+      console.error(`Error! project id '${localId}' not found in store`)
+    }
+
+    const {pkid} = projectState;
+    if (pkid && pkid > 0) {
+      dispatch(updateProject({localId, deleteMarked: true}));
+      deleteProjectFromServer(pkid, {localId})(dispatch, getState);
+    } else {
+      dispatch(deleteProject(localId));
     }
   }
 }
