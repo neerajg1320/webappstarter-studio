@@ -299,13 +299,13 @@ export const fetchProjectFromServer = (localId:string) => {
 
 export const deleteProjectFromServer = (pkid:number, deleteProjectPartial: ReduxDeleteProjectPartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log('deleteProjectFromServer:', deleteProjectPartial);
+    // console.log('deleteProjectFromServer:', deleteProjectPartial);
 
     const {localId} = deleteProjectPartial;
 
     try {
       const response = await axiosApiInstance.delete(`${gApiUri}/projects/${pkid}/`,{headers: __rm__gHeaders});
-      console.log(response);
+      // console.log(response);
 
       dispatch(deleteProject(localId)); //
     } catch (err) {
