@@ -1,5 +1,5 @@
 import './project-new-edit.css';
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {randomIdGenerator} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
 import Select from "react-select";
@@ -14,6 +14,13 @@ interface ProjectNewEditProps {
 }
 
 export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
+  useEffect(() => {
+    console.log(`ProjectNewEdit: first render`);
+    return () => {
+      console.log(`ProjectNewEdit: destroyed`);
+    }
+  }, []);
+
   const navigate = useNavigate();
 
   const projectsMap = useTypedSelector<{[k:string]:ReduxProject}>(state => state.projects.data);
@@ -26,6 +33,8 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
 
     return null;
   }, [isEdit, currentProjectLocalId, projectsMap]);
+
+  console.log(`ProjectNewEdit: render projectState:`, projectState);
 
   const [projectTitle, setProjectTitle] = useState<string|null|undefined>(projectState?.title);
   const [projectDescription, setProjectDescription] = useState<string|null|undefined>(projectState?.description);
@@ -54,7 +63,13 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
       return;
     }
     const _localId = randomIdGenerator();
-    await createAndSetProject(_localId, projectTitle!, selectedFrameworkOption?.value as ProjectFrameworks);
+    createAndSetProject({
+      localId: _localId,
+      title: projectTitle!,
+      description: projectDescription!,
+      framework: selectedFrameworkOption?.value as ProjectFrameworks,
+    });
+
     if (!isEdit) {
       navigate(RouteName.PROJECT_CELL);
     } else {

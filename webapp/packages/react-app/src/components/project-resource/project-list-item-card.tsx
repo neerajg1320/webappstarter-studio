@@ -13,6 +13,7 @@ interface ProjectCardProps {
 const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:propOnClick}) => {
   const { removeProject } = useActions();
   const navigate = useNavigate();
+  const {setCurrentProjectId} = useActions();
 
   const handleCardClick = () => {
     if (propOnClick) {
@@ -20,8 +21,9 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
     }
   }
 
-  const handleEditProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleEditProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, localId:string) => {
     e.stopPropagation();
+    setCurrentProjectId(localId);
     navigate(RouteName.PROJECT_EDIT);
   }
 
@@ -60,7 +62,9 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center",
         backgroundColor: "transparent",
       }}>
-        <button className="button is-family-secondary is-small" onClick={handleEditProjectClick}>
+        <button className="button is-family-secondary is-small"
+                onClick={(e) => handleEditProjectClick(e, reduxProject.localId)}
+        >
           <span className="icon">
               <i className="fas fa-pen" />
           </span>

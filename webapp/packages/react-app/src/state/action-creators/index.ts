@@ -21,7 +21,13 @@ import {Dispatch} from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
 // import axios from 'axios';
 import {RootState} from "../reducers";
-import {ProjectFrameworks, ReduxDeleteProjectPartial, ReduxProject, ReduxProjectPartial} from "../project";
+import {
+  ProjectFrameworks,
+  ReduxCreateProjectPartial,
+  ReduxDeleteProjectPartial,
+  ReduxProject,
+  ReduxProjectPartial
+} from "../project";
 import {
   ReduxCreateFilePartial,
   ReduxDeleteFilePartial,
@@ -169,14 +175,10 @@ export const saveCells = () => {
     }
 }
 
-export const createProject = (localId: string, title:string, framework: ProjectFrameworks): CreateProjectAction => {
+export const createProject = (projectPartial: ReduxCreateProjectPartial): CreateProjectAction => {
     return {
         type: ActionType.CREATE_PROJECT,
-        payload: {
-            localId,
-            title,
-            framework
-        }
+        payload: projectPartial
     }
 }
 
@@ -202,13 +204,13 @@ export const setCurrentProjectId = (localId: string): SetCurrentProjectAction =>
     }
 }
 
-export const createAndSetProject = (localId: string, title:string, framework: ProjectFrameworks) => {
+export const createAndSetProject = (projectPartial: ReduxCreateProjectPartial) => {
     return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-        dispatch(createProject(localId, title, framework));
+        dispatch(createProject(projectPartial));
         // const { projects } = getState();
 
         // const firstProject:[string, ReduxProject] = Object.entries(projects.data)[0];
-        dispatch(setCurrentProjectId(localId));
+        dispatch(setCurrentProjectId(projectPartial.localId));
     }
 }
 
