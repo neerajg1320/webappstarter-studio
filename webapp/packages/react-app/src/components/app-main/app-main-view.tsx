@@ -7,6 +7,7 @@ import AppRouterLayout from "./app-router-layout";
 import {ProjectNewEdit} from "../project-resource/project-new-edit";
 import {useActions} from "../../hooks/use-actions";
 import {RouteName} from "../routes";
+import {ReduxProject} from "../../state";
 
 const AppMainView = () => {
   // This has to be removed from here and we have to use the current project in the redux state
@@ -14,8 +15,11 @@ const AppMainView = () => {
   const { setCurrentProjectId } = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
-  const currentProject = useMemo(() => {
-    return projectsState.data[currentProjectId]
+  const currentProject = useMemo<ReduxProject|null>(() => {
+    if (currentProjectId) {
+      return projectsState.data[currentProjectId]
+    }
+    return null;
   }, [projectsState.data, currentProjectId]);
 
   const handleProjectChange = useCallback((localId:string) => {
