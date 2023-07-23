@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {useActions} from "../../hooks/use-actions";
 import Select from "react-select";
 import {SingleValue} from "react-select";
-import {ProjectFrameworks, ReduxProject} from "../../state";
+import {ProjectFrameworks, ReduxProject, ReduxUpdateProjectPartial} from "../../state";
 import {useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -22,21 +22,19 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
   }, []);
 
   const navigate = useNavigate();
-  const { updateProject } = useActions();
+  const { updateProject, saveProject } = useActions();
 
   const projectsState = useTypedSelector(state => state.projects);
 
-  const currentProjectLocalId = useTypedSelector<string|null>(state => state.projects.currentProjectId);
 
   const currentProject = useMemo<ReduxProject|null>(() => {
-    if (isEdit && currentProjectLocalId) {
-      return projectsState.data[currentProjectLocalId];
+    if (projectsState.currentProjectId) {
+      return projectsState.data[projectsState.currentProjectId];
     }
-
     return null;
-  }, [isEdit, projectsState]);
+  }, [projectsState]);
 
-  console.log(`ProjectNewEdit: render projectState:`, currentProject);
+  console.log(`ProjectNewEdit: render  projectsState:`, projectsState);
 
   // const [projectTitle, setProjectTitle] = useState<string|null|undefined>(currentProject?.title);
   // const [projectDescription, setProjectDescription] = useState<string|null|undefined>(currentProject?.description);
@@ -63,8 +61,8 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
 
 
     if (isEdit) {
-      if (currentProjectLocalId) {
-        // saveProject(currentProject);
+      if (currentProject) {
+        saveProject(currentProject.localId);
       } else {
         console.error(`Error! project edit is called without setting current project in redux`);
       }
@@ -89,7 +87,7 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
             <input
                 className="value"
                 type="text" value={currentProject?.title}
-                // onChange={(e) => {setProjectTitle(e.target.value)}}
+                onChange={(e) => {updateProject({...currentProject, title: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
           <div className="project-value" style={{display: "flex"}}>
@@ -98,7 +96,7 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
                 rows={4}
                 className="value"
                 value={currentProject?.description}
-                // onChange={(e) => {setProjectDescription(e.target.value)}}
+                onChange={(e) => {updateProject({...currentProject, description: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
           {/*<div className="project-value" style={{display: "flex"}}>*/}

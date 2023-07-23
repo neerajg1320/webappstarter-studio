@@ -248,18 +248,36 @@ export const fetchProjects = () => {
 }
 
 
-export const createProjectOnServer = (localId:string, title:string, description:string) => {
+export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    const data = {
-      title,
-      description
-    };
-
     try {
-      const response = await axiosApiInstance.post(`${gApiUri}/projects/`, data, {headers: __rm__gHeaders});
+      const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
       const {id, pkid, folder} = response.data
       // We are putting pkid in the id.
-      dispatch(updateProject({localId, id, pkid, folder, synced:true}));
+      dispatch(updateProject({localId:projectPartial.localId, id, pkid, folder, synced:true}));
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+        // dispatch({
+        //   type: ActionType.SAVE_CELLS_ERROR,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
+}
+
+export const updateProjectOnServer = (pkid: number, projectPartial: ReduxCreateProjectPartial) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const {title, description} = projectPartial;
+    const projectUpdatePartial = {title, description} as ReduxUpdateProjectPartial;
+    console.log(`Temporary: updating`, projectUpdatePartial);
+
+    try {
+      const response = await axiosApiInstance.patch(`${gApiUri}/projects/${pkid}/`, projectUpdatePartial);
+      const {folder} = response.data
+      // We are putting pkid in the id.
+      dispatch(updateProject({localId:projectPartial.localId, folder, synced:true}));
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
@@ -404,6 +422,24 @@ export const fetchFiles = () => {
   };
 }
 
+export const saveProject = (localId: string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const projectState = getState().projects.data[localId];
+
+    if (!projectState) {
+      console.error(`Error! project id '${localId}' not found in store`)
+    }
+
+    // Here we can use member based type narrowing
+    const {pkid} = projectState;
+    if (!pkid || pkid < 0) {
+      createProjectOnServer(projectState)(dispatch, getState);
+    } else {
+
+      updateProjectOnServer(pkid, projectState)(dispatch, getState);
+    }
+  }
+}
 
 export const saveFile = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
