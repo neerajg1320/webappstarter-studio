@@ -4,7 +4,7 @@ import ProjectListGrid from "../project-resource/project-list-grid";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {BrowserRouter, Routes, Route, useNavigate} from "react-router-dom";
 import AppRouterLayout from "./app-router-layout";
-import {ProjectNewEdit} from "../project-resource/project-new-edit";
+import {ProjectEdit} from "../project-resource/project-edit";
 import {useActions} from "../../hooks/use-actions";
 import {RouteName} from "../routes";
 import {ReduxProject} from "../../state";
@@ -32,8 +32,8 @@ const AppMainView = () => {
           <Route path="/" element={<AppRouterLayout />}>
             <Route index element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
             <Route path={RouteName.PROJECT_CELL} element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
-            <Route path={RouteName.PROJECT_EDIT} element={<ProjectNewEdit isEdit={true}/>} />
-            <Route path={RouteName.PROJECT_NEW} element={<ProjectNewEdit isEdit={false}/>} />
+            <Route path={RouteName.PROJECT_EDIT} element={<ProjectEdit isEdit={true}/>} />
+            <Route path={RouteName.PROJECT_NEW} element={<ProjectEdit isEdit={false}/>} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import './project-new-edit.css';
+import './project-edit.css';
 import React, {useEffect, useMemo, useState} from "react";
 import {useActions} from "../../hooks/use-actions";
 import Select from "react-select";
@@ -9,11 +9,11 @@ import {RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 
-interface ProjectNewEditProps {
+interface ProjectEditProps {
   isEdit: boolean
 }
 
-export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
+export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   useEffect(() => {
     console.log(`ProjectNewEdit: first render`);
     return () => {
@@ -33,21 +33,22 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
     }
     return null;
   }, [projectsState]);
+  const projectFrameworkOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
+    if (currentProject && currentProject.framework) {
+      return {label: currentProject.framework, value:currentProject.framework};
+    }
+    return {label: 'none', value: 'none'};
+  }, [currentProject?.framework])
 
   console.log(`ProjectNewEdit: render  projectsState:`, projectsState);
 
-  // const [projectTitle, setProjectTitle] = useState<string|null|undefined>(currentProject?.title);
-  // const [projectDescription, setProjectDescription] = useState<string|null|undefined>(currentProject?.description);
-  // const [selectedFrameworkOption, setSelectedFrameworkOption] =
-  //     useState<SingleValue<{ label: string; value: string; }> |null>(
-  //         currentProject ? {label:currentProject.title, value: currentProject.localId} : null
-  //     );
-
   const frameworkOptions = useMemo(() => {
+    // This we need to fetch from the API
     const frameworks:string[] = [
       'reactjs',
       'vuejs',
-      'angularjs'
+      'angularjs',
+      'none',
     ];
 
     return frameworks.map(item => {
@@ -99,15 +100,15 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
                 onChange={(e) => {updateProject({...currentProject, description: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
-          {/*<div className="project-value" style={{display: "flex"}}>*/}
-          {/*  <label>Framework</label>*/}
-          {/*  <Select*/}
-          {/*      className="value select"*/}
-          {/*      value={selectedFrameworkOption}*/}
-          {/*      options={frameworkOptions}*/}
-          {/*      // onChange={(value) => setSelectedFrameworkOption(value)}*/}
-          {/*  />*/}
-          {/*</div>*/}
+          <div className="project-value" style={{display: "flex"}}>
+            <label>Framework</label>
+            <Select
+                className="value framework-select"
+                value={projectFrameworkOption}
+                options={frameworkOptions}
+                onChange={(selected) => updateProject({...currentProject, framework: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
+            />
+          </div>
           <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
             <button
                 className="button is-primary is-small"

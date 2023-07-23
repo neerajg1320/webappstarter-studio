@@ -269,8 +269,9 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
 
 export const updateProjectOnServer = (pkid: number, projectPartial: ReduxCreateProjectPartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    const {title, description} = projectPartial;
-    const projectUpdatePartial = {title, description} as ReduxUpdateProjectPartial;
+    const {title, description, framework} = projectPartial;
+    // We select the fields which are sent to the server
+    const projectUpdatePartial = {title, description, framework} as ReduxUpdateProjectPartial;
     console.log(`Temporary: updating`, projectUpdatePartial);
 
     try {
