@@ -7,6 +7,7 @@ import {SingleValue} from "react-select";
 import {ProjectFrameworks, ReduxProject} from "../../state";
 import {useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 interface ProjectNewEditProps {
   isEdit: boolean
@@ -14,9 +15,24 @@ interface ProjectNewEditProps {
 
 export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
   const navigate = useNavigate();
-  const [projectTitle, setProjectTitle] = useState<string|null>(null);
-  const [projectDescription, setProjectDescription] = useState<string|null>(null);
-  const [selectedFrameworkOption, setSelectedFrameworkOption] = useState<SingleValue<{ label: string; value: string; }> |null>(null);
+
+  const projectsMap = useTypedSelector<{[k:string]:ReduxProject}>(state => state.projects.data);
+  const currentProjectLocalId = useTypedSelector<string|null>(state => state.projects.currentProjectId);
+
+  const projectState = useMemo<ReduxProject|null>(() => {
+    if (isEdit && currentProjectLocalId) {
+      return projectsMap[currentProjectLocalId];
+    }
+
+    return null;
+  }, [isEdit, currentProjectLocalId, projectsMap]);
+
+  const [projectTitle, setProjectTitle] = useState<string|null|undefined>(projectState?.title);
+  const [projectDescription, setProjectDescription] = useState<string|null|undefined>(projectState?.description);
+  const [selectedFrameworkOption, setSelectedFrameworkOption] =
+      useState<SingleValue<{ label: string; value: string; }> |null>(
+          projectState ? {label:projectState.title, value: projectState.localId} : null
+      );
 
   const frameworkOptions = useMemo(() => {
     const frameworks:string[] = [
@@ -56,17 +72,23 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
           display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"
         }}
       >
-        <div className="project-value-list" style={{
-
-        }}
-        >
+        <div className="project-value-list">
           <div className="project-value" style={{display: "flex"}}>
             <label>Title</label>
-            <input className="value" type="text" value={projectTitle||''} onChange={(e) => {setProjectTitle(e.target.value)}} />
+            <input
+                className="value"
+                type="text" value={projectTitle||''}
+                onChange={(e) => {setProjectTitle(e.target.value)}}
+            />
           </div>
           <div className="project-value" style={{display: "flex"}}>
             <label>Description</label>
-            <textarea rows={4} className="value" value={projectDescription||''} onChange={(e) => {setProjectDescription(e.target.value)}} />
+            <textarea
+                rows={4}
+                className="value"
+                value={projectDescription||''}
+                onChange={(e) => {setProjectDescription(e.target.value)}}
+            />
           </div>
           <div className="project-value" style={{display: "flex"}}>
             <label>Framework</label>

@@ -695,6 +695,7 @@ export const logoutRequestStart = (): LogoutRequestAction => {
   };
 }
 
+
 export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     let authInfo:AuthInfo|null = fetchAuthFromLocalStorage();

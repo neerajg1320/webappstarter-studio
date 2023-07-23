@@ -34,9 +34,29 @@ export const setAxiosAuthToken = (jwtToken: string) => {
       return request;
     },
     error => {
+      if (debugAxios) {
+        console.log(`request error:`, error);
+      }
+      if (error.response.status === 401) {
+
+      }
       return Promise.reject(error);
     }
   )
+
+  axiosApiInstance.interceptors.response.use(response => {
+        if (debugAxios) {
+          console.log(`response intercepted:`, response);
+        }
+
+        return response;
+      },
+      error => {
+        if (debugAxios) {
+          console.log(`response error:`, error);
+        }
+        return Promise.reject(error);
+      })
 }
 
 export const unsetAuthentication = () => {

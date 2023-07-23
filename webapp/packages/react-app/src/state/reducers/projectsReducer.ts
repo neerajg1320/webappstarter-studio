@@ -10,7 +10,7 @@ import {randomIdGenerator} from "../id";
 interface ProjectsState {
   loading: boolean;
   error: string | null;
-  currentProjectId: string,
+  currentProjectId: string|null,
   data: {
     [key: string]: ReduxProject
   }
@@ -19,7 +19,7 @@ interface ProjectsState {
 const initialState: ProjectsState = {
   loading: false,
   error: null,
-  currentProjectId: '',
+  currentProjectId: null,
   data: {}
 }
 

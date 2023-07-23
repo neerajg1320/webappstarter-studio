@@ -6,6 +6,7 @@ export interface ReduxProject extends ServerObject {
   reduxType: 'project',
   localId: string;
   title: string;
+  description: string;
   framework: ProjectFrameworks;
   entryFileLocalId?: string|null;
   bundleLocalId?: string|null;
@@ -19,6 +20,7 @@ export interface ReduxProject extends ServerObject {
 export interface ReduxProjectPartial extends ServerObjectPartial {
   localId: string;
   title?: string;
+  description?: string;
   framework?: ProjectFrameworks;
   remoteId?: string;
   entryFileLocalId?: string|null;
@@ -28,6 +30,13 @@ export interface ReduxProjectPartial extends ServerObjectPartial {
   entry_file?: number;
   entry_path?: string;
   entryPath?: string|null;
+}
+
+export interface ReduxCreateProjectPartial {
+  localId: string,
+  title: string,
+  description: string,
+  framework: ProjectFrameworks
 }
 
 export interface ReduxDeleteProjectPartial {

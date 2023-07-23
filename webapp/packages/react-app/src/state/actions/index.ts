@@ -1,6 +1,6 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
-import {ReduxProject, ProjectFrameworks, ReduxProjectPartial} from "../project";
+import {ReduxProject, ProjectFrameworks, ReduxProjectPartial, ReduxCreateProjectPartial} from "../project";
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUser} from "../user";
 
@@ -95,11 +95,7 @@ export interface SaveCellsErrorAction {
 
 export interface CreateProjectAction {
     type: ActionType.CREATE_PROJECT,
-    payload: {
-        localId: string,
-        title: string,
-        framework: ProjectFrameworks
-    }
+    payload: ReduxCreateProjectPartial
 }
 
 export interface UpdateProjectAction {
