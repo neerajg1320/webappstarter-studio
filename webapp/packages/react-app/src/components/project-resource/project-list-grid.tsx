@@ -1,10 +1,11 @@
-import {ProjectNew} from "./project-new";
+import {ProjectNewEdit} from "./project-new-edit";
 import Select, {SingleValue} from "react-select";
 import React, {useMemo, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
 import {debugProject} from "../../config/global";
+import {RouteName} from "../routes";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -29,12 +30,12 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
     if (propOnProjectChange) {
       propOnProjectChange(localId);
-      navigate('/edit_project');
+      navigate(RouteName.PROJECT_CELL);
     }
   }
 
   const handleNewProjectClick = () => {
-    navigate('/new_project');
+    navigate(RouteName.PROJECT_NEW);
   }
 
   return (

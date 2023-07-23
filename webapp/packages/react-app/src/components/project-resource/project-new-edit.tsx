@@ -1,13 +1,18 @@
-import './project-new.css';
+import './project-new-edit.css';
 import React, {useMemo, useState} from "react";
 import {randomIdGenerator} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
 import Select from "react-select";
 import {SingleValue} from "react-select";
-import {ProjectFrameworks} from "../../state";
+import {ProjectFrameworks, ReduxProject} from "../../state";
 import {useNavigate} from "react-router-dom";
+import {RouteName} from "../routes";
 
-export const ProjectNew:React.FC = () => {
+interface ProjectNewEditProps {
+  isEdit: boolean
+}
+
+export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
   const navigate = useNavigate();
   const [projectTitle, setProjectTitle] = useState<string|null>(null);
   const [projectDescription, setProjectDescription] = useState<string|null>(null);
@@ -27,14 +32,19 @@ export const ProjectNew:React.FC = () => {
 
   const { createAndSetProject } = useActions();
 
-  const handleCreateClick = async () => {
+  const handleSaveClick = async () => {
     if (!projectTitle) {
       console.error(`Error! projectName is not set`);
       return;
     }
     const _localId = randomIdGenerator();
     await createAndSetProject(_localId, projectTitle!, selectedFrameworkOption?.value as ProjectFrameworks);
-    navigate('/edit_project');
+    if (!isEdit) {
+      navigate(RouteName.PROJECT_CELL);
+    } else {
+      navigate(RouteName.BACK);
+    }
+
   }
 
   return (
@@ -65,7 +75,7 @@ export const ProjectNew:React.FC = () => {
           <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
             <button
                 className="button is-primary is-small"
-                onClick={handleCreateClick}
+                onClick={handleSaveClick}
                 disabled={!projectTitle}
             >
               Save

@@ -2,6 +2,7 @@ import './app-router-layout.css';
 import {Outlet, Link, useNavigate} from "react-router-dom";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
+import {RouteName} from "../routes";
 
 const AppRouterLayout = () => {
   const showEditorNavItem = false;
@@ -11,7 +12,7 @@ const AppRouterLayout = () => {
 
   const handleLogoutClick = () => {
     logoutRequestStart();
-    navigate("/dashboard");
+    navigate(RouteName.DASHBOARD);
   };
 
   return (
@@ -46,13 +47,8 @@ const AppRouterLayout = () => {
                     </div>
                   </div>
                   <div className="navbar-item" >
-                    <Link to="../">Close </Link>
+                    <Link to={RouteName.BACK}>Close </Link>
                   </div>
-                  {showEditorNavItem &&
-                    <div className="navbar-item">
-                      <Link to="/editor">Editor </Link>
-                    </div>
-                  }
                 </>
               }
 
