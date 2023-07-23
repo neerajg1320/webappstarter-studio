@@ -1,6 +1,11 @@
 import {ServerObject, ServerObjectPartial} from "./obj";
 
-export type ProjectFrameworks = 'reactjs' | 'vuejs' | 'angularjs' | 'none';
+export enum ProjectFrameworks {
+  REACTJS = 'reactjs',
+  VUESJS = 'vuejs',
+  ANGULARJS = 'angularjs',
+  NONE = 'none'
+};
 
 export interface ReduxProject extends ServerObject {
   reduxType: 'project',

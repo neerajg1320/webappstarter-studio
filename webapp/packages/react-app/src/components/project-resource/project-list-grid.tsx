@@ -1,11 +1,12 @@
-import {ProjectNewEdit} from "./project-new-edit";
-import Select, {SingleValue} from "react-select";
-import React, {useMemo, useState} from "react";
+import React, {useMemo} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
 import {debugProject} from "../../config/global";
 import {RouteName} from "../routes";
+import {randomIdGenerator} from "../../state/id";
+import {useActions} from "../../hooks/use-actions";
+import {ProjectFrameworks} from "../../state";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -16,6 +17,7 @@ interface ProjectsDashboardProps {
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
+  const {createAndSetProject} = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const projectList = useMemo(() => {
@@ -35,6 +37,12 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
   }
 
   const handleNewProjectClick = () => {
+    createAndSetProject({
+      localId: randomIdGenerator(),
+      title: '',
+      description: '',
+      framework: ProjectFrameworks.REACTJS
+    });
     navigate(RouteName.PROJECT_NEW);
   }
 

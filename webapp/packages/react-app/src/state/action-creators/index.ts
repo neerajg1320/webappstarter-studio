@@ -223,28 +223,13 @@ const __rm__gHeaders = {
 export const fetchProjectsAndFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // console.log(getState().auth);
-
-    try {
-      const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, );
-      dispatch({
-        type: ActionType.FETCH_PROJECTS_COMPLETE,
-        payload: projects
-      });
-
-      fetchFiles()(dispatch, getState);
-    } catch (err) {
-      if (err instanceof Error) {
-        dispatch({
-          type: ActionType.FETCH_PROJECTS_ERROR,
-          payload: err.message
-        });
-      }
-    }
+    await fetchProjects()(dispatch, getState);
+    fetchFiles()(dispatch, getState);
   };
 }
 
 export const fetchProjects = () => {
-  return async (dispatch: Dispatch<Action>) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, );
       dispatch({

@@ -48,8 +48,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
       if (syncProjectsToServer) {
         if (action.type === ActionType.CREATE_PROJECT) {
-          const {localId, title} = action.payload;
-          createProjectOnServer(localId, title, "ProjectCell created from webapp")(dispatch, getState);
+          // const {localId, title} = action.payload;
+          // createProjectOnServer(localId, title, "ProjectCell created from webapp")(dispatch, getState);
         } else if (action.type === ActionType.UPDATE_PROJECT) {
           const {localId, entryFileLocalId, bundleLocalId, isServerResponse, ...remaining} = action.payload;
 
