@@ -34,7 +34,11 @@ import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
-import {fetchAuthFromLocalStorage, saveAuthToLocalStorage} from "../../local-storage/local-storage";
+import {
+  fetchAuthFromLocalStorage,
+  removeAuthFromLocalStorage,
+  saveAuthToLocalStorage
+} from "../../local-storage/local-storage";
 import {AuthInfo} from "../auth";
 
 
@@ -693,6 +697,17 @@ export const logoutRequestStart = (): LogoutRequestAction => {
     type: ActionType.LOGOUT_REQUEST,
     payload: null
   };
+}
+
+export const reAuthenticateUser = () => {
+  console.log(`reAuthenticateUser(): Reauthenticating the user`)
+
+  const authInfo:AuthInfo|null = fetchAuthFromLocalStorage();
+  if (authInfo) {
+    removeAuthFromLocalStorage();
+  }
+
+  authenticateUser('neeraj76@yahoo.com', 'Local123');
 }
 
 
