@@ -55,6 +55,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
 
           // For the remaining fields we need to send a server request
           if (Object.keys(remaining).length > 0) {
+            console.log('Need to send update to server: ', remaining);
+
             const projectState = getState().projects.data[localId]
             if (!projectState) {
               console.error(`projectState is '${projectState}' for localId:${localId}`);

@@ -1,6 +1,6 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
-import {ReduxProject, ProjectFrameworks, ReduxProjectPartial, ReduxCreateProjectPartial} from "../project";
+import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateProjectPartial} from "../project";
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUser} from "../user";
 
@@ -100,7 +100,7 @@ export interface CreateProjectAction {
 
 export interface UpdateProjectAction {
     type: ActionType.UPDATE_PROJECT,
-    payload: ReduxProjectPartial
+    payload: ReduxUpdateProjectPartial
 }
 
 export interface DeleteProjectAction {

@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 
+
 interface ProjectNewEditProps {
   isEdit: boolean
 }
@@ -22,6 +23,7 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
   }, []);
 
   const navigate = useNavigate();
+  const { createAndSetProject, updateProject } = useActions();
 
   const projectsMap = useTypedSelector<{[k:string]:ReduxProject}>(state => state.projects.data);
   const currentProjectLocalId = useTypedSelector<string|null>(state => state.projects.currentProjectId);
@@ -55,27 +57,37 @@ export const ProjectNewEdit:React.FC<ProjectNewEditProps> = ({isEdit}) => {
     })
   }, []);
 
-  const { createAndSetProject } = useActions();
+
 
   const handleSaveClick = async () => {
     if (!projectTitle) {
       console.error(`Error! projectName is not set`);
       return;
     }
-    const _localId = randomIdGenerator();
-    createAndSetProject({
-      localId: _localId,
-      title: projectTitle!,
-      description: projectDescription!,
-      framework: selectedFrameworkOption?.value as ProjectFrameworks,
-    });
 
-    if (!isEdit) {
-      navigate(RouteName.PROJECT_CELL);
-    } else {
+    if (isEdit) {
+      if (currentProjectLocalId) {
+        updateProject({
+          localId: currentProjectLocalId,
+          title: projectTitle,
+          description: projectDescription!,
+          framework: selectedFrameworkOption?.value as ProjectFrameworks,
+        });
+      } else {
+        console.error(`Error! project edit is called without setting current project in redux`);
+      }
       navigate(RouteName.BACK);
-    }
+    } else {
+      const _localId = randomIdGenerator();
+      createAndSetProject({
 
+        localId: _localId,
+        title: projectTitle!,
+        description: projectDescription!,
+        framework: selectedFrameworkOption?.value as ProjectFrameworks,
+      });
+      navigate(RouteName.PROJECT_CELL);
+    }
   }
 
   return (

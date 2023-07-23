@@ -17,7 +17,7 @@ export interface ReduxProject extends ServerObject {
   entryPath?: string|null;
 }
 
-export interface ReduxProjectPartial extends ServerObjectPartial {
+export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   localId: string;
   title?: string;
   description?: string;

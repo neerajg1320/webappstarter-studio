@@ -26,7 +26,7 @@ import {
   ReduxCreateProjectPartial,
   ReduxDeleteProjectPartial,
   ReduxProject,
-  ReduxProjectPartial
+  ReduxUpdateProjectPartial
 } from "../project";
 import {
   ReduxCreateFilePartial,
@@ -182,7 +182,7 @@ export const createProject = (projectPartial: ReduxCreateProjectPartial): Create
     }
 }
 
-export const updateProject = (projectPartial: ReduxProjectPartial): UpdateProjectAction => {
+export const updateProject = (projectPartial: ReduxUpdateProjectPartial): UpdateProjectAction => {
   // console.log(`updateProject: ${JSON.stringify(projectPartial)}`);
   return {
       type: ActionType.UPDATE_PROJECT,
