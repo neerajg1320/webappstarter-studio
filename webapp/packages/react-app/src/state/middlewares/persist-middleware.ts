@@ -46,30 +46,6 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
         }
       }
 
-      if (syncProjectsToServer) {
-        if (action.type === ActionType.CREATE_PROJECT) {
-          // const {localId, title} = action.payload;
-          // createProjectOnServer(localId, title, "ProjectCell created from webapp")(dispatch, getState);
-        } else if (action.type === ActionType.UPDATE_PROJECT) {
-          const {localId, entryFileLocalId, bundleLocalId, isServerResponse, ...remaining} = action.payload;
-
-          // For the remaining fields we need to send a server request
-          if (Object.keys(remaining).length > 0) {
-            console.log('Need to send update to server: ', remaining);
-
-            const projectState = getState().projects.data[localId]
-            if (!projectState) {
-              console.error(`projectState is '${projectState}' for localId:${localId}`);
-              return;
-            }
-
-            if (projectState.pkid > 0) {
-              console.log(`We need to support updateProjectOnServer`, remaining);
-            }
-          }
-        }
-      }
-
       if (syncFilesToServer) {
         if (action.type === ActionType.UPDATE_FILE) {
           // The middleware take the responsibility of syncing

@@ -436,7 +436,6 @@ export const saveProject = (localId: string) => {
     if (!pkid || pkid < 0) {
       createProjectOnServer(projectState)(dispatch, getState);
     } else {
-
       updateProjectOnServer(pkid, projectState)(dispatch, getState);
     }
   }

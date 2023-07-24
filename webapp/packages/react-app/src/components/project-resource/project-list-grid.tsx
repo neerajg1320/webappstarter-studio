@@ -73,7 +73,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
         <div style={{
           height: "80%",
           width: "100%",
-          border: "1px solid lightblue",
+          // border: "1px solid lightblue",
           borderRadius: "15px",
           padding: "40px",
           display: "grid",

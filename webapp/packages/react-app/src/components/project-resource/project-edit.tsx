@@ -3,10 +3,11 @@ import React, {useEffect, useMemo, useState} from "react";
 import {useActions} from "../../hooks/use-actions";
 import Select from "react-select";
 import {SingleValue} from "react-select";
-import {ProjectFrameworks, ReduxProject, ReduxUpdateProjectPartial} from "../../state";
+import {ReduxProject, ReduxUpdateProjectPartial} from "../../state";
 import {useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {debugComponent} from "../../config/global";
 
 
 interface ProjectEditProps {
@@ -26,7 +27,6 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   const projectsState = useTypedSelector(state => state.projects);
 
-
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (projectsState.currentProjectId) {
       return projectsState.data[projectsState.currentProjectId];
@@ -40,7 +40,9 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     return {label: 'none', value: 'none'};
   }, [currentProject?.framework])
 
-  console.log(`ProjectNewEdit: render  projectsState:`, projectsState);
+  if (debugComponent) {
+    console.log(`ProjectNewEdit: render  projectsState:`, projectsState);
+  }
 
   const frameworkOptions = useMemo(() => {
     // This we need to fetch from the API
@@ -57,16 +59,14 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   }, []);
 
 
-
   const handleSaveClick = async () => {
-
+    if (currentProject) {
+      saveProject(currentProject.localId);
+    } else {
+      console.error(`Error! project edit is called without setting current project in redux`);
+    }
 
     if (isEdit) {
-      if (currentProject) {
-        saveProject(currentProject.localId);
-      } else {
-        console.error(`Error! project edit is called without setting current project in redux`);
-      }
       navigate(RouteName.BACK);
     } else {
       navigate(RouteName.PROJECT_CELL);
@@ -75,7 +75,7 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   return (
       <div style={{
-          border: "2px solid lightblue",
+          // border: "2px solid lightblue",
           padding: "20px",
           width: "100%",
           height: "100%",

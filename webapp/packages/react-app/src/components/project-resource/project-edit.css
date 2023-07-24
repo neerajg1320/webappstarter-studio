@@ -1,6 +1,8 @@
 .project-value-list {
-  width: 50%;
-  border: 2px dashed yellow;
+  width: 80%;
+  border: 1px solid lightblue;
+  border-radius: 10px;
+  padding: 80px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -17,7 +19,9 @@
 }
 
 .project-value-list .value {
-  width: 30%;
+  width: 40%;
+  font-size: 1em;
+  padding: 4px;
 }
 .project-value-list .framework-select {
   color: black;
