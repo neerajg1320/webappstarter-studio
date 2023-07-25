@@ -15,34 +15,16 @@ import LandingPage from "../page-landing/landing-page";
 const AppMainView = () => {
   // This has to be removed from here and we have to use the current project in the redux state
   // const [selectedProjectLocalId, setSelectedProjectLocalId] = useState<string|null>(null);
-  const { setCurrentProjectId } = useActions();
-  const projectsState = useTypedSelector((state) => state.projects);
-  const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
-  const currentProject = useMemo<ReduxProject|null>(() => {
-    if (currentProjectId) {
-      return projectsState.data[currentProjectId]
-    }
-    return null;
-  }, [projectsState.data, currentProjectId]);
 
-  const handleProjectChange = useCallback((localId:string) => {
-    setCurrentProjectId(localId);
-  }, []);
+
+
+
 
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AppRouterLayout />}>
-            <Route path={RouteName.HOME} index element={<LandingPage />} />
-            <Route path={RouteName.USER_REGISTER} index element={<UserRegister />} />
-            <Route path={RouteName.USER_LOGIN} index element={<UserLogin />} />
-            <Route path={RouteName.PROJECTS} element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
-            <Route path={RouteName.PROJECT_CELL} element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
-            <Route path={RouteName.PROJECT_EDIT} element={<ProjectEdit isEdit={true}/>} />
-            <Route path={RouteName.PROJECT_NEW} element={<ProjectEdit isEdit={false}/>} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+
+      <div>
+        App Main View: We should not be here
+      </div>
   );
 
 }

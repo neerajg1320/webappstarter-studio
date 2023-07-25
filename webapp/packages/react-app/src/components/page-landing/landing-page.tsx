@@ -1,13 +1,18 @@
 import './landing-page.css';
+import {useNavigate} from "react-router-dom";
+import {RouteName} from "../routes";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
 
   const handleRegisterClick = () => {
     console.log(`handleRegisterClick()`);
+    navigate(RouteName.USER_REGISTER);
   }
 
   const handleLoginClick = () => {
     console.log(`handleLoginClick()`);
+    navigate(RouteName.USER_LOGIN);
   }
 
   return (
