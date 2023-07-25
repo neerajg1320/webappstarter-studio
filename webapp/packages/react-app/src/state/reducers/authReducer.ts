@@ -57,11 +57,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
       return state;
 
     case ActionType.LOGOUT_REQUEST:
-      state.authenticating = false;
-      state.isAuthenticated = false;
-      state.jwtToken = null;
-      state.err = null;
-      state.currentUser = null;
+      state = {...initialState};
       return state;
 
     default:
