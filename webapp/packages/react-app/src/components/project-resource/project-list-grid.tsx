@@ -17,7 +17,7 @@ interface ProjectsDashboardProps {
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
-  const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
+  // const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const {createAndSetProject} = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
@@ -27,11 +27,11 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
   // This part can be used in the protected route.
   // This will also reqwuire a HOC
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate(RouteName.USER_LOGIN);
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate(RouteName.USER_LOGIN);
+  //   }
+  // }, [isAuthenticated]);
 
   const handleProjectCardClick = (localId:string) => {
     if (debugProject) {

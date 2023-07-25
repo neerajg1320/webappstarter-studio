@@ -13,6 +13,7 @@ import ProjectCell from "./components/project-cell/project-cell";
 import {ProjectEdit} from "./components/project-resource/project-edit";
 import AppLandingLayout from "./app-landing-layout";
 import {ReduxProject} from "./state";
+import ProtectedRoute from "./components/common/protected-route";
 
 
 const App = () => {
@@ -61,7 +62,13 @@ const App = () => {
             <Route path={RouteName.USER_REGISTER} element={<UserRegister />} />
             <Route path={RouteName.USER_LOGIN} element={<UserLogin />} />
 
-            <Route path={RouteName.PROJECTS} element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
+            <Route path={RouteName.PROJECTS}
+                   element={
+                     <ProtectedRoute>
+                       <ProjectListGrid onProjectChange={handleProjectChange}/>
+                     </ProtectedRoute>
+                   }
+            />
             <Route path={RouteName.PROJECT_CELL} element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
             <Route path={RouteName.PROJECT_EDIT} element={<ProjectEdit isEdit={true}/>} />
             <Route path={RouteName.PROJECT_NEW} element={<ProjectEdit isEdit={false}/>} />
