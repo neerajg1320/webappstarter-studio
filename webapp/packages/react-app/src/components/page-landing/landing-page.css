@@ -1,0 +1,95 @@
+.landing-wrapper {
+  /*border: 1px solid lightyellow;*/
+  margin: 20px;
+  height: 100vh;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  /*justify-content: space-between;*/
+  justify-content: center;
+  align-items: center;
+  /*padding: 40px;*/
+}
+
+.landing-wrapper .left-side {
+  /*border: 1px solid lightcyan;*/
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 140px;
+  padding: 150px 20px 20px 20px;
+}
+
+.landing-wrapper .brand-bar {
+  /*border: 1px solid lightyellow;*/
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.landing-wrapper .logo-image {
+  height: 1.7em;
+  width: 1.7em;
+}
+
+.landing-wrapper .logo-text {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+
+.landing-wrapper .main-content {
+  /*border: 1px solid lightblue;*/
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.landing-wrapper .description-text {
+  font-size: 4em;
+  width: 80%;
+}
+
+.landing-wrapper .auth-section-bar {
+  /*border: 1px solid lightcyan;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 60px;
+}
+
+.landing-wrapper .auth-section-bar button {
+  border-radius: 20px;
+  width: 150px;
+  height: 50px;
+}
+
+
+.landing-wrapper .right-side {
+  /*border: 1px solid lightcyan;*/
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.landing-wrapper .main-image-wrapper {
+  /*border: 1px solid lightyellow;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-wrapper .main-image {
+  /*border: 1px solid lightcyan;*/
+  height: 400px;
+  width: 400px;
+}
+

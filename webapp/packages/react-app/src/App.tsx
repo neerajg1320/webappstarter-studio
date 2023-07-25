@@ -4,6 +4,7 @@ import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
 import {autoAuthenticateUser, debugRedux} from "./config/global";
 import AppMainView from "./components/app-main/app-main-view";
+import LandingPage from "./components/page-landing/landing-page";
 
 
 const App = () => {
@@ -35,7 +36,11 @@ const App = () => {
         display:"flex", flexDirection:"column", alignItems: "center", justifyContent: "center"
       }}
     >
-      <AppMainView />
+      {isAuthenticated ?
+          <AppMainView />
+        :
+          <LandingPage />
+      }
     </div>
   );
 }

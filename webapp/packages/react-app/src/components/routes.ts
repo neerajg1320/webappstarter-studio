@@ -2,6 +2,7 @@ export enum RouteName {
   BACK =  '..',
   ROOT = '/',
 
+  HOME = '/home',
   DASHBOARD = '/dashboard',
 
   PROJECTS = '/projects',
