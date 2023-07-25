@@ -14,6 +14,14 @@ const html = `
   <body>
     <div id="root"></div>
     <script>
+      window.console.log = function(str) {
+        const message = {
+          source: "iframe",
+          log: str,
+        }
+        window.parent.postMessage(message, '*');
+      }
+      
       const handleError = (err) => {
         const root = document.querySelector('#root');
         root.innerHTML = '<div style="color:red"><h4>Runtime Error:</h4>' + err + '</div>';
@@ -53,7 +61,7 @@ const Preview:React.FC<PreviewProps> = ({code, err}) => {
       <iframe 
         ref={iframeRef} 
         title="preview" 
-        sandbox="allow-scripts" />
+        sandbox="allow-scripts allow-modals" />
       {err && <div className="preview-error">{err}</div>}
     </div>
   );

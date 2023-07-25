@@ -2,7 +2,7 @@ import './App.css';
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
-import {autoReauthenticateUser, debugRedux} from "./config/global";
+import {autoReauthenticateUser, debugComponent, debugRedux} from "./config/global";
 import LandingPage from "./components/page-landing/landing-page";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {RouteName} from "./components/routes";
@@ -17,7 +17,7 @@ import ProtectedRoute from "./components/common/protected-route";
 
 
 const App = () => {
-  if (debugRedux) {
+  if (debugComponent) {
     console.log(`App: render`);
   }
 
@@ -37,7 +37,22 @@ const App = () => {
   const { fetchProjectsAndFiles } = useActions();
 
   useEffect(() => {
+    console.log('App: first render');
     authenticateUser('neeraj76@yahoo.com', 'Local123');
+
+    const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
+      const {source, log} = event.data;
+      if (source && source === "iframe") {
+        console.log('iframe:', log);
+      }
+    };
+
+    window.addEventListener('message', handleMessage, false);
+
+    return () => {
+      console.log('App: destroyed');
+      window.removeEventListener('message', handleMessage)
+    }
   }, []);
 
   useEffect(() => {
