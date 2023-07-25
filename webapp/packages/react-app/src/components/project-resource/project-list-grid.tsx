@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
@@ -17,6 +17,7 @@ interface ProjectsDashboardProps {
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
+  const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const {createAndSetProject} = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
@@ -24,6 +25,13 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
     return Object.entries(projectsState.data).map(([k,v]) => v)
   }, [projectsState.data]);
 
+  // This part can be used in the protected route.
+  // This will also reqwuire a HOC
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate(RouteName.USER_LOGIN);
+    }
+  }, [isAuthenticated]);
 
   const handleProjectCardClick = (localId:string) => {
     if (debugProject) {
@@ -49,6 +57,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
   return (
       <div style={{
         height: "100%",
+        padding: "0 40px",
         display:"flex", flexDirection: "column", alignItems: "center", gap: "20px", justifyContent: "center"
       }}
       >
@@ -75,7 +84,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
           width: "100%",
           // border: "1px solid lightblue",
           borderRadius: "15px",
-          padding: "40px",
+
           display: "grid",
           gridTemplateColumns: "repeat(3, 1fr)",
           gap: "40px",

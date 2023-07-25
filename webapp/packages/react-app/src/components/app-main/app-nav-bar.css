@@ -1,14 +1,15 @@
-.app-navbar {
+.navbar {
+  /*border: 1px solid lightblue;*/
   width: 100%;
-  padding: 5px 20px;
+  padding: 0 20px;
   position: absolute;
-  top: 10px;
+  top: 0px;
 }
 
-.app-navbar .navbar-end {
+.navbar .navbar-end {
   padding: 0 40px;
 }
 
-.app-navbar .navbar-item {
+.navbar .navbar-item {
   cursor: pointer;
 }

@@ -34,7 +34,7 @@ const AppNavBar = () => {
   }
 
   return (
-      <nav className="app-navbar">
+      <nav className="navbar">
         <div  className="navbar-menu">
 
           <div className="navbar-start">

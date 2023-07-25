@@ -1,11 +1,19 @@
 
 .landing-page {
   /*border: 1px solid lightcyan;*/
-  margin: 0 20px;
-  height: 100vh;
+  /*margin: 0 20px;*/
+  height: 80vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+}
+
+.landing-page .outlet {
+  width: 100%;
+  height: 100%;
+  margin-top: 40px;
+  padding: 40px;
+  /*border: 1px solid lightcyan;*/
 }
