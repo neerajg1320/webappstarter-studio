@@ -25,11 +25,11 @@ const UserRegister = () => {
   }
 
   return (
-      <div style={{
+      <div className="user-value-wrapper" style={{
         padding: "20px",
         width: "100%",
         height: "100%",
-        display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "40px"
       }}
       >
         <div className="user-value-list">
@@ -49,8 +49,24 @@ const UserRegister = () => {
                 onChange={(e) => {setPassword(e.target.value)}}
             />
           </div>
+          <div className="user-value" style={{display: "flex"}}>
+            <label>First Name</label>
+            <input
+                className="value"
+                type="text" value={currentUser?.first_name}
+                onChange={(e) => {updateUser({...currentUser, first_name: e.target.value} as ReduxUpdateUserPartial)}}
+            />
+          </div>
+          <div className="user-value" style={{display: "flex"}}>
+            <label>First Name</label>
+            <input
+                className="value"
+                type="text" value={currentUser?.last_name}
+                onChange={(e) => {updateUser({...currentUser, last_name: e.target.value} as ReduxUpdateUserPartial)}}
+            />
+          </div>
 
-          <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop:"40px"}}>
             <button
                 className="button is-primary is-small"
                 onClick={handleRegisterClick}
@@ -66,6 +82,7 @@ const UserRegister = () => {
             </button>
           </div>
         </div>
+
       </div>
   );
 }

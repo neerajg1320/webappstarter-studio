@@ -26,6 +26,10 @@ const UserLogin = () => {
     }
   }
 
+  const handleCancelClick = () => {
+    navigate(RouteName.BACK);
+  }
+
   return (
       <div style={{
         padding: "20px",
@@ -52,13 +56,19 @@ const UserLogin = () => {
             />
           </div>
 
-          <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "40px"}}>
             <button
                 className="button is-primary is-small"
                 onClick={handleLoginClick}
                 disabled={!currentUser || !currentUser.email || !password}
             >
               Login
+            </button>
+            <button
+                className="button is-family-secondary is-small"
+                onClick={() => {handleCancelClick()}}
+            >
+              Cancel
             </button>
           </div>
         </div>

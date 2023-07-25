@@ -4,3 +4,7 @@
   position: absolute;
   top: 10px;
 }
+
+.app-navbar .navbar-end {
+  padding: 0 40px;
+}
