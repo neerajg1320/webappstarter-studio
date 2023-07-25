@@ -1,6 +1,15 @@
 import './landing-page.css';
 
 const LandingPage = () => {
+
+  const handleRegisterClick = () => {
+    console.log(`handleRegisterClick()`);
+  }
+
+  const handleLoginClick = () => {
+    console.log(`handleLoginClick()`);
+  }
+
   return (
     <div className="landing-wrapper">
       <div className="left-side">
@@ -15,8 +24,12 @@ const LandingPage = () => {
             Reactjs IDE on your browser
           </div>
           <div className="auth-section-bar">
-            <button className="button is-primary">Register</button>
-            <button className="button">Login</button>
+            <button className="button is-primary" onClick={handleRegisterClick}>
+              Register
+            </button>
+            <button className="button" onClick={handleLoginClick}>
+              Login
+            </button>
           </div>
         </div>
       </div>
