@@ -23,7 +23,7 @@ const AppNavBar = () => {
   }
 
   return (
-      <nav className="navbar">
+      <nav className="app-navbar">
         <div  className="navbar-menu">
 
           <div className="navbar-start">
