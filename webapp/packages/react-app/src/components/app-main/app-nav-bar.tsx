@@ -11,7 +11,7 @@ const AppNavBar = () => {
 
   const handleLogoutClick = () => {
     logoutUser();
-    navigate(RouteName.DASHBOARD);
+    navigate(RouteName.ROOT);
   };
 
   const handleLoginClick = () => {

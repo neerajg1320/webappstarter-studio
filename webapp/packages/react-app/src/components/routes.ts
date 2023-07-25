@@ -1,10 +1,7 @@
 export enum RouteName {
   BACK =  '..',
   ROOT = '/',
-
-  HOME = '/home',
-  DASHBOARD = '/dashboard',
-
+  
   PROJECTS = '/projects',
   PROJECT_NEW = '/projects/new',
   PROJECT_EDIT = '/projects/edit',
