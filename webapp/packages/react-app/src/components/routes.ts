@@ -10,5 +10,7 @@ export enum RouteName {
   PROJECT_CELL = '/projects/cell',
 
   USER_REGISTER = '/user/register',
-  USER_LOGIN = '/user/login'
+  USER_LOGIN = '/user/login',
+
+  LOGIN_SUCCESS = PROJECTS,
 }

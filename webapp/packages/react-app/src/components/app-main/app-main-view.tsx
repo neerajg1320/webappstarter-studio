@@ -34,7 +34,7 @@ const AppMainView = () => {
           <Route path="/" element={<AppRouterLayout />}>
             <Route path={RouteName.USER_REGISTER} index element={<UserRegister />} />
             <Route path={RouteName.USER_LOGIN} index element={<UserLogin />} />
-            <Route path={RouteName.PROJECT_CELL} element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
+            <Route path={RouteName.PROJECTS} element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
             <Route path={RouteName.PROJECT_CELL} element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
             <Route path={RouteName.PROJECT_EDIT} element={<ProjectEdit isEdit={true}/>} />
             <Route path={RouteName.PROJECT_NEW} element={<ProjectEdit isEdit={false}/>} />

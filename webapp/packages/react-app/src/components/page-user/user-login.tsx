@@ -1,12 +1,22 @@
 import {ReduxUpdateUserPartial, ReduxUser} from "../../state/user";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
+import {useNavigate} from "react-router-dom";
+import {RouteName} from "../routes";
 
 const UserLogin = () => {
+  const navigate = useNavigate();
   const currentUser = useTypedSelector<ReduxUser|null>(state => state.auth.currentUser);
   const { updateUser, authenticateUser } = useActions();
   const [password, setPassword] = useState<string>('Local123');
+  const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(RouteName.LOGIN_SUCCESS);
+    }
+  }, [isAuthenticated]);
 
   const handleLoginClick = () => {
     if (currentUser && currentUser.email) {
