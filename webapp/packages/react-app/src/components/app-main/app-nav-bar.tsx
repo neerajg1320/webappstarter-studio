@@ -1,13 +1,15 @@
 import './app-nav-bar.css';
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
+import {loc} from "axios";
 
 const AppNavBar = () => {
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const {logoutUser} = useActions();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogoutClick = () => {
     logoutUser();
@@ -20,6 +22,16 @@ const AppNavBar = () => {
 
   const handleRegisterClick = () => {
     navigate(RouteName.USER_REGISTER);
+  }
+
+  const handleBackClick = () => {
+    console.log(`location: `, location);
+    if (location.pathname === RouteName.PROJECT_CELL) {
+      navigate(-1);
+    } else {
+      navigate(RouteName.BACK);
+    }
+
   }
 
   return (
@@ -47,8 +59,8 @@ const AppNavBar = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="navbar-item" >
-                    <Link to={RouteName.BACK}>Close </Link>
+                  <div className="navbar-item" onClick={handleBackClick}>
+                      Close
                   </div>
                 </>
             }
