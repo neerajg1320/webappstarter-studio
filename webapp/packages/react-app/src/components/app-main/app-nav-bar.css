@@ -8,3 +8,7 @@
 .app-navbar .navbar-end {
   padding: 0 40px;
 }
+
+.app-navbar .navbar-item {
+  cursor: pointer;
+}

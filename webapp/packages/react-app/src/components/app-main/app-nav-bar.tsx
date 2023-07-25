@@ -3,7 +3,6 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
-import {loc} from "axios";
 
 const AppNavBar = () => {
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
