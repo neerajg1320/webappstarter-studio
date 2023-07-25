@@ -1,10 +1,13 @@
-import './user-register.css';
+import './user.css';
 import React, {useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxUpdateUserPartial, ReduxUser} from "../../state/user";
 import {useActions} from "../../hooks/use-actions";
+import {useNavigate} from "react-router-dom";
+import {RouteName} from "../routes";
 
 const UserRegister = () => {
+  const navigate = useNavigate();
   const currentUser = useTypedSelector<ReduxUser|null>(state => state.auth.currentUser);
   const { updateUser, registerUser } = useActions();
   const [password, setPassword] = useState<string>('Local123');
@@ -15,6 +18,10 @@ const UserRegister = () => {
     } else {
       console.error(`Error! currentUser not defined in redux`);
     }
+  }
+
+  const handleCancelClick = () => {
+    navigate(RouteName.BACK);
   }
 
   return (
@@ -50,6 +57,12 @@ const UserRegister = () => {
                 disabled={!currentUser || !currentUser.email || !password}
             >
               Register
+            </button>
+            <button
+                className="button is-family-secondary is-small"
+                onClick={() => {handleCancelClick()}}
+            >
+              Cancel
             </button>
           </div>
         </div>

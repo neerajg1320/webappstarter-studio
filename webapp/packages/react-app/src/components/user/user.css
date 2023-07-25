@@ -7,7 +7,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items:center;
-  gap: 60px;
+  gap: 30px;
 }
 .user-value-list label {
   width: 30%;
