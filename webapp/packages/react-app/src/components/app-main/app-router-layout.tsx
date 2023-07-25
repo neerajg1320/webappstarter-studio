@@ -7,11 +7,11 @@ import {RouteName} from "../routes";
 const AppRouterLayout = () => {
   const showEditorNavItem = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
-  const {logoutRequestStart} = useActions();
+  const {logoutUser} = useActions();
   const navigate = useNavigate();
 
   const handleLogoutClick = () => {
-    logoutRequestStart();
+    logoutUser();
     navigate(RouteName.DASHBOARD);
   };
 

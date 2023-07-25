@@ -769,3 +769,10 @@ export const authenticateUser = (email:string, password:string) => {
     } 
   };
 }
+
+export const logoutUser = () => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    removeAuthFromLocalStorage();
+    dispatch(logoutRequestStart());
+  };
+}

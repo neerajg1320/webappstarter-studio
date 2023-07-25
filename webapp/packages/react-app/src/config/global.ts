@@ -33,3 +33,6 @@ export const debugAxios = true;
 // React Components
 export const debugComponent = false;
 export const debugProject = false;
+
+// Auth Component
+export const autoAuthenticateUser = false;

@@ -2,7 +2,7 @@ import './App.css';
 import React, {useEffect, useMemo, useState} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
-import {debugRedux} from "./config/global";
+import {autoAuthenticateUser, debugRedux} from "./config/global";
 import AppMainView from "./components/app-main/app-main-view";
 
 
@@ -17,7 +17,9 @@ const App = () => {
   const { fetchProjectsAndFiles } = useActions();
 
   useEffect(() => {
-    authenticateUser('neeraj76@yahoo.com', 'Local123');
+    if (autoAuthenticateUser) {
+      authenticateUser('neeraj76@yahoo.com', 'Local123');
+    }
   }, []);
 
   useEffect(() => {
