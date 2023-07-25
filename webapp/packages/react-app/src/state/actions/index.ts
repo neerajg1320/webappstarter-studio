@@ -2,7 +2,7 @@ import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
 import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateProjectPartial} from "../project";
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
-import {ReduxUser} from "../user";
+import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 
 export type Direction = 'up' | 'down';
 
@@ -185,6 +185,11 @@ export interface LogoutRequestAction {
   payload: null;
 }
 
+export interface UpdateUserAction {
+  type: ActionType.UPDATE_USER,
+  payload: ReduxUpdateUserPartial
+}
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -214,4 +219,5 @@ export type Action =
     | LoginRequestSuccessAction
     | LoginRequestFailedAction
     | LogoutRequestAction
+    | UpdateUserAction
     ;

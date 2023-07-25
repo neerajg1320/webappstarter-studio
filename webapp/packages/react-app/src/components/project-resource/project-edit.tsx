@@ -75,7 +75,6 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   return (
       <div style={{
-          // border: "2px solid lightblue",
           padding: "20px",
           width: "100%",
           height: "100%",

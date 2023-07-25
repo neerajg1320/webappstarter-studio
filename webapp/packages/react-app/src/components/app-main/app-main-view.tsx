@@ -9,6 +9,7 @@ import {useActions} from "../../hooks/use-actions";
 import {RouteName} from "../routes";
 import {ReduxProject} from "../../state";
 import UserRegister from "../user/user-register";
+import UserLogin from "../user/user-login";
 
 const AppMainView = () => {
   // This has to be removed from here and we have to use the current project in the redux state
@@ -31,7 +32,8 @@ const AppMainView = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<AppRouterLayout />}>
-            <Route index element={<UserRegister />} />
+            <Route path={RouteName.USER_REGISTER} index element={<UserRegister />} />
+            <Route path={RouteName.USER_LOGIN} index element={<UserLogin />} />
             <Route path={RouteName.PROJECT_CELL} element={<ProjectListGrid onProjectChange={handleProjectChange}/>} />
             <Route path={RouteName.PROJECT_CELL} element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
             <Route path={RouteName.PROJECT_EDIT} element={<ProjectEdit isEdit={true}/>} />

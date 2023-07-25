@@ -2,22 +2,29 @@ import produce from "immer";
 import {ActionType} from "../action-types";
 import {Action} from "../actions";
 import {debugRedux} from "../../config/global";
+import {ReduxUser} from "../user";
 
 interface AuthState {
   authenticating: boolean;
   isAuthenticated: boolean;
-  jwtToken?: string;
-  err?: string;
-  user?: {
-    pkid: number;
-    email: string;
-    first_name: string;
-    last_name: string;
-    // password: string;
-  };
+  jwtToken?: string|null;
+  err?: string|null;
+  currentUser: ReduxUser|null;
 }
 
-const initialState: AuthState = {authenticating: false, isAuthenticated: false}
+const initialState: AuthState = {
+  authenticating: false,
+  isAuthenticated: false,
+  jwtToken: null,
+  err: null,
+  // The currentUser has been defined only to ease login easy during testing so that we do not have to type email, password everytime
+  currentUser: {
+    pkid: -1,
+    email: 'neeraj76@yahoo.com',
+    first_name: 'Neeraj',
+    last_name: 'Gupta'
+  },
+}
 
 // Note: The bundler so far doesn't differentiate about bundling a cell or a project.
 const reducer = produce((state:AuthState = initialState, action: Action): AuthState => {
@@ -52,7 +59,9 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     case ActionType.LOGOUT_REQUEST:
       state.authenticating = false;
       state.isAuthenticated = false;
-      state.user = undefined;
+      state.jwtToken = null;
+      state.err = null;
+      state.currentUser = null;
       return state;
 
     default:

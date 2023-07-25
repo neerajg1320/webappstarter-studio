@@ -34,5 +34,7 @@ export enum ActionType {
   LOGIN_REQUEST_START = 'login_request_start',
   LOGIN_REQUEST_SUCCESS = 'login_request_completed',
   LOGIN_REQUEST_FAILED = 'login_request_failed',
-  LOGOUT_REQUEST = 'logout_request'
+  LOGOUT_REQUEST = 'logout_request',
+
+  UPDATE_USER = 'update_user',
 }

@@ -5,7 +5,6 @@ import {useActions} from "../../hooks/use-actions";
 import {RouteName} from "../routes";
 
 const AppRouterLayout = () => {
-  const showEditorNavItem = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const {logoutUser} = useActions();
   const navigate = useNavigate();
@@ -14,6 +13,14 @@ const AppRouterLayout = () => {
     logoutUser();
     navigate(RouteName.DASHBOARD);
   };
+
+  const handleLoginClick = () => {
+    navigate(RouteName.USER_LOGIN);
+  }
+
+  const handleRegisterClick = () => {
+    navigate(RouteName.USER_REGISTER);
+  }
 
   return (
       <div style={{
@@ -79,10 +86,10 @@ const AppRouterLayout = () => {
                 :
                   <div className="navbar-item">
                     <div>
-                      <div className="button is-family-secondary">
+                      <div className="button is-family-secondary" onClick={() => handleLoginClick()}>
                         <strong>Login</strong>
                       </div>
-                      <div className="button is-primary">
+                      <div className="button is-primary" onClick={() => handleRegisterClick()}>
                         <strong>Sign up</strong>
                       </div>
                     </div>

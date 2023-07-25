@@ -14,7 +14,7 @@ import {
   UpdateCellAction,
   UpdateFileAction,
   UpdateFileSavePartialAction,
-  UpdateProjectAction
+  UpdateProjectAction, UpdateUserAction
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import {Dispatch} from "react";
@@ -38,7 +38,7 @@ import {
 import {randomIdGenerator} from "../id";
 import {debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
-import {ReduxUser} from "../user";
+import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
 import {
   fetchAuthFromLocalStorage,
@@ -775,4 +775,29 @@ export const logoutUser = () => {
     removeAuthFromLocalStorage();
     dispatch(logoutRequestStart());
   };
+}
+
+export const updateUser = (userPartial: ReduxUpdateUserPartial): UpdateUserAction => {
+  // console.log(`updateUser: ${JSON.stringify(userPartial)}`);
+  return {
+    type: ActionType.UPDATE_USER,
+    payload: userPartial
+  }
+}
+
+export const registerUser = (email:string, password:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    try {
+      const {status, data} = await axiosApiInstance.post(`/auth/registration/`, {email, password});
+      console.log(data);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+        // dispatch({
+        //   type: ActionType.SAVE_CELLS_ERROR,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
 }
