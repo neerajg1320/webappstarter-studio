@@ -1,5 +1,6 @@
 export enum RouteName {
   BACK =  '..',
+  // BACK = -1,
   ROOT = '/',
 
   PROJECTS = '/projects',
