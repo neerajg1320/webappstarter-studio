@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {autoAuthenticateUser, debugAxios, serverApiBaseUrl} from "../config/global";
+import {autoReauthenticateUser, debugAxios, serverApiBaseUrl} from "../config/global";
 import {reAuthenticateUser} from "../state/action-creators";
 
 export const axiosInstance = axios.create({
@@ -55,7 +55,7 @@ export const setAxiosAuthToken = (jwtToken: string) => {
         }
         if (error.response.status === 401) {
           // The following will re-authenticate the user
-          if (autoAuthenticateUser) {
+          if (autoReauthenticateUser) {
             reAuthenticateUser();
           }
         }

@@ -2,7 +2,7 @@ import './App.css';
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
-import {autoAuthenticateUser, debugRedux} from "./config/global";
+import {autoReauthenticateUser, debugRedux} from "./config/global";
 import LandingPage from "./components/page-landing/landing-page";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {RouteName} from "./components/routes";
@@ -37,9 +37,7 @@ const App = () => {
   const { fetchProjectsAndFiles } = useActions();
 
   useEffect(() => {
-    if (autoAuthenticateUser) {
-      authenticateUser('neeraj76@yahoo.com', 'Local123');
-    }
+    authenticateUser('neeraj76@yahoo.com', 'Local123');
   }, []);
 
   useEffect(() => {
@@ -69,9 +67,31 @@ const App = () => {
                      </ProtectedRoute>
                    }
             />
-            <Route path={RouteName.PROJECT_CELL} element={currentProject && <ProjectCell reduxProject={currentProject}/>} />
-            <Route path={RouteName.PROJECT_EDIT} element={<ProjectEdit isEdit={true}/>} />
-            <Route path={RouteName.PROJECT_NEW} element={<ProjectEdit isEdit={false}/>} />
+            <Route path={RouteName.PROJECT_CELL}
+                   element={
+                     <ProtectedRoute>
+                       {currentProject && <ProjectCell reduxProject={currentProject}/>}
+                     </ProtectedRoute>
+                   }
+            />
+            <Route path={RouteName.PROJECT_EDIT}
+                   element={
+                     <ProtectedRoute>
+                       <ProjectEdit isEdit={true} />
+                     </ProtectedRoute>
+                   }
+            />
+            <Route path={RouteName.PROJECT_NEW}
+                   element={
+                     <ProtectedRoute>
+                       <ProjectEdit isEdit={false} />
+                     </ProtectedRoute>
+                   }
+            />
+
+            {/*<Route path={RouteName.PROJECT_CELL} element={} />*/}
+            {/*<Route path={RouteName.PROJECT_EDIT} element={} />*/}
+            {/*<Route path={RouteName.PROJECT_NEW} element={} />*/}
           </Route>
         </Routes>
       </BrowserRouter>
