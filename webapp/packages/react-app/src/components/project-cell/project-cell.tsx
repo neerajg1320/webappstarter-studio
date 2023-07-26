@@ -1,6 +1,6 @@
 import "./project-cell.css";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import PreviewIframe from "../preview-iframe-console/preview-iframe";
+import PreviewIframe from "../preview-section/preview-iframe";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
@@ -10,6 +10,7 @@ import {ReduxFile, ReduxProject} from "../../state";
 import {debugComponent} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
+import PreviewTabs from "../preview-section/preview-tabs";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
@@ -207,9 +208,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
       {/* TBD: We can try to make this resizable as well */}
       <div style={{height:"200px"}}>
-        {/*{(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&*/}
-        {/*<span>reduxProject.bundleLocalId:'{reduxProject.bundleLocalId}'</span>*/}
-        {(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+        {/* We have to put Tab component here*/}
+        <PreviewTabs />
+        {
+          (reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
               {/*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*/}
               <PreviewIframe

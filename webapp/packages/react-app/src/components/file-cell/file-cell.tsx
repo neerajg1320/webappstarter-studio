@@ -4,7 +4,7 @@ import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
-import PreviewIframe from "../preview-iframe-console/preview-iframe";
+import PreviewIframe from "../preview-section/preview-iframe";
 import {autoBundling, debugRedux} from '../../config/global';
 import {ReduxFile} from "../../state";
 import FileCellControlBar from "./file-cell-control-bar";
