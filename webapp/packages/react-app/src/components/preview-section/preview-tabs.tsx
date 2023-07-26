@@ -13,19 +13,6 @@ interface PreviewTabsProps {
 const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Console');
 
-  // Here we will subscribe to console messages if selection is console.
-  useEffect(() => {
-    if (debugComponent || true) {
-      console.log(`PreviewTabs:useEffect[selectedTab] selectedTab=${selectedTab}`);
-    }
-
-    return () => {
-      if (debugComponent || true) {
-        console.log(`PreviewTabs:useEffect[selectedTab] destroyped`);
-      }
-    };
-  }, [selectedTab]);
-
   if (debugComponent || true) {
     console.log(`PreviewTabs:render selectedTab=${selectedTab}`);
   }
@@ -44,8 +31,14 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
       <div >
       <TabsBulma choices={previewChoices} onChange={onTabChange} />
       </div>
-      {selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}
-      {selectedTab === 'Console' && <PreviewConsole />}
+      {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
+      {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
+      <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>
+        <PreviewIframe code={code} err={err} />
+      </div>
+      <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
+        <PreviewConsole />
+      </div>
     </div>
   );
 }

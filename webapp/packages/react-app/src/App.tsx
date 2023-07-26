@@ -40,20 +40,6 @@ const App = () => {
   useEffect(() => {
     console.log('App: first render');
     authenticateUser('neeraj76@yahoo.com', 'Local123');
-
-    const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
-      const {source, log} = event.data;
-      if (source && source === "iframe") {
-        console.log('iframe:', log);
-      }
-    };
-
-    window.addEventListener('message', handleMessage, false);
-
-    return () => {
-      console.log('App: destroyed');
-      window.removeEventListener('message', handleMessage)
-    }
   }, []);
 
   useEffect(() => {
