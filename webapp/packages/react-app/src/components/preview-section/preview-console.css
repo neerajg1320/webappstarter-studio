@@ -1,0 +1,10 @@
+.console-wrapper {
+  position: relative;
+  height: 100%;
+  flex-grow: 1;
+  background-color: white;
+  color: black;
+  padding: 5px;
+  /*font-size: 0.9em;*/
+  font-family: "Courier New";
+}

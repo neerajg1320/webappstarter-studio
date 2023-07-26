@@ -3,6 +3,7 @@ import TabsBulma from "../common/tabs-bulma";
 import React, {useEffect, useMemo, useState} from "react";
 import PreviewIframe from "./preview-iframe";
 import {debugComponent} from "../../config/global";
+import PreviewConsole from "./preview-console";
 
 interface PreviewTabsProps {
   code: string;
@@ -10,7 +11,7 @@ interface PreviewTabsProps {
 }
 
 const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
-  const [selectedTab, setSelectedTab] = useState<string>('Preview');
+  const [selectedTab, setSelectedTab] = useState<string>('Console');
 
   // Here we will subscribe to console messages if selection is console.
   useEffect(() => {
@@ -39,11 +40,12 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   };
 
   return (
-    <div style={{height: "100%"}}>
+    <div className="preview-tabs-wrapper">
+      <div >
       <TabsBulma choices={previewChoices} onChange={onTabChange} />
-      <div style={{height: "100%"}}>
-        <PreviewIframe code={code} err={err} />
       </div>
+      {selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}
+      {selectedTab === 'Console' && <PreviewConsole />}
     </div>
   );
 }

@@ -1,0 +1,13 @@
+
+.preview-tabs-wrapper {
+  border: 2px solid lightblue;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.preview-tabs-wrapper .tabs {
+  margin: 0;
+}
