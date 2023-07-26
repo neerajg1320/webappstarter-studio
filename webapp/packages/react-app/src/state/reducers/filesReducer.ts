@@ -2,6 +2,7 @@ import produce from 'immer';
 import {Action} from '../actions';
 import {ActionType} from '../action-types';
 import {ReduxFile} from '../file';
+import {debugRedux} from "../../config/global";
 
 // The difference between FilesState and CellsState:
 //  - FilesState have no order
@@ -67,7 +68,10 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       return state;
 
     case ActionType.FETCH_FILES_COMPLETE:
-      console.log(`filesReducer:`, action);
+      if (debugRedux) {
+        console.log(`filesReducer:`, action);
+      }
+
       state.loading = false;
 
       if (action.payload.length > 0) {

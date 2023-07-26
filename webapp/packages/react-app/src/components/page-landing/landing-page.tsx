@@ -1,17 +1,23 @@
 import './landing-page.css';
 import {useNavigate} from "react-router-dom";
 import {RouteName} from "../routes";
+import {debugComponent} from "../../config/global";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   const handleRegisterClick = () => {
-    console.log(`handleRegisterClick()`);
+    if (debugComponent) {
+      console.log(`handleRegisterClick()`);
+    }
+
     navigate(RouteName.USER_REGISTER);
   }
 
   const handleLoginClick = () => {
-    console.log(`handleLoginClick()`);
+    if (debugComponent) {
+      console.log(`handleLoginClick()`);
+    }
     navigate(RouteName.USER_LOGIN);
   }
 

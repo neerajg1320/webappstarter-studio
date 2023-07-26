@@ -1,7 +1,6 @@
 export enum RouteName {
   BACK =  '..',
-  // BACK = -1,
-  ONE_UP = -1,
+
   ROOT = '/',
 
   PROJECTS = '/projects',
@@ -13,4 +12,8 @@ export enum RouteName {
   USER_LOGIN = '/user/login',
 
   LOGIN_SUCCESS = PROJECTS,
+}
+
+export enum RouteDepth {
+  ONE_UP = -1
 }

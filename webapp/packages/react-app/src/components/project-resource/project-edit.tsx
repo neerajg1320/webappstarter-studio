@@ -5,7 +5,7 @@ import Select from "react-select";
 import {SingleValue} from "react-select";
 import {ReduxProject, ReduxUpdateProjectPartial} from "../../state";
 import {useNavigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RouteDepth, RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {debugComponent} from "../../config/global";
 
@@ -67,7 +67,7 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     }
 
     if (isEdit) {
-      navigate(RouteName.ONE_UP);
+      navigate(RouteDepth.ONE_UP);
     } else {
       navigate(RouteName.PROJECT_CELL);
     }

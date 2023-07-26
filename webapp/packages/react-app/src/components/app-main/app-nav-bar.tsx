@@ -1,8 +1,9 @@
 import './app-nav-bar.css';
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RouteDepth, RouteName} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
+import {debugComponent} from "../../config/global";
 
 const AppNavBar = () => {
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
@@ -24,9 +25,12 @@ const AppNavBar = () => {
   }
 
   const handleBackClick = () => {
-    console.log(`location: `, location);
+    if (debugComponent) {
+      console.log(`location: `, location);
+    }
+
     if (location.pathname === RouteName.PROJECT_CELL) {
-      navigate(RouteName.ONE_UP);
+      navigate(RouteDepth.ONE_UP);
     } else {
       navigate(RouteName.BACK);
     }

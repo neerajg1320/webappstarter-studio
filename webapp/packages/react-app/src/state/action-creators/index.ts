@@ -36,7 +36,7 @@ import {
   ReduxUpdateFilePartial
 } from "../file";
 import {randomIdGenerator} from "../id";
-import {debugRedux} from "../../config/global";
+import {debugAuth, debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
@@ -737,7 +737,9 @@ export const reAuthenticateUser = () => {
 export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     let authInfo:AuthInfo|null = fetchAuthFromLocalStorage();
-    console.log(authInfo);
+    if (debugAuth) {
+      console.log(authInfo);
+    }
 
     // If not found in storage then we authenticate with the server
     if (!authInfo) {

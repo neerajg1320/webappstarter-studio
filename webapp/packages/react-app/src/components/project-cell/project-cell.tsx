@@ -122,7 +122,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
 
   const handleBundleClick = () => {
-    console.log(`reduxProject:`, reduxProject);
+    if (debugComponent) {
+      console.log(`reduxProject:`, reduxProject);
+    }
 
     if (reduxProject.entry_path) {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
