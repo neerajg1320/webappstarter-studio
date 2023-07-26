@@ -12,7 +12,6 @@ interface PreviewTabsProps {
 
 const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Console');
-  const previewPanelRef = useRef<HTMLDivElement|null>(null);
 
   if (debugComponent || true) {
     console.log(`PreviewTabs:render selectedTab=${selectedTab}`);
@@ -28,7 +27,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   };
 
   const handleConsoleChange = (value:string) => {
-    previewPanelRef.current?.scrollIntoView();
+
   }
 
   return (
@@ -36,7 +35,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
       <div className="preview-tabs-bar">
         <TabsBulma choices={previewChoices} onChange={onTabChange} />
       </div>
-      <div ref={previewPanelRef} className="preview-tabs-panel">
+      <div className="preview-tabs-panel" style={{height: "100%"}}>
         {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
         {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
         <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>

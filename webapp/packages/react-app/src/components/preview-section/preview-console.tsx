@@ -1,5 +1,5 @@
 import './preview-console.css';
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
 
 interface PreviewConsoleProps {
@@ -8,6 +8,7 @@ interface PreviewConsoleProps {
 
 const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange}) => {
   const [text, setText] = useState<string>();
+  const consoleRef = useRef<HTMLPreElement|null>(null);
 
   useEffect(() => {
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
@@ -39,10 +40,14 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange}) => {
         onChange(text);
       }
     }
+    if (consoleRef.current) {
+      const preElement = (consoleRef.current as HTMLPreElement);
+      preElement.scrollTop = preElement.scrollHeight;
+    }
   }, [text]);
 
   return (
-    <pre className="console-wrapper">
+    <pre className="console-wrapper" ref={consoleRef}>
       {text}
     </pre>
   );
