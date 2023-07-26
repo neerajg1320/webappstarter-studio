@@ -5,9 +5,15 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
-  overflow: scroll;
+
 }
 
+/* The following is inside bulma */
 .preview-tabs-wrapper .tabs {
   margin: 0;
+}
+
+.preview-tabs-panel {
+  height: 100%;
+  overflow: scroll;
 }

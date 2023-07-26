@@ -28,16 +28,18 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
 
   return (
     <div className="preview-tabs-wrapper">
-      <div >
-      <TabsBulma choices={previewChoices} onChange={onTabChange} />
+      <div className="preview-tabs-bar">
+        <TabsBulma choices={previewChoices} onChange={onTabChange} />
       </div>
-      {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
-      {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
-      <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>
-        <PreviewIframe code={code} err={err} />
-      </div>
-      <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
-        <PreviewConsole />
+      <div className="preview-tabs-panel">
+        {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
+        {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
+        <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>
+          <PreviewIframe code={code} err={err} />
+        </div>
+        <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
+          <PreviewConsole />
+        </div>
       </div>
     </div>
   );
