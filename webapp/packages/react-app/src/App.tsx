@@ -14,6 +14,7 @@ import {ProjectEdit} from "./components/project-resource/project-edit";
 import AppLandingLayout from "./app-landing-layout";
 import {ReduxProject} from "./state";
 import ProtectedRoute from "./components/common/protected-route";
+import AppRouterWrapper from "./app-router-wrapper";
 
 
 const App = () => {
@@ -61,51 +62,9 @@ const App = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
-
-  const handleProjectChange = useCallback((localId:string) => {
-    setCurrentProjectId(localId);
-  }, []);
-
+  
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AppLandingLayout />}>
-            <Route index element={<LandingPage />}/>
-
-            <Route path={RouteName.USER_REGISTER} element={<UserRegister />} />
-            <Route path={RouteName.USER_LOGIN} element={<UserLogin />} />
-
-            <Route path={RouteName.PROJECTS}
-                   element={
-                     <ProtectedRoute>
-                       <ProjectListGrid onProjectChange={handleProjectChange}/>
-                     </ProtectedRoute>
-                   }
-            />
-            <Route path={RouteName.PROJECT_CELL}
-                   element={
-                     <ProtectedRoute>
-                       {currentProject && <ProjectCell reduxProject={currentProject}/>}
-                     </ProtectedRoute>
-                   }
-            />
-            <Route path={RouteName.PROJECT_EDIT}
-                   element={
-                     <ProtectedRoute>
-                       <ProjectEdit isEdit={true} />
-                     </ProtectedRoute>
-                   }
-            />
-            <Route path={RouteName.PROJECT_NEW}
-                   element={
-                     <ProtectedRoute>
-                       <ProjectEdit isEdit={false} />
-                     </ProtectedRoute>
-                   }
-            />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+    <AppRouterWrapper />
   );
 }
 
