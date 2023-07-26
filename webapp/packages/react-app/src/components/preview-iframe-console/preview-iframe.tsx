@@ -1,4 +1,4 @@
-import './preview.css';
+import './preview-iframe.css';
 import { useEffect, useRef } from "react";
 
 interface PreviewProps {
@@ -46,7 +46,7 @@ const html = `
 </html>
 `;
 
-const Preview:React.FC<PreviewProps> = ({code, err}) => {
+const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
 
   useEffect(() => {
@@ -67,4 +67,4 @@ const Preview:React.FC<PreviewProps> = ({code, err}) => {
   );
 }
 
-export default Preview;
+export default PreviewIframe;

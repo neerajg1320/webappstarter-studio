@@ -1,6 +1,6 @@
 import "./project-cell.css";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import Preview from "../file-cell/preview";
+import PreviewIframe from "../preview-iframe-console/preview-iframe";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
@@ -208,7 +208,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
         {(reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
               {/*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*/}
-              <Preview
+              <PreviewIframe
                   code={bundlesState[reduxProject.bundleLocalId]!.code}
                   err={bundlesState[reduxProject.bundleLocalId]!.err}
               />

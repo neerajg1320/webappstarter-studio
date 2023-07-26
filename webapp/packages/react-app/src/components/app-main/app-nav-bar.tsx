@@ -26,7 +26,7 @@ const AppNavBar = () => {
   const handleBackClick = () => {
     console.log(`location: `, location);
     if (location.pathname === RouteName.PROJECT_CELL) {
-      navigate(-1);
+      navigate(RouteName.ONE_UP);
     } else {
       navigate(RouteName.BACK);
     }

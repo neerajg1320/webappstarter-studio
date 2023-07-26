@@ -4,7 +4,7 @@ import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
-import Preview from "./preview";
+import PreviewIframe from "../preview-iframe-console/preview-iframe";
 import {autoBundling, debugRedux} from '../../config/global';
 import {ReduxFile} from "../../state";
 import FileCellControlBar from "./file-cell-control-bar";
@@ -20,7 +20,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
 
   const {createCellBundle, updateFile} = useActions();
 
-  // The bundle prop is being used in the Preview component below.
+  // The bundle prop is being used in the PreviewIframe component below.
   const bundle = useTypedSelector((state) => state.bundles[reduxFile.localId]);
 
   if (debugRedux) {
@@ -86,7 +86,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
                     Loading
                   </progress>
                 </div>
-              : <Preview code={bundle.code} err={bundle.err}/>
+              : <PreviewIframe code={bundle.code} err={bundle.err}/>
             }
           </div>
         </div>

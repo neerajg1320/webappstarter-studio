@@ -67,7 +67,7 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     }
 
     if (isEdit) {
-      navigate(RouteName.BACK);
+      navigate(RouteName.ONE_UP);
     } else {
       navigate(RouteName.PROJECT_CELL);
     }
