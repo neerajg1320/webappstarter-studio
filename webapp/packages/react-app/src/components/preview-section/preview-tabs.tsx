@@ -13,7 +13,7 @@ interface PreviewTabsProps {
 const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Console');
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`PreviewTabs:render selectedTab=${selectedTab}`);
   }
 
@@ -22,12 +22,16 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   }, []);
 
   const onTabChange = ([value, index]:[string, number]) => {
-    // console.log(`PreviewTabs: value=${value} index=${index}`);
+    if (debugComponent) {
+      console.log(`PreviewTabs: value=${value} index=${index}`);
+    }
     setSelectedTab(value);
   };
 
-  const handleConsoleChange = (value:string) => {
-
+  const handleConsoleTextChange = (value:string) => {
+    if (debugComponent) {
+      console.log(`PreviewTabs: console text changed`);
+    }
   }
 
   return (
@@ -42,7 +46,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
           <PreviewIframe code={code} err={err} />
         </div>
         <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
-          <PreviewConsole onChange={handleConsoleChange}/>
+          <PreviewConsole onChange={handleConsoleTextChange}/>
         </div>
       </div>
     </div>
