@@ -19,10 +19,9 @@ import {
 import {Cell, CellTypes} from '../cell';
 import {Dispatch} from "react";
 import {bundleCodeStr, bundleFilePath} from "../../bundler";
-// import axios from 'axios';
+
 import {RootState} from "../reducers";
 import {
-  ProjectFrameworks,
   ReduxCreateProjectPartial,
   ReduxDeleteProjectPartial,
   ReduxProject,
@@ -316,10 +315,11 @@ export const deleteProjectFromServer = (pkid:number, deleteProjectPartial: Redux
     const {localId} = deleteProjectPartial;
 
     try {
-      const response = await axiosApiInstance.delete(`${gApiUri}/projects/${pkid}/`,{headers: __rm__gHeaders});
-      // console.log(response);
-
-      dispatch(deleteProject(localId)); //
+      const {status} = await axiosApiInstance.delete(`${gApiUri}/projects/${pkid}/`,{headers: __rm__gHeaders});
+      // We need to watch this if the following check is sufficient
+      if (status === 204) {
+        dispatch(deleteProject(localId));
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
@@ -790,8 +790,10 @@ export const updateUser = (userPartial: ReduxUpdateUserPartial): UpdateUserActio
 export const registerUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
-      const {status, data} = await axiosApiInstance.post(`/auth/registration/`, {email, password});
-      console.log(data);
+      const {status} = await axiosApiInstance.post(`/auth/registration/`, {email, password});
+      if (status !== 201) {
+        console.error(`Error! status=${status}`);
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);

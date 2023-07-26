@@ -1,8 +1,8 @@
 import './App.css';
-import React, {useCallback, useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
-import {autoReauthenticateUser, debugComponent, debugRedux} from "./config/global";
+import {debugComponent} from "./config/global";
 import LandingPage from "./components/page-landing/landing-page";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {RouteName} from "./components/routes";
@@ -103,10 +103,6 @@ const App = () => {
                      </ProtectedRoute>
                    }
             />
-
-            {/*<Route path={RouteName.PROJECT_CELL} element={} />*/}
-            {/*<Route path={RouteName.PROJECT_EDIT} element={} />*/}
-            {/*<Route path={RouteName.PROJECT_NEW} element={} />*/}
           </Route>
         </Routes>
       </BrowserRouter>

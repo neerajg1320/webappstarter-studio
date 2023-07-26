@@ -1,9 +1,9 @@
 import { Dispatch } from "redux";
 import {Action, UpdateFileAction} from "../actions";
 import { ActionType } from "../action-types";
-import {createProjectOnServer, saveCells, updateFileSavePartial} from "../action-creators";
+import {saveCells, updateFileSavePartial} from "../action-creators";
 import { RootState } from "../reducers";
-import {debugRedux, syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
+import {debugRedux, syncCellsToServer, syncFilesToServer} from "../../config/global";
 import {ReduxSaveFilePartial} from "../file";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
