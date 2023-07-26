@@ -35,7 +35,7 @@ import {
   ReduxUpdateFilePartial
 } from "../file";
 import {randomIdGenerator} from "../id";
-import {debugAuth, debugRedux} from "../../config/global";
+import {debugAuth, debugAxios, debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
@@ -748,7 +748,10 @@ export const authenticateUser = (email:string, password:string) => {
       const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
       if (status === 200) {
         const {refresh_token, access_token, user} = data;
-        console.log(refresh_token, access_token, user);
+        if (debugAxios) {
+          console.log(refresh_token, access_token, user);
+        }
+
         const reduxUser:ReduxUser = {
           pkid: user.pk,
           email: user.email,

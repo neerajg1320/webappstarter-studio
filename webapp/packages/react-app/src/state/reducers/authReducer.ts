@@ -28,7 +28,7 @@ const initialState: AuthState = {
 
 // Note: The bundler so far doesn't differentiate about bundling a cell or a project.
 const reducer = produce((state:AuthState = initialState, action: Action): AuthState => {
-  if (debugRedux || true) {
+  if (debugRedux) {
     if ([
       ActionType.LOGIN_REQUEST_START,
       ActionType.LOGIN_REQUEST_SUCCESS,

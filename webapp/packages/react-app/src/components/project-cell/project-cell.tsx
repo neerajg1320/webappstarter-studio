@@ -21,7 +21,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     }
 
     return () => {
-      console.log('ProjectCell: destroyed');
+      if (debugComponent) {
+        console.log('ProjectCell: destroyed');
+      }
     }
   }, []);
 
