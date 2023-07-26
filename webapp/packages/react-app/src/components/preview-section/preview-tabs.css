@@ -1,4 +1,3 @@
-
 .preview-tabs-wrapper {
   border: 2px solid lightblue;
   height: 250px;
@@ -6,6 +5,7 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
+  overflow: scroll;
 }
 
 .preview-tabs-wrapper .tabs {

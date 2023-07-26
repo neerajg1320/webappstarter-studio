@@ -1,13 +1,18 @@
 import './preview-console.css';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {debugComponent} from "../../config/global";
 
 const PreviewConsole = () => {
+  const [text, setText] = useState<string>();
+
   useEffect(() => {
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
       const {source, log} = event.data;
       if (source && source === "iframe") {
-        console.log('iframe:', log);
+        // console.log('iframe:', log);
+        setText((prev) => {
+          return [prev||'', log].join("\n");
+        });
       }
     };
 
@@ -25,9 +30,9 @@ const PreviewConsole = () => {
   }, []);
 
   return (
-    <div className="console-wrapper">
-      <h1>Console here</h1>
-    </div>
+    <pre className="console-wrapper">
+      {text}
+    </pre>
   );
 }
 
