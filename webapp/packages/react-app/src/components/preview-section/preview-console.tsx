@@ -2,7 +2,11 @@ import './preview-console.css';
 import {useEffect, useState} from "react";
 import {debugComponent} from "../../config/global";
 
-const PreviewConsole = () => {
+interface PreviewConsoleProps {
+  onChange?: (value:string) => void
+}
+
+const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange}) => {
   const [text, setText] = useState<string>();
 
   useEffect(() => {
@@ -28,6 +32,14 @@ const PreviewConsole = () => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (onChange) {
+      if (text !== undefined) {
+        onChange(text);
+      }
+    }
+  }, [text]);
 
   return (
     <pre className="console-wrapper">

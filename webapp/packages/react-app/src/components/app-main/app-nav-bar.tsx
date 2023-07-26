@@ -25,7 +25,7 @@ const AppNavBar = () => {
   }
 
   const handleBackClick = () => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`location: `, location);
     }
 

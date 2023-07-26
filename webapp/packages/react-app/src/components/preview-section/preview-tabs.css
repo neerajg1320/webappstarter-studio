@@ -1,5 +1,5 @@
 .preview-tabs-wrapper {
-  border: 2px solid lightblue;
+  /*border: 2px solid lightblue;*/
   height: 250px;
   display: flex;
   flex-direction: column;
@@ -16,4 +16,5 @@
 .preview-tabs-panel {
   height: 100%;
   overflow: scroll;
+  scrollbar-gutter: stable;
 }

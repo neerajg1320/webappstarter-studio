@@ -62,7 +62,7 @@ const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
       <iframe 
         ref={iframeRef} 
         title="preview" 
-        sandbox="allow-scripts allow-modals" />
+        sandbox="allow-scripts allow-modals allow-same-origin" />
       {err && <div className="preview-error">{err}</div>}
     </div>
   );
