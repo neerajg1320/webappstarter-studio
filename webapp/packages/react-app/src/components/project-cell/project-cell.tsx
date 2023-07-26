@@ -207,19 +207,30 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       </div>
 
       {/* TBD: We can try to make this resizable as well */}
-      <div style={{height:"200px"}}>
+      {/*<div style={{height:"200px"}}>*/}
+      <div style={{}}>
         {/* We have to put Tab component here*/}
-        <PreviewTabs />
         {
-          (reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+            (reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
-              {/*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*/}
-              <PreviewIframe
+              {/* We can pass iframe id in case we are using multiple preview windows. */}
+              <PreviewTabs
                   code={bundlesState[reduxProject.bundleLocalId]!.code}
                   err={bundlesState[reduxProject.bundleLocalId]!.err}
               />
             </div>
         }
+
+        {/*{*/}
+        {/*  (reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&*/}
+        {/*    <div style={{height: "100%"}}>*/}
+        {/*      /!*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*!/*/}
+        {/*      <PreviewIframe*/}
+        {/*          code={bundlesState[reduxProject.bundleLocalId]!.code}*/}
+        {/*          err={bundlesState[reduxProject.bundleLocalId]!.err}*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*}*/}
       </div>
 
       {debugComponent &&

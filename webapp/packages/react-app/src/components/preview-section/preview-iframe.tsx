@@ -1,11 +1,6 @@
 import './preview-iframe.css';
 import { useEffect, useRef } from "react";
 
-interface PreviewProps {
-  code: string;
-  err: string;
-}
-
 const html = `
 <html>
   <head>
@@ -45,6 +40,12 @@ const html = `
   </body>
 </html>
 `;
+
+
+interface PreviewProps {
+  code: string;
+  err: string;
+}
 
 const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
