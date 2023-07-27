@@ -11,17 +11,24 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
   const consoleRef = useRef<HTMLPreElement|null>(null);
 
   useEffect(() => {
+
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
-      const {source, content} = event.data;
+      const {source, type, content} = event.data;
       if (source && source === "iframe") {
         // console.log('iframe:', log);
         setText((prev) => {
-          return [prev||'', content].join("\n");
+          if (type === 'log') {
+            return [prev||'', content].join("\n");
+          } else if (type === 'error') {
+            return [prev||'', "Error!: " + content].join("\n");
+          }
+
         });
       }
     };
 
     window.addEventListener('message', handleMessage, false);
+
     if (debugComponent) {
       console.log(`PreviewConsole:useEffect[] 'message' event listener added.`)
     }
