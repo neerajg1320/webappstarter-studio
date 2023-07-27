@@ -12,7 +12,8 @@ const html = `
       window.console.log = function(str) {
         const message = {
           source: "iframe",
-          log: str,
+          type: 'log',
+          content: str,
         }
         window.parent.postMessage(message, '*');
       }

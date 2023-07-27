@@ -12,11 +12,11 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
 
   useEffect(() => {
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
-      const {source, log} = event.data;
+      const {source, content} = event.data;
       if (source && source === "iframe") {
         // console.log('iframe:', log);
         setText((prev) => {
-          return [prev||'', log].join("\n");
+          return [prev||'', content].join("\n");
         });
       }
     };
