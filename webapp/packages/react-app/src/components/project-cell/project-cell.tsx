@@ -220,17 +220,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               />
             </div>
         }
-
-        {/*{*/}
-        {/*  (reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&*/}
-        {/*    <div style={{height: "100%"}}>*/}
-        {/*      /!*<pre>{bundlesState[reduxProject.bundleLocalId]!.code}</pre>*!/*/}
-        {/*      <PreviewIframe*/}
-        {/*          code={bundlesState[reduxProject.bundleLocalId]!.code}*/}
-        {/*          err={bundlesState[reduxProject.bundleLocalId]!.err}*/}
-        {/*      />*/}
-        {/*    </div>*/}
-        {/*}*/}
+        
       </div>
 
       {debugComponent &&
