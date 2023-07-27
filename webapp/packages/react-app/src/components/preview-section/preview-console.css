@@ -3,7 +3,6 @@
   background-color: white;
   color: black;
   padding: 5px;
-  font-family: "Courier New";
   height: 250px;
   display: flex;
   flex-direction: column;
@@ -31,6 +30,13 @@
 
 .console-control-bar .button {
   border-radius: 8px;
-
 }
 
+.console-wrapper .console-log {
+  font-family: "Courier New";
+}
+
+.console-wrapper .console-error {
+  font-family: "Courier New";
+  color: red;
+}
