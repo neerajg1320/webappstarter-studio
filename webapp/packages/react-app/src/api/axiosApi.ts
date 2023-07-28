@@ -26,8 +26,9 @@ export const setAxiosAuthToken = (jwtToken: string) => {
       // The axios library has a bug around applying headers in middleware.
       // The headers are applied to all instances.
       // In fact the other vars like baseUrl are also applied to all instances
-      if (request.url?.includes('mediafiles')) {
-        console.log(`Auth token not added for mediafiles. Need to put a better solution`)
+      const skippedUrls = ['/mediafiles', '/api/v1/auth'].filter(item => request.url?.includes(item));
+      if (skippedUrls.length > 0) {
+        console.log(`Token skipped for url '${skippedUrls}' Need to put a better solution`)
       } else {
         request.headers['Authorization'] = `Bearer ${jwtToken}`;
       }
