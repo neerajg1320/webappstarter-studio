@@ -604,7 +604,10 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
 // This action is dispatched from the persistMiddleware.
 export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log('saveFilePartial:', saveFilePartial);
+    if (debugRedux) {
+      console.log('saveFilePartial:', saveFilePartial);
+    }
+
 
     const formData = new FormData();
     if (Object.keys(saveFilePartial).includes('path')) {
@@ -621,7 +624,9 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
 
     try {
       const response = await axiosApiInstance.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: __rm__gHeaders});
-      console.log(response);
+      if (debugRedux) {
+        console.log(response);
+      }
 
       // const {id, pkid} = response.data
       // We are putting pkid in the id

@@ -7,6 +7,10 @@ export const replaceFilePart = (inputPath:string, fileName:string): string => {
   return path.join(dir, fileName);
 }
 
+export const getFileDir = (inputPath:string): string => {
+  return path.dirname(inputPath);
+}
+
 export const getFileNameFromPath = (inputPath:string): string => {
   return path.basename(inputPath);
 }

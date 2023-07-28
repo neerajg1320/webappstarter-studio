@@ -81,7 +81,10 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
         {(messages.length > 0) &&
           messages.map((message, index) => {
             if (message.type === "log") {
-              return <li key={index} className={`console-${message.type}`}>{message.content as string}</li>
+              if (['string', 'number'].includes(typeof message.content)) {
+                return <li key={index} className={`console-${message.type}`}>{message.content as string}</li>
+              }
+              return <li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>
             }
             return <li key={index} className={`console-${message.type}`}>{(message.content as TypeError).message}</li>
           })
