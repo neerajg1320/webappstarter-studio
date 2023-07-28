@@ -47,7 +47,9 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
 
   const consoleGoBottom = () => {
     if (consoleRef.current) {
-      console.log(`PreviewConsole:useEffect[text] adjust scroll to bottom`)
+      if (debugComponent) {
+        console.log(`PreviewConsole:useEffect[text] adjust scroll to bottom`)
+      }
       const divElement = (consoleRef.current as HTMLDivElement);
       divElement.scrollTop = divElement.scrollHeight;
     }
