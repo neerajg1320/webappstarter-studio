@@ -9,11 +9,16 @@ const html = `
   <body>
     <div id="root"></div>
     <script>
-      window.console.log = function(str) {
+      const window_console_log = window.console.log;
+      
+      window.console.log = function(...args) {
+        // We save the console.log function before we override it
+        window_console_log(...args);
+        
         const message = {
           source: "iframe",
           type: 'log',
-          content: str,
+          content: args, // args is an array
         }
         window.parent.postMessage(message, '*');
       }
