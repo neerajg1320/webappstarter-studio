@@ -171,10 +171,12 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               </div>
             </Resizable>
             {/* <pre>{code}</pre> */}
+            {/* The file-tree wrapper component */}
             <div style={{
                 overflow:"scroll",
-                border: "1px solid lightblue",
-                flexGrow: 1
+                // border: "1px solid lightblue",
+                flexGrow: 1,
+                marginLeft: "10px",
               }}
             >
               <div style={{
@@ -183,8 +185,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
               }}
               >
                 <div style={{
-                    border: "1px solid lightcyan",
-                    flexGrow: 1
+                    // border: "1px solid lightcyan",
+                    // flexGrow: 1
                   }}
                 >
                   <FilesTree
