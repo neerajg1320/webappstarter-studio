@@ -640,21 +640,29 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
       })); //
 
       // TBD: We need to fix this logic
-      // const {projectLocalId, isEntryPoint, path}  = saveFilePartial;
-      // if (projectLocalId) {
-      //   if (isEntryPoint) {
-      //     console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
-      //     dispatch(updateProject({
-      //       localId: projectLocalId,
-      //       entryFileLocalId: localId,
-      //       entryPath: path,
-      //       isServerResponse: true,
-      //     }))
-      //
-      //     // This will ensure the dispatch from middleware
-      //     await fetchProjectFromServer(projectLocalId)(dispatch,getState);
-      //   }
-      // }
+      const {is_entry_point, path}  = saveFilePartial;
+
+      if (is_entry_point) {
+          const fileState = getState().files.data[localId] as ReduxFile;
+
+          if (fileState && fileState.projectLocalId) {
+            console.log(`file['${localId}'] path:${fileState.path} is an entry point for project['${fileState.projectLocalId}']`);
+            const projectState = getState().projects.data[fileState.projectLocalId] as ReduxProject;
+
+            if (projectState) {
+              // We short circuit the entry_path so that we don't wait for fetch
+              dispatch(updateProject({
+                localId: fileState.projectLocalId,
+                entryFileLocalId: localId,
+                entry_path: fileState.path,
+              }));
+            } else {
+              console.error(`Project state not found for localId '${fileState.projectLocalId}'`);
+            }
+          } else {
+            console.log(`File state not found for localId '${localId}'`);
+          }
+      }
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);

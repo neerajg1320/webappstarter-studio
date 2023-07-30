@@ -1,9 +1,9 @@
-import { Dispatch } from "redux";
+import {Dispatch} from "redux";
 import {Action, UpdateFileAction} from "../actions";
-import { ActionType } from "../action-types";
-import {saveCells, updateFileSavePartial} from "../action-creators";
-import { RootState } from "../reducers";
-import {debugRedux, syncCellsToServer, syncFilesToServer} from "../../config/global";
+import {ActionType} from "../action-types";
+import {saveCells, saveProject, updateFileSavePartial} from "../action-creators";
+import {RootState} from "../reducers";
+import {debugRedux, syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
 import {ReduxSaveFilePartial} from "../file";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
@@ -45,6 +45,13 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }, 1000);
         }
       }
+
+      // We are avoiding this so far and project is being saved using a manual click
+      // if (syncProjectsToServer) {
+      //   if (action.type === ActionType.UPDATE_PROJECT) {
+      //     saveProject(action.payload.localId)
+      //   }
+      // }
 
       if (syncFilesToServer) {
         if (action.type === ActionType.UPDATE_FILE) {

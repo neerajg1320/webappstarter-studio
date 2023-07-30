@@ -12,7 +12,7 @@ interface FileControlBarProps {
 
 const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  const { updateFile, saveFile, createCellBundle, updateProject } = useActions();
+  const { updateFile, saveFile, createCellBundle, updateProject, saveProject } = useActions();
 
 
   const handleBundleClick = () => {
@@ -57,6 +57,10 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
   const handleEntryPointChange = (checked: boolean) => {
     updateFile({localId: reduxFile.localId, isEntryPoint: checked})
+
+    if (reduxFile.projectLocalId) {
+      updateProject({localId:reduxFile.projectLocalId, entryFileLocalId: reduxFile.localId});
+    }
   }
 
   const handleFileEditableChange = (checked: boolean) => {
