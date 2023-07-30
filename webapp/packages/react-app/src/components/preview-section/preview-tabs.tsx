@@ -11,7 +11,7 @@ interface PreviewTabsProps {
 }
 
 const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
-  const [selectedTab, setSelectedTab] = useState<string>('Console');
+  const [selectedTab, setSelectedTab] = useState<string>('Preview');
 
   if (debugComponent) {
     console.log(`PreviewTabs:render selectedTab=${selectedTab}`);
