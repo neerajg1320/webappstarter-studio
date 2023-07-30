@@ -640,9 +640,9 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
       })); //
 
       // TBD: We need to fix this logic
-      const {is_entry_point, path}  = saveFilePartial;
+      const {is_entry_point} = saveFilePartial;
 
-      if (is_entry_point) {
+      if (is_entry_point !== undefined) {
           const fileState = getState().files.data[localId] as ReduxFile;
 
           if (fileState && fileState.projectLocalId) {
@@ -650,12 +650,25 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
             const projectState = getState().projects.data[fileState.projectLocalId] as ReduxProject;
 
             if (projectState) {
-              // We short circuit the entry_path so that we don't wait for fetch
-              dispatch(updateProject({
-                localId: fileState.projectLocalId,
-                entryFileLocalId: localId,
-                entry_path: fileState.path,
-              }));
+              if (is_entry_point) {
+                // We short circuit the entry_path so that we don't wait for fetch
+                dispatch(updateProject({
+                  localId: fileState.projectLocalId,
+                  entryFileLocalId: localId,
+                  entry_path: fileState.path,
+                }));
+              } else {
+                if (projectState.entryFileLocalId === localId) {
+                  console.log(`We need to unset the entryFile`);
+                  dispatch(updateProject({
+                    localId: fileState.projectLocalId,
+                    entryFileLocalId: null,
+                    entry_path: undefined,
+                  }));
+                } else {
+                  console.error(`File '${localId}' is not entry point for project '${fileState.projectLocalId}'`);
+                }
+              }
             } else {
               console.error(`Project state not found for localId '${fileState.projectLocalId}'`);
             }
