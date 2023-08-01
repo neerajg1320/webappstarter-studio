@@ -221,10 +221,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                   </button>
                   <button
                       className="button is-family-secondary is-small"
+                      style={{width: "80px"}}
                       onClick={handleProjectDownloadClick}
                       disabled={!reduxProject.synced}
                   >
-                    Download
+                    {reduxProject.zipBlob ? 'Download' : 'Zip'}
                   </button>
                 </div>
 
