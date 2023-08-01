@@ -33,12 +33,20 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     }
     return null;
   }, [projectsState]);
+
   const projectFrameworkOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
     if (currentProject && currentProject.framework) {
       return {label: currentProject.framework, value:currentProject.framework};
     }
     return {label: 'none', value: 'none'};
   }, [currentProject?.framework])
+
+  const projectToolchainOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
+    if (currentProject && currentProject.toolchain) {
+      return {label: currentProject.toolchain, value:currentProject.toolchain};
+    }
+    return {label: 'none', value: 'none'};
+  }, [currentProject?.toolchain])
 
   if (debugComponent) {
     console.log(`ProjectNewEdit: render  projectsState:`, projectsState);
@@ -51,6 +59,18 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       'vuejs',
       'angularjs',
       'none',
+    ];
+
+    return frameworks.map(item => {
+      return {label: item, value: item};
+    })
+  }, []);
+
+  const toolchainOptions = useMemo(() => {
+    // This we need to fetch from the API
+    const frameworks:string[] = [
+      'create-react-app',
+      'vite',
     ];
 
     return frameworks.map(item => {
@@ -106,6 +126,15 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                 value={projectFrameworkOption}
                 options={frameworkOptions}
                 onChange={(selected) => updateProject({...currentProject, framework: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
+            />
+          </div>
+          <div className="project-value" style={{display: "flex"}}>
+            <label>Toolchain</label>
+            <Select
+                className="value framework-select"
+                value={projectToolchainOption}
+                options={toolchainOptions}
+                onChange={(selected) => updateProject({...currentProject, toolchain: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
             />
           </div>
           <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>

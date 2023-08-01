@@ -7,12 +7,19 @@ export enum ProjectFrameworks {
   NONE = 'none'
 };
 
+export enum ReactToolchains {
+  CRA = 'cra',
+  VITE = 'vite',
+  NONE = 'none',
+};
+
 export interface ReduxProject extends ServerObject {
   reduxType: 'project',
   localId: string;
   title: string;
   description: string;
   framework: ProjectFrameworks;
+  toolchain?: ReactToolchains;
   entryFileLocalId?: string|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
@@ -29,6 +36,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   title?: string;
   description?: string;
   framework?: ProjectFrameworks;
+  toolchain?: ReactToolchains;
   remoteId?: string;
   entryFileLocalId?: string|null;
   bundleLocalId?: string|null;
