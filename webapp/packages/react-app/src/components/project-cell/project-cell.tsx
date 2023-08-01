@@ -34,7 +34,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
-  const { createProjectBundle, updateProject, updateFile } = useActions();
+  const { createProjectBundle, updateProject, downloadProjectZip, updateFile } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
@@ -123,8 +123,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
+  useEffect(() => {
+    if (debugComponent || true) {
+      console.log(`reduxProject zip blob changed zipBlob:`, reduxProject.zipBlob);
+      if (reduxProject.zipBlob) {
+        console.log(`Download available zipBlob:`, reduxProject.zipBlob);
+      }
+    }
+  }, [reduxProject.zipBlob]);
 
-  const handleBundleClick = () => {
+
+  const handleProjectBundleClick = () => {
     if (debugComponent) {
       console.log(`reduxProject:`, reduxProject);
     }
@@ -137,6 +146,14 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }
+  }
+
+  const handleProjectDownloadClick = () => {
+    if (debugComponent || true) {
+      console.log(`download reduxProject:`, reduxProject);
+    }
+
+    downloadProjectZip(reduxProject.localId);
   }
 
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
@@ -197,10 +214,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                 <div style={{display:"flex", flexDirection:"row", gap:"10px", padding: "10px"}}>
                   <button
                       className="button is-family-secondary is-small"
-                      onClick={handleBundleClick}
+                      onClick={handleProjectBundleClick}
                       disabled={!reduxProject.synced}
                   >
                     Bundle
+                  </button>
+                  <button
+                      className="button is-family-secondary is-small"
+                      onClick={handleProjectDownloadClick}
+                      disabled={!reduxProject.synced}
+                  >
+                    Download
                   </button>
                 </div>
 

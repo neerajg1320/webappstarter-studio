@@ -21,6 +21,8 @@ export enum ActionType {
   SET_CURRENT_PROJECT = 'set_current_project',
   FETCH_PROJECTS_COMPLETE = 'fetch_projects_complete',
   FETCH_PROJECTS_ERROR = 'fetch_projects_error',
+  DOWNLOAD_PROJECT_START = 'download_project_start',
+  DOWNLOAD_PROJECT_COMPLETE = 'download_project_complete',
 
   CREATE_FILE = 'create_file',
   UPDATE_FILE = 'update_file',

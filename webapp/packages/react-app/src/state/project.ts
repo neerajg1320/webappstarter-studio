@@ -15,6 +15,8 @@ export interface ReduxProject extends ServerObject {
   framework: ProjectFrameworks;
   entryFileLocalId?: string|null;
   bundleLocalId?: string|null;
+  zipBlob?: Blob|null;
+
   // Below are server fields
   folder?: string;
   entry_file?: number;
@@ -30,6 +32,8 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   remoteId?: string;
   entryFileLocalId?: string|null;
   bundleLocalId?: string|null;
+  zipBlob?: Blob|null;
+
   // Below are server fields
   folder?: string;
   entry_file?: number;

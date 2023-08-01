@@ -351,6 +351,37 @@ export const removeProject = (localId:string) => {
   }
 }
 
+export const downloadProjectZip = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const projectState = getState().projects.data[localId];
+    if (!projectState) {
+      console.error(`Error! project id '${localId}' not found in store`)
+    }
+
+    const {pkid} = projectState;
+
+    try {
+      const {data}:{data:Blob} = await axiosApiInstance.get(
+          `/projects/${pkid}/download/`,
+          {responseType: 'blob'}
+      );
+      console.log(data);
+
+      dispatch(updateProject({
+        localId,
+        zipBlob: data
+      }));
+    } catch (err) {
+      if (err instanceof Error) {
+        // dispatch({
+        //   type: ActionType.DOWNLOAD_PROJECT_COMPLETE,
+        //   payload: err.message
+        // });
+      }
+    }
+  }
+}
+
 // See if we can call this from fetchFiles
 export const createFile = (filePartial:ReduxCreateFilePartial): CreateFileAction => {
   return {

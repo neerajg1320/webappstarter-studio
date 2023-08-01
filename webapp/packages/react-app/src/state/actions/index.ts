@@ -3,6 +3,7 @@ import { CellTypes, Cell } from "../cell";
 import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateProjectPartial} from "../project";
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
+import * as buffer from "buffer";
 
 export type Direction = 'up' | 'down';
 
@@ -108,6 +109,16 @@ export interface DeleteProjectAction {
     payload: string
 }
 
+export interface DownloadProjectStart {
+  type: ActionType.DOWNLOAD_PROJECT_START,
+  payload: string
+}
+
+export interface DownloadProjectComplete {
+  type: ActionType.DOWNLOAD_PROJECT_COMPLETE,
+  payload: any
+}
+
 export interface FetchProjectsCompleteAction {
   type: ActionType.FETCH_PROJECTS_COMPLETE,
   payload: ReduxProject[]
@@ -206,6 +217,8 @@ export type Action =
     | CreateProjectAction
     | UpdateProjectAction
     | DeleteProjectAction
+    | DownloadProjectStart
+    | DownloadProjectComplete
     | FetchProjectsCompleteAction
     | FetchProjectsErrorAction
     | SetCurrentProjectAction
