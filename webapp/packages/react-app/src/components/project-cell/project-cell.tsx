@@ -34,7 +34,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
-  const { createProjectBundle, updateProject, downloadProjectZip, updateFile } = useActions();
+  const { createProjectBundle, updateProject, downloadProjectZip, downloadFetchProjectZip, updateFile } = useActions();
 
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
@@ -123,14 +123,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
-  useEffect(() => {
-    if (debugComponent || true) {
-      console.log(`reduxProject zip blob changed zipBlob:`, reduxProject.zipBlob);
-      if (reduxProject.zipBlob) {
-        console.log(`Download available zipBlob:`, reduxProject.zipBlob);
-      }
-    }
-  }, [reduxProject.zipBlob]);
+
 
 
   const handleProjectBundleClick = () => {
@@ -148,13 +141,33 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     }
   }
 
-  const handleProjectDownloadClick = () => {
-    if (debugComponent || true) {
-      console.log(`download reduxProject:`, reduxProject);
-    }
-
+  const handleProjectZipClick = () => {
+    // Even download with fetch did not give content disposition !!
+    // downloadFetchProjectZip(reduxProject.localId);
     downloadProjectZip(reduxProject.localId);
   }
+
+  const handleProjectDownloadClick = () => {
+    if (reduxProject.zipBlob) {
+      console.log(`Download blob.`);
+
+      const tempObjUrl = window.URL.createObjectURL(new Blob([reduxProject.zipBlob]));
+      const link = document.createElement('a');
+      link.href = tempObjUrl;
+      link.setAttribute('download', `${reduxProject.folder}.zip`); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+    }
+  }
+
+  useEffect(() => {
+    if (debugComponent || true) {
+      console.log(`reduxProject zip blob changed zipBlob:`, reduxProject.zipBlob);
+
+
+
+    }
+  }, [reduxProject.zipBlob]);
 
   const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
     if (debugComponent) {
@@ -222,10 +235,18 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
                   <button
                       className="button is-family-secondary is-small"
                       style={{width: "80px"}}
-                      onClick={handleProjectDownloadClick}
+                      onClick={handleProjectZipClick}
                       disabled={!reduxProject.synced}
                   >
-                    {reduxProject.zipBlob ? 'Download' : 'Zip'}
+                    Zip
+                  </button>
+                  <button
+                      className="button is-family-secondary is-small"
+                      style={{width: "80px"}}
+                      onClick={handleProjectDownloadClick}
+                      disabled={!reduxProject.zipBlob}
+                  >
+                    Download
                   </button>
                 </div>
 

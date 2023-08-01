@@ -45,6 +45,7 @@ import {
   saveAuthToLocalStorage
 } from "../../local-storage/local-storage";
 import {AuthInfo} from "../auth";
+import {AxiosHeaders} from "axios";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -351,6 +352,32 @@ export const removeProject = (localId:string) => {
   }
 }
 
+export const downloadFetchProjectZip = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const projectState = getState().projects.data[localId];
+    if (!projectState) {
+      console.error(`Error! project id '${localId}' not found in store`)
+    }
+
+    const {pkid} = projectState;
+
+    fetch(`http://localhost:8080/api/v1/projects/${pkid}/download/`,
+        { headers: { Authorization: `Bearer ${getState().auth.jwtToken}` }})
+        .then((res) => {
+
+          const header = res.headers.get('Content-Disposition');
+          console.log(`header`, header);
+
+          // const parts = header!.split(';');
+          // filename = parts[1].split('=')[1];
+          return res.blob();
+        }).then((blob) => {
+          // Use `filename` here e.g. with file-saver:
+          // saveAs(blob, filename);
+        });
+  }
+}
+
 export const downloadProjectZip = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const projectState = getState().projects.data[localId];
@@ -361,15 +388,18 @@ export const downloadProjectZip = (localId:string) => {
     const {pkid} = projectState;
 
     try {
-      const {data}:{data:Blob} = await axiosApiInstance.get(
+      // const {headers, data}:{headers:AxiosHeaders, data:Blob}
+      const response = await axiosApiInstance.get(
           `/projects/${pkid}/download/`,
           {responseType: 'blob'}
       );
-      console.log(data);
+      console.log(response);
+      const contentDisposition = response.headers['content-disposition'];
+      console.log(contentDisposition);
 
       dispatch(updateProject({
         localId,
-        zipBlob: data
+        zipBlob: response.data
       }));
     } catch (err) {
       if (err instanceof Error) {
