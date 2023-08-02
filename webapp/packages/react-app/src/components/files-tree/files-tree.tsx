@@ -5,11 +5,10 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
-import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
 import {ensureTrailingSlash, getCopyPath, getFileDir, getFilePathParts, hasTrailingSlash} from "../../utils/path";
-import EnterBlurInput from "../common/enter-blur-input";
+
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -21,7 +20,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {createFile, updateFile, removeFile} = useActions();
+  const {createFile, updateFile, removeFile, saveFile} = useActions();
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -102,6 +101,8 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       if (hasTrailingSlash(reduxFile.path)) {
         console.log('Error! No file name specified');
         removeFile(selectedFileLocalId);
+      } else {
+        saveFile(reduxFile.localId);
       }
     }
     setEditPathEnabled(false);
