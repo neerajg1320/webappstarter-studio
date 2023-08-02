@@ -1,6 +1,6 @@
 import './app-nav-bar.css';
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {RouteDepth, RouteName} from "../routes";
+import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 import {debugComponent} from "../../config/global";
@@ -13,15 +13,15 @@ const AppNavBar = () => {
 
   const handleLogoutClick = () => {
     logoutUser();
-    navigate(RouteName.ROOT);
+    navigate(RoutePath.ROOT);
   };
 
   const handleLoginClick = () => {
-    navigate(RouteName.USER_LOGIN);
+    navigate(RoutePath.USER_LOGIN);
   }
 
   const handleRegisterClick = () => {
-    navigate(RouteName.USER_REGISTER);
+    navigate(RoutePath.USER_REGISTER);
   }
 
   const handleBackClick = () => {
@@ -29,10 +29,10 @@ const AppNavBar = () => {
       console.log(`location: `, location);
     }
 
-    if (location.pathname === RouteName.PROJECT_CELL) {
+    if (location.pathname === RoutePath.PROJECT_CELL) {
       navigate(RouteDepth.ONE_UP);
     } else {
-      navigate(RouteName.BACK);
+      navigate(RoutePath.BACK);
     }
 
   }

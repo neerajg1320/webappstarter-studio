@@ -5,7 +5,7 @@ import Select from "react-select";
 import {SingleValue} from "react-select";
 import {ReduxProject, ReduxUpdateProjectPartial} from "../../state";
 import {useNavigate} from "react-router-dom";
-import {RouteDepth, RouteName} from "../routes";
+import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {debugComponent} from "../../config/global";
 
@@ -71,6 +71,7 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     const frameworks:string[] = [
       'create-react-app',
       'vite',
+      'none',
     ];
 
     return frameworks.map(item => {
@@ -89,7 +90,7 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     if (isEdit) {
       navigate(RouteDepth.ONE_UP);
     } else {
-      navigate(RouteName.PROJECT_CELL);
+      navigate(RoutePath.PROJECT_CELL);
     }
   }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {Navigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RoutePath} from "../routes";
 
 interface ProtectedRouteProps {
   children: React.ReactNode
@@ -15,7 +15,7 @@ const ProtectedRoute:React.FC<ProtectedRouteProps> = ({children}) => {
         {isAuthenticated ?
               children
             :
-            <Navigate to={RouteName.USER_LOGIN} />
+            <Navigate to={RoutePath.USER_LOGIN} />
         }
       </>
   );

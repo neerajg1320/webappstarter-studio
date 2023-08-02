@@ -1,4 +1,4 @@
-export enum RouteName {
+export enum RoutePath {
   BACK =  '..',
 
   ROOT = '/',

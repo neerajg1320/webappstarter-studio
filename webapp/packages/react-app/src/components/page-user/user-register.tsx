@@ -4,7 +4,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxUpdateUserPartial, ReduxUser} from "../../state/user";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RoutePath} from "../routes";
 
 const UserRegister = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const UserRegister = () => {
   }
 
   const handleCancelClick = () => {
-    navigate(RouteName.BACK);
+    navigate(RoutePath.BACK);
   }
 
   return (

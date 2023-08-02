@@ -3,7 +3,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
 import {debugProject} from "../../config/global";
-import {RouteName} from "../routes";
+import {RoutePath} from "../routes";
 import {randomIdGenerator} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
 import {ProjectFrameworks} from "../../state";
@@ -40,7 +40,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
     if (propOnProjectChange) {
       propOnProjectChange(localId);
-      navigate(RouteName.PROJECT_CELL);
+      navigate(RoutePath.PROJECT_CELL);
     }
   }
 
@@ -51,7 +51,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
       description: '',
       framework: ProjectFrameworks.REACTJS
     });
-    navigate(RouteName.PROJECT_NEW);
+    navigate(RoutePath.PROJECT_NEW);
   }
 
   return (

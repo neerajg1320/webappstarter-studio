@@ -1,7 +1,7 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import AppLandingLayout from "./app-landing-layout";
 import LandingPage from "./components/page-landing/landing-page";
-import {RouteName} from "./components/routes";
+import {RoutePath} from "./components/routes";
 import UserRegister from "./components/page-user/user-register";
 import UserLogin from "./components/page-user/user-login";
 import ProtectedRoute from "./components/common/protected-route";
@@ -35,31 +35,31 @@ const AppRouterWrapper = () => {
           <Route path="/" element={<AppLandingLayout />}>
             <Route index element={<LandingPage />}/>
 
-            <Route path={RouteName.USER_REGISTER} element={<UserRegister />} />
-            <Route path={RouteName.USER_LOGIN} element={<UserLogin />} />
+            <Route path={RoutePath.USER_REGISTER} element={<UserRegister />} />
+            <Route path={RoutePath.USER_LOGIN} element={<UserLogin />} />
 
-            <Route path={RouteName.PROJECTS}
+            <Route path={RoutePath.PROJECTS}
                    element={
                      <ProtectedRoute>
                        <ProjectListGrid onProjectChange={handleProjectChange}/>
                      </ProtectedRoute>
                    }
             />
-            <Route path={RouteName.PROJECT_CELL}
+            <Route path={RoutePath.PROJECT_CELL}
                    element={
                      <ProtectedRoute>
                        {currentProject && <ProjectCell reduxProject={currentProject}/>}
                      </ProtectedRoute>
                    }
             />
-            <Route path={RouteName.PROJECT_EDIT}
+            <Route path={RoutePath.PROJECT_EDIT}
                    element={
                      <ProtectedRoute>
                        <ProjectEdit isEdit={true} />
                      </ProtectedRoute>
                    }
             />
-            <Route path={RouteName.PROJECT_NEW}
+            <Route path={RoutePath.PROJECT_NEW}
                    element={
                      <ProtectedRoute>
                        <ProjectEdit isEdit={false} />

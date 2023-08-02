@@ -3,7 +3,7 @@ import {ReduxProject} from "../../state";
 import React from "react";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RoutePath} from "../routes";
 
 interface ProjectCardProps {
   reduxProject: ReduxProject
@@ -24,7 +24,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
   const handleEditProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, localId:string) => {
     e.stopPropagation();
     setCurrentProjectId(localId);
-    navigate(RouteName.PROJECT_EDIT);
+    navigate(RoutePath.PROJECT_EDIT);
   }
 
   const handleDeleteProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

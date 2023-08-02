@@ -1,6 +1,6 @@
 import './landing-page.css';
 import {useNavigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RoutePath} from "../routes";
 import {debugComponent} from "../../config/global";
 
 const LandingPage = () => {
@@ -11,14 +11,14 @@ const LandingPage = () => {
       console.log(`handleRegisterClick()`);
     }
 
-    navigate(RouteName.USER_REGISTER);
+    navigate(RoutePath.USER_REGISTER);
   }
 
   const handleLoginClick = () => {
     if (debugComponent) {
       console.log(`handleLoginClick()`);
     }
-    navigate(RouteName.USER_LOGIN);
+    navigate(RoutePath.USER_LOGIN);
   }
 
   return (

@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
-import {RouteName} from "../routes";
+import {RoutePath} from "../routes";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const UserLogin = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(RouteName.LOGIN_SUCCESS);
+      navigate(RoutePath.LOGIN_SUCCESS);
     }
   }, [isAuthenticated]);
 
@@ -27,7 +27,7 @@ const UserLogin = () => {
   }
 
   const handleCancelClick = () => {
-    navigate(RouteName.BACK);
+    navigate(RoutePath.BACK);
   }
 
   return (
