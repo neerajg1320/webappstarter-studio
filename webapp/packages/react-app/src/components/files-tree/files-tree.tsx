@@ -9,6 +9,7 @@ import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
 import {ensureTrailingSlash, getCopyPath, getFileDir, getFilePathParts} from "../../utils/path";
+import EnterBlurInput from "../common/enter-blur-input";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -80,6 +81,16 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       console.log(`${localId}: value=${value}`);
     }
     updateFile({localId, path:value});
+  }
+
+  const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (debugComponent) {
+      console.log(e.key);
+    }
+
+    if (e.key === "Enter") {
+      e.currentTarget.blur();
+    }
   }
 
   const handleInputBlur = () => {
@@ -180,12 +191,13 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
                     onClick={() => handleSelectFileClick(file.localId)}
                     onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
                 >
-                  {selectedFileLocalId === file.localId && editPathEnabled
+                  {(selectedFileLocalId === file.localId && editPathEnabled && fileNameInputRef)
                     ? <input
                           autoFocus
                           ref={fileNameInputRef}
                           value={file.path}
-                          onChange={(e) => handleFilePathChange(file.localId, e.target.value)}
+                          onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
+                          onKeyDownCapture={handleInputKeyPress}
                           onBlur={handleInputBlur}
                       />
                     : <span>{file.path}</span>
