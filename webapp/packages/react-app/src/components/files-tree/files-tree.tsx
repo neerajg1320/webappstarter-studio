@@ -8,7 +8,7 @@ import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {ensureTrailingSlash, getCopyPath, getFileDir, getFilePathParts} from "../../utils/path";
+import {ensureTrailingSlash, getCopyPath, getFileDir, getFilePathParts, hasTrailingSlash} from "../../utils/path";
 import EnterBlurInput from "../common/enter-blur-input";
 
 interface FilesTreeProps {
@@ -98,7 +98,8 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       const reduxFile = filesState.data[selectedFileLocalId];
       console.log(`onBlur: file.path:${reduxFile.path}`);
       // If the path is a folder path we do not allow it as yet i.e folders have to be created by creating file in them
-      if (isRegexMatch(/^.*\/$/, reduxFile.path)) {
+      // The name should not have a slash at the end
+      if (hasTrailingSlash(reduxFile.path)) {
         console.log('Error! No file name specified');
         removeFile(selectedFileLocalId);
       }
