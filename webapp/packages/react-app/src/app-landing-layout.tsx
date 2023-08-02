@@ -2,6 +2,7 @@ import './app-landing-layout.css';
 import {Outlet, useLocation} from "react-router-dom";
 import AppNavBar from "./components/app-main/app-nav-bar";
 import {useTypedSelector} from "./hooks/use-typed-selector";
+import {RoutePath} from "./components/routes";
 
 const AppLandingLayout = () => {
   const location = useLocation();
@@ -11,7 +12,7 @@ const AppLandingLayout = () => {
 
   return (
       <div className="landing-page">
-        {isAuthenticated && <AppNavBar />}
+        {(isAuthenticated && location.pathname !== RoutePath.ROOT) && <AppNavBar />}
         <div className="outlet">
           <Outlet />
         </div>

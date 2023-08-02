@@ -32,7 +32,7 @@ const AppRouterWrapper = () => {
   return (
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AppLandingLayout />}>
+          <Route path={RoutePath.ROOT} element={<AppLandingLayout />}>
             <Route index element={<LandingPage />}/>
 
             <Route path={RoutePath.USER_REGISTER} element={<UserRegister />} />
