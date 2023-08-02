@@ -26,6 +26,14 @@ export const joinFileParts = (dirname:string, basename:string): string => {
   return path.join(dirname, basename);
 }
 
+export const ensureTrailingSlash = (path:string) => {
+  let newPath = path;
+  if (path && path.length > 0 && path[path.length-1] !== '/') {
+    newPath = path + '/'
+  }
+  return newPath;
+}
+
 export const getFileBasenameParts = (inputName:string): {name:string, ext:string} => {
   const parts = inputName.split('.');
   let name:string;

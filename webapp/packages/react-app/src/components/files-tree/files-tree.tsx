@@ -8,7 +8,7 @@ import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-
 import {isRegexMatch} from "../../utils/regex";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {getCopyPath, getFileDir, getFilePathParts} from "../../utils/path";
+import {ensureTrailingSlash, getCopyPath, getFileDir, getFilePathParts} from "../../utils/path";
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -110,7 +110,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         const fileLocalId = randomIdGenerator();
         createFile({
           localId: fileLocalId,
-          path: newFilePath,
+          path: ensureTrailingSlash(newFilePath),
           fileType: 'javascript',
           content: '',
           contentSynced: false,
