@@ -19,7 +19,7 @@ export interface ReduxProject extends ServerObject {
   title: string;
   description: string;
   framework: ProjectFrameworks;
-  toolchain?: ReactToolchains;
+  toolchain: ReactToolchains;
   entryFileLocalId?: string|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
@@ -50,10 +50,11 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
 }
 
 export interface ReduxCreateProjectPartial {
-  localId: string,
-  title: string,
-  description: string,
-  framework: ProjectFrameworks
+  localId: string;
+  title: string;
+  description: string;
+  framework: ProjectFrameworks;
+  toolchain: ReactToolchains;
 }
 
 export interface ReduxDeleteProjectPartial {

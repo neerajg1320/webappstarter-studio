@@ -6,7 +6,7 @@ import {debugProject} from "../../config/global";
 import {RoutePath} from "../routes";
 import {randomIdGenerator} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
-import {ProjectFrameworks} from "../../state";
+import {ProjectFrameworks, ReactToolchains} from "../../state";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
@@ -49,7 +49,8 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
       localId: randomIdGenerator(),
       title: '',
       description: '',
-      framework: ProjectFrameworks.REACTJS
+      framework: ProjectFrameworks.REACTJS,
+      toolchain: ReactToolchains.VITE
     });
     navigate(RoutePath.PROJECT_NEW);
   }
