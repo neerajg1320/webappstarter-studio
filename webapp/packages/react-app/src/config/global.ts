@@ -39,7 +39,3 @@ export const debugProject = false;
 export const debugAuth = true;
 export const autoReauthenticateUser = true;
 
-export enum BundlerLanguage {
-  JAVASCRIPT = 'javascript',
-  TYPESCRIPT = 'typescript'
-}

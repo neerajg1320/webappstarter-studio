@@ -1,8 +1,8 @@
 import * as esbuild from 'esbuild-wasm';
 import {resolvePlugin} from './plugins/resolve-plugin';
 import {fetchPlugin} from './plugins/fetch-plugin';
-import {BundleInputType} from "../state/bundle";
-import {BundlerLanguage, cellJsxFileName, combineCellsCode, debugBundler} from "../config/global";
+import {BundleInputType, BundleLanguage} from "../state/bundle";
+import {cellJsxFileName, combineCellsCode, debugBundler} from "../config/global";
 import {isPathTypescript} from "../utils/path";
 
 let service: esbuild.Service;
@@ -19,18 +19,18 @@ export const getESBuildService = async (): Promise<esbuild.Service> => {
   return service;
 }
 
-export const bundleCodeStr = async(rawCode: string, language: BundlerLanguage) => {
+export const bundleCodeStr = async(rawCode: string, language: BundleLanguage) => {
   return bundleCode(rawCode, 'cell', language);
 }
 
 export const bundleFilePath =  async(filePath: string) => {
-  const language = isPathTypescript(filePath) ? BundlerLanguage.TYPESCRIPT : BundlerLanguage.JAVASCRIPT;
+  const language = isPathTypescript(filePath) ? BundleLanguage.TYPESCRIPT : BundleLanguage.JAVASCRIPT;
   return bundleCode(filePath, 'project', language);
 }
 
 // The bundleCodeStr takes a string as input.
 // In fetchPlugin, the onLoad method checks for index.js and provides this String
-const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, inputLanguage: BundlerLanguage) => {
+const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, inputLanguage: BundleLanguage) => {
     if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
     }

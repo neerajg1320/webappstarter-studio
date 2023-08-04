@@ -4,7 +4,8 @@ import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
 import {replaceFilePart} from "../../utils/path";
 import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
-import {BundlerLanguage, debugComponent} from "../../config/global";
+import {debugComponent} from "../../config/global";
+import {BundleLanguage} from "../../state/bundle";
 
 interface FileControlBarProps {
   reduxFile: ReduxFile;
@@ -29,7 +30,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
       updateProject({localId:reduxFile.projectLocalId, bundleLocalId: reduxFile.localId});
     }
 
-    createCellBundle(reduxFile.localId, reduxFile.content, BundlerLanguage.JAVASCRIPT);
+    createCellBundle(reduxFile.localId, reduxFile.content, BundleLanguage.JAVASCRIPT);
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

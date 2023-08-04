@@ -35,7 +35,7 @@ import {
   ReduxUpdateFilePartial
 } from "../file";
 import {randomIdGenerator} from "../id";
-import {BundlerLanguage, debugAuth, debugAxios, debugRedux} from "../../config/global";
+import {debugAuth, debugAxios, debugRedux} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
@@ -46,6 +46,7 @@ import {
 } from "../../local-storage/local-storage";
 import {AuthInfo} from "../auth";
 import {AxiosHeaders} from "axios";
+import {BundleLanguage} from "../bundle";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -87,7 +88,7 @@ export const insertCellAfter = (id: string | null, cellType: CellTypes): InsertC
   }
 };
 
-export const createCellBundle = (cellId:string, input:string, language: BundlerLanguage) => {
+export const createCellBundle = (cellId:string, input:string, language: BundleLanguage) => {
   return async (dispatch:Dispatch<Action>) => {
       dispatch({
           type: ActionType.CELL_BUNDLE_START,
