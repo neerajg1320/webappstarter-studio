@@ -4,7 +4,7 @@ import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
 import localforage from "localforage";
 import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
-import {cellFileNamePattern, JSTS_REGEX} from "../../utils/patterns";
+import {CELL_REGEX, JSTS_REGEX} from "../../utils/patterns";
 import {isPathTypescript} from "../../utils/path";
 
 const refereceCode = false;
@@ -87,12 +87,6 @@ export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleIn
       return result;
     });
 
-    build.onLoad({ filter: /.tsx?$/ }, async (args: esbuild.OnLoadArgs): Promise<esbuild.OnLoadResult|undefined> => {
-      console.log(`Process tsx file:`);
-      console.log(`inputCodeOrFilePath:`, inputCodeOrFilePath);
-      return undefined;
-    });
-
     // We intercept the request and download from fileServer using axios
     build.onLoad({ filter: JSTS_REGEX }, async (args: any) => {
       if (debugPlugin) {
@@ -103,7 +97,7 @@ export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleIn
         loader: isPathTypescript(args.path) ? 'tsx' : 'jsx'
       };
 
-      if (isRegexMatch(cellFileNamePattern, args.path)) {
+      if (isRegexMatch(CELL_REGEX, args.path)) {
         result.contents  =  inputCodeOrFilePath;
       } else {
           // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
@@ -130,6 +124,11 @@ export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleIn
         }
 
         return result;
+      });
+
+      build.onLoad({ filter: /.*$/ }, async (args: esbuild.OnLoadArgs): Promise<esbuild.OnLoadResult|undefined> => {
+        console.log(`File not handled:`, args.path);
+        return undefined;
       });
     }
   }

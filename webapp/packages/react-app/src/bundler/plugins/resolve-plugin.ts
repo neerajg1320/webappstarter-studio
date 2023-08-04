@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
 import {getFileServer, getPkgServer} from "./remote";
-import {cellFileNamePattern} from "../../utils/patterns";
+import {CELL_REGEX, JSTS_REGEX} from "../../utils/patterns";
 
 const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
   if (debugPlugin && false) {
@@ -48,7 +48,7 @@ export const resolvePlugin = (inputType: BundleInputType) => {
       // TBD: Check if we can put an if condition between following two
 
       // detection of hard coded file name for cell.
-      build.onResolve({filter: cellFileNamePattern}, (args: any) => {
+      build.onResolve({filter: CELL_REGEX}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);
         }
@@ -71,9 +71,9 @@ export const resolvePlugin = (inputType: BundleInputType) => {
         };
       });
 
-      // For anything else
+      // For any other Javascript/Typescript file
       // We prepend the pkgServer to the path
-      build.onResolve({ filter: /.*/ }, async (args: any) => {
+      build.onResolve({ filter: JSTS_REGEX }, async (args: any) => {
         if (debugPlugin) {
           console.log('onResolve', args);
         }
@@ -82,6 +82,15 @@ export const resolvePlugin = (inputType: BundleInputType) => {
         let server = getServerFromArgs(args, false);
 
         return { path: `${server}/${args.path}`, namespace: 'a' };
+      });
+
+      build.onResolve({ filter: /.*/ }, async (args: any) => {
+        if (debugPlugin) {
+          console.log('onResolve', args);
+        }
+
+        console.error(`File ${args.path} not handled. Further processing to be avoided`);
+        return undefined;
       });
     },
   };
