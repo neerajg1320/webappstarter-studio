@@ -13,7 +13,7 @@ interface FileControlBarProps {
 
 const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  const { updateFile, saveFile, createCellBundle, updateProject, saveProject } = useActions();
+  const { updateFile, saveFile, createCellBundle, updateProject } = useActions();
 
 
   const handleBundleClick = () => {
@@ -30,7 +30,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
       updateProject({localId:reduxFile.projectLocalId, bundleLocalId: reduxFile.localId});
     }
 
-    createCellBundle(reduxFile.localId, reduxFile.content, BundleLanguage.JAVASCRIPT);
+    createCellBundle(reduxFile.localId, reduxFile.content, reduxFile.language);
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

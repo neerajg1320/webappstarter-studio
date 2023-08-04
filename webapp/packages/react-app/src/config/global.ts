@@ -16,9 +16,9 @@ export const debugPlugin = false;
 export const debugBundler = false;
 export const autoBundling = false;
 export const combineCellsCode = false;
-export const cellFileNamePattern = /__cell.jsx?/;
+export const cellFileNamePattern = /__cell.[jt]sx?/;
 export const cellJsxFileName = '__cell.jsx';
-export const cellTsxName = '__cell.tsx';
+export const cellTsxFileName = '__cell.tsx';
 
 // API Server
 export const serverApiBaseUrl = 'http://localhost:8080/api/v1';

@@ -2,7 +2,7 @@ import * as esbuild from 'esbuild-wasm';
 import {resolvePlugin} from './plugins/resolve-plugin';
 import {fetchPlugin} from './plugins/fetch-plugin';
 import {BundleInputType, BundleLanguage} from "../state/bundle";
-import {cellJsxFileName, combineCellsCode, debugBundler} from "../config/global";
+import {cellJsxFileName, cellTsxFileName, combineCellsCode, debugBundler} from "../config/global";
 import {isPathTypescript} from "../utils/path";
 
 let service: esbuild.Service;
@@ -41,7 +41,9 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
         const builderServiceOptions: esbuild.BuildOptions = {
             // The following will be replaced by fetchPlugin to code for a cell
             // For filePath the fetchPlugin will download file from fileServer
-            entryPoints: inputType === 'cell' ? [cellJsxFileName] : [codeOrFilePath],
+            entryPoints: inputType === 'cell' ?
+                [inputLanguage === BundleLanguage.TYPESCRIPT ? cellTsxFileName : cellJsxFileName] :
+                [codeOrFilePath],
             bundle: true,
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it

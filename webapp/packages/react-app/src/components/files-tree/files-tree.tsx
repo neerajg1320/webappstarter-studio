@@ -7,7 +7,7 @@ import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
+import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash, isPathTypescript} from "../../utils/path";
 import {BundleLanguage} from "../../state/bundle";
 
 
@@ -77,10 +77,11 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
-    if (debugComponent) {
-      console.log(`${localId}: value=${value}`);
+    const language = isPathTypescript(value) ? BundleLanguage.TYPESCRIPT: BundleLanguage.JAVASCRIPT;
+    if (debugComponent || true) {
+      console.log(`${localId}: value=${value} language=${language}`);
     }
-    updateFile({localId, path:value});
+    updateFile({localId, path:value, language});
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
