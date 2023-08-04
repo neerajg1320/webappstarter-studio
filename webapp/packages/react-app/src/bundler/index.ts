@@ -1,9 +1,9 @@
 import * as esbuild from 'esbuild-wasm';
 import {pluginResolve} from './plugins/plugin-resolve';
 import {pluginLoadFetch} from './plugins/plugin-load-fetch';
-import {BundleInputType, BundleLanguage} from "../state/bundle";
+import {BundleInputType, BundleLanguage, stringToLanguage} from "../state/bundle";
 import {cellJsxFileName, cellTsxFileName, combineCellsCode, debugBundler} from "../config/global";
-import {isPathTypescript} from "../utils/path";
+import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
 
 let service: esbuild.Service;
 
@@ -23,8 +23,7 @@ export const bundleCodeStr = async(rawCode: string, language: BundleLanguage) =>
   return bundleCode(rawCode, 'cell', language);
 }
 
-export const bundleFilePath =  async(filePath: string) => {
-  const language = isPathTypescript(filePath) ? BundleLanguage.TYPESCRIPT : BundleLanguage.JAVASCRIPT;
+export const bundleFilePath =  async(filePath: string, language: BundleLanguage) => {
   return bundleCode(filePath, 'project', language);
 }
 

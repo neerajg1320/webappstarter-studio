@@ -55,6 +55,18 @@ export const getFileBasenameParts = (inputName:string): {name:string, ext:string
   return {name, ext};
 }
 
+// If path is 'src/index.js' then we will get 'index'
+export const getFileBasenameFromPath = (path:string) => {
+  const {name, ext} = getFileBasenameParts(getFileNameFromPath(path));
+  return name;
+}
+
+// If path is 'src/index.js' then we will get 'js'
+export const getFileTypeFromPath = (path:string) => {
+  const {name, ext} = getFileBasenameParts(getFileNameFromPath(path));
+  return ext;
+}
+
 export const getCopyPath = (inputPath:string): string => {
   const {dirname, basename} = getFilePathParts(inputPath);
   const {name, ext} = getFileBasenameParts(basename)

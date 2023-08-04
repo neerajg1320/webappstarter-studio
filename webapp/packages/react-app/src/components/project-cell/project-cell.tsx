@@ -1,6 +1,5 @@
 import "./project-cell.css";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import PreviewIframe from "../preview-section/preview-iframe";
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
@@ -11,6 +10,8 @@ import {debugComponent} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
 import PreviewTabs from "../preview-section/preview-tabs";
+import {BundleLanguage, pathToLanguage, stringToLanguage} from "../../state/bundle";
+import {getFileTypeFromPath} from "../../utils/path";
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;
@@ -135,7 +136,18 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
       // We have used entry_path as it is the path on the server that matters!
-      createProjectBundle(reduxProject.localId, `mediafiles/user_1/${reduxProject.folder}/${reduxProject.entry_path}`);
+      const language = pathToLanguage(reduxProject.entry_path)
+      if (language !== BundleLanguage.UNKNOWN) {
+        // The project entry path is hard coded currently
+        createProjectBundle(
+            reduxProject.localId,
+            `mediafiles/user_1/${reduxProject.folder}/${reduxProject.entry_path}`,
+            language
+        );
+      } else {
+        console.error(`Error! file type ${getFileTypeFromPath(reduxProject.entry_path)} not supported`)
+      }
+
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }

@@ -110,7 +110,7 @@ export const createCellBundle = (cellId:string, input:string, language: BundleLa
 }
 
 
-export const createProjectBundle = (projectLocalId:string, input:string) => {
+export const createProjectBundle = (projectLocalId:string, input:string, language: BundleLanguage) => {
     return async (dispatch:Dispatch<Action>) => {
         dispatch({
             type: ActionType.PROJECT_BUNDLE_START,
@@ -119,7 +119,7 @@ export const createProjectBundle = (projectLocalId:string, input:string) => {
             }
         });
 
-        const result = await bundleFilePath(input);
+        const result = await bundleFilePath(input, language);
   
         dispatch({
             type: ActionType.PROJECT_BUNDLE_COMPLETE,

@@ -1,3 +1,5 @@
+import {isPathJavascript, isPathTypescript} from "../utils/path";
+
 export type BundleInputType = 'cell' | 'project';
 
 export enum BundleLanguage {
@@ -8,6 +10,16 @@ export enum BundleLanguage {
 
 export const stringToLanguage = (language:string): BundleLanguage => {
   return BundleLanguage[language as keyof typeof BundleLanguage] || BundleLanguage.UNKNOWN
+}
+
+export const pathToLanguage = (path:string): BundleLanguage => {
+  if (isPathTypescript(path)) {
+    return BundleLanguage.TYPESCRIPT
+  } else if (isPathJavascript(path)) {
+    return BundleLanguage.JAVASCRIPT
+  }
+
+  return BundleLanguage.UNKNOWN;
 }
 
 // https://stackoverflow.com/questions/17380845/how-do-i-convert-a-string-to-enum-in-typescript
