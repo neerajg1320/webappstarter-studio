@@ -8,11 +8,15 @@ export enum BundleLanguage {
   UNKNOWN = 'unknown',
 }
 
-export const stringToLanguage = (language:string): BundleLanguage => {
+export const stringToBundleLanguage = (language:string): BundleLanguage => {
   return BundleLanguage[language as keyof typeof BundleLanguage] || BundleLanguage.UNKNOWN
 }
 
-export const pathToLanguage = (path:string): BundleLanguage => {
+// export const bundleLanguageToString = (bundleLanguage: BundleLanguage): string => {
+//   return BundleLanguage[bundleLanguage as BundleLanguage];
+// }
+
+export const pathToBundleLanguage = (path:string): BundleLanguage => {
   if (isPathTypescript(path)) {
     return BundleLanguage.TYPESCRIPT
   } else if (isPathJavascript(path)) {

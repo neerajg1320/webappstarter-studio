@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild-wasm';
 import {pluginResolve} from './plugins/plugin-resolve';
 import {pluginLoadFetch} from './plugins/plugin-load-fetch';
-import {BundleInputType, BundleLanguage, stringToLanguage} from "../state/bundle";
+import {BundleInputType, BundleLanguage} from "../state/bundle";
 import {cellJsxFileName, cellTsxFileName, combineCellsCode, debugBundler} from "../config/global";
 import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
 

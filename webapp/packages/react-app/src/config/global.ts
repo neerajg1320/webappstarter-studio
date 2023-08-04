@@ -28,7 +28,7 @@ export const syncProjectsToServer = serverConnect && true;
 export const syncFilesToServer = serverConnect && true;
 
 // Axios
-export const debugAxios = true;
+export const debugAxios = false;
 
 // React Components
 export const debugComponent = false;

@@ -1,22 +1,33 @@
 import './code-editor.css';
 import './syntax.css';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import MonacoEditor, {EditorDidMount} from '@monaco-editor/react';
 import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
 import {debugComponent} from "../../config/global";
+import {BundleLanguage} from "../../state/bundle";
 
 interface CodeEditorProps {
   // localId: string;
   initialValue: string;
+  language: BundleLanguage;
   onChange?: (value:string) => void | null;
   disabled?: boolean;
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange, disabled}) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange, disabled}) => {
   const editorRef = useRef<any>();
+  const editorLanguage = useMemo(() => {
+    if (language === BundleLanguage.JAVASCRIPT) {
+      return 'javascript';
+    } else if (language === BundleLanguage.TYPESCRIPT) {
+      return 'typescript';
+    }
+
+    return 'javascript';
+  }, [language]);
 
   useEffect(() => {
     if (debugComponent) {
@@ -99,10 +110,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, onChange, disabled
                 className="button button-format is-primary is-small"
                 onClick={handleFormatClick}
             >
-              Format
+              Format {editorLanguage}
             </button>
             <MonacoEditor
-                language='javascript'
+                language={editorLanguage}
                 value={initialValue}
                 editorDidMount={onEditorDidMount}
                 theme='dark'

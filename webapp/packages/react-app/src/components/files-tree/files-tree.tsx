@@ -15,7 +15,7 @@ import {
   isPathJavascript,
   isPathTypescript
 } from "../../utils/path";
-import {BundleLanguage, stringToLanguage} from "../../state/bundle";
+import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 
 
 interface FilesTreeProps {
@@ -93,7 +93,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     // } else {
     //   language = BundleLanguage.UNKNOWN;
     // }
-    const language = stringToLanguage(value);
+    const language = pathToBundleLanguage(value);
 
     if (debugComponent || true) {
       console.log(`${localId}: value=${value} language=${language}`);

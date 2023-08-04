@@ -10,7 +10,7 @@ import {debugComponent} from "../../config/global";
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
 import PreviewTabs from "../preview-section/preview-tabs";
-import {BundleLanguage, pathToLanguage, stringToLanguage} from "../../state/bundle";
+import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
 
 interface ProjectCellProps {
@@ -66,6 +66,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     return null;
   }, [editedFileLocalId, filesState]);
 
+  // console.log(`ProjectCell: editedFile:`, editedFile);
 
   // Temporary till we fix layout
   // const [editorContent, setEditorContent] = useState<string>('');
@@ -136,7 +137,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
       // We have used entry_path as it is the path on the server that matters!
-      const language = pathToLanguage(reduxProject.entry_path)
+      const language = pathToBundleLanguage(reduxProject.entry_path)
+
       if (language !== BundleLanguage.UNKNOWN) {
         // The project entry path is hard coded currently
         createProjectBundle(
@@ -207,6 +209,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
                 <CodeEditor
                     initialValue={editedFile?.content || ""}
+                    language={editedFile?.language || BundleLanguage.UNKNOWN}
                     onChange={handleEditorChange}
                     disabled={!editedFile}
                 />
