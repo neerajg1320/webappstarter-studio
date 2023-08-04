@@ -46,7 +46,7 @@ import {
 } from "../../local-storage/local-storage";
 import {AuthInfo} from "../auth";
 import {AxiosHeaders} from "axios";
-import {BundleLanguage} from "../bundle";
+import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -464,6 +464,7 @@ export const fetchFiles = () => {
         if (file.project) {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
           file.isEntryPoint = file.is_entry_point;
+          file.language = pathToBundleLanguage(file.path);
 
           dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }

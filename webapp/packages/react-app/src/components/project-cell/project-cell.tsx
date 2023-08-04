@@ -66,7 +66,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     return null;
   }, [editedFileLocalId, filesState]);
 
-  // console.log(`ProjectCell: editedFile:`, editedFile);
+  console.log(`ProjectCell: editedFile:`, editedFile);
 
   // Temporary till we fix layout
   // const [editorContent, setEditorContent] = useState<string>('');
