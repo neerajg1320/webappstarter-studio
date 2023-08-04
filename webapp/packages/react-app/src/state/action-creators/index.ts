@@ -687,6 +687,9 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
     if (Object.keys(saveFilePartial).includes('file')) {
       formData.append("file", saveFilePartial.file!);
     }
+    if (Object.keys(saveFilePartial).includes('language')) {
+      formData.append("language", saveFilePartial.language!);
+    }
     if (Object.keys(saveFilePartial).includes('is_entry_point')) {
       formData.append("is_entry_point", saveFilePartial.is_entry_point! as unknown as string);
     }

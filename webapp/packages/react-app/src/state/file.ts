@@ -62,6 +62,7 @@ export interface ReduxSaveFilePartial {
   localId: string;
   pkid?:string;
   file?: File;
+  language?: BundleLanguage,
   content?: string;
   path?: string;
   is_entry_point?: boolean;
