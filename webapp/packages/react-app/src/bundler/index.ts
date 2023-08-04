@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild-wasm';
 import {resolvePlugin} from './plugins/resolve-plugin';
-import {fetchPlugin} from './plugins/fetch-plugin';
+import {loadFetchPlugin} from './plugins/load-fetch-plugin';
 import {BundleInputType, BundleLanguage} from "../state/bundle";
 import {cellJsxFileName, cellTsxFileName, combineCellsCode, debugBundler} from "../config/global";
 import {isPathTypescript} from "../utils/path";
@@ -29,7 +29,7 @@ export const bundleFilePath =  async(filePath: string) => {
 }
 
 // The bundleCodeStr takes a string as input.
-// In fetchPlugin, the onLoad method checks for index.js and provides this String
+// In loadFetchPlugin, the onLoad method checks for index.js and provides this String
 const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, inputLanguage: BundleLanguage) => {
     if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
@@ -39,8 +39,8 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
-            // The following will be replaced by fetchPlugin to code for a cell
-            // For filePath the fetchPlugin will download file from fileServer
+            // The following will be replaced by loadFetchPlugin to code for a cell
+            // For filePath the loadFetchPlugin will download file from fileServer
             entryPoints: inputType === 'cell' ?
                 [inputLanguage === BundleLanguage.TYPESCRIPT ? cellTsxFileName : cellJsxFileName] :
                 [codeOrFilePath],
@@ -49,7 +49,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
                 resolvePlugin(inputType),
-                fetchPlugin(codeOrFilePath, inputType)
+                loadFetchPlugin(codeOrFilePath, inputType)
             ],
             define: {
                 'process.env.NODE_ENV': '"production"',

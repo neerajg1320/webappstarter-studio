@@ -4,6 +4,8 @@ import {debugPlugin, debugCache, cacheEnabled, cellFileNamePattern} from "../../
 import localforage from "localforage";
 import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
+import {JSTS_REGEX} from "../../utils/patterns";
+import {isPathTypescript} from "../../utils/path";
 
 const refereceCode = false;
 let fileCache: LocalForage;
@@ -23,7 +25,7 @@ if (cacheEnabled) {
   }
 }
 
-export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputType) => {
+export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputType) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {          
@@ -86,21 +88,25 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
     });
 
     build.onLoad({ filter: /.tsx?$/ }, async (args: esbuild.OnLoadArgs): Promise<esbuild.OnLoadResult|undefined> => {
-      console.log(`Process tsx file`);
+      console.log(`Process tsx file:`);
+      console.log(`inputCodeOrFilePath:`, inputCodeOrFilePath);
       return undefined;
     });
 
     // We intercept the request and download from fileServer using axios
-    build.onLoad({ filter: /.*/ }, async (args: any) => {
+    build.onLoad({ filter: JSTS_REGEX }, async (args: any) => {
       if (debugPlugin) {
         console.log('onLoad', args);
       }
+
+      const isTypescript = isPathTypescript(args.path);
+      const loader = isTypescript ? 'tsx' : 'jsx';
 
       let result: esbuild.OnLoadResult;
 
       if (isRegexMatch(cellFileNamePattern, args.path)) {
           result  = {
-              loader: 'jsx',
+              loader: loader,
               contents: inputCodeOrFilePath,
           };
 
@@ -113,7 +119,7 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
           }
 
           result = {
-              loader: 'jsx',
+              loader,
               contents: data,
               resolveDir: new URL('./', request.responseURL).pathname
           };
