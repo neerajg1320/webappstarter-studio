@@ -86,9 +86,9 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
 
     // If path is changed for entryFile then we need to update project path.
     // This has been kept so that we can even bundle a project without loading its files locally
-    if (reduxProject.entryFileLocalId === localId) {
-      fetchProjects()
-    }
+    // if (reduxProject.entryFileLocalId === localId) {
+    //   fetchProjects()
+    // }
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {

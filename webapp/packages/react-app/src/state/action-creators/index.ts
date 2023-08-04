@@ -601,6 +601,10 @@ export const fetchFileContents = (localIds: [string]) => {
   }
 }
 
+// We can set following to true in case we do not want to wait for the project to get updated from server
+// when the entrypoint status or path changes on the entryfile of a project.
+// We set it to false that so that we are always in sync with server
+const projectLocalUpdate = false;
 
 // This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) => {
@@ -640,12 +644,14 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
       if (projectLocalId) {
         if (isEntryPoint) {
           console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
-          dispatch(updateProject({
-            localId: projectLocalId,
-            entryFileLocalId: localId,
-            entryPath: path,
-            isServerResponse: true,
-          }))
+          if (projectLocalUpdate) {
+            dispatch(updateProject({
+              localId: projectLocalId,
+              entryFileLocalId: localId,
+              entryPath: path,
+              isServerResponse: true,
+            }));
+          }
 
           // This will ensure the dispatch from middleware
           await fetchProjectFromServer(projectLocalId)(dispatch,getState);
@@ -708,32 +714,39 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
 
       if (is_entry_point !== undefined || (path !== undefined && fileState.isEntryPoint)) {
         if (fileState.projectLocalId) {
-          console.log(`file['${localId}'] path:${fileState.path} is an entry point for project['${fileState.projectLocalId}']`);
-          const projectState = getState().projects.data[fileState.projectLocalId] as ReduxProject;
 
-          if (projectState) {
-            if (fileState.isEntryPoint) {
-              // We short circuit the entry_path so that we don't wait for fetch
-              dispatch(updateProject({
-                localId: fileState.projectLocalId,
-                entryFileLocalId: localId,
-                entry_path: fileState.path,
-              }));
-            } else {
-              if (projectState.entryFileLocalId === localId) {
-                console.log(`We need to unset the entryFile`);
+          if (projectLocalUpdate) {
+            console.log(`file['${localId}'] path:${fileState.path} is an entry point for project['${fileState.projectLocalId}']`);
+            const projectState = getState().projects.data[fileState.projectLocalId] as ReduxProject;
+
+            if (projectState) {
+              if (fileState.isEntryPoint) {
+                // We short circuit the entry_path so that we don't wait for fetch
                 dispatch(updateProject({
                   localId: fileState.projectLocalId,
-                  entryFileLocalId: null,
-                  entry_path: undefined,
+                  entryFileLocalId: localId,
+                  entry_path: fileState.path,
                 }));
               } else {
-                console.error(`File '${localId}' is not entry point for project '${fileState.projectLocalId}'`);
+                if (projectState.entryFileLocalId === localId) {
+                  console.log(`We need to unset the entryFile`);
+                  dispatch(updateProject({
+                    localId: fileState.projectLocalId,
+                    entryFileLocalId: null,
+                    entry_path: undefined,
+                  }));
+                } else {
+                  console.error(`File '${localId}' is not entry point for project '${fileState.projectLocalId}'`);
+                }
               }
+            } else {
+              console.error(`Project state not found for localId '${fileState.projectLocalId}'`);
             }
-          } else {
-            console.error(`Project state not found for localId '${fileState.projectLocalId}'`);
           }
+
+          // This will make sure that the project is in sync with server
+          await fetchProjectFromServer(fileState.projectLocalId)(dispatch,getState);
+
         } else {
           console.log(`File state not found for localId '${localId}'`);
         }
