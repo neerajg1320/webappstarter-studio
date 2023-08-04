@@ -16,7 +16,6 @@ export const debugPlugin = false;
 export const debugBundler = false;
 export const autoBundling = false;
 export const combineCellsCode = false;
-export const cellFileNamePattern = /__cell.[jt]sx?/;
 export const cellJsxFileName = '__cell.jsx';
 export const cellTsxFileName = '__cell.tsx';
 

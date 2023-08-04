@@ -1,10 +1,10 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
-import {debugPlugin, debugCache, cacheEnabled, cellFileNamePattern} from "../../config/global";
+import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
 import localforage from "localforage";
 import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
-import {JSTS_REGEX} from "../../utils/patterns";
+import {cellFileNamePattern, JSTS_REGEX} from "../../utils/patterns";
 import {isPathTypescript} from "../../utils/path";
 
 const refereceCode = false;
@@ -99,17 +99,12 @@ export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleIn
         console.log('onLoad', args);
       }
 
-      const isTypescript = isPathTypescript(args.path);
-      const loader = isTypescript ? 'tsx' : 'jsx';
-
-      let result: esbuild.OnLoadResult;
+      let result: esbuild.OnLoadResult = {
+        loader: isPathTypescript(args.path) ? 'tsx' : 'jsx'
+      };
 
       if (isRegexMatch(cellFileNamePattern, args.path)) {
-          result  = {
-              loader: loader,
-              contents: inputCodeOrFilePath,
-          };
-
+        result.contents  =  inputCodeOrFilePath;
       } else {
           // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
           const { data, request } = await axiosInstance.get(args.path);
@@ -118,11 +113,8 @@ export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleIn
               console.log(`request.responseURL:${request.responseURL}`);
           }
 
-          result = {
-              loader,
-              contents: data,
-              resolveDir: new URL('./', request.responseURL).pathname
-          };
+          result.contents = data;
+          result.resolveDir = new URL('./', request.responseURL).pathname;
 
           if (cacheEnabled) {
               // Store result in cache
