@@ -7,7 +7,8 @@ import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {ensureTrailingSlash, getCopyPath, getFileDir, getFilePathParts, hasTrailingSlash} from "../../utils/path";
+import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
+import {BundleLanguage} from "../../state/bundle";
 
 
 interface FilesTreeProps {
@@ -124,7 +125,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         createFile({
           localId: fileLocalId,
           path: ensureTrailingSlash(newFilePath),
-          fileType: 'javascript',
+          language: BundleLanguage.JAVASCRIPT,
           content: '',
           contentSynced: false,
           projectLocalId: reduxProject.localId,
@@ -149,7 +150,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           createFile({
             localId: newFileLocalId,
             path: newPath,
-            fileType: 'javascript',
+            language: BundleLanguage.JAVASCRIPT,
             content: origFile.content,
             contentSynced: false,
             projectLocalId: reduxProject.localId,

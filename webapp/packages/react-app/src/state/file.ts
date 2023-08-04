@@ -1,6 +1,7 @@
 import {ServerObject, ServerObjectPartial} from "./obj";
+import {BundleLanguage} from "./bundle";
 
-export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' | 'c++';
+// export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' | 'c++';
 
 // localFile: the uploaded file
 // file: link sent by server
@@ -8,7 +9,7 @@ export interface ReduxFile extends ServerObject {
   reduxType: 'file',
   localId: string,
   path: string;
-  fileType: FileTypes;
+  language: BundleLanguage;
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -25,7 +26,7 @@ export interface ReduxFile extends ServerObject {
 export interface ReduxCreateFilePartial extends ServerObjectPartial {
   localId: string,
   path: string,
-  fileType: FileTypes,
+  language: BundleLanguage,
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -42,7 +43,7 @@ export interface ReduxCreateFilePartial extends ServerObjectPartial {
 export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   localId: string,
   path?: string,
-  fileType?: FileTypes,
+  language?: BundleLanguage,
   content?: string|null;
   contentSynced?: boolean;
   localFile?: File;
