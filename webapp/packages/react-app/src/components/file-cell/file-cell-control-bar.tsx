@@ -6,6 +6,7 @@ import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
 import {debugComponent} from "../../config/global";
 import {BundleLanguage} from "../../state/bundle";
+import {saveProject} from "../../state/action-creators";
 
 interface FileControlBarProps {
   reduxFile: ReduxFile;
@@ -58,9 +59,11 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
 
   const handleEntryPointChange = (checked: boolean) => {
     updateFile({localId: reduxFile.localId, isEntryPoint: checked})
+    saveFile(reduxFile.localId);
 
     if (reduxFile.projectLocalId) {
       updateProject({localId:reduxFile.projectLocalId, entryFileLocalId: reduxFile.localId});
+      saveProject(reduxFile.projectLocalId);
     }
   }
 
