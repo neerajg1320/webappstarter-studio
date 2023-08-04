@@ -9,6 +9,7 @@ import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
 import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash, isPathTypescript} from "../../utils/path";
 import {BundleLanguage} from "../../state/bundle";
+import {fetchProjects, updateProject} from "../../state/action-creators";
 
 
 interface FilesTreeProps {
@@ -82,6 +83,12 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       console.log(`${localId}: value=${value} language=${language}`);
     }
     updateFile({localId, path:value, language});
+
+    // If path is changed for entryFile then we need to update project path.
+    // This has been kept so that we can even bundle a project without loading its files locally
+    if (reduxProject.entryFileLocalId === localId) {
+      fetchProjects()
+    }
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {

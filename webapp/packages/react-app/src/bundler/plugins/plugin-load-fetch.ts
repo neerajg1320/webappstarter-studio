@@ -25,7 +25,7 @@ if (cacheEnabled) {
   }
 }
 
-export const loadFetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputType) => {
+export const pluginLoadFetch = (inputCodeOrFilePath: string, inputType: BundleInputType) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {          

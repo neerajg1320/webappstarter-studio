@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
-import {getFileServer, getPkgServer} from "./remote";
+import {getFileServer, getPkgServer} from "./servers";
 import {CELL_REGEX, JSTS_REGEX} from "../../utils/patterns";
 
 const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
@@ -36,8 +36,8 @@ const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const resolvePlugin = (inputType: BundleInputType) => {
-  // console.log(`resolvePlugin: closure created for inputType '${inputType}'`);
+export const pluginResolve = (inputType: BundleInputType) => {
+  // console.log(`pluginResolve: closure created for inputType '${inputType}'`);
 
 
   return {
