@@ -89,7 +89,7 @@ export const pluginResolve = (inputType: BundleInputType) => {
           console.log('onResolve', args);
         }
 
-        console.error(`File ${args.path} not handled. Further processing to be avoided`);
+        console.error(`File '${args.path}' not handled. Further processing to be avoided`);
         return undefined;
       });
     },

@@ -17,7 +17,7 @@ const AddFile: React.FC<AddFileProps> = ({reduxProject, forceVisible}) => {
     const handleAddFile = () => {
       const createFilePartial:ReduxCreateFilePartial = {
         localId: randomIdGenerator(),
-        language: BundleLanguage.JAVASCRIPT,
+        language: BundleLanguage.UNKNOWN,
         path: '',
         content: null,
         contentSynced: false,

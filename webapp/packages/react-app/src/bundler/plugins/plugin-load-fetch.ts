@@ -127,7 +127,7 @@ export const pluginLoadFetch = (inputCodeOrFilePath: string, inputType: BundleIn
       });
 
       build.onLoad({ filter: /.*$/ }, async (args: esbuild.OnLoadArgs): Promise<esbuild.OnLoadResult|undefined> => {
-        console.log(`File not handled:`, args.path);
+        console.error(`File not handled:`, args.path);
         return undefined;
       });
     }

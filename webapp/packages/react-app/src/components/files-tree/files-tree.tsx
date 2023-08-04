@@ -7,9 +7,15 @@ import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash, isPathTypescript} from "../../utils/path";
-import {BundleLanguage} from "../../state/bundle";
-import {fetchProjects, updateProject} from "../../state/action-creators";
+import {
+  ensureTrailingSlash,
+  getCopyPath,
+  getFileDir,
+  hasTrailingSlash,
+  isPathJavascript,
+  isPathTypescript
+} from "../../utils/path";
+import {BundleLanguage, stringToLanguage} from "../../state/bundle";
 
 
 interface FilesTreeProps {
@@ -78,7 +84,17 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
-    const language = isPathTypescript(value) ? BundleLanguage.TYPESCRIPT: BundleLanguage.JAVASCRIPT;
+    // let language: BundleLanguage;
+    //
+    // if (isPathTypescript(value)) {
+    //   language = BundleLanguage.TYPESCRIPT;
+    // } else if (isPathJavascript(value)) {
+    //   language = BundleLanguage.JAVASCRIPT;
+    // } else {
+    //   language = BundleLanguage.UNKNOWN;
+    // }
+    const language = stringToLanguage(value);
+
     if (debugComponent || true) {
       console.log(`${localId}: value=${value} language=${language}`);
     }
@@ -128,7 +144,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         createFile({
           localId: fileLocalId,
           path: ensureTrailingSlash(newFilePath),
-          language: BundleLanguage.JAVASCRIPT,
+          language: BundleLanguage.UNKNOWN,
           content: '',
           contentSynced: false,
           projectLocalId: reduxProject.localId,
@@ -153,7 +169,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           createFile({
             localId: newFileLocalId,
             path: newPath,
-            language: BundleLanguage.JAVASCRIPT,
+            language: origFile.language,
             content: origFile.content,
             contentSynced: false,
             projectLocalId: reduxProject.localId,
