@@ -17,7 +17,8 @@ export const debugBundler = false;
 export const autoBundling = false;
 export const combineCellsCode = false;
 export const cellFileNamePattern = /__cell.jsx?/;
-export const cellFileName = '__cell.jsx';
+export const cellJsxFileName = '__cell.jsx';
+export const cellTsxName = '__cell.tsx';
 
 // API Server
 export const serverApiBaseUrl = 'http://localhost:8080/api/v1';
@@ -37,3 +38,8 @@ export const debugProject = false;
 // Auth Component
 export const debugAuth = true;
 export const autoReauthenticateUser = true;
+
+export enum BundlerLanguage {
+  JAVASCRIPT = 'javascript',
+  TYPESCRIPT = 'typescript'
+}

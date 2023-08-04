@@ -90,7 +90,7 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     if (isEdit) {
       navigate(RouteDepth.ONE_UP);
     } else {
-      navigate(RoutePath.PROJECT_CELL);
+      navigate(RoutePath.PROJECT_CELL, {replace: true});
     }
   }
 

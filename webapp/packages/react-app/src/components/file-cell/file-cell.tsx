@@ -5,7 +5,7 @@ import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import PreviewIframe from "../preview-section/preview-iframe";
-import {autoBundling, debugRedux} from '../../config/global';
+import {autoBundling, BundlerLanguage, debugRedux} from '../../config/global';
 import {ReduxFile} from "../../state";
 import FileCellControlBar from "./file-cell-control-bar";
 
@@ -31,7 +31,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
-      createCellBundle(reduxFile.localId, reduxFile.content || '');
+      createCellBundle(reduxFile.localId, reduxFile.content || '',   BundlerLanguage.JAVASCRIPT);
       return;
     }
 
@@ -44,7 +44,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
           return;
         }
 
-        createCellBundle(reduxFile.localId, reduxFile.content);
+        createCellBundle(reduxFile.localId, reduxFile.content, BundlerLanguage.JAVASCRIPT);
       }, 1000)
 
       return() => {

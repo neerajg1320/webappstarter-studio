@@ -83,7 +83,12 @@ export const fetchPlugin = (inputCodeOrFilePath: string, inputType: BundleInputT
       }
 
       return result;
-  });    
+    });
+
+    build.onLoad({ filter: /.tsx?$/ }, async (args: esbuild.OnLoadArgs): Promise<esbuild.OnLoadResult|undefined> => {
+      console.log(`Process tsx file`);
+      return undefined;
+    });
 
     // We intercept the request and download from fileServer using axios
     build.onLoad({ filter: /.*/ }, async (args: any) => {

@@ -1,5 +1,6 @@
 import path from 'path';
 import {getRegexMatches, isRegexMatch} from "./regex";
+import {JAVASCRIPT_REGEX, TYPESCRIPT_REGEX} from "./patterns";
 
 export const replaceFilePart = (inputPath:string, fileName:string): string => {
   const dir = path.dirname(inputPath);
@@ -72,4 +73,11 @@ export const getCopyPath = (inputPath:string): string => {
     }
   }
   return path.join(dirname, [`${alphaPart}${numPart + 1}`,ext].join('.'));
+}
+
+export const isPathJavascript = (path: string): boolean => {
+  return isRegexMatch(JAVASCRIPT_REGEX, path);
+}
+export const isPathTypescript = (path: string): boolean => {
+  return isRegexMatch(TYPESCRIPT_REGEX, path);
 }
