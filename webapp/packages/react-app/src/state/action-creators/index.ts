@@ -617,6 +617,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
     const formData = new FormData();
     formData.append("path", fileCreatePartial.path || '');
     formData.append("file", fileCreatePartial.localFile!);
+    formData.append("language", fileCreatePartial.language);
     formData.append("is_entry_point", fileCreatePartial.isEntryPoint! as unknown as string);
 
     if (fileCreatePartial.projectLocalId) {
@@ -638,6 +639,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
         localId,
         synced:true,
         isServerResponse: true,
+        // language: pathToBundleLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
 
@@ -705,6 +707,7 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
         synced:true,
         isServerResponse: true,
         saveFilePartial: {localId},
+        // language: pathToBundleLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
 
