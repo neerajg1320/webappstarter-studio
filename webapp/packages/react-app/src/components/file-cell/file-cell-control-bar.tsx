@@ -71,9 +71,6 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
     updateFile({localId: reduxFile.localId, isEditAllowed: checked})
   }
 
-  const handleFilePathChange = (filePath:string) => {
-    updateFile({localId: reduxFile.localId, path: filePath})
-  }
 
   const handleSaveClick = () => {
     if (!reduxFile.path) {
@@ -119,10 +116,6 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
                 checked={(reduxFile && reduxFile.isEntryPoint) || false}
                 onChange={(e) => handleEntryPointChange(e.target.checked)}
             />
-          </div>
-          <div>
-            <label>File Path:</label>
-            <input type="text" value={reduxFile.path || ''} onChange={(e) => handleFilePathChange(e.target.value)} />
           </div>
         </div>
 
