@@ -202,7 +202,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
         <Resizable direction="vertical">
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal">
-              <div style={{width:"100%", display:"flex", flexDirection:"column"}}>
+              <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
                 <div className="file-cell-control-bar-wrapper">
                   {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 </div>

@@ -112,23 +112,25 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
             >
               Format {editorLanguage}
             </button>
-            <MonacoEditor
-                language={editorLanguage}
-                value={initialValue}
-                editorDidMount={onEditorDidMount}
-                theme='dark'
-                height="calc(100% - 20px)"
-                options={{
-                  wordWrap: "on",
-                  minimap: {enabled: false},
-                  showUnused: false,
-                  folding: false,
-                  lineNumbersMinChars: 3,
-                  fontSize: 16,
-                  scrollBeyondLastLine: false,
-                  automaticLayout: true,
-                }}
-            />
+            <div className="editor-main">
+              <MonacoEditor
+                  language={editorLanguage}
+                  value={initialValue}
+                  editorDidMount={onEditorDidMount}
+                  theme='dark'
+                  height="calc(100% - 20px)"
+                  options={{
+                    wordWrap: "on",
+                    minimap: {enabled: false},
+                    showUnused: false,
+                    folding: false,
+                    lineNumbersMinChars: 3,
+                    fontSize: 16,
+                    scrollBeyondLastLine: false,
+                    automaticLayout: true,
+                  }}
+              />
+            </div>
           </>
       }
     </div>
