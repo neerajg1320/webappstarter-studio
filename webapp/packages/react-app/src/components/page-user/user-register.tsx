@@ -4,7 +4,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
 
-interface User {
+interface RegisterUser {
   email: string;
   password1: string;
   password2: string;
@@ -17,7 +17,7 @@ interface Action {
   payload: any
 }
 
-const reducer = (state:User, action: Action) => {
+const reducer = (state:RegisterUser, action: Action) => {
   switch (action.type) {
     case "EMAIL":
       return {...state, email: action.payload};
@@ -35,7 +35,7 @@ const reducer = (state:User, action: Action) => {
   }
 };
 
-const initialUser = {
+const initialUser:RegisterUser = {
   email: 'neeraj76@yahoo.com',
   password1: 'Local123',
   password2: 'Local123',
@@ -47,7 +47,7 @@ const UserRegister = () => {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(reducer, initialUser);
   const { registerUser } = useActions();
-  
+
   const handleRegisterClick = () => {
     if (user.email) {
       registerUser(user.email, user.password1, user.password2, user.first_name, user.last_name);
