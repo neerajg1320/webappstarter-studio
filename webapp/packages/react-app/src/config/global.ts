@@ -22,7 +22,7 @@ export const pkgServerUrl = 'https://unpkg.com';
 
 
 // API Server
-export const serverUrl = `https://webappserverapi.server.neerajgupta.net`;
+export const serverUrl = `https://webappstarterapi.server.neerajgupta.net`;
 export const serverApiBaseUrl = `${serverUrl}/api/v1`;
 export const serverMediaBaseUrl = `${serverUrl}/mediafiles`;
 export const serverStaticBaseUrl = `${serverUrl}/staticfiles`;
