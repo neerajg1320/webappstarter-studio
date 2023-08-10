@@ -1,21 +1,56 @@
 import './user.css';
-import React, {useState} from "react";
-import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {ReduxUpdateUserPartial, ReduxUser} from "../../state/user";
+import React, {useReducer} from "react";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
 
+interface User {
+  email: string;
+  password1: string;
+  password2: string;
+  first_name: string;
+  last_name: string;
+};
+
+interface Action {
+  type: string,
+  payload: any
+}
+
+const reducer = (state:User, action: Action) => {
+  switch (action.type) {
+    case "EMAIL":
+      return {...state, email: action.payload};
+    case "PASSWORD1":
+      return {...state, password1: action.payload};
+    case "PASSWORD2":
+      return {...state, password2: action.payload};
+    case "FIRST_NAME":
+      return {...state, first_name: action.payload};
+    case "LAST_NAME":
+      return {...state, last_name: action.payload};
+
+    default:
+      return state;
+  }
+};
+
+const initialUser = {
+  email: 'neeraj76@yahoo.com',
+  password1: 'Local123',
+  password2: 'Local123',
+  first_name: 'Neeraj',
+  last_name: 'Gupta'
+}
+
 const UserRegister = () => {
   const navigate = useNavigate();
-  const currentUser = useTypedSelector<ReduxUser|null>(state => state.auth.currentUser);
-  const { updateUser, registerUser } = useActions();
-  const [password1, setPassword1] = useState<string>('Local123');
-  const [password2, setPassword2] = useState<string>('Local123');
-
+  const [user, dispatch] = useReducer(reducer, initialUser);
+  const { registerUser } = useActions();
+  
   const handleRegisterClick = () => {
-    if (currentUser && currentUser.email) {
-      registerUser(currentUser?.email, password1, password2, currentUser?.first_name, currentUser?.last_name);
+    if (user.email) {
+      registerUser(user.email, user.password1, user.password2, user.first_name, user.last_name);
     } else {
       console.error(`Error! currentUser not defined in redux`);
     }
@@ -38,40 +73,40 @@ const UserRegister = () => {
             <label>Email</label>
             <input
                 className="value"
-                type="text" value={currentUser?.email}
-                onChange={(e) => {updateUser({...currentUser, email: e.target.value} as ReduxUpdateUserPartial)}}
+                type="text" value={user.email}
+                onChange={(e) => {dispatch({type: "EMAIL", payload: e.target.value});}}
             />
           </div>
           <div className="user-value" style={{display: "flex"}}>
             <label>Password</label>
             <input
                 className="value"
-                value={password1 || ''}
-                onChange={(e) => {setPassword1(e.target.value)}}
+                value={user.password1}
+                onChange={(e) => {dispatch({type: "PASSWORD1", payload: e.target.value});}}
             />
           </div>
           <div className="user-value" style={{display: "flex"}}>
             <label>Confirm Password</label>
             <input
                 className="value"
-                value={password2 || ''}
-                onChange={(e) => {setPassword2(e.target.value)}}
+                value={user.password2}
+                onChange={(e) => {dispatch({type: "PASSWORD2", payload: e.target.value});}}
             />
           </div>
           <div className="user-value" style={{display: "flex"}}>
             <label>First Name</label>
             <input
                 className="value"
-                type="text" value={currentUser?.first_name}
-                onChange={(e) => {updateUser({...currentUser, first_name: e.target.value} as ReduxUpdateUserPartial)}}
+                type="text" value={user.first_name}
+                onChange={(e) => {dispatch({type: "FIRST_NAME", payload: e.target.value});}}
             />
           </div>
           <div className="user-value" style={{display: "flex"}}>
-            <label>First Name</label>
+            <label>Last Name</label>
             <input
                 className="value"
-                type="text" value={currentUser?.last_name}
-                onChange={(e) => {updateUser({...currentUser, last_name: e.target.value} as ReduxUpdateUserPartial)}}
+                type="text" value={user.last_name}
+                onChange={(e) => {dispatch({type: "LAST_NAME", payload: e.target.value});}}
             />
           </div>
 
@@ -79,7 +114,7 @@ const UserRegister = () => {
             <button
                 className="button is-primary is-small"
                 onClick={handleRegisterClick}
-                disabled={!currentUser || !currentUser.email || !password1 || !password2}
+                disabled={!user.email || !user.password1 || !user.password2}
             >
               Register
             </button>
