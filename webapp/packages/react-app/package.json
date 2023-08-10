@@ -45,7 +45,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "deploy": "scp -r build/* neeraj@webapp.server.neerajgupta.net:/mnt/docker/data/webappstarter/webapp/",
+    "deploy_assets": "scp -r assets/* neeraj@webapp.server.neerajgupta.net:/mnt/docker/data/webappstarter/webapp/"
   },
   "eslintConfig": {
     "extends": [
