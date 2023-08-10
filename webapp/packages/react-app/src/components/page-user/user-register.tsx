@@ -10,11 +10,12 @@ const UserRegister = () => {
   const navigate = useNavigate();
   const currentUser = useTypedSelector<ReduxUser|null>(state => state.auth.currentUser);
   const { updateUser, registerUser } = useActions();
-  const [password, setPassword] = useState<string>('Local123');
+  const [password1, setPassword1] = useState<string>('Local123');
+  const [password2, setPassword2] = useState<string>('Local123');
 
   const handleRegisterClick = () => {
     if (currentUser && currentUser.email) {
-      registerUser(currentUser?.email, password);
+      registerUser(currentUser?.email, password1, password2, currentUser?.first_name, currentUser?.last_name);
     } else {
       console.error(`Error! currentUser not defined in redux`);
     }
@@ -45,8 +46,16 @@ const UserRegister = () => {
             <label>Password</label>
             <input
                 className="value"
-                value={password || ''}
-                onChange={(e) => {setPassword(e.target.value)}}
+                value={password1 || ''}
+                onChange={(e) => {setPassword1(e.target.value)}}
+            />
+          </div>
+          <div className="user-value" style={{display: "flex"}}>
+            <label>Confirm Password</label>
+            <input
+                className="value"
+                value={password2 || ''}
+                onChange={(e) => {setPassword2(e.target.value)}}
             />
           </div>
           <div className="user-value" style={{display: "flex"}}>
@@ -70,7 +79,7 @@ const UserRegister = () => {
             <button
                 className="button is-primary is-small"
                 onClick={handleRegisterClick}
-                disabled={!currentUser || !currentUser.email || !password}
+                disabled={!currentUser || !currentUser.email || !password1 || !password2}
             >
               Register
             </button>

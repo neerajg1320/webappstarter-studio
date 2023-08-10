@@ -898,10 +898,19 @@ export const updateUser = (userPartial: ReduxUpdateUserPartial): UpdateUserActio
   }
 }
 
-export const registerUser = (email:string, password:string) => {
+export const registerUser = (
+    email:string,
+    password1:string,
+    password2: string,
+    first_name: string,
+    last_name: string,
+) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
-      const {status} = await axiosApiInstance.post(`/auth/registration/`, {email, password});
+      const {status} = await axiosApiInstance.post(
+          `/auth/registration/`,
+          {email, password1, password2, first_name, last_name}
+      );
       if (status !== 201) {
         console.error(`Error! status=${status}`);
       }
