@@ -1,10 +1,11 @@
-const pkgServer = 'https://unpkg.com';
+import {pkgServerUrl, serverUrl} from "../../config/global";
+
 
 
 export const getPkgServer = (): string => {
-    return `${pkgServer}`;
+    return `${pkgServerUrl}`;
 }
 
 export const getFileServer = (): string => {
-    return `http://localhost:8080`;
+    return `${serverUrl}`;
 }

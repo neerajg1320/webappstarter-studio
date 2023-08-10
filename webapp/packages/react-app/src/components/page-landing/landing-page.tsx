@@ -1,7 +1,7 @@
 import './landing-page.css';
 import {useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
-import {debugComponent} from "../../config/global";
+import {debugComponent, serverStaticBaseUrl} from "../../config/global";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const LandingPage = () => {
     <div className="landing-wrapper">
       <div className="left-side">
         <div className="brand-bar">
-          <img className="logo-image" src="http://localhost:8080/staticfiles/landing/img/react-logo.png" alt="Logo-Image"/>
+          <img className="logo-image" src={`${serverStaticBaseUrl}/landing/img/react-logo.png`} alt="Logo-Image"/>
           <div className="logo-text">
             React Morph
           </div>
@@ -46,7 +46,7 @@ const LandingPage = () => {
       </div>
       <div className="right-side">
         <div className="main-image-wrapper">
-          <img className="main-image" src="http://localhost:8080/staticfiles/landing/img/generic-browser-logo.png" alt="Main-Image"/>
+          <img className="main-image" src={`${serverStaticBaseUrl}/landing/img/generic-browser-logo.png`} alt="Main-Image"/>
         </div>
       </div>
     </div>

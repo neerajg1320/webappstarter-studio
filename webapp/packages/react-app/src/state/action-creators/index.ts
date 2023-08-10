@@ -35,7 +35,7 @@ import {
   ReduxUpdateFilePartial
 } from "../file";
 import {randomIdGenerator} from "../id";
-import {debugAuth, debugAxios, debugRedux} from "../../config/global";
+import {debugAuth, debugAxios, debugRedux, serverApiBaseUrl} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
@@ -362,7 +362,7 @@ export const downloadFetchProjectZip = (localId:string) => {
 
     const {pkid} = projectState;
 
-    fetch(`http://localhost:8080/api/v1/projects/${pkid}/download/`,
+    fetch(`${serverApiBaseUrl}/projects/${pkid}/download/`,
         { headers: { Authorization: `Bearer ${getState().auth.jwtToken}` }})
         .then((res) => {
 

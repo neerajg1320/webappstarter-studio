@@ -18,10 +18,14 @@ export const autoBundling = false;
 export const combineCellsCode = false;
 export const cellJsxFileName = '__cell.jsx';
 export const cellTsxFileName = '__cell.tsx';
+export const pkgServerUrl = 'https://unpkg.com';
+
 
 // API Server
-export const serverApiBaseUrl = 'http://localhost:8080/api/v1';
-export const serverMediaBaseUrl = 'http://localhost:8080/mediafiles';
+export const serverUrl = `https://webappserverapi.server.neerajgupta.net`;
+export const serverApiBaseUrl = `${serverUrl}/api/v1`;
+export const serverMediaBaseUrl = `${serverUrl}/mediafiles`;
+export const serverStaticBaseUrl = `${serverUrl}/staticfiles`;
 export const serverConnect = true;
 export const syncCellsToServer = serverConnect && false;
 export const syncProjectsToServer = serverConnect && true;
