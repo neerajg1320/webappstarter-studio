@@ -841,6 +841,21 @@ export const reAuthenticateUser = () => {
   authenticateUser('neeraj76@yahoo.com', 'Local123');
 }
 
+export const activateUser = (key:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+      const {status, data} = await axiosApiInstance.post(`/auth/registration/verify-email/`, {key});
+      if (status === 200) {
+        const {refresh_token, access_token, user} = data;
+        if (debugAxios) {
+          console.log(refresh_token, access_token, user);
+        }
+        console.log(`user activation successful`);
+      } else {
+        const {non_field_errors} = data;
+        dispatch(loginRequestFailed(non_field_errors));
+      }
+  };
+}
 
 export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {

@@ -2,7 +2,7 @@ import './App.css';
 import React, {useEffect} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
-import {debugComponent} from "./config/global";
+import {authOnAppStart, debugComponent} from "./config/global";
 
 import AppRouterWrapper from "./app-router-wrapper";
 
@@ -23,7 +23,10 @@ const App = () => {
       console.log('App: first render');
     }
 
-    authenticateUser('neeraj76@yahoo.com', 'Local123');
+    if (authOnAppStart) {
+      authenticateUser('neeraj76@yahoo.com', 'Local123');
+    }
+
     return () => {
       if (debugComponent) {
         console.log('App: destroyed');

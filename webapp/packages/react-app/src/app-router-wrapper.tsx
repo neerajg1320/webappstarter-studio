@@ -12,6 +12,7 @@ import React, {useCallback, useMemo} from "react";
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
 import {ReduxProject} from "./state";
+import UserActivate from "./components/page-user/user-activate";
 
 const AppRouterWrapper = () => {
   const {setCurrentProjectId} = useActions();
@@ -37,7 +38,7 @@ const AppRouterWrapper = () => {
 
             <Route path={RoutePath.USER_REGISTER} element={<UserRegister />} />
             <Route path={RoutePath.USER_LOGIN} element={<UserLogin />} />
-            <Route path={RoutePath.USER_ACTIVATE} element={<UserLogin />} />
+            <Route path={`${RoutePath.USER_ACTIVATE}/:key`} element={<UserActivate />} />
 
             <Route path={RoutePath.PROJECTS}
                    element={

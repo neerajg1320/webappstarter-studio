@@ -41,4 +41,5 @@ export const debugProject = false;
 // Auth Component
 export const debugAuth = true;
 export const autoReauthenticateUser = true;
+export const authOnAppStart = false;
 
