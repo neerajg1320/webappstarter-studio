@@ -37,6 +37,7 @@ const AppRouterWrapper = () => {
 
             <Route path={RoutePath.USER_REGISTER} element={<UserRegister />} />
             <Route path={RoutePath.USER_LOGIN} element={<UserLogin />} />
+            <Route path={RoutePath.USER_ACTIVATE} element={<UserLogin />} />
 
             <Route path={RoutePath.PROJECTS}
                    element={

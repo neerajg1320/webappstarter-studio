@@ -10,6 +10,7 @@ export enum RoutePath {
 
   USER_REGISTER = '/user/register',
   USER_LOGIN = '/user/login',
+  USER_ACTIVATE = '/user/activate',
 
   LOGIN_SUCCESS = PROJECTS,
 }
