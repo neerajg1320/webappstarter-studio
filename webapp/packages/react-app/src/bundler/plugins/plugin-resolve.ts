@@ -73,7 +73,8 @@ export const pluginResolve = (inputType: BundleInputType) => {
 
       // For any other Javascript/Typescript file
       // We prepend the pkgServer to the path
-      build.onResolve({ filter: JSTS_REGEX }, async (args: any) => {
+      // build.onResolve({ filter: JSTS_REGEX }, async (args: any) => {
+      build.onResolve({ filter: /.*/ }, async (args: any) => {
         if (debugPlugin) {
           console.log('onResolve', args);
         }
@@ -84,14 +85,14 @@ export const pluginResolve = (inputType: BundleInputType) => {
         return { path: `${server}/${args.path}`, namespace: 'a' };
       });
 
-      build.onResolve({ filter: /.*/ }, async (args: any) => {
-        if (debugPlugin) {
-          console.log('onResolve', args);
-        }
-
-        console.error(`File '${args.path}' not handled. Further processing to be avoided`);
-        return undefined;
-      });
+      // build.onResolve({ filter: /.*/ }, async (args: any) => {
+      //   if (debugPlugin) {
+      //     console.log('onResolve', args);
+      //   }
+      //
+      //   console.error(`File '${args.path}' not handled. Further processing to be avoided`);
+      //   return undefined;
+      // });
     },
   };
 };
