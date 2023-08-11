@@ -883,6 +883,7 @@ export const authenticateUser = (email:string, password:string) => {
         };
         authInfo = {accessToken:access_token, refreshToken:refresh_token, user: reduxUser};
 
+        dispatch(loginRequestSuccess(authInfo));
         saveAuthToLocalStorage(authInfo);
       } else {
         const {non_field_errors} = data;

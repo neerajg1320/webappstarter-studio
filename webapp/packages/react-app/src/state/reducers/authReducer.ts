@@ -48,6 +48,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
       state.authenticating = false;
       state.isAuthenticated = true;
       state.jwtToken = action.payload.accessToken;
+      state.currentUser = action.payload.user;
       return state;
 
     case ActionType.LOGIN_REQUEST_FAILED:

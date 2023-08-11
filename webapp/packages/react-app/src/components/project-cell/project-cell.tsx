@@ -39,6 +39,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
+  const currentUser =  useTypedSelector((state) => state.auth.currentUser);
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
@@ -125,12 +126,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
-
-
-
   const handleProjectBundleClick = () => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`reduxProject:`, reduxProject);
+      console.log(`currentUser: `, currentUser);
     }
 
     if (reduxProject.entry_path) {
