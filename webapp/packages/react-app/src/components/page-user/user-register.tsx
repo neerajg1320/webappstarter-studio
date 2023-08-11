@@ -36,7 +36,7 @@ const reducer = (state:RegisterUser, action: Action) => {
 };
 
 const initialUser:RegisterUser = {
-  email: 'neeraj76@yahoo.com',
+  email: 'neerajg1320@gmail.com',
   password1: 'Local123',
   password2: 'Local123',
   first_name: 'Neeraj',
