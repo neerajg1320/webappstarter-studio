@@ -10,7 +10,7 @@ export const reduxManualTest = false;
 export const debugRedux = false;
 
 // ESBuild Plugins
-export const debugPlugin = true;
+export const debugPlugin = false;
 
 // Bundler
 export const debugBundler = false;
@@ -40,7 +40,7 @@ export const debugComponent = false;
 export const debugProject = false;
 
 // Auth Component
-export const debugAuth = true;
+export const debugAuth = false;
 export const autoReauthenticateUser = true;
 export const authOnAppStart = false;
 

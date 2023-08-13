@@ -67,7 +67,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     return null;
   }, [editedFileLocalId, filesState]);
 
-  console.log(`ProjectCell: editedFile:`, editedFile);
+  if (debugComponent) {
+    console.log(`ProjectCell: editedFile:`, editedFile);
+  }
 
   // Temporary till we fix layout
   // const [editorContent, setEditorContent] = useState<string>('');
@@ -127,7 +129,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }, [JSON.stringify(editedFile)]);
 
   const handleProjectBundleClick = () => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`reduxProject:`, reduxProject);
       console.log(`currentUser: `, currentUser);
     }
@@ -176,11 +178,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
   }
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`reduxProject zip blob changed zipBlob:`, reduxProject.zipBlob);
-
-
-
     }
   }, [reduxProject.zipBlob]);
 
