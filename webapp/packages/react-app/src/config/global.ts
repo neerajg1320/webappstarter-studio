@@ -22,7 +22,8 @@ export const pkgServerUrl = 'https://unpkg.com';
 
 
 // API Server
-export const serverUrl = `https://api.webappstarter.com`;
+// export const serverUrl = `https://api.webappstarter.com`;
+export const serverUrl = `${process.env.REACT_APP_WEBAPPSTATER_API}`;
 export const serverApiBaseUrl = `${serverUrl}/api/v1`;
 export const serverMediaBaseUrl = `${serverUrl}/mediafiles`;
 export const serverStaticBaseUrl = `${serverUrl}/staticfiles`;
