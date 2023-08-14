@@ -48,7 +48,7 @@
     "prepublishOnly": "npm run build",
     "local": "REACT_APP_WEBAPPSTATER_API=http://api.local.webappstarter.com npm start",
     "deploy": "rsync -r build/* neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/webapp/",
-    "deploy_assets": "rsync -r assets/* neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/webapp/"
+    "deploy_assets": "rsync -r assets/nginx/conf.d neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/webapp/nginx/"
   },
   "eslintConfig": {
     "extends": [
