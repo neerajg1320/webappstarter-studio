@@ -84,15 +84,6 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
-    // let language: BundleLanguage;
-    //
-    // if (isPathTypescript(value)) {
-    //   language = BundleLanguage.TYPESCRIPT;
-    // } else if (isPathJavascript(value)) {
-    //   language = BundleLanguage.JAVASCRIPT;
-    // } else {
-    //   language = BundleLanguage.UNKNOWN;
-    // }
     const bundleLanguage = pathToBundleLanguage(value);
 
     if (debugComponent || true) {
