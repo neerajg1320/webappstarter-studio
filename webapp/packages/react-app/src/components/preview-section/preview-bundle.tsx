@@ -1,3 +1,4 @@
+import "./preview-bundle.css";
 interface PreviewBundleProps {
   bundle: string;
 }
@@ -5,7 +6,7 @@ interface PreviewBundleProps {
 const PreviewBundle:React.FC<PreviewBundleProps> = ({bundle}) => {
   return (
     <div className="preview-bundle-wrapper">
-      <pre>
+      <pre style={{width: "100%", backgroundColor: "white"}}>
         {bundle}
       </pre>
     </div>
