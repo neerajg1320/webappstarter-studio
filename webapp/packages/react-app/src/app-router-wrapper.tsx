@@ -60,9 +60,7 @@ const AppRouterWrapper = () => {
             <Route path={RoutePath.PROJECT_CELL}
                    element={
                      <ProtectedRoute>
-                       {currentProject ?
-                           <ProjectCell reduxProject={currentProject}/>
-                           : <h1>currentProject:{JSON.stringify(currentProject)}</h1>}
+                       {currentProject && <ProjectCell reduxProject={currentProject}/>}
                      </ProtectedRoute>
                    }
             />
@@ -74,6 +72,13 @@ const AppRouterWrapper = () => {
                    }
             />
             <Route path={RoutePath.PROJECT_NEW}
+                   element={
+                     <ProtectedRoute>
+                       <ProjectEdit isEdit={false} />
+                     </ProtectedRoute>
+                   }
+            />
+            <Route path={RoutePath.PROJECT_PLAYGROUND}
                    element={
                      <ProtectedRoute>
                        <ProjectEdit isEdit={false} />

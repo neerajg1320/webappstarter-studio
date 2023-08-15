@@ -8,6 +8,8 @@ export enum RoutePath {
   PROJECT_EDIT = '/projects/edit',
   PROJECT_CELL = '/projects/cell',
 
+  PROJECT_PLAYGROUND = '/playground',
+
   USER_REGISTER = '/user/register',
   USER_LOGIN = '/user/login',
   USER_ACTIVATE = '/user/activate',
