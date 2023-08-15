@@ -14,7 +14,7 @@ interface ProjectEditProps {
   isEdit: boolean
 }
 
-export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
+const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   useEffect(() => {
     console.log(`ProjectNewEdit: first render`);
     return () => {
@@ -151,3 +151,5 @@ export const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       </div>
   );
 }
+
+export default ProjectEdit;

@@ -1,14 +1,19 @@
+import React, {useCallback, useMemo} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+
 import AppLandingLayout from "./app-landing-layout";
 import LandingPage from "./components/page-landing/landing-page";
 import {RoutePath} from "./components/routes";
+
 import UserRegister from "./components/page-user/user-register";
 import UserLogin from "./components/page-user/user-login";
 import ProtectedRoute from "./components/common/protected-route";
+
 import ProjectListGrid from "./components/project-resource/project-list-grid";
 import ProjectCell from "./components/project-cell/project-cell";
-import {ProjectEdit} from "./components/project-resource/project-edit";
-import React, {useCallback, useMemo} from "react";
+import ProjectEdit from "./components/project-resource/project-edit";
+
+
 import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
 import {ReduxProject} from "./state";
