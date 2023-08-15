@@ -4,6 +4,7 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import PreviewIframe from "./preview-iframe";
 import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
+import PreviewBundle from "./preview-bundle";
 
 interface PreviewTabsProps {
   code: string;
@@ -18,7 +19,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
   }
 
   const previewChoices = useMemo(() => {
-    return ['Preview', 'Console'];
+    return ['Preview', 'Console', 'Bundle'];
   }, []);
 
   const onTabChange = ([value, index]:[string, number]) => {
@@ -47,6 +48,9 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
         </div>
         <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
           <PreviewConsole onChange={handleConsoleTextChange}/>
+        </div>
+        <div style={{display: selectedTab === 'Bundle' ? "flex" : "none", height: "100%"}}>
+          <PreviewBundle bundle={code}/>
         </div>
       </div>
     </div>

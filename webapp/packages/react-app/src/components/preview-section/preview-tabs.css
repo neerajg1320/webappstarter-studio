@@ -6,6 +6,8 @@
   justify-content: flex-start;
   gap: 10px;
   position: relative;
+  overflow: scroll;
+  max-height: 50vh;
 }
 
 .preview-tabs-bar {
