@@ -3,6 +3,7 @@ import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { ReduxProject } from '../project';
 import {randomIdGenerator} from "../id";
+import {debugRedux} from "../../config/global";
 
 // The difference between ProjectsState and CellsState:
 //  - ProjectsState have no order
@@ -24,12 +25,14 @@ const initialState: ProjectsState = {
 }
 
 const reducer = produce((state: ProjectsState = initialState, action: Action): ProjectsState => {
-  if ([
-    ActionType.CREATE_PROJECT,
-    ActionType.FETCH_PROJECTS_COMPLETE,
-    ActionType.SET_CURRENT_PROJECT
-  ].includes(action.type)) {
-    console.log(`projectsReducer: ${JSON.stringify(action)}`)
+  if (debugRedux) {
+    if ([
+      ActionType.CREATE_PROJECT,
+      ActionType.FETCH_PROJECTS_COMPLETE,
+      ActionType.SET_CURRENT_PROJECT
+    ].includes(action.type)) {
+      console.log(`projectsReducer: ${JSON.stringify(action)}`)
+    }
   }
 
   switch(action.type) {

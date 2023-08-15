@@ -1,11 +1,11 @@
 import React, {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
 import {useActions} from "../../hooks/use-actions";
 import {randomIdGenerator} from "../../state/id";
 import {ProjectFrameworks, ReactToolchains} from "../../state";
 import ProjectEdit from "./project-edit";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import LoadingIndicator from "../common/loading-indicator";
+import {debugComponent} from "../../config/global";
 
 const ProjectPlayground:React.FC = () => {
   // const navigate = useNavigate();
@@ -15,14 +15,21 @@ const ProjectPlayground:React.FC = () => {
   const currentProjectId = useTypedSelector(state => state.projects.currentProjectId);
 
   useEffect(() => {
-    console.log(`ProjectPlayground:useEffect[]`);
-
+    if (debugComponent) {
+      console.log(`ProjectPlayground:useEffect[]`);
+    }
 
     // Here login using anonymous user
     return () => {
-      console.log(`ProjectPlayground:destroyed`);
+      if (debugComponent) {
+        console.log(`ProjectPlayground:destroyed`);
+      }
     }
   }, []);
+
+  if (debugComponent) {
+    console.log(`ProjectPlayground:render isAuthenticated=${isAuthenticated}`);
+  }
 
   useEffect(() => {
     console.log(`ProjectPlayground:useEffect[isAuthenticated] isAuthenticated:${isAuthenticated}`);
@@ -40,13 +47,9 @@ const ProjectPlayground:React.FC = () => {
           framework: ProjectFrameworks.REACTJS,
           toolchain: ReactToolchains.CREATE_REACT_APP
         });
-        // navigate(RoutePath.PROJECT_NEW);
       }
     }
   }, [isAuthenticated, currentProjectId]);
-
-
-  console.log(`ProjectPlayground:render isAuthenticated=${isAuthenticated}`);
 
   return (
       <>

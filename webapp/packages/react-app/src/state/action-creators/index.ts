@@ -298,7 +298,9 @@ export const fetchProjectFromServer = (localId:string) => {
     const project = getState().projects.data[localId];
     try {
       const response = await axiosApiInstance.get(`${gApiUri}/projects/${project.pkid}/`,{headers: __rm__gHeaders});
-      console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
+      if (debugRedux) {
+        console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
+      }
 
       const {entry_file, entry_path} = response.data;
       dispatch(updateProject({localId, entry_file, entry_path}));
@@ -336,7 +338,9 @@ export const deleteProjectFromServer = (pkid:number, deleteProjectPartial: Redux
 
 export const removeProject = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(`removeProject:`, localId);
+    if (debugRedux) {
+      console.log(`removeProject:`, localId);
+    }
 
     const projectState = getState().projects.data[localId];
     if (!projectState) {
