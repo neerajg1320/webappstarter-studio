@@ -14,6 +14,7 @@ import UserLogin from "./components/page-user/user-login";
 import UserActivate from "./components/page-user/user-activate";
 import ProtectedRoute from "./components/common/protected-route";
 import LoadingIndicator from "./components/common/loading-indicator";
+import ProjectPlayground from "./components/project-resource/project-playground";
 
 // import ProjectListGrid from "./components/project-resource/project-list-grid";
 // import ProjectCell from "./components/project-cell/project-cell";
@@ -80,9 +81,8 @@ const AppRouterWrapper = () => {
             />
             <Route path={RoutePath.PROJECT_PLAYGROUND}
                    element={
-                     <ProtectedRoute>
-                       <ProjectEdit isEdit={false} />
-                     </ProtectedRoute>
+                     // <ProjectEdit isEdit={false} />
+                     <ProjectPlayground />
                    }
             />
           </Route>

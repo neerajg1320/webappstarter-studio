@@ -83,13 +83,14 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   const handleSaveClick = async () => {
     if (currentProject) {
       saveProject(currentProject.localId);
-    } else {
-      console.error(`Error! project edit is called without setting current project in redux`);
-    }
 
-    if (isEdit) {
-      navigate(RouteDepth.ONE_UP);
+      if (isEdit) {
+        navigate(RouteDepth.ONE_UP);
+      } else {
+        navigate(RoutePath.PROJECT_CELL, {replace: true});
+      }
     } else {
+      console.log(`Info: project edit is called without setting current project in redux`);
       navigate(RoutePath.PROJECT_CELL, {replace: true});
     }
   }
@@ -107,7 +108,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             <label>Title</label>
             <input
                 className="value"
-                type="text" value={currentProject?.title}
+                type="text" value={currentProject?.title || ''}
                 onChange={(e) => {updateProject({...currentProject, title: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
@@ -142,7 +143,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             <button
                 className="button is-primary is-small"
                 onClick={handleSaveClick}
-                disabled={!currentProject}
+                // disabled={!currentProject}
             >
               Save
             </button>
