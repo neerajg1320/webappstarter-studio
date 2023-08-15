@@ -17,21 +17,22 @@ interface ProjectsDashboardProps {
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
   const navigate = useNavigate();
-  // const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
-  const {createAndSetProject} = useActions();
+  const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
+  const {createAndSetProject, fetchProjectsAndFiles} = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const projectList = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v)
   }, [projectsState.data]);
 
-  // This part can be used in the protected route.
-  // This will also reqwuire a HOC
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate(RouteName.USER_LOGIN);
-  //   }
-  // }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      console.log(`Error! projects listed before authentication `)
+    } else {
+      fetchProjectsAndFiles();
+    }
+  }, []);
 
   const handleProjectCardClick = (localId:string) => {
     if (debugProject) {

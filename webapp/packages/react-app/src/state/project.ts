@@ -8,7 +8,7 @@ export enum ProjectFrameworks {
 };
 
 export enum ReactToolchains {
-  CRA = 'cra',
+  CRA = 'create-react-app',
   VITE = 'vite',
   NONE = 'none',
 };
