@@ -7,6 +7,7 @@ import {debugComponent} from "../../config/global";
 
 const AppNavBar = () => {
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
+  const currentUser = useTypedSelector(state => state.auth.currentUser);
   const {logoutUser} = useActions();
   const navigate = useNavigate();
   const location = useLocation();
@@ -74,7 +75,7 @@ const AppNavBar = () => {
             {isAuthenticated ?
                 <div className="navbar-item has-dropdown is-hoverable">
                   <div className="navbar-link">
-                    User
+                    {currentUser?.first_name}
                   </div>
 
                   <div className="navbar-dropdown">

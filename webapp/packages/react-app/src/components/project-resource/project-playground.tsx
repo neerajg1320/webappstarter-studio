@@ -25,21 +25,28 @@ const ProjectPlayground:React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log(`ProjectPlayground:useEffect[isAuthenticated] isAuthenticated:${isAuthenticated}`);
     if (!isAuthenticated) {
       authenticateUser('anonymous@webappstarter.com', 'Anonymous123');
     } else {
-      createAndSetProject({
-        localId: randomIdGenerator(),
-        title: '',
-        description: '',
-        framework: ProjectFrameworks.REACTJS,
-        toolchain: ReactToolchains.VITE
-      });
-      // navigate(RoutePath.PROJECT_NEW);
-    }
-  }, [isAuthenticated]);
+      if (!currentProjectId) {
+        const localId = randomIdGenerator();
+        console.log(`Calling createAndSetProject: localId:${localId}`);
 
-  console.log(`ProjectPlayground:render`);
+        createAndSetProject({
+          localId,
+          title: '',
+          description: '',
+          framework: ProjectFrameworks.REACTJS,
+          toolchain: ReactToolchains.CRA
+        });
+        // navigate(RoutePath.PROJECT_NEW);
+      }
+    }
+  }, [isAuthenticated, currentProjectId]);
+
+
+  console.log(`ProjectPlayground:render isAuthenticated=${isAuthenticated}`);
 
   return (
       <>

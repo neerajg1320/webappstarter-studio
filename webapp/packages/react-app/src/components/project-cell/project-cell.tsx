@@ -6,12 +6,14 @@ import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
-import {debugComponent} from "../../config/global";
+// import {debugComponent} from "../../config/global";
+
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
 import PreviewTabs from "../preview-section/preview-tabs";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
+const debugComponent = true;
 
 interface ProjectCellProps {
   reduxProject: ReduxProject;

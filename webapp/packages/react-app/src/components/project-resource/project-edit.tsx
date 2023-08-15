@@ -48,8 +48,9 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     return {label: 'none', value: 'none'};
   }, [currentProject?.toolchain])
 
-  if (debugComponent) {
-    console.log(`ProjectNewEdit: render  projectsState:`, projectsState);
+  if (debugComponent || true) {
+    console.log(`ProjectEdit: render  projectsState:`, projectsState);
+    console.log(`ProjectEdit: render  currentProjectId: ${projectsState.currentProjectId} currentProject:`, currentProject);
   }
 
   const frameworkOptions = useMemo(() => {
@@ -83,14 +84,11 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   const handleSaveClick = async () => {
     if (currentProject) {
       saveProject(currentProject.localId);
+    }
 
-      if (isEdit) {
-        navigate(RouteDepth.ONE_UP);
-      } else {
-        navigate(RoutePath.PROJECT_CELL, {replace: true});
-      }
+    if (isEdit) {
+      navigate(RouteDepth.ONE_UP);
     } else {
-      console.log(`Info: project edit is called without setting current project in redux`);
       navigate(RoutePath.PROJECT_CELL, {replace: true});
     }
   }
@@ -108,7 +106,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             <label>Title</label>
             <input
                 className="value"
-                type="text" value={currentProject?.title || ''}
+                type="text" value={currentProject?.title}
                 onChange={(e) => {updateProject({...currentProject, title: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>

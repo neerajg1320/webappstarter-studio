@@ -62,6 +62,7 @@ const AppRouterWrapper = () => {
                    element={
                      <ProtectedRoute>
                        {currentProject && <ProjectCell reduxProject={currentProject}/>}
+                       {!currentProject && <h1>Current project is null</h1>}
                      </ProtectedRoute>
                    }
             />

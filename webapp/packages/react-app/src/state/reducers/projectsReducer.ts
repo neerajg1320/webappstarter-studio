@@ -24,7 +24,14 @@ const initialState: ProjectsState = {
 }
 
 const reducer = produce((state: ProjectsState = initialState, action: Action): ProjectsState => {
-  // console.log(`projectsReducer: ${JSON.stringify(action)}`)
+  if ([
+    ActionType.CREATE_PROJECT,
+    ActionType.FETCH_PROJECTS_COMPLETE,
+    ActionType.SET_CURRENT_PROJECT
+  ].includes(action.type)) {
+    console.log(`projectsReducer: ${JSON.stringify(action)}`)
+  }
+
   switch(action.type) {
     case ActionType.CREATE_PROJECT:
       const project: ReduxProject = {
