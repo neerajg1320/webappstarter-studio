@@ -7,15 +7,9 @@ import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {debugComponent} from "../../config/global";
 import {randomIdGenerator} from "../../state/id";
-import {
-  ensureTrailingSlash,
-  getCopyPath,
-  getFileDir,
-  hasTrailingSlash,
-  isPathJavascript,
-  isPathTypescript
-} from "../../utils/path";
+import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
+import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 
 
 interface FilesTreeProps {
@@ -85,11 +79,12 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
 
   const handleFilePathChange = (localId:string, value:string) => {
     const bundleLanguage = pathToBundleLanguage(value);
+    const language = pathToCodeLanguage(value);
 
     if (debugComponent || true) {
       console.log(`${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
-    updateFile({localId, path:value, bundleLanguage});
+    updateFile({localId, path:value, bundleLanguage, language});
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -136,6 +131,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           localId: fileLocalId,
           path: ensureTrailingSlash(newFilePath),
           bundleLanguage: BundleLanguage.UNKNOWN,
+          language: CodeLanguage.UNKNOWN,
           content: '',
           contentSynced: false,
           projectLocalId: reduxProject.localId,
@@ -161,6 +157,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
             localId: newFileLocalId,
             path: newPath,
             bundleLanguage: origFile.bundleLanguage,
+            language: CodeLanguage.UNKNOWN,
             content: origFile.content,
             contentSynced: false,
             projectLocalId: reduxProject.localId,

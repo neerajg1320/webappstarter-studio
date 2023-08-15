@@ -8,11 +8,12 @@ import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
 import {debugComponent} from "../../config/global";
 import {BundleLanguage} from "../../state/bundle";
+import {CodeLanguage} from "../../state/language";
 
 interface CodeEditorProps {
   // localId: string;
   initialValue: string;
-  language: BundleLanguage;
+  language: CodeLanguage;
   onChange?: (value:string) => void | null;
   disabled?: boolean;
 }
@@ -20,10 +21,14 @@ interface CodeEditorProps {
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange, disabled}) => {
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
-    if (language === BundleLanguage.JAVASCRIPT) {
+    if (language === CodeLanguage.JAVASCRIPT) {
       return 'javascript';
-    } else if (language === BundleLanguage.TYPESCRIPT) {
+    } else if (language === CodeLanguage.TYPESCRIPT) {
       return 'typescript';
+    } else if (language === CodeLanguage.CSS) {
+      return 'css';
+    } else if (language === CodeLanguage.SCSS) {
+      return 'scss';
     }
 
     return 'javascript';

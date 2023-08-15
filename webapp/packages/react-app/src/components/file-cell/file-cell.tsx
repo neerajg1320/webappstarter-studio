@@ -75,7 +75,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
           <Resizable direction="horizontal">
             <CodeEditor
                 initialValue={reduxFile.content || ''}
-                language={reduxFile.bundleLanguage}
+                language={reduxFile.language}
                 onChange={handleEditorChange}
             />
           </Resizable>

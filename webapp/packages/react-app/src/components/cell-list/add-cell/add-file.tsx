@@ -4,6 +4,7 @@ import {useActions} from "../../../hooks/use-actions";
 import {ReduxCreateFilePartial, ReduxProject} from "../../../state";
 import {randomIdGenerator} from "../../../state/id";
 import {BundleLanguage} from "../../../state/bundle";
+import {CodeLanguage} from "../../../state/language";
 
 interface AddFileProps {
     reduxProject: ReduxProject;
@@ -18,6 +19,7 @@ const AddFile: React.FC<AddFileProps> = ({reduxProject, forceVisible}) => {
       const createFilePartial:ReduxCreateFilePartial = {
         localId: randomIdGenerator(),
         bundleLanguage: BundleLanguage.UNKNOWN,
+        language: CodeLanguage.UNKNOWN,
         path: '',
         content: null,
         contentSynced: false,

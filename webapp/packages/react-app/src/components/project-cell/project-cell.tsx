@@ -13,6 +13,7 @@ import FileList from "../cell-list/file-list";
 import PreviewTabs from "../preview-section/preview-tabs";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
+import {CodeLanguage} from "../../state/language";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -211,7 +212,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
                 <CodeEditor
                     initialValue={editedFile?.content || ""}
-                    language={editedFile?.bundleLanguage || BundleLanguage.UNKNOWN}
+                    language={editedFile?.language || CodeLanguage.UNKNOWN}
                     onChange={handleEditorChange}
                     disabled={!editedFile}
                 />

@@ -47,6 +47,7 @@ import {
 import {AuthInfo} from "../auth";
 import {AxiosHeaders} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
+import {pathToCodeLanguage} from "../language";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -469,6 +470,7 @@ export const fetchFiles = () => {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
           file.isEntryPoint = file.is_entry_point;
           file.bundleLanguage = pathToBundleLanguage(file.path);
+          file.language = pathToCodeLanguage(file.path);
 
           dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
@@ -621,7 +623,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
     const formData = new FormData();
     formData.append("path", fileCreatePartial.path || '');
     formData.append("file", fileCreatePartial.localFile!);
-    // formData.append("language", fileCreatePartial.bundleLanguage);
+    formData.append("language", fileCreatePartial.language);
     formData.append("is_entry_point", fileCreatePartial.isEntryPoint! as unknown as string);
 
     if (fileCreatePartial.projectLocalId) {
@@ -643,7 +645,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
         localId,
         synced:true,
         isServerResponse: true,
-        // language: pathToBundleLanguage(response.data.path), // Need to be fixed
+        language: pathToCodeLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
 
@@ -691,9 +693,9 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
     if (Object.keys(saveFilePartial).includes('file')) {
       formData.append("file", saveFilePartial.file!);
     }
-    // if (Object.keys(saveFilePartial).includes('language')) {
-    //   formData.append("language", saveFilePartial.bundleLanguage!);
-    // }
+    if (Object.keys(saveFilePartial).includes('language')) {
+      formData.append("language", saveFilePartial.language!);
+    }
     if (Object.keys(saveFilePartial).includes('is_entry_point')) {
       formData.append("is_entry_point", saveFilePartial.is_entry_point! as unknown as string);
     }

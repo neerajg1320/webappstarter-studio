@@ -1,5 +1,6 @@
 import {ServerObject, ServerObjectPartial} from "./obj";
 import {BundleLanguage} from "./bundle";
+import {CodeLanguage} from "./language";
 
 // export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' | 'c++';
 
@@ -10,6 +11,7 @@ export interface ReduxFile extends ServerObject {
   localId: string,
   path: string;
   bundleLanguage: BundleLanguage;
+  language: CodeLanguage,
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -27,6 +29,7 @@ export interface ReduxCreateFilePartial extends ServerObjectPartial {
   localId: string,
   path: string,
   bundleLanguage: BundleLanguage,
+  language: CodeLanguage,
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -44,6 +47,7 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   localId: string,
   path?: string,
   bundleLanguage?: BundleLanguage,
+  language?: CodeLanguage,
   content?: string|null;
   contentSynced?: boolean;
   localFile?: File;
@@ -63,6 +67,7 @@ export interface ReduxSaveFilePartial {
   pkid?:string;
   file?: File;
   bundleLanguage?: BundleLanguage,
+  language?: CodeLanguage,
   content?: string;
   path?: string;
   is_entry_point?: boolean;
