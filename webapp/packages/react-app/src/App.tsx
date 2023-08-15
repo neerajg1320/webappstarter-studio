@@ -13,11 +13,7 @@ const App = () => {
   }
 
   const {authenticateUser} = useActions();
-  const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated)
-
-  // Here we should add use login as well
-  const { fetchProjectsAndFiles } = useActions();
-
+  
   useEffect(() => {
     if (debugComponent) {
       console.log('App: first render');
@@ -34,13 +30,6 @@ const App = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     fetchProjectsAndFiles();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isAuthenticated]);
 
   return (
     <AppRouterWrapper />
