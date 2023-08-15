@@ -31,7 +31,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
       updateProject({localId:reduxFile.projectLocalId, bundleLocalId: reduxFile.localId});
     }
 
-    createCellBundle(reduxFile.localId, reduxFile.content, reduxFile.language);
+    createCellBundle(reduxFile.localId, reduxFile.content, reduxFile.bundleLanguage);
   }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {

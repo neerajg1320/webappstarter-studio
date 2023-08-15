@@ -19,12 +19,12 @@ export const getESBuildService = async (): Promise<esbuild.Service> => {
   return service;
 }
 
-export const bundleCodeStr = async(rawCode: string, language: BundleLanguage) => {
-  return bundleCode(rawCode, 'cell', language);
+export const bundleCodeStr = async(rawCode: string, bundleLanguage: BundleLanguage) => {
+  return bundleCode(rawCode, 'cell', bundleLanguage);
 }
 
-export const bundleFilePath =  async(filePath: string, language: BundleLanguage) => {
-  return bundleCode(filePath, 'project', language);
+export const bundleFilePath =  async(filePath: string, bundleLanguage: BundleLanguage) => {
+  return bundleCode(filePath, 'project', bundleLanguage);
 }
 
 // The bundleCodeStr takes a string as input.

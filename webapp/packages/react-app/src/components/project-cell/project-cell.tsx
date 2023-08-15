@@ -140,15 +140,15 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
       // We have used entry_path as it is the path on the server that matters!
-      const language = pathToBundleLanguage(reduxProject.entry_path)
+      const bundleLanguage = pathToBundleLanguage(reduxProject.entry_path)
 
-      if (language !== BundleLanguage.UNKNOWN) {
+      if (bundleLanguage !== BundleLanguage.UNKNOWN) {
         if (currentUser) {
           // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
           createProjectBundle(
               reduxProject.localId,
               `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}/${reduxProject.entry_path}`,
-              language
+              bundleLanguage
           );
         }
       } else {
@@ -211,7 +211,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
 
                 <CodeEditor
                     initialValue={editedFile?.content || ""}
-                    language={editedFile?.language || BundleLanguage.UNKNOWN}
+                    language={editedFile?.bundleLanguage || BundleLanguage.UNKNOWN}
                     onChange={handleEditorChange}
                     disabled={!editedFile}
                 />

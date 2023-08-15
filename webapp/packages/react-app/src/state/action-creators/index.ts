@@ -88,7 +88,7 @@ export const insertCellAfter = (id: string | null, cellType: CellTypes): InsertC
   }
 };
 
-export const createCellBundle = (cellId:string, input:string, language: BundleLanguage) => {
+export const createCellBundle = (cellId:string, input:string, bundleLanguage: BundleLanguage) => {
   return async (dispatch:Dispatch<Action>) => {
       dispatch({
           type: ActionType.CELL_BUNDLE_START,
@@ -97,7 +97,7 @@ export const createCellBundle = (cellId:string, input:string, language: BundleLa
           }
       });
 
-      const result = await bundleCodeStr(input, language);
+      const result = await bundleCodeStr(input, bundleLanguage);
 
       dispatch({
           type: ActionType.CELL_BUNDLE_COMPLETE,
@@ -110,7 +110,7 @@ export const createCellBundle = (cellId:string, input:string, language: BundleLa
 }
 
 
-export const createProjectBundle = (projectLocalId:string, input:string, language: BundleLanguage) => {
+export const createProjectBundle = (projectLocalId:string, input:string, bundleLanguage: BundleLanguage) => {
     return async (dispatch:Dispatch<Action>) => {
         dispatch({
             type: ActionType.PROJECT_BUNDLE_START,
@@ -119,7 +119,7 @@ export const createProjectBundle = (projectLocalId:string, input:string, languag
             }
         });
 
-        const result = await bundleFilePath(input, language);
+        const result = await bundleFilePath(input, bundleLanguage);
   
         dispatch({
             type: ActionType.PROJECT_BUNDLE_COMPLETE,
@@ -468,7 +468,7 @@ export const fetchFiles = () => {
         if (file.project) {
           file.projectLocalId = projectsPkidToLocalIdMap[file.project]
           file.isEntryPoint = file.is_entry_point;
-          file.language = pathToBundleLanguage(file.path);
+          file.bundleLanguage = pathToBundleLanguage(file.path);
 
           dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
@@ -621,7 +621,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
     const formData = new FormData();
     formData.append("path", fileCreatePartial.path || '');
     formData.append("file", fileCreatePartial.localFile!);
-    formData.append("language", fileCreatePartial.language);
+    // formData.append("language", fileCreatePartial.bundleLanguage);
     formData.append("is_entry_point", fileCreatePartial.isEntryPoint! as unknown as string);
 
     if (fileCreatePartial.projectLocalId) {
@@ -691,9 +691,9 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
     if (Object.keys(saveFilePartial).includes('file')) {
       formData.append("file", saveFilePartial.file!);
     }
-    if (Object.keys(saveFilePartial).includes('language')) {
-      formData.append("language", saveFilePartial.language!);
-    }
+    // if (Object.keys(saveFilePartial).includes('language')) {
+    //   formData.append("language", saveFilePartial.bundleLanguage!);
+    // }
     if (Object.keys(saveFilePartial).includes('is_entry_point')) {
       formData.append("is_entry_point", saveFilePartial.is_entry_point! as unknown as string);
     }

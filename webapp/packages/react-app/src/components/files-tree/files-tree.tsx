@@ -93,12 +93,12 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     // } else {
     //   language = BundleLanguage.UNKNOWN;
     // }
-    const language = pathToBundleLanguage(value);
+    const bundleLanguage = pathToBundleLanguage(value);
 
     if (debugComponent || true) {
-      console.log(`${localId}: value=${value} language=${language}`);
+      console.log(`${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
-    updateFile({localId, path:value, language});
+    updateFile({localId, path:value, bundleLanguage});
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -144,7 +144,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         createFile({
           localId: fileLocalId,
           path: ensureTrailingSlash(newFilePath),
-          language: BundleLanguage.UNKNOWN,
+          bundleLanguage: BundleLanguage.UNKNOWN,
           content: '',
           contentSynced: false,
           projectLocalId: reduxProject.localId,
@@ -169,7 +169,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           createFile({
             localId: newFileLocalId,
             path: newPath,
-            language: origFile.language,
+            bundleLanguage: origFile.bundleLanguage,
             content: origFile.content,
             contentSynced: false,
             projectLocalId: reduxProject.localId,

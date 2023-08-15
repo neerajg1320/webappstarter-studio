@@ -57,7 +57,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
         if (action.type === ActionType.UPDATE_FILE) {
           // The middleware take the responsibility of syncing
           // console.log(`middleware: `, action.payload)
-          const {localId, path, content, language, isEntryPoint} = action.payload;
+          const {localId, path, content, bundleLanguage, isEntryPoint} = action.payload;
           const fileState = getState().files.data[localId];
 
           if (debugRedux) {
@@ -78,8 +78,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           if (Object.keys(action.payload).includes('path')) {
             saveFilePartial['path']= path;
           }
-          if (Object.keys(action.payload).includes('language')) {
-            saveFilePartial['language']= language;
+          if (Object.keys(action.payload).includes('bundleLanguage')) {
+            saveFilePartial['bundleLanguage']= bundleLanguage;
           }
           if (Object.keys(action.payload).includes('isEntryPoint')) {
             saveFilePartial['is_entry_point']= isEntryPoint;

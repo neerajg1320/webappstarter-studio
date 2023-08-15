@@ -9,7 +9,7 @@ export interface ReduxFile extends ServerObject {
   reduxType: 'file',
   localId: string,
   path: string;
-  language: BundleLanguage;
+  bundleLanguage: BundleLanguage;
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -26,7 +26,7 @@ export interface ReduxFile extends ServerObject {
 export interface ReduxCreateFilePartial extends ServerObjectPartial {
   localId: string,
   path: string,
-  language: BundleLanguage,
+  bundleLanguage: BundleLanguage,
   content: string|null;
   contentSynced: boolean;
   localFile?: File;
@@ -43,7 +43,7 @@ export interface ReduxCreateFilePartial extends ServerObjectPartial {
 export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   localId: string,
   path?: string,
-  language?: BundleLanguage,
+  bundleLanguage?: BundleLanguage,
   content?: string|null;
   contentSynced?: boolean;
   localFile?: File;
@@ -62,7 +62,7 @@ export interface ReduxSaveFilePartial {
   localId: string;
   pkid?:string;
   file?: File;
-  language?: BundleLanguage,
+  bundleLanguage?: BundleLanguage,
   content?: string;
   path?: string;
   is_entry_point?: boolean;
