@@ -38,7 +38,7 @@ const ProjectPlayground:React.FC = () => {
           title: '',
           description: '',
           framework: ProjectFrameworks.REACTJS,
-          toolchain: ReactToolchains.CRA
+          toolchain: ReactToolchains.CREATE_REACT_APP
         });
         // navigate(RoutePath.PROJECT_NEW);
       }
