@@ -40,7 +40,7 @@ export const debugComponent = false;
 export const debugProject = false;
 
 // Auth Component
-export const debugAuth = false;
+export const debugAuth = true;
 export const autoReauthenticateUser = true;
 export const authOnAppStart = false;
 

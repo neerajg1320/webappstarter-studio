@@ -3,6 +3,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
+import {debugAuth} from "../../config/global";
 
 interface LoginUser {
   email: string;
@@ -44,6 +45,9 @@ const UserLogin = () => {
   }, [isAuthenticated]);
 
   const handleLoginClick = () => {
+    if (debugAuth) {
+      console.log(`Login click`);
+    }
     if (user.email) {
       authenticateUser(user.email, user.password);
     } else {
@@ -96,6 +100,17 @@ const UserLogin = () => {
               Cancel
             </button>
           </div>
+          {/* Status section */}
+          {/*{registerState.isRegistering &&*/}
+          {/*    <div>Registering User ...</div>*/}
+          {/*}*/}
+          {/*{registerState.requestComplete &&*/}
+          {/*    (registerState.err ?*/}
+          {/*            <span>{registerState.err}</span>*/}
+          {/*            :*/}
+          {/*            <div>{registerState.msg}</div>*/}
+          {/*    )*/}
+          {/*}*/}
         </div>
       </div>
   );

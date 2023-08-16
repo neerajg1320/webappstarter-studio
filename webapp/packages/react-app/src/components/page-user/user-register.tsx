@@ -139,10 +139,10 @@ const UserRegister = () => {
           </div>
 
           {/* Status section */}
-          {registerState.isRegistering &&
+          {registerState.requestStarted &&
               <div>Registering User ...</div>
           }
-          {registerState.requestComplete &&
+          {registerState.requestCompleted &&
             (registerState.err ?
               <span>{registerState.err}</span>
               :

@@ -4,16 +4,17 @@ import {Action} from "../actions";
 import {debugRedux} from "../../config/global";
 import {ReduxUser} from "../user";
 
-interface RegisterationState {
-  isRegistering: boolean;
-  requestComplete: boolean;
+interface FlowState {
+  requestStarted: boolean;
+  requestCompleted: boolean;
   msg: string|null;
   err: string|null;
 }
 
 interface AuthState {
-  register: RegisterationState;
-  authenticating: boolean;
+  register: FlowState;
+  login: FlowState;
+  // authenticating: boolean;
   isAuthenticated: boolean;
   jwtToken?: string|null;
   err?: string|null;
@@ -22,12 +23,18 @@ interface AuthState {
 
 const initialState: AuthState = {
   register: {
-    isRegistering: false,
-    requestComplete: false,
+    requestStarted: false,
+    requestCompleted: false,
     msg: null,
     err: null,
   },
-  authenticating: false,
+  login: {
+    requestStarted: false,
+    requestCompleted: false,
+    msg: null,
+    err: null,
+  },
+  // authenticating: false,
   isAuthenticated: false,
   jwtToken: null,
   err: null,
@@ -58,37 +65,37 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
 
   switch(action.type) {
     case ActionType.REGISTER_REQUEST_START:
-      state.register.isRegistering = true;
-      state.register.requestComplete = false;
+      state.register.requestStarted = true;
+      state.register.requestCompleted = false;
       state.register.msg = null;
       state.register.err = null;
       return state;
 
     case ActionType.REGISTER_REQUEST_SUCCESS:
-      state.register.isRegistering = false;
-      state.register.requestComplete = true;
+      state.register.requestStarted = false;
+      state.register.requestCompleted = true;
       state.register.msg = action.payload.msg.join(',\n');
       return state;
 
     case ActionType.REGISTER_REQUEST_FAILED:
-      state.register.isRegistering = false;
-      state.register.requestComplete = true;
+      state.register.requestStarted = false;
+      state.register.requestCompleted = true;
       state.register.err = action.payload.join(',\n');
       return state;
       
     case ActionType.LOGIN_REQUEST_START:
-      state.authenticating = true;
+      // state.authenticating = true;
       return state;
 
     case ActionType.LOGIN_REQUEST_SUCCESS:
-      state.authenticating = false;
+      // state.authenticating = false;
       state.isAuthenticated = true;
       state.jwtToken = action.payload.accessToken;
       state.currentUser = action.payload.user;
       return state;
 
     case ActionType.LOGIN_REQUEST_FAILED:
-      state.authenticating = false;
+      // state.authenticating = false;
       state.isAuthenticated = false;
       state.err = action.payload.join(',\n');
       return state;

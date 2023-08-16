@@ -921,9 +921,13 @@ export const authenticateUser = (email:string, password:string) => {
           saveAuthToLocalStorage(authInfo);
       } catch (err) {
         if (err instanceof AxiosError) {
-          console.error(`Error! login unsuccessful err:`, err);
+          if (debugRedux) {
+            console.error(`Error! login unsuccessful err:`, err);
+          }
           const errors = axiosErrorToErrorList(err);
-          console.error(`Error! login unsuccessful errors:`, errors);
+          if (debugRedux) {
+            console.error(`Error! login unsuccessful errors:`, errors);
+          }
           dispatch(registerRequestFailed([err.message]));
         }
       }
@@ -967,9 +971,13 @@ export const registerUser = (
           `/auth/registration/`,
           {email, password1, password2, first_name, last_name}
       );
-      console.log(`registerUser(): response:`, response);
+      if (debugRedux) {
+        console.log(`registerUser(): response:`, response);
+      }
       const messages = axiosResponseToStringList(response, false);
-      console.log(`registerUser(): messages:`, messages);
+      if (debugRedux) {
+        console.log(`registerUser(): messages:`, messages);
+      }
       dispatch(registerRequestSuccess(messages));
     } catch (err) {
       if (err instanceof AxiosError) {
