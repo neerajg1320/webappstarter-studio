@@ -44,9 +44,17 @@ const initialUser:RegisterUser = {
   last_name: 'Gupta'
 }
 
+const blankUser:RegisterUser = {
+  email: '',
+  password1: '',
+  password2: '',
+  first_name: '',
+  last_name: ''
+}
+
 const UserRegister = () => {
   const navigate = useNavigate();
-  const [user, dispatch] = useReducer(reducer, initialUser);
+  const [user, dispatch] = useReducer(reducer, blankUser);
   const { registerUser } = useActions();
   const registerState = useTypedSelector(state => state.auth.register);
 

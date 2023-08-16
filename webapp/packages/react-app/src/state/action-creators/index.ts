@@ -901,6 +901,8 @@ export const authenticateUser = (email:string, password:string) => {
       console.log(authInfo);
     }
 
+    let messages = ['Authentication Token from localStorage'];
+
     // If not found in storage then we authenticate with the server
     if (!authInfo) {
       dispatch(loginRequestStart(email, password));
@@ -919,19 +921,23 @@ export const authenticateUser = (email:string, password:string) => {
             last_name: user.last_name
           };
           authInfo = {accessToken: access_token, refreshToken: refresh_token, user: reduxUser};
-          const messages = axiosResponseToStringList(response, false);
-          dispatch(loginRequestSuccess(messages, authInfo));
+          messages = ['API authentication successful'];
+          if (debugRedux||true) {
+            console.error(`Login successful messages:`, messages);
+          }
+
+          // dispatch(loginRequestSuccess(messages, authInfo));
           saveAuthToLocalStorage(authInfo);
       } catch (err) {
         if (err instanceof AxiosError) {
-          if (debugRedux) {
+          if (debugRedux ||true) {
             console.error(`Error! login unsuccessful err:`, err);
           }
           const errors = axiosErrorToErrorList(err);
-          if (debugRedux) {
+          if (debugRedux||true) {
             console.error(`Error! login unsuccessful errors:`, errors);
           }
-          dispatch(registerRequestFailed([err.message]));
+          dispatch(loginRequestFailed(errors));
         }
       }
 
@@ -941,7 +947,7 @@ export const authenticateUser = (email:string, password:string) => {
     // What happens in a case token is there but it is expired
     // Set the Axios and redux storage after successful authentication
     if (authInfo) {
-      dispatch(loginRequestSuccess([], authInfo));
+      dispatch(loginRequestSuccess(messages, authInfo));
       setAxiosAuthToken(authInfo.accessToken);
     }
   };

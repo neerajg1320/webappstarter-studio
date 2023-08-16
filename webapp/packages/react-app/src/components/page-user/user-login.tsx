@@ -31,17 +31,28 @@ const initialUser:LoginUser = {
   password: 'Local123',
 }
 
+const blankUser:LoginUser = {
+  email: '',
+  password: '',
+}
+
 
 const UserLogin = () => {
   const navigate = useNavigate();
-  const [user, dispatch] = useReducer(reducer, initialUser);
+  const [user, dispatch] = useReducer(reducer, blankUser);
   const { authenticateUser } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const loginState = useTypedSelector(state => state.auth.login);
 
-  useEffect(() => {
+  useEffect( () => {
     if (isAuthenticated) {
-      navigate(RoutePath.LOGIN_SUCCESS);
+      // Created an IIFE (Immediately Invoked Function Expression) for adding delay after success.
+      // For debugging purpose
+      (async () => {
+        await setTimeout(() => {
+          navigate(RoutePath.LOGIN_SUCCESS);
+        }, 1000);
+      })();
     }
   }, [isAuthenticated]);
 
@@ -102,15 +113,17 @@ const UserLogin = () => {
             </button>
           </div>
           {/* Status section */}
-          {loginState.requestStarted &&
-              <div>Authenticating User ...</div>
+          {loginState.requestStarted && <div>Authenticating User ...</div>
           }
           {loginState.requestCompleted &&
-              (loginState.err ?
-                      <span>{loginState.err}</span>
-                      :
-                      <div>{loginState.msg}</div>
-              )
+              <>
+              <div>Authentication {isAuthenticated? 'Successful' : 'Failed'}</div>
+                {loginState.err ?
+                    <span>{loginState.err}</span>
+                    :
+                    <div>{loginState.msg}</div>
+                }
+              </>
           }
         </div>
       </div>
