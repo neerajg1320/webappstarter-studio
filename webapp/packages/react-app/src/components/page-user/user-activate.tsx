@@ -2,6 +2,7 @@ import React from "react";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate, useParams} from "react-router-dom";
 import {RoutePath} from "../routes";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 
 const UserActivate = () => {
@@ -9,6 +10,7 @@ const UserActivate = () => {
   const navigate = useNavigate();
   const { activateUser } = useActions();
   const { key } = useParams();
+  const activateState = useTypedSelector(state => state.auth.activate);
 
   console.log(`UserActivate:render key=`, key);
 
@@ -55,6 +57,17 @@ const UserActivate = () => {
               Cancel
             </button>
           </div>
+          {/* Status section */}
+          {activateState.requestStarted &&
+              <div>Activating User ...</div>
+          }
+          {activateState.requestCompleted &&
+              (activateState.err ?
+                      <span>{activateState.err}</span>
+                      :
+                      <div>{activateState.msg}</div>
+              )
+          }
         </div>
       </div>
   );

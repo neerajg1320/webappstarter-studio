@@ -20,7 +20,7 @@ const reducer = (state:LoginUser, action: Action) => {
     case "EMAIL":
       return {...state, email: action.payload};
     case "PASSWORD":
-      return {...state, password1: action.payload};
+      return {...state, password: action.payload};
     default:
       return state;
   }

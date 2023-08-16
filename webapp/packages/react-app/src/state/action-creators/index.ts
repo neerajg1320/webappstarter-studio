@@ -9,6 +9,7 @@ import {
   Direction,
   InsertCellAfterAction,
   RegisterRequestFailedAction, RegisterRequestStartAction, RegisterRequestSuccessAction,
+  ActivateRequestFailedAction, ActivateRequestStartAction, ActivateRequestSuccessAction,
   LoginRequestFailedAction, LoginRequestStartAction, LoginRequestSuccessAction,
   LogoutRequestAction,
   MoveCellAction,
@@ -832,6 +833,30 @@ export const registerRequestFailed = (errors: string[]): RegisterRequestFailedAc
   };
 }
 
+export const activateRequestStart = (key:string): ActivateRequestStartAction => {
+  return {
+    type: ActionType.ACTIVATE_REQUEST_START,
+    payload: {
+      key
+    }
+  };
+}
+
+export const activateRequestSuccess = (messages:string[]): ActivateRequestSuccessAction => {
+  return {
+    type: ActionType.ACTIVATE_REQUEST_SUCCESS,
+    payload: {
+      msg: messages
+    }
+  };
+}
+
+export const activateRequestFailed = (errors: string[]): ActivateRequestFailedAction => {
+  return {
+    type: ActionType.ACTIVATE_REQUEST_FAILED,
+    payload: errors
+  };
+}
 
 export const loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
   return {
@@ -880,16 +905,33 @@ export const reAuthenticateUser = () => {
 
 export const activateUser = (key:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-      const {status, data} = await axiosApiInstance.post(`/auth/registration/verify-email/`, {key});
-      if (status === 200) {
-        const {refresh_token, access_token, user} = data;
-        if (debugAxios) {
+      dispatch(activateRequestStart(key));
+
+      try {
+        const response = await axiosApiInstance.post(`/auth/registration/verify-email/`, {key});
+
+        const {refresh_token, access_token, user} = response.data;
+        if (debugAxios || true) {
           console.log(refresh_token, access_token, user);
         }
-        console.log(`user activation successful`);
-      } else {
-        const {non_field_errors} = data;
-        dispatch(loginRequestFailed(non_field_errors));
+        const messages = [`user activation successful`];
+        console.log(messages);
+
+        dispatch(activateRequestSuccess(messages));
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          if (debugRedux ||true) {
+            console.error(`Error! activate unsuccessful err:`, err);
+          }
+          let errors = ['Activation Failed']
+          if (err.response) {
+            errors = axiosResponseToStringList(err.response);
+            if (debugRedux||true) {
+              console.error(`Error! activate unsuccessful errors:`, errors);
+            }
+          }
+          dispatch(activateRequestFailed(errors));
+        }
       }
   };
 }

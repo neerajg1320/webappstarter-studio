@@ -188,6 +188,25 @@ export interface RegisterRequestFailedAction {
   payload: string[]
 }
 
+export interface ActivateRequestStartAction {
+  type: ActionType.ACTIVATE_REQUEST_START
+  payload: {
+    key: string
+  }
+}
+
+export interface ActivateRequestSuccessAction {
+  type: ActionType.ACTIVATE_REQUEST_SUCCESS
+  payload: {
+    msg: string[]
+  }
+}
+
+export interface ActivateRequestFailedAction {
+  type: ActionType.ACTIVATE_REQUEST_FAILED,
+  payload: string[]
+}
+
 export interface LoginRequestStartAction {
   type: ActionType.LOGIN_REQUEST_START
   payload: {
@@ -248,7 +267,10 @@ export type Action =
     | FetchFilesErrorAction
     | RegisterRequestStartAction
     | RegisterRequestSuccessAction
-    | RegisterRequestFailedAction    
+    | RegisterRequestFailedAction
+    | ActivateRequestStartAction
+    | ActivateRequestSuccessAction
+    | ActivateRequestFailedAction
     | LoginRequestStartAction
     | LoginRequestSuccessAction
     | LoginRequestFailedAction

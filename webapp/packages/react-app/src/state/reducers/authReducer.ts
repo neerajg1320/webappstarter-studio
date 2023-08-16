@@ -11,8 +11,16 @@ interface FlowState {
   err: string|null;
 }
 
+const initialFlowState = {
+  requestStarted: false,
+  requestCompleted: false,
+  msg: null,
+  err: null,
+};
+
 interface AuthState {
   register: FlowState;
+  activate: FlowState;
   login: FlowState;
   // authenticating: boolean;
   isAuthenticated: boolean;
@@ -23,18 +31,9 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  register: {
-    requestStarted: false,
-    requestCompleted: false,
-    msg: null,
-    err: null,
-  },
-  login: {
-    requestStarted: false,
-    requestCompleted: false,
-    msg: null,
-    err: null,
-  },
+  register: initialFlowState,
+  activate: initialFlowState,
+  login: initialFlowState,
   // authenticating: false,
   isAuthenticated: false,
   jwtToken: null,
@@ -56,6 +55,9 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
       ActionType.REGISTER_REQUEST_START,
       ActionType.REGISTER_REQUEST_SUCCESS,
       ActionType.REGISTER_REQUEST_FAILED,
+      ActionType.ACTIVATE_REQUEST_START,
+      ActionType.ACTIVATE_REQUEST_SUCCESS,
+      ActionType.ACTIVATE_REQUEST_FAILED,
       ActionType.LOGIN_REQUEST_START,
       ActionType.LOGIN_REQUEST_SUCCESS,
       ActionType.LOGIN_REQUEST_FAILED,
@@ -84,6 +86,25 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
       state.register.requestCompleted = true;
       state.register.err = action.payload.join(',\n');
       return state;
+
+    case ActionType.ACTIVATE_REQUEST_START:
+      state.activate.requestStarted = true;
+      state.activate.requestCompleted = false;
+      state.activate.msg = null;
+      state.activate.err = null;
+      return state;
+
+    case ActionType.ACTIVATE_REQUEST_SUCCESS:
+      state.activate.requestStarted = false;
+      state.activate.requestCompleted = true;
+      state.activate.msg = action.payload.msg.join(',\n');
+      return state;
+
+    case ActionType.ACTIVATE_REQUEST_FAILED:
+      state.activate.requestStarted = false;
+      state.activate.requestCompleted = true;
+      state.activate.err = action.payload.join(',\n');
+      return state;      
       
     case ActionType.LOGIN_REQUEST_START:
       state.login.requestStarted = true;
