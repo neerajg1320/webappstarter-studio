@@ -904,34 +904,43 @@ export const authenticateUser = (email:string, password:string) => {
     if (!authInfo) {
       dispatch(loginRequestStart(email, password));
 
-      const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
-      if (status === 200) {
-        const {refresh_token, access_token, user} = data;
-        if (debugAxios) {
-          console.log(refresh_token, access_token, user);
+      try {
+        const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
+        if (status === 200) {
+          const {refresh_token, access_token, user} = data;
+          if (debugAxios) {
+            console.log(refresh_token, access_token, user);
+          }
+
+          const reduxUser: ReduxUser = {
+            pkid: user.pk,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name
+          };
+          authInfo = {accessToken: access_token, refreshToken: refresh_token, user: reduxUser};
+
+          dispatch(loginRequestSuccess(authInfo));
+          saveAuthToLocalStorage(authInfo);
+        } else {
+          const {non_field_errors} = data;
+          dispatch(loginRequestFailed(non_field_errors));
         }
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          console.error(`Error! login unsuccessful err:`, err);
+          const errors = axiosErrorToErrorList(err);
+          console.error(`Error! login unsuccessful errors:`, errors);
+          dispatch(registerRequestFailed([err.message]));
+        }
+      }
 
-        const reduxUser:ReduxUser = {
-          pkid: user.pk,
-          email: user.email,
-          first_name: user.first_name,
-          last_name: user.last_name
-        };
-        authInfo = {accessToken:access_token, refreshToken:refresh_token, user: reduxUser};
-
+      // Set the Axios and redux storage after successful authentication
+      if (authInfo) {
         dispatch(loginRequestSuccess(authInfo));
-        saveAuthToLocalStorage(authInfo);
-      } else {
-        const {non_field_errors} = data;
-        dispatch(loginRequestFailed(non_field_errors));
+        setAxiosAuthToken(authInfo.accessToken);
       }
     }
-
-    // Set the Axios and redux storage after successful authentication
-    if (authInfo) {
-      dispatch(loginRequestSuccess(authInfo));
-      setAxiosAuthToken(authInfo.accessToken);
-    } 
   };
 }
 
@@ -972,8 +981,8 @@ export const registerUser = (
       dispatch(registerRequestSuccess('ok'))
     } catch (err) {
       if (err instanceof AxiosError) {
-        console.error(`Error! registration unsuccessful err.message:`, err);
-        const errors = axiosErrorToErrorList(err);
+        console.error(`Error! registration unsuccessful err:`, err);
+        const errors = axiosErrorToErrorList(err, true);
         console.error(`Error! registration unsuccessful errors:`, errors);
         dispatch(registerRequestFailed([err.message]));
       }
