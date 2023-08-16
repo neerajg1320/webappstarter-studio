@@ -932,11 +932,14 @@ export const authenticateUser = (email:string, password:string) => {
         }
       }
 
-      // Set the Axios and redux storage after successful authentication
-      if (authInfo) {
-        dispatch(loginRequestSuccess(authInfo));
-        setAxiosAuthToken(authInfo.accessToken);
-      }
+    }
+
+    // Need to watch if this can be better placed.
+    // What happens in a case token is there but it is expired
+    // Set the Axios and redux storage after successful authentication
+    if (authInfo) {
+      dispatch(loginRequestSuccess(authInfo));
+      setAxiosAuthToken(authInfo.accessToken);
     }
   };
 }
