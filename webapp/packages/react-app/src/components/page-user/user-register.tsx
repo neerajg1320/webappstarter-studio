@@ -50,7 +50,7 @@ const UserRegister = () => {
 
   const handleRegisterClick = () => {
     if (user.email) {
-      registerUser(user.email, user.password1, user.password2, user.first_name, user.last_name);
+      registerUser(user.email, user.password1, user.password2, user.first_name, user.last_name)
     } else {
       console.error(`Error! currentUser not defined in redux`);
     }

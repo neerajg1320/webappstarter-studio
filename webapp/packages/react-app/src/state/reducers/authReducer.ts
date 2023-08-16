@@ -30,6 +30,9 @@ const initialState: AuthState = {
 const reducer = produce((state:AuthState = initialState, action: Action): AuthState => {
   if (debugRedux) {
     if ([
+      ActionType.REGISTER_REQUEST_START,
+      ActionType.REGISTER_REQUEST_SUCCESS,
+      ActionType.REGISTER_REQUEST_FAILED,
       ActionType.LOGIN_REQUEST_START,
       ActionType.LOGIN_REQUEST_SUCCESS,
       ActionType.LOGIN_REQUEST_FAILED,
@@ -40,6 +43,16 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
   }
 
   switch(action.type) {
+    case ActionType.REGISTER_REQUEST_START:
+      return state;
+
+    case ActionType.REGISTER_REQUEST_SUCCESS:
+      return state;
+
+    case ActionType.REGISTER_REQUEST_FAILED:
+      state.err = action.payload.non_field_errors.join(',\n');
+      return state;
+      
     case ActionType.LOGIN_REQUEST_START:
       state.authenticating = true;
       return state;

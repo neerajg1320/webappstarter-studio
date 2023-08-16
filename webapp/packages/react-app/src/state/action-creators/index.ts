@@ -7,8 +7,10 @@ import {
   DeleteFileAction,
   DeleteProjectAction,
   Direction,
-  InsertCellAfterAction, LoginRequestFailedAction,
-  LoginRequestStartAction, LoginRequestSuccessAction, LogoutRequestAction,
+  InsertCellAfterAction,
+  RegisterRequestFailedAction, RegisterRequestStartAction, RegisterRequestSuccessAction,
+  LoginRequestFailedAction, LoginRequestStartAction, LoginRequestSuccessAction,
+  LogoutRequestAction,
   MoveCellAction,
   SetCurrentProjectAction,
   UpdateCellAction,
@@ -45,9 +47,10 @@ import {
   saveAuthToLocalStorage
 } from "../../local-storage/local-storage";
 import {AuthInfo} from "../auth";
-import {AxiosHeaders} from "axios";
+import {AxiosError, AxiosHeaders} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
+import {axiosErrorToErrorList} from "../../api/api";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -803,6 +806,33 @@ export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDelete
   }
 }
 
+export const registerRequestStart = (email:string, password:string): RegisterRequestStartAction => {
+  return {
+    type: ActionType.REGISTER_REQUEST_START,
+    payload: {
+      email,
+      password
+    }
+  };
+}
+
+export const registerRequestSuccess = (message:string): RegisterRequestSuccessAction => {
+  return {
+    type: ActionType.REGISTER_REQUEST_SUCCESS,
+    payload: message
+  };
+}
+
+export const registerRequestFailed = (errors: string[]): RegisterRequestFailedAction => {
+  return {
+    type: ActionType.REGISTER_REQUEST_FAILED,
+    payload: {
+      non_field_errors: errors
+    }
+  };
+}
+
+
 export const loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
   return {
     type: ActionType.LOGIN_REQUEST_START,
@@ -929,20 +959,23 @@ export const registerUser = (
 ) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
-      const {status} = await axiosApiInstance.post(
+      dispatch(registerRequestStart(email, password1));
+
+      const response = await axiosApiInstance.post(
           `/auth/registration/`,
           {email, password1, password2, first_name, last_name}
       );
-      if (status !== 201) {
-        console.error(`Error! status=${status}`);
+      if (response.status !== 201) {
+        console.error(`Error! status=${response}`);
       }
+      console.log(`registerUser(): response:`, response);
+      dispatch(registerRequestSuccess('ok'))
     } catch (err) {
-      if (err instanceof Error) {
-        console.error(`Error! ${err.message}`);
-        // dispatch({
-        //   type: ActionType.SAVE_CELLS_ERROR,
-        //   payload: err.message
-        // });
+      if (err instanceof AxiosError) {
+        console.error(`Error! registration unsuccessful err.message:`, err);
+        const errors = axiosErrorToErrorList(err);
+        console.error(`Error! registration unsuccessful errors:`, errors);
+        dispatch(registerRequestFailed([err.message]));
       }
     }
   }

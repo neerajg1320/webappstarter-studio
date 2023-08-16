@@ -167,6 +167,26 @@ export interface FetchFilesErrorAction {
   payload: string
 }
 
+export interface RegisterRequestStartAction {
+  type: ActionType.REGISTER_REQUEST_START
+  payload: {
+    email: string,
+    password: string
+  }
+}
+
+export interface RegisterRequestSuccessAction {
+  type: ActionType.REGISTER_REQUEST_SUCCESS
+  payload: string
+}
+
+export interface RegisterRequestFailedAction {
+  type: ActionType.REGISTER_REQUEST_FAILED,
+  payload: {
+    non_field_errors: string[]
+  }
+}
+
 export interface LoginRequestStartAction {
   type: ActionType.LOGIN_REQUEST_START
   payload: {
@@ -228,6 +248,9 @@ export type Action =
     | DeleteFileAction
     | FetchFilesCompleteAction
     | FetchFilesErrorAction
+    | RegisterRequestStartAction
+    | RegisterRequestSuccessAction
+    | RegisterRequestFailedAction    
     | LoginRequestStartAction
     | LoginRequestSuccessAction
     | LoginRequestFailedAction

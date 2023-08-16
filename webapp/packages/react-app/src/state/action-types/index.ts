@@ -33,6 +33,9 @@ export enum ActionType {
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
 
+  REGISTER_REQUEST_START = 'register_request_start',
+  REGISTER_REQUEST_SUCCESS = 'register_request_completed',
+  REGISTER_REQUEST_FAILED = 'register_request_failed',
   LOGIN_REQUEST_START = 'login_request_start',
   LOGIN_REQUEST_SUCCESS = 'login_request_completed',
   LOGIN_REQUEST_FAILED = 'login_request_failed',
