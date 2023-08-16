@@ -26,6 +26,10 @@ const UserActivate = () => {
     navigate(RoutePath.BACK);
   }
 
+  const handleLoginClick = () => {
+    navigate(RoutePath.USER_LOGIN, {replace:true});
+  }
+
   return (
       <div style={{
         padding: "20px",
@@ -43,19 +47,32 @@ const UserActivate = () => {
               <span>{key}</span>
             </div>
           </div>
+
           <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "40px"}}>
-            <button
-                className="button is-primary is-small"
-                onClick={handleActivateClick}
-            >
-              Activate
-            </button>
-            <button
+            {(!activateState.requestCompleted || activateState.err)?
+              <>
+                <button
+                    className="button is-primary is-small"
+                    onClick={handleActivateClick}
+                >
+                  Activate
+                </button>
+                <button
                 className="button is-family-secondary is-small"
                 onClick={() => {handleCancelClick()}}
-            >
-              Cancel
-            </button>
+                >
+                Cancel
+                </button>
+              </>
+                :
+              <button
+              className="button is-primary is-small"
+              onClick={handleLoginClick}
+              >
+                Login
+              </button>
+            }
+
           </div>
           {/* Status section */}
           {activateState.requestStarted &&
