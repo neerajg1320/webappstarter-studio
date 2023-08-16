@@ -177,14 +177,14 @@ export interface RegisterRequestStartAction {
 
 export interface RegisterRequestSuccessAction {
   type: ActionType.REGISTER_REQUEST_SUCCESS
-  payload: string
+  payload: {
+    msg: string[]
+  }
 }
 
 export interface RegisterRequestFailedAction {
   type: ActionType.REGISTER_REQUEST_FAILED,
-  payload: {
-    non_field_errors: string[]
-  }
+  payload: string[]
 }
 
 export interface LoginRequestStartAction {
@@ -206,9 +206,7 @@ export interface LoginRequestSuccessAction {
 
 export interface LoginRequestFailedAction {
   type: ActionType.LOGIN_REQUEST_FAILED,
-  payload: {
-    non_field_errors: string[]
-  }
+  payload: string[]
 }
 
 export interface LogoutRequestAction {

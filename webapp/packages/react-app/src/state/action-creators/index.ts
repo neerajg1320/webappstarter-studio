@@ -819,16 +819,16 @@ export const registerRequestStart = (email:string, password:string): RegisterReq
 export const registerRequestSuccess = (message:string): RegisterRequestSuccessAction => {
   return {
     type: ActionType.REGISTER_REQUEST_SUCCESS,
-    payload: message
+    payload: {
+      msg: [message]
+    }
   };
 }
 
 export const registerRequestFailed = (errors: string[]): RegisterRequestFailedAction => {
   return {
     type: ActionType.REGISTER_REQUEST_FAILED,
-    payload: {
-      non_field_errors: errors
-    }
+    payload: errors
   };
 }
 
@@ -853,9 +853,7 @@ export const loginRequestSuccess = (authInfo: AuthInfo): LoginRequestSuccessActi
 export const loginRequestFailed = (errors: string[]): LoginRequestFailedAction => {
   return {
     type: ActionType.LOGIN_REQUEST_FAILED,
-    payload: {
-      non_field_errors: errors
-    }
+    payload: errors
   };
 }
 
@@ -905,8 +903,7 @@ export const authenticateUser = (email:string, password:string) => {
       dispatch(loginRequestStart(email, password));
 
       try {
-        const {status, data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
-        if (status === 200) {
+        const {data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
           const {refresh_token, access_token, user} = data;
           if (debugAxios) {
             console.log(refresh_token, access_token, user);
@@ -922,15 +919,11 @@ export const authenticateUser = (email:string, password:string) => {
 
           dispatch(loginRequestSuccess(authInfo));
           saveAuthToLocalStorage(authInfo);
-        } else {
-          const {non_field_errors} = data;
-          dispatch(loginRequestFailed(non_field_errors));
-        }
       } catch (err) {
         if (err instanceof AxiosError) {
-          console.error(`Error! login unsuccessful err:`, err);
+          // console.error(`Error! login unsuccessful err:`, err);
           const errors = axiosErrorToErrorList(err);
-          console.error(`Error! login unsuccessful errors:`, errors);
+          // console.error(`Error! login unsuccessful errors:`, errors);
           dispatch(registerRequestFailed([err.message]));
         }
       }
@@ -974,16 +967,13 @@ export const registerUser = (
           `/auth/registration/`,
           {email, password1, password2, first_name, last_name}
       );
-      if (response.status !== 201) {
-        console.error(`Error! status=${response}`);
-      }
       console.log(`registerUser(): response:`, response);
       dispatch(registerRequestSuccess('ok'))
     } catch (err) {
       if (err instanceof AxiosError) {
-        console.error(`Error! registration unsuccessful err:`, err);
+        // console.error(`Error! registration unsuccessful err:`, err);
         const errors = axiosErrorToErrorList(err, true);
-        console.error(`Error! registration unsuccessful errors:`, errors);
+        // console.error(`Error! registration unsuccessful errors:`, errors);
         dispatch(registerRequestFailed([err.message]));
       }
     }

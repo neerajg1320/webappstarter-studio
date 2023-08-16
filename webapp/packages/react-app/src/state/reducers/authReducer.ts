@@ -4,7 +4,15 @@ import {Action} from "../actions";
 import {debugRedux} from "../../config/global";
 import {ReduxUser} from "../user";
 
+interface RegisterationState {
+  isRegistering: boolean;
+  requestComplete: boolean;
+  msg: string|null;
+  err: string|null;
+}
+
 interface AuthState {
+  register: RegisterationState;
   authenticating: boolean;
   isAuthenticated: boolean;
   jwtToken?: string|null;
@@ -13,6 +21,12 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
+  register: {
+    isRegistering: false,
+    requestComplete: false,
+    msg: null,
+    err: null,
+  },
   authenticating: false,
   isAuthenticated: false,
   jwtToken: null,
@@ -44,13 +58,22 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
 
   switch(action.type) {
     case ActionType.REGISTER_REQUEST_START:
+      state.register.isRegistering = true;
+      state.register.requestComplete = false;
+      state.register.msg = null;
+      state.register.err = null;
       return state;
 
     case ActionType.REGISTER_REQUEST_SUCCESS:
+      state.register.isRegistering = false;
+      state.register.requestComplete = true;
+      state.register.msg = action.payload.msg.join(',\n');
       return state;
 
     case ActionType.REGISTER_REQUEST_FAILED:
-      state.err = action.payload.non_field_errors.join(',\n');
+      state.register.isRegistering = false;
+      state.register.requestComplete = true;
+      state.register.err = action.payload.join(',\n');
       return state;
       
     case ActionType.LOGIN_REQUEST_START:
@@ -67,7 +90,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     case ActionType.LOGIN_REQUEST_FAILED:
       state.authenticating = false;
       state.isAuthenticated = false;
-      state.err = action.payload.non_field_errors.join(',\n');
+      state.err = action.payload.join(',\n');
       return state;
 
     case ActionType.LOGOUT_REQUEST:

@@ -1,8 +1,9 @@
 import './user.css';
-import React, {useReducer} from "react";
+import React, {useEffect, useReducer} from "react";
 import {useActions} from "../../hooks/use-actions";
 import {useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 interface RegisterUser {
   email: string;
@@ -47,6 +48,17 @@ const UserRegister = () => {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(reducer, initialUser);
   const { registerUser } = useActions();
+  const registerState = useTypedSelector(state => state.auth.register);
+
+  useEffect(() => {
+   console.log(`UserRegister:useState[]`);
+
+   return () => {
+     console.log(`UserRegister:destroyed`);
+   }
+  }, []);
+
+  console.log(`UserRegister:render registerState:`, registerState);
 
   const handleRegisterClick = () => {
     if (user.email) {
@@ -125,8 +137,19 @@ const UserRegister = () => {
               Cancel
             </button>
           </div>
-        </div>
 
+          {/* Status section */}
+          {registerState.isRegistering &&
+              <div>Registering User ...</div>
+          }
+          {registerState.requestComplete &&
+            (registerState.err ?
+              <span>{registerState.err}</span>
+              :
+              <div>{registerState.msg}</div>
+            )
+          }
+        </div>
       </div>
   );
 }
