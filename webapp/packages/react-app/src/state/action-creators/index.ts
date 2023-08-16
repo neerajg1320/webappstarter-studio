@@ -50,7 +50,7 @@ import {AuthInfo} from "../auth";
 import {AxiosError, AxiosHeaders} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
-import {axiosErrorToErrorList} from "../../api/api";
+import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -816,11 +816,11 @@ export const registerRequestStart = (email:string, password:string): RegisterReq
   };
 }
 
-export const registerRequestSuccess = (message:string): RegisterRequestSuccessAction => {
+export const registerRequestSuccess = (messages:string[]): RegisterRequestSuccessAction => {
   return {
     type: ActionType.REGISTER_REQUEST_SUCCESS,
     payload: {
-      msg: [message]
+      msg: messages
     }
   };
 }
@@ -921,9 +921,9 @@ export const authenticateUser = (email:string, password:string) => {
           saveAuthToLocalStorage(authInfo);
       } catch (err) {
         if (err instanceof AxiosError) {
-          // console.error(`Error! login unsuccessful err:`, err);
+          console.error(`Error! login unsuccessful err:`, err);
           const errors = axiosErrorToErrorList(err);
-          // console.error(`Error! login unsuccessful errors:`, errors);
+          console.error(`Error! login unsuccessful errors:`, errors);
           dispatch(registerRequestFailed([err.message]));
         }
       }
@@ -968,13 +968,19 @@ export const registerUser = (
           {email, password1, password2, first_name, last_name}
       );
       console.log(`registerUser(): response:`, response);
-      dispatch(registerRequestSuccess('ok'))
+      const messages = axiosResponseToStringList(response, false);
+      console.log(`registerUser(): messages:`, messages);
+      dispatch(registerRequestSuccess(messages));
     } catch (err) {
       if (err instanceof AxiosError) {
-        // console.error(`Error! registration unsuccessful err:`, err);
-        const errors = axiosErrorToErrorList(err, true);
-        // console.error(`Error! registration unsuccessful errors:`, errors);
-        dispatch(registerRequestFailed([err.message]));
+        if (debugRedux) {
+          console.error(`Error! registration unsuccessful err:`, err);
+        }
+        const errors = axiosErrorToErrorList(err, false);
+        if (debugRedux) {
+          console.error(`Error! registration unsuccessful errors:`, errors);
+        }
+        dispatch(registerRequestFailed(errors));
       }
     }
   }

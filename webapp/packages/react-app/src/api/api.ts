@@ -1,4 +1,4 @@
-import {AxiosError} from "axios";
+import {AxiosError, AxiosResponse} from "axios";
 
 export const axiosErrorToErrorList = (err:AxiosError<any,any>, showErrKey:boolean=false):string[] => {
   const errors = [];
@@ -11,3 +11,14 @@ export const axiosErrorToErrorList = (err:AxiosError<any,any>, showErrKey:boolea
 
   return errors;
 }
+
+export const axiosResponseToStringList = (response:AxiosResponse<any,any>, showErrKey:boolean=false):string[] => {
+  const messages = [];
+  for (const item in response.data) {
+    // console.log(item, err.response?.data[item]);
+    messages.push(`${showErrKey ? item+': ' : ''}${response.data[item]}`);
+  }
+
+  return messages;
+}
+
