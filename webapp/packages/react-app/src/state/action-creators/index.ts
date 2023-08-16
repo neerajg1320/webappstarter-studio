@@ -975,14 +975,16 @@ export const authenticateUser = (email:string, password:string) => {
           if (debugRedux ||true) {
             console.error(`Error! login unsuccessful err:`, err);
           }
-          const errors = axiosErrorToErrorList(err);
-          if (debugRedux||true) {
-            console.error(`Error! login unsuccessful errors:`, errors);
+          let errors = ['Authentication Failed']
+          if (err.response) {
+            errors = axiosResponseToStringList(err.response);
+            if (debugRedux || true) {
+              console.error(`Error! login unsuccessful errors:`, errors);
+            }
           }
           dispatch(loginRequestFailed(errors));
         }
       }
-
     }
 
     // Need to watch if this can be better placed.
