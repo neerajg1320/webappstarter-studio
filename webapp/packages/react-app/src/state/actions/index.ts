@@ -4,6 +4,7 @@ import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateP
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import * as buffer from "buffer";
+import {AuthInfo} from "../auth";
 
 export type Direction = 'up' | 'down';
 
@@ -198,9 +199,8 @@ export interface LoginRequestStartAction {
 export interface LoginRequestSuccessAction {
   type: ActionType.LOGIN_REQUEST_SUCCESS
   payload: {
-    accessToken: string,
-    refreshToken: string,
-    user: ReduxUser
+    msg: string[], // Kept to pass on any messages recived from API
+    authInfo: AuthInfo
   }
 }
 

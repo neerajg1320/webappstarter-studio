@@ -37,6 +37,7 @@ const UserLogin = () => {
   const [user, dispatch] = useReducer(reducer, initialUser);
   const { authenticateUser } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
+  const loginState = useTypedSelector(state => state.auth.login);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -101,16 +102,16 @@ const UserLogin = () => {
             </button>
           </div>
           {/* Status section */}
-          {/*{registerState.isRegistering &&*/}
-          {/*    <div>Registering User ...</div>*/}
-          {/*}*/}
-          {/*{registerState.requestComplete &&*/}
-          {/*    (registerState.err ?*/}
-          {/*            <span>{registerState.err}</span>*/}
-          {/*            :*/}
-          {/*            <div>{registerState.msg}</div>*/}
-          {/*    )*/}
-          {/*}*/}
+          {loginState.requestStarted &&
+              <div>Authenticating User ...</div>
+          }
+          {loginState.requestCompleted &&
+              (loginState.err ?
+                      <span>{loginState.err}</span>
+                      :
+                      <div>{loginState.msg}</div>
+              )
+          }
         </div>
       </div>
   );

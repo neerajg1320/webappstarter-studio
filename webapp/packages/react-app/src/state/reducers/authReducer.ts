@@ -17,6 +17,7 @@ interface AuthState {
   // authenticating: boolean;
   isAuthenticated: boolean;
   jwtToken?: string|null;
+  refreshToken?: string|null;
   err?: string|null;
   currentUser: ReduxUser|null;
 }
@@ -37,6 +38,7 @@ const initialState: AuthState = {
   // authenticating: false,
   isAuthenticated: false,
   jwtToken: null,
+  refreshToken: null,
   err: null,
   // The currentUser has been defined only to ease login easy during testing so that we do not have to type email, password everytime
   currentUser: {
@@ -84,17 +86,33 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
       return state;
       
     case ActionType.LOGIN_REQUEST_START:
-      // state.authenticating = true;
+      state.login.requestStarted = true;
+      state.login.requestCompleted = false;
+      state.login.msg = null;
+      state.login.err = null;
+
+      state.isAuthenticated = false;
+      state.jwtToken = null;
+      state.currentUser = null;
       return state;
 
     case ActionType.LOGIN_REQUEST_SUCCESS:
+      state.login.requestStarted = false;
+      state.login.requestCompleted = true;
+      state.login.msg = action.payload.msg.join(',\n');
+
       // state.authenticating = false;
       state.isAuthenticated = true;
-      state.jwtToken = action.payload.accessToken;
-      state.currentUser = action.payload.user;
+      state.jwtToken = action.payload.authInfo.accessToken;
+      state.refreshToken = action.payload.authInfo.refreshToken;
+      state.currentUser = action.payload.authInfo.user;
       return state;
 
     case ActionType.LOGIN_REQUEST_FAILED:
+      state.login.requestStarted = false;
+      state.login.requestCompleted = true;
+      state.login.err = action.payload.join(',\n');
+      
       // state.authenticating = false;
       state.isAuthenticated = false;
       state.err = action.payload.join(',\n');

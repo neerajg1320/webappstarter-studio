@@ -843,10 +843,13 @@ export const loginRequestStart = (email:string, password:string): LoginRequestSt
   };
 }
 
-export const loginRequestSuccess = (authInfo: AuthInfo): LoginRequestSuccessAction => {
+export const loginRequestSuccess = (messages:string[], authInfo: AuthInfo): LoginRequestSuccessAction => {
   return {
     type: ActionType.LOGIN_REQUEST_SUCCESS,
-    payload: authInfo
+    payload: {
+      msg: messages,
+      authInfo
+    }
   };
 }
 
@@ -903,8 +906,8 @@ export const authenticateUser = (email:string, password:string) => {
       dispatch(loginRequestStart(email, password));
 
       try {
-        const {data} = await axiosApiInstance.post(`/auth/login/`, {email, password});
-          const {refresh_token, access_token, user} = data;
+        const response = await axiosApiInstance.post(`/auth/login/`, {email, password});
+          const {refresh_token, access_token, user} = response.data;
           if (debugAxios) {
             console.log(refresh_token, access_token, user);
           }
@@ -916,8 +919,8 @@ export const authenticateUser = (email:string, password:string) => {
             last_name: user.last_name
           };
           authInfo = {accessToken: access_token, refreshToken: refresh_token, user: reduxUser};
-
-          dispatch(loginRequestSuccess(authInfo));
+          const messages = axiosResponseToStringList(response, false);
+          dispatch(loginRequestSuccess(messages, authInfo));
           saveAuthToLocalStorage(authInfo);
       } catch (err) {
         if (err instanceof AxiosError) {
@@ -938,7 +941,7 @@ export const authenticateUser = (email:string, password:string) => {
     // What happens in a case token is there but it is expired
     // Set the Axios and redux storage after successful authentication
     if (authInfo) {
-      dispatch(loginRequestSuccess(authInfo));
+      dispatch(loginRequestSuccess([], authInfo));
       setAxiosAuthToken(authInfo.accessToken);
     }
   };
