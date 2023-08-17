@@ -1,9 +1,10 @@
 import './user.css';
 import React, {useEffect, useReducer} from "react";
 import {useActions} from "../../hooks/use-actions";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {placeholderEmail} from "../../config/global";
 
 interface RegisterUser {
   email: string;
@@ -93,6 +94,7 @@ const UserRegister = () => {
             <label>Email</label>
             <input
                 className="value"
+                placeholder={`${placeholderEmail}`}
                 type="text" value={user.email}
                 onChange={(e) => {dispatch({type: "EMAIL", payload: e.target.value});}}
             />
@@ -117,6 +119,7 @@ const UserRegister = () => {
             <label>First Name</label>
             <input
                 className="value"
+                placeholder="First Name"
                 type="text" value={user.first_name}
                 onChange={(e) => {dispatch({type: "FIRST_NAME", payload: e.target.value});}}
             />
@@ -125,6 +128,7 @@ const UserRegister = () => {
             <label>Last Name</label>
             <input
                 className="value"
+                placeholder="Last Name"
                 type="text" value={user.last_name}
                 onChange={(e) => {dispatch({type: "LAST_NAME", payload: e.target.value});}}
             />
@@ -146,9 +150,9 @@ const UserRegister = () => {
             </button>
           </div>
 
-          <div>
+          <Link to={RoutePath.USER_LOGIN} replace>
             Already registered? <span className="inverse-action">Login</span>
-          </div>
+          </Link>
 
           {/* Status section */}
           {registerState.requestStarted &&

@@ -1,9 +1,9 @@
 import React, {useEffect, useReducer} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
-import {debugAuth} from "../../config/global";
+import {debugAuth, placeholderEmail} from "../../config/global";
 
 interface LoginUser {
   email: string;
@@ -84,6 +84,7 @@ const UserLogin = () => {
             <label>Email</label>
             <input
                 className="value"
+                placeholder={`${placeholderEmail}`}
                 type="text" value={user.email}
                 onChange={(e) => {dispatch({type: "EMAIL", payload: e.target.value});}}
             />
@@ -113,9 +114,9 @@ const UserLogin = () => {
             </button>
           </div>
 
-          <div>
-            Not registered yet? <span className="inverse-action">Sign Up</span>
-          </div>
+          <Link to={RoutePath.USER_REGISTER} replace>
+            Not registered yet? <span className="inverse-action">Register</span>
+          </Link>
 
           {/* Status section */}
           {loginState.requestStarted && <div>Authenticating User ...</div>
