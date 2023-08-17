@@ -40,9 +40,11 @@ export const debugComponent = false;
 export const debugProject = false;
 
 // Auth Component
-export const debugAuth = true;
+export const debugAuth = false;
 export const autoReauthenticateUser = true;
-export const authOnAppStart = false;
+export const authOnAppStart = true;
 export const placeholderEmail = "user@abc.com";
-export const enableLocalStorageAuth = false;
+export const enableLocalStorageAuth = true;
+export const anonymousUserEmail = "anonymous@webappstarter.com";
+export const storeAnonymousToLocal = false;
 

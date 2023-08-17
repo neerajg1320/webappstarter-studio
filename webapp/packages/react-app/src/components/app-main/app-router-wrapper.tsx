@@ -1,5 +1,5 @@
-import React, {useCallback, useMemo, Suspense, lazy} from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import React, {useCallback, useMemo, Suspense, lazy, useEffect} from "react";
+import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -28,6 +28,7 @@ const AppRouterWrapper = () => {
   const {setCurrentProjectId} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (currentProjectId) {
       return projectsState.data[currentProjectId]
@@ -39,6 +40,7 @@ const AppRouterWrapper = () => {
     setCurrentProjectId(localId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   return (
       <BrowserRouter>

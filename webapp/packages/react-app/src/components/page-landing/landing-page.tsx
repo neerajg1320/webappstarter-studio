@@ -2,9 +2,18 @@ import './landing-page.css';
 import {useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
 import {debugComponent, serverStaticBaseUrl} from "../../config/global";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {useEffect} from "react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useTypedSelector(state => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(RoutePath.PROJECTS, {replace:true});
+    }
+  }, [isAuthenticated]);
 
   const handleRegisterClick = () => {
     if (debugComponent) {

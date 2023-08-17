@@ -12,7 +12,7 @@ const App = () => {
     console.log(`App: render`);
   }
 
-  const {authenticateUser} = useActions();
+  const {authenticateUserFromLocalStorage} = useActions();
   
   useEffect(() => {
     if (debugComponent) {
@@ -20,7 +20,7 @@ const App = () => {
     }
 
     if (authOnAppStart) {
-      authenticateUser('neeraj76@yahoo.com', 'Local123');
+      authenticateUserFromLocalStorage();
     }
 
     return () => {

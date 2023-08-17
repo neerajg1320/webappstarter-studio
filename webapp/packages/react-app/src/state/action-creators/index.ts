@@ -892,7 +892,7 @@ export const logoutRequestStart = (): LogoutRequestAction => {
   };
 }
 
-export const reAuthenticateUser = () => {
+export const reAuthenticateUserNotSupported = () => {
   console.log(`reAuthenticateUser(): Reauthenticating the user`)
 
   const authInfo:AuthInfo|null = fetchAuthFromLocalStorage();
@@ -900,7 +900,7 @@ export const reAuthenticateUser = () => {
     removeAuthFromLocalStorage();
   }
 
-  authenticateUser('neeraj76@yahoo.com', 'Local123');
+  // We need to use refreshToken here!
 }
 
 export const activateUser = (key:string) => {
@@ -936,70 +936,73 @@ export const activateUser = (key:string) => {
   };
 }
 
-export const authenticateUser = (email:string, password:string) => {
+export const authenticationSuccess = (authInfo:AuthInfo, messages:string[]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    let authInfo: AuthInfo | null = null;
-    let messages:string[] = [];
+    if (debugRedux) {
+      console.log(`Login successful messages:`, messages);
+    }
+    dispatch(loginRequestSuccess(messages, authInfo));
+    setAxiosAuthToken(authInfo.accessToken);
+  }
+}
 
+
+export const authenticateUserFromLocalStorage = () => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (enableLocalStorageAuth) {
-      authInfo = fetchAuthFromLocalStorage();
+      const authInfo = fetchAuthFromLocalStorage();
       if (debugAuth) {
         console.log(authInfo);
       }
       if (authInfo) {
-        messages = ['Authentication Token from localStorage'];
+        const messages = ['LocalStorage authInfo retrieved successfully'];
+        await authenticationSuccess(authInfo, messages)(dispatch, getState);
       }
     }
+  }
+}
 
 
-    // If not found in storage then we authenticate with the server
-    if (!authInfo) {
-      dispatch(loginRequestStart(email, password));
+export const authenticateUser = (email:string, password:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
 
-      try {
-        const response = await axiosApiInstance.post(`/auth/login/`, {email, password});
-          const {refresh_token, access_token, user} = response.data;
-          if (debugAxios) {
-            console.log(refresh_token, access_token, user);
-          }
+    dispatch(loginRequestStart(email, password));
 
-          const reduxUser: ReduxUser = {
-            pkid: user.pk,
-            email: user.email,
-            first_name: user.first_name,
-            last_name: user.last_name
-          };
-          authInfo = {accessToken: access_token, refreshToken: refresh_token, user: reduxUser};
-          messages = ['API authentication successful'];
-          if (debugRedux||true) {
-            console.error(`Login successful messages:`, messages);
-          }
+    try {
+      const response = await axiosApiInstance.post(`/auth/login/`, {email, password});
+      const {refresh_token, access_token, user} = response.data;
+      if (debugAxios) {
+        console.log(refresh_token, access_token, user);
+      }
 
-          // dispatch(loginRequestSuccess(messages, authInfo));
-          saveAuthToLocalStorage(authInfo);
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          if (debugRedux ||true) {
-            console.error(`Error! login unsuccessful err:`, err);
-          }
-          let errors = ['Authentication Failed']
-          if (err.response) {
-            errors = axiosResponseToStringList(err.response);
-            if (debugRedux || true) {
-              console.error(`Error! login unsuccessful errors:`, errors);
-            }
-          }
-          dispatch(loginRequestFailed(errors));
+      const reduxUser: ReduxUser = {
+        pkid: user.pk,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name
+      };
+      const authInfo = {accessToken: access_token, refreshToken: refresh_token, user: reduxUser};
+      const messages = ['API authentication successful'];
+
+      await authenticationSuccess(authInfo, messages)(dispatch, getState);
+
+      if (enableLocalStorageAuth) {
+        saveAuthToLocalStorage(authInfo);
+      }
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (debugRedux ||true) {
+          console.error(`Error! login unsuccessful err:`, err);
         }
+        let errors = ['Authentication Failed']
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux || true) {
+            console.error(`Error! login unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(loginRequestFailed(errors));
       }
-    }
-
-    // Need to watch if this can be better placed.
-    // What happens in a case token is there but it is expired
-    // Set the Axios and redux storage after successful authentication
-    if (authInfo) {
-      dispatch(loginRequestSuccess(messages, authInfo));
-      setAxiosAuthToken(authInfo.accessToken);
     }
   };
 }
