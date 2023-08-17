@@ -44,4 +44,5 @@ export const debugAuth = true;
 export const autoReauthenticateUser = true;
 export const authOnAppStart = false;
 export const placeholderEmail = "user@abc.com";
+export const enableLocalStorageAuth = false;
 

@@ -38,7 +38,7 @@ import {
   ReduxUpdateFilePartial
 } from "../file";
 import {randomIdGenerator} from "../id";
-import {debugAuth, debugAxios, debugRedux, serverApiBaseUrl} from "../../config/global";
+import {debugAuth, debugAxios, debugRedux, enableLocalStorageAuth, serverApiBaseUrl} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
@@ -938,12 +938,19 @@ export const activateUser = (key:string) => {
 
 export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    let authInfo:AuthInfo|null = fetchAuthFromLocalStorage();
-    if (debugAuth) {
-      console.log(authInfo);
+    let authInfo: AuthInfo | null = null;
+    let messages:string[] = [];
+
+    if (enableLocalStorageAuth) {
+      authInfo = fetchAuthFromLocalStorage();
+      if (debugAuth) {
+        console.log(authInfo);
+      }
+      if (authInfo) {
+        messages = ['Authentication Token from localStorage'];
+      }
     }
 
-    let messages = ['Authentication Token from localStorage'];
 
     // If not found in storage then we authenticate with the server
     if (!authInfo) {
