@@ -14,16 +14,8 @@ const AppNavBar = () => {
 
   const handleLogoutClick = () => {
     logoutUser();
-    navigate(RoutePath.ROOT);
+    navigate(RoutePath.ROOT, {replace: true});
   };
-
-  const handleLoginClick = () => {
-    navigate(RoutePath.USER_LOGIN);
-  }
-
-  const handleRegisterClick = () => {
-    navigate(RoutePath.USER_REGISTER);
-  }
 
   const handleBackClick = () => {
     if (debugComponent) {
@@ -35,40 +27,43 @@ const AppNavBar = () => {
     } else {
       navigate(RoutePath.BACK);
     }
+  }
 
+  const handleLogoClick = () => {
+    navigate(RoutePath.ROOT, {replace: true});
   }
 
   return (
       <nav className="navbar">
         <div  className="navbar-menu">
-
           <div className="navbar-start">
-            {
-                isAuthenticated &&
-                <>
-                  <div className="navbar-item has-dropdown is-hoverable">
-                    <div className="navbar-link">
-                      <Link to="/">Projects</Link>
-                    </div>
+            <div className="navbar-item" onClick={handleLogoClick}>
+              WebappStarter
+            </div>
+            {isAuthenticated &&
+              <>
+                <div className="navbar-item has-dropdown is-hoverable">
+                  <div className="navbar-link">
+                    <Link to="/">Projects</Link>
+                  </div>
 
-                    <div className="navbar-dropdown">
-                      <div className="navbar-item">
-                        Project 1
-                      </div>
-                      <div className="navbar-item">
-                        Project 2
-                      </div>
-                      <div className="navbar-item">
-                        Project 3
-                      </div>
+                  <div className="navbar-dropdown">
+                    <div className="navbar-item">
+                      Project 1
+                    </div>
+                    <div className="navbar-item">
+                      Project 2
+                    </div>
+                    <div className="navbar-item">
+                      Project 3
                     </div>
                   </div>
-                  <div className="navbar-item" onClick={handleBackClick}>
-                      Close
-                  </div>
-                </>
+                </div>
+                <div className="navbar-item" onClick={handleBackClick}>
+                  Close
+                </div>
+              </>
             }
-
           </div>
 
           <div className="navbar-end">

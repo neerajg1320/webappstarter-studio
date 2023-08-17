@@ -15,7 +15,8 @@ const AppRouterLandingLayout = () => {
 
   return (
       <div className="landing-page">
-        {(isAuthenticated && location.pathname !== RoutePath.ROOT) && <AppNavBar />}
+        {(location.pathname !== RoutePath.ROOT) && <AppNavBar />}
+        {/*<AppNavBar />*/}
         <div className="outlet">
           <Outlet />
         </div>
