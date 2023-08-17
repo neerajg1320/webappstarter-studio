@@ -78,7 +78,7 @@ const UserRegister = () => {
   }
 
   const handleCancelClick = () => {
-    navigate(RoutePath.BACK);
+    navigate(RoutePath.BACK, {replace:true});
   }
 
   return (
@@ -103,14 +103,16 @@ const UserRegister = () => {
             <label>Password</label>
             <input
                 className="value"
+                type="password"
                 value={user.password1}
                 onChange={(e) => {dispatch({type: "PASSWORD1", payload: e.target.value});}}
             />
           </div>
           <div className="user-value" style={{display: "flex"}}>
-            <label>Confirm Password</label>
+            <label>Confirm</label>
             <input
                 className="value"
+                type="password"
                 value={user.password2}
                 onChange={(e) => {dispatch({type: "PASSWORD2", payload: e.target.value});}}
             />

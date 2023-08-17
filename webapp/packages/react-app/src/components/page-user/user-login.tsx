@@ -68,7 +68,7 @@ const UserLogin = () => {
   }
 
   const handleCancelClick = () => {
-    navigate(RoutePath.BACK);
+    navigate(RoutePath.BACK, {replace:true});
   }
 
   return (
@@ -93,6 +93,7 @@ const UserLogin = () => {
             <label>Password</label>
             <input
                 className="value"
+                type="password"
                 value={user.password}
                 onChange={(e) => {dispatch({type: "PASSWORD", payload: e.target.value});}}
             />
