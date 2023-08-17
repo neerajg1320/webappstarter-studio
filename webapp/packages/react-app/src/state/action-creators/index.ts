@@ -937,7 +937,7 @@ export const activateUser = (key:string) => {
 }
 
 // We need to fix the flow in this now.
-// There are too many functions
+// There are too many functions. Also the resend email API doesn't return failure for non-existent emails
 export const resendActivationEmail = (email:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // dispatch(activateRequestStart(key));
