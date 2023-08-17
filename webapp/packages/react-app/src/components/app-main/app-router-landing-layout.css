@@ -1,7 +1,6 @@
 
 .landing-page {
-  border: 1px solid lightcyan;
-  /*margin: 0 20px;*/
+  /*border: 1px solid lightcyan;*/
   /* margin-top matters when nav-bar is visible */
   margin-top: 60px;
   height: calc(100vh - 60px);

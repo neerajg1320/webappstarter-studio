@@ -38,10 +38,13 @@ const AppNavBar = () => {
         <div  className="navbar-menu">
           <div className="navbar-start">
             <div className="navbar-item" onClick={handleLogoClick}>
-              WebappStarter
+              <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"10px"}}>
+                <img src="/logo192.png" alt="logo"/>
+                <span>WebappStarter</span>
+              </div>
             </div>
             {isAuthenticated &&
-              <>
+              <div style={{marginLeft: "40px", display: "flex", flexDirection:"row", alignItems:"center"}}>
                 <div className="navbar-item has-dropdown is-hoverable">
                   <div className="navbar-link">
                     <Link to="/">Projects</Link>
@@ -62,43 +65,32 @@ const AppNavBar = () => {
                 <div className="navbar-item" onClick={handleBackClick}>
                   Close
                 </div>
-              </>
+              </div>
             }
           </div>
 
           <div className="navbar-end">
-            {isAuthenticated ?
-                <div className="navbar-item has-dropdown is-hoverable">
-                  <div className="navbar-link">
-                    {currentUser?.first_name}
-                  </div>
+            {isAuthenticated &&
+              <div className="navbar-item has-dropdown is-hoverable">
+                <div className="navbar-link">
+                  {currentUser?.first_name}
+                </div>
 
-                  <div className="navbar-dropdown">
-                    <div className="navbar-item">
-                      Profile
-                    </div>
-                    <div className="navbar-item">
-                      Messages
-                    </div>
-                    <div className="navbar-item">
-                      Contact info
-                    </div>
-                    <div className="navbar-item" onClick={() => handleLogoutClick()}>
-                      Logout
-                    </div>
+                <div className="navbar-dropdown">
+                  <div className="navbar-item">
+                    Profile
+                  </div>
+                  <div className="navbar-item">
+                    Messages
+                  </div>
+                  <div className="navbar-item">
+                    Contact info
+                  </div>
+                  <div className="navbar-item" onClick={() => handleLogoutClick()}>
+                    Logout
                   </div>
                 </div>
-                :
-                <div className="navbar-item">
-                  {/*<div>*/}
-                  {/*  <div className="button is-family-secondary" onClick={() => handleLoginClick()}>*/}
-                  {/*    <strong>Login</strong>*/}
-                  {/*  </div>*/}
-                  {/*  <div className="button is-primary" onClick={() => handleRegisterClick()}>*/}
-                  {/*    <strong>Sign up</strong>*/}
-                  {/*  </div>*/}
-                  {/*</div>*/}
-                </div>
+              </div>
             }
           </div>
         </div>
