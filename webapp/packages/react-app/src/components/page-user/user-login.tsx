@@ -112,6 +112,11 @@ const UserLogin = () => {
               Cancel
             </button>
           </div>
+
+          <div>
+            Not registered yet? <span className="inverse-action">Sign Up</span>
+          </div>
+
           {/* Status section */}
           {loginState.requestStarted && <div>Authenticating User ...</div>
           }

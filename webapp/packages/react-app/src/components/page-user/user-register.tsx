@@ -130,7 +130,7 @@ const UserRegister = () => {
             />
           </div>
 
-          <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop:"40px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"40px"}}>
             <button
                 className="button is-primary is-small"
                 onClick={handleRegisterClick}
@@ -144,6 +144,10 @@ const UserRegister = () => {
             >
               Cancel
             </button>
+          </div>
+
+          <div>
+            Already registered? <span className="inverse-action">Login</span>
           </div>
 
           {/* Status section */}
