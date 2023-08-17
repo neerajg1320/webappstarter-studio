@@ -936,6 +936,36 @@ export const activateUser = (key:string) => {
   };
 }
 
+// We need to fix the flow in this now.
+// There are too many functions
+export const resendActivationEmail = (email:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    // dispatch(activateRequestStart(key));
+
+    try {
+      const response = await axiosApiInstance.post(`/auth/registration/resend-email/`, {email});
+
+      console.log(response);
+
+      // dispatch(activateRequestSuccess(messages));
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (debugRedux ||true) {
+          console.error(`Error! activate unsuccessful err:`, err);
+        }
+        let errors = ['Activation Failed']
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(activateRequestFailed(errors));
+      }
+    }
+  };
+}
+
 export const authenticationSuccess = (authInfo:AuthInfo, messages:string[]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {

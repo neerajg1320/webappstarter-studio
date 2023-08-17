@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from "react";
+import React, {useEffect, useMemo, useReducer} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 import {Link, useNavigate} from "react-router-dom";
@@ -40,9 +40,14 @@ const blankUser:LoginUser = {
 const UserLogin = () => {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(reducer, blankUser);
-  const { authenticateUser } = useActions();
+  const { authenticateUser, resendActivationEmail } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const loginState = useTypedSelector(state => state.auth.login);
+
+  // const errMsg = useMemo<string|null>(() => {
+  //   console.log(`errMsg: ${loginState.err}`)
+  //   return loginState.err;
+  // },  [loginState.err]);
 
   useEffect( () => {
     if (isAuthenticated) {
@@ -55,6 +60,7 @@ const UserLogin = () => {
       })();
     }
   }, [isAuthenticated]);
+
 
   const handleLoginClick = () => {
     if (debugAuth) {
@@ -69,6 +75,10 @@ const UserLogin = () => {
 
   const handleCancelClick = () => {
     navigate(RoutePath.BACK, {replace:true});
+  }
+
+  const handleResendActivationClick = () => {
+    resendActivationEmail(user.email);
   }
 
   return (
@@ -126,7 +136,13 @@ const UserLogin = () => {
               <>
               <div>Authentication {isAuthenticated? 'Successful' : 'Failed'}</div>
                 {loginState.err ?
-                    <span>{loginState.err}</span>
+                    <div>{loginState.err}
+                      {loginState.err === "E-mail is not verified." &&
+                        <span className="inverse-action" onClick={handleResendActivationClick} >
+                          Resend Activation
+                        </span>
+                      }
+                    </div>
                     :
                     <div>{loginState.msg}</div>
                 }
