@@ -27,7 +27,7 @@ const LandingPage = () => {
         <div className="brand-bar">
           <img className="logo-image" src={`${serverStaticBaseUrl}/landing/img/react-logo.png`} alt="Logo-Image"/>
           <div className="logo-text">
-            React Morph
+            WebappStarter Studio
           </div>
         </div>
         <div className="main-content">

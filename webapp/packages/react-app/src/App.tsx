@@ -4,7 +4,7 @@ import {useActions} from "./hooks/use-actions";
 import {useTypedSelector} from "./hooks/use-typed-selector";
 import {authOnAppStart, debugComponent} from "./config/global";
 
-import AppRouterWrapper from "./app-router-wrapper";
+import AppRouterWrapper from "./components/app-main/app-router-wrapper";
 
 
 const App = () => {

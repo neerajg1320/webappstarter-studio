@@ -1,11 +1,11 @@
-import './app-landing-layout.css';
+import './app-router-landing-layout.css';
 import {Outlet, useLocation} from "react-router-dom";
-import AppNavBar from "./components/app-main/app-nav-bar";
-import {useTypedSelector} from "./hooks/use-typed-selector";
-import {RoutePath} from "./components/routes";
-import {debugComponent} from "./config/global";
+import AppNavBar from "./app-nav-bar";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {RoutePath} from "../routes";
+import {debugComponent} from "../../config/global";
 
-const AppLandingLayout = () => {
+const AppRouterLandingLayout = () => {
   const location = useLocation();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
 
@@ -23,4 +23,4 @@ const AppLandingLayout = () => {
   );
 }
 
-export default AppLandingLayout;
+export default AppRouterLandingLayout;
