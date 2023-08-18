@@ -32,17 +32,17 @@ export enum ActionType {
 
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
-
+  
   REGISTER_REQUEST_START = 'register_request_start',
-  REGISTER_REQUEST_SUCCESS = 'register_request_completed',
+  REGISTER_REQUEST_SUCCESS = 'register_request_sucess',
   REGISTER_REQUEST_FAILED = 'register_request_failed',
 
   ACTIVATE_REQUEST_START = 'activate_request_start',
-  ACTIVATE_REQUEST_SUCCESS = 'activate_request_completed',
+  ACTIVATE_REQUEST_SUCCESS = 'activate_request_sucess',
   ACTIVATE_REQUEST_FAILED = 'activate_request_failed',
 
   LOGIN_REQUEST_START = 'login_request_start',
-  LOGIN_REQUEST_SUCCESS = 'login_request_completed',
+  LOGIN_REQUEST_SUCCESS = 'login_request_sucess',
   LOGIN_REQUEST_FAILED = 'login_request_failed',
 
   LOGOUT_REQUEST = 'logout_request',
