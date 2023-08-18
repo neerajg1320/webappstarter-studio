@@ -15,6 +15,7 @@ import UserActivate from "../page-user/user-activate";
 import ProtectedRoute from "../common/protected-route";
 import LoadingIndicator from "../common/loading-indicator";
 import ProjectPlayground from "../project-resource/project-playground";
+import UserPasswordResetConfirm from "../page-user/user-password-reset-confirm";
 
 // import ProjectListGrid from "./components/project-resource/project-list-grid";
 // import ProjectCell from "./components/project-cell/project-cell";
@@ -52,6 +53,7 @@ const AppRouterWrapper = () => {
             <Route path={RoutePath.USER_REGISTER} element={<UserRegister />} />
             <Route path={RoutePath.USER_LOGIN} element={<UserLogin />} />
             <Route path={`${RoutePath.USER_ACTIVATE}/:key`} element={<UserActivate />} />
+            <Route path={`${RoutePath.USER_PASSWORD_RESET_CONFIRM}/:uid/:token`} element={<UserPasswordResetConfirm />} />
 
             <Route path={RoutePath.PROJECTS}
                    element={

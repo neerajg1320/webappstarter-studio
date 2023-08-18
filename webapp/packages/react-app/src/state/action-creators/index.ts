@@ -903,6 +903,41 @@ export const reAuthenticateUserNotSupported = () => {
   // We need to use refreshToken here!
 }
 
+export const passwordResetConfirmUser = (uid:string, token:string, new_password1:string, new_password2:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    // dispatch(activateRequestStart(key));
+
+    try {
+      const response = await axiosApiInstance.post(
+          `/auth/password/reset/confirm/`,
+          {uid, token, new_password1, new_password2}
+      );
+
+      if (debugAxios || true) {
+        console.log(response.data);
+      }
+      const messages = [response.data.detail];
+      console.log(messages);
+
+      // dispatch(activateRequestSuccess(messages));
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (debugRedux ||true) {
+          console.error(`Error! activate unsuccessful err:`, err);
+        }
+        let errors = ['Activation Failed']
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        // dispatch(activateRequestFailed(errors));
+      }
+    }
+  };
+}
+
 export const activateUser = (key:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
       dispatch(activateRequestStart(key));
@@ -936,6 +971,7 @@ export const activateUser = (key:string) => {
   };
 }
 
+
 // We need to fix the flow in this now.
 // There are too many functions. Also the resend email API doesn't return failure for non-existent emails
 export const resendActivationEmail = (email:string) => {
@@ -965,6 +1001,7 @@ export const resendActivationEmail = (email:string) => {
     }
   };
 }
+
 
 export const authenticationSuccess = (authInfo:AuthInfo, messages:string[]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
