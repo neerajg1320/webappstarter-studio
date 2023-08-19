@@ -5,6 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {placeholderEmail} from "../../config/global";
+import UserFlowStatus from "./user-flow-status";
 
 interface RegisterUser {
   email: string;
@@ -57,7 +58,8 @@ const UserRegister = () => {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(reducer, blankUser);
   const { registerUser } = useActions();
-  const registerState = useTypedSelector(state => state.auth.register);
+  // const registerState = useTypedSelector(state => state.auth.register);
+  const apiState = useTypedSelector(state => state.auth.api);
 
   useEffect(() => {
    console.log(`UserRegister:useState[]`);
@@ -67,9 +69,9 @@ const UserRegister = () => {
    }
   }, []);
 
-  useEffect(() => {
-    console.log(`UserRegister:render registerState:`, registerState);
-  }, [registerState]);
+  // useEffect(() => {
+  //   console.log(`UserRegister:render registerState:`, registerState);
+  // }, [registerState]);
 
   const handleRegisterClick = () => {
     if (user.email) {
@@ -159,16 +161,17 @@ const UserRegister = () => {
           </Link>
 
           {/* Status section */}
-          {registerState.requestStarted &&
-              <div>Registering User ...</div>
-          }
-          {registerState.requestCompleted &&
-            (registerState.error ?
-              <span>{registerState.error}</span>
-              :
-              <div>{registerState.message}</div>
-            )
-          }
+          {/*{registerState.requestStarted &&*/}
+          {/*    <div>Registering User ...</div>*/}
+          {/*}*/}
+          {/*{registerState.requestCompleted &&*/}
+          {/*  (registerState.error ?*/}
+          {/*    <span>{registerState.error}</span>*/}
+          {/*    :*/}
+          {/*    <div>{registerState.message}</div>*/}
+          {/*  )*/}
+          {/*}*/}
+          <UserFlowStatus reqMsg="Registering User ..." email={user.email} flowState={apiState} />
         </div>
       </div>
   );

@@ -57,3 +57,11 @@ export interface UserRequestFailed {
   id: string,
   errors: string[]
 }
+
+export interface UserFlowState {
+  type: UserFlowType;
+  requestStarted: boolean;
+  requestCompleted: boolean;
+  message: string|null;
+  error: string|null;
+}

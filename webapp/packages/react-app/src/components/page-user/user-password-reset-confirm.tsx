@@ -36,7 +36,7 @@ const UserActivate = () => {
   const navigate = useNavigate();
   const { passwordResetConfirmUser } = useActions();
   const { uid, token } = useParams();
-  const activateState = useTypedSelector(state => state.auth.activate);
+  const apiState = useTypedSelector(state => state.auth.api);
 
   console.log(`UserActivate:render uid=${uid} token=${token}`);
 

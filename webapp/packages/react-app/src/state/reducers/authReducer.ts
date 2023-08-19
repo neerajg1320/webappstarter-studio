@@ -2,18 +2,11 @@ import produce from "immer";
 import {ActionType} from "../action-types";
 import {Action} from "../actions";
 import {debugRedux} from "../../config/global";
-import {ReduxUser} from "../user";
+import {UserFlowState, ReduxUser} from "../user";
 import {UserFlowType} from "../user";
 
-interface FlowState {
-  type: UserFlowType;
-  requestStarted: boolean;
-  requestCompleted: boolean;
-  message: string|null;
-  error: string|null;
-}
 
-type FlowStateMap = {[k:string]:FlowState};
+type FlowStateMap = {[k:string]:UserFlowState};
 type UserMap = {[k:string]: ReduxUser};
 
 interface AuthState {
@@ -21,21 +14,21 @@ interface AuthState {
 
   // Shortcuts for a cleaner access in UI components
   // This would work if there is only one request per flow type
-  register: FlowState;
-  login: FlowState;
-  userConfirm: FlowState; // userConfirm
-  resendConfirmationEmail: FlowState;
+  register: UserFlowState;
+  login: UserFlowState;
+  userConfirm: UserFlowState; // userConfirm
+  resendConfirmationEmail: UserFlowState;
 
-  passwordReset: FlowState;
-  passwordResetConfirm: FlowState;
-  passwordChange: FlowState;
+  passwordReset: UserFlowState;
+  passwordResetConfirm: UserFlowState;
+  passwordChange: UserFlowState;
 
-  updateUser: FlowState;
-  logoutUser: FlowState;
-  refreshAccessToken: FlowState;
+  updateUser: UserFlowState;
+  logoutUser: UserFlowState;
+  refreshAccessToken: UserFlowState;
 
   // Another shortcut to latest api call
-  api: FlowState;
+  api: UserFlowState;
 
   // We are keeping isAuthenticated as separate to keep things simplified
   isAuthenticated: boolean;
@@ -44,7 +37,7 @@ interface AuthState {
   currentUser: ReduxUser|null;
 }
 
-const initialFlowState:FlowState = {
+const initialFlowState:UserFlowState = {
   type: UserFlowType.UNKNOWN,
   requestStarted: false,
   requestCompleted: false,

@@ -4,6 +4,7 @@ import {useActions} from "../../hooks/use-actions";
 import {Link, useNavigate} from "react-router-dom";
 import {RoutePath} from "../routes";
 import {debugAuth, placeholderEmail} from "../../config/global";
+import UserFlowStatus from "./user-flow-status";
 
 interface LoginUser {
   email: string;
@@ -78,9 +79,7 @@ const UserLogin = () => {
     navigate(RoutePath.BACK, {replace:true});
   }
 
-  const handleResendActivationClick = () => {
-    resendActivationEmail(user.email);
-  }
+
 
   const handleForgotPasswordClick = () => {
     if (user.email) {
@@ -148,24 +147,7 @@ const UserLogin = () => {
           </Link>
 
           {/* Status section */}
-          {(apiState.requestStarted && !apiState.requestCompleted) && <div>Authenticating User ...</div>
-          }
-          {apiState.requestCompleted &&
-              <>
-              <div>Authentication {isAuthenticated? 'Successful' : 'Failed'}</div>
-                {apiState.error ?
-                    <div>{apiState.error}
-                      {apiState.error === "E-mail is not verified." &&
-                        <span className="inverse-action" onClick={handleResendActivationClick} >
-                          Resend Activation
-                        </span>
-                      }
-                    </div>
-                    :
-                    <div>{apiState.message}</div>
-                }
-              </>
-          }
+          <UserFlowStatus reqMsg="Authenticating User ..." email={user.email} flowState={apiState} />
         </div>
       </div>
   );
