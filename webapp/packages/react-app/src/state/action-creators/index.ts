@@ -1057,6 +1057,7 @@ export const authenticateUser = (email:string, password:string) => {
       const messages = ['API authentication successful'];
 
       await authenticationSuccess(reduxUser, messages)(dispatch, getState);
+      dispatch(userRequestSuccess(loginReqLocalId, messages));
 
       if (enableLocalStorageAuth) {
         saveAuthToLocalStorage(reduxUser);

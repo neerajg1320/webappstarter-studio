@@ -88,7 +88,8 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
         requestStarted: true,
       };
 
-      // Temporary
+      // This will work till user sends only one request per FlowType
+      // Solution would be to put requestId in the UI component
       if (action.payload.type === UserFlowType.REGISTER_USER) {
         state.register = state.flowStateMap[action.payload.id];
       } else if (action.payload.type === UserFlowType.LOGIN_USER) {
@@ -101,11 +102,33 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     case ActionType.USER_REQUEST_SUCCESS:
       state.flowStateMap[action.payload.id].requestCompleted = true;
       state.flowStateMap[action.payload.id].err = action.payload.messages.join(',\n');
+
+      // This will work till user sends only one request per FlowType
+      // Solution would be to put requestId in the UI component
+      if (state.flowStateMap[action.payload.id].type === UserFlowType.REGISTER_USER) {
+        state.register = state.flowStateMap[action.payload.id];
+      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.LOGIN_USER) {
+        state.login = state.flowStateMap[action.payload.id];
+      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.CONFIRM_EMAIL) {
+        state.activate = state.flowStateMap[action.payload.id];
+      }
+
       return state;
 
     case ActionType.USER_REQUEST_FAILED:
       state.flowStateMap[action.payload.id].requestCompleted = true;
       state.flowStateMap[action.payload.id].err = action.payload.errors.join(',\n');
+
+      // This will work till user sends only one request per FlowType
+      // Solution would be to put requestId in the UI component
+      if (state.flowStateMap[action.payload.id].type === UserFlowType.REGISTER_USER) {
+        state.register = state.flowStateMap[action.payload.id];
+      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.LOGIN_USER) {
+        state.login = state.flowStateMap[action.payload.id];
+      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.CONFIRM_EMAIL) {
+        state.activate = state.flowStateMap[action.payload.id];
+      }
+
       return state;
 
     case ActionType.USER_ADD:

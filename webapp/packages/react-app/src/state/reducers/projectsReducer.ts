@@ -31,7 +31,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
       ActionType.FETCH_PROJECTS_COMPLETE,
       ActionType.SET_CURRENT_PROJECT
     ].includes(action.type)) {
-      console.log(`projectsReducer: ${JSON.stringify(action)}`)
+      console.log(`projectsReducer:`, action);
     }
   }
 
