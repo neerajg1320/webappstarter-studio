@@ -42,7 +42,8 @@ const UserLogin = () => {
   const [user, dispatch] = useReducer(reducer, blankUser);
   const { authenticateUser, resendActivationEmail, passwordResetUser } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
-  const loginState = useTypedSelector(state => state.auth.login);
+  // const loginState = useTypedSelector(state => state.auth.login);
+  const apiState = useTypedSelector(state => state.auth.api);
 
   // const errMsg = useMemo<string|null>(() => {
   //   console.log(`errMsg: ${loginState.err}`)
@@ -147,21 +148,21 @@ const UserLogin = () => {
           </Link>
 
           {/* Status section */}
-          {loginState.requestStarted && <div>Authenticating User ...</div>
+          {(apiState.requestStarted && !apiState.requestCompleted) && <div>Authenticating User ...</div>
           }
-          {loginState.requestCompleted &&
+          {apiState.requestCompleted &&
               <>
               <div>Authentication {isAuthenticated? 'Successful' : 'Failed'}</div>
-                {loginState.error ?
-                    <div>{loginState.error}
-                      {loginState.error === "E-mail is not verified." &&
+                {apiState.error ?
+                    <div>{apiState.error}
+                      {apiState.error === "E-mail is not verified." &&
                         <span className="inverse-action" onClick={handleResendActivationClick} >
                           Resend Activation
                         </span>
                       }
                     </div>
                     :
-                    <div>{loginState.message}</div>
+                    <div>{apiState.message}</div>
                 }
               </>
           }

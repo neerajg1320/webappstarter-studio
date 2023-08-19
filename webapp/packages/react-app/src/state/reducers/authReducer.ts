@@ -21,21 +21,21 @@ interface AuthState {
 
   // Shortcuts for a cleaner access in UI components
   // This would work if there is only one request per flow type
-  register: FlowState|null;
-  login: FlowState|null;
-  userConfirm: FlowState|null; // userConfirm
-  resendConfirmationEmail: FlowState|null;
+  register: FlowState;
+  login: FlowState;
+  userConfirm: FlowState; // userConfirm
+  resendConfirmationEmail: FlowState;
 
-  passwordReset: FlowState|null;
-  passwordResetConfirm: FlowState|null;
-  passwordChange: FlowState|null;
+  passwordReset: FlowState;
+  passwordResetConfirm: FlowState;
+  passwordChange: FlowState;
 
-  updateUser: FlowState|null;
-  logoutUser: FlowState|null;
-  refreshAccessToken: FlowState|null;
+  updateUser: FlowState;
+  logoutUser: FlowState;
+  refreshAccessToken: FlowState;
 
   // Another shortcut to latest api call
-  api: FlowState|null;
+  api: FlowState;
 
   // We are keeping isAuthenticated as separate to keep things simplified
   isAuthenticated: boolean;
@@ -66,20 +66,20 @@ const initialState: AuthState = {
   flowStateMap:{},
 
   // Temporary
-  register: null,
-  login: null,
-  userConfirm: null,
-  resendConfirmationEmail: null,
+  register: initialFlowState,
+  login: initialFlowState,
+  userConfirm: initialFlowState,
+  resendConfirmationEmail: initialFlowState,
 
-  passwordReset: null,
-  passwordResetConfirm: null,
-  passwordChange: null,
+  passwordReset: initialFlowState,
+  passwordResetConfirm: initialFlowState,
+  passwordChange: initialFlowState,
 
-  updateUser: null,
-  logoutUser: null,
-  refreshAccessToken: null,
+  updateUser: initialFlowState,
+  logoutUser: initialFlowState,
+  refreshAccessToken: initialFlowState,
 
-  api: null,
+  api: initialFlowState,
 
   // authenticating: false,
   isAuthenticated: false,
@@ -120,6 +120,12 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     } else if (type === UserFlowType.PASSWORD_RESET) {
       state.passwordReset = state.flowStateMap[reqFlowLocalId];
       state.api = state.passwordReset;
+    } else if (type === UserFlowType.PASSWORD_RESET_CONFIRM) {
+      state.passwordResetConfirm = state.flowStateMap[reqFlowLocalId];
+      state.api = state.passwordResetConfirm;
+    } else if (type === UserFlowType.PASSWORD_CHANGE) {
+      state.passwordChange = state.flowStateMap[reqFlowLocalId];
+      state.api = state.passwordChange;
     }
   }
 
