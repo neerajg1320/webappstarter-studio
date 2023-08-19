@@ -110,6 +110,9 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     } else if (type === UserFlowType.CONFIRM_EMAIL) {
       state.userConfirm = state.flowStateMap[reqFlowLocalId];
       state.api = state.userConfirm;
+    }else if (type === UserFlowType.RESEND_CONFIRMATION_EMAIL) {
+      state.resendConfirmationEmail = state.flowStateMap[reqFlowLocalId];
+      state.api = state.resendConfirmationEmail;
     } else if (type === UserFlowType.PASSWORD_RESET) {
       state.passwordReset = state.flowStateMap[reqFlowLocalId];
       state.api = state.passwordReset;

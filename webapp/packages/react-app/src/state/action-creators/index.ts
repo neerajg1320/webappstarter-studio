@@ -963,29 +963,10 @@ export const activateUser = (key:string) => {
       try {
         const response = await axiosApiInstance.post(`/auth/registration/verify-email/`, {key});
 
-        // const {refresh_token, access_token, user} = response.data;
-        // if (debugAxios || true) {
-        //   console.log(refresh_token, access_token, user);
-        // }
-        //
-        // const reduxUser: ReduxUser = {
-        //   localId: generateLocalId(),
-        //   pkid: user.pk,
-        //   email: user.email,
-        //   first_name: user.first_name,
-        //   last_name: user.last_name,
-        //   accessToken: access_token,
-        //   refreshToken: refresh_token
-        // };
-
         const messages = ['API user activation successful'];
 
         // await authenticationSuccess(reduxUser, messages)(dispatch, getState);
         dispatch(userRequestSuccess(activateReqLocalId, messages));
-
-        // if (enableLocalStorageAuth) {
-        //   saveAuthToLocalStorage(reduxUser);
-        // }
       } catch (err) {
         if (err instanceof AxiosError) {
           if (debugRedux ||true) {
@@ -1019,10 +1000,11 @@ export const resendActivationEmail = (email:string) => {
     try {
       const response = await axiosApiInstance.post(`/auth/registration/resend-email/`, {email});
 
-      console.log(response);
+      // console.log(response);
 
       // dispatch(activateRequestSuccess(messages));
-      dispatch(userRequestSuccess(resendReqLocalId, response.data))
+      const messages = ["Activation email sent"];
+      dispatch(userRequestSuccess(resendReqLocalId, messages))
     } catch (err) {
       if (err instanceof AxiosError) {
         if (debugRedux ||true) {
