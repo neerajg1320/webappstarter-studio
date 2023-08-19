@@ -3,6 +3,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useNavigate, useParams} from "react-router-dom";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import UserFlowStatus from "./user-flow-status";
 
 interface ResetPasswordUser {
   id: string;
@@ -66,45 +67,46 @@ const UserActivate = () => {
       >
         <div className="user-value-list">
 
-            <div className="user-value" style={{display: "flex"}}>
-              <label>Password</label>
-              <input
-                  className="value"
-                  type="password"
-                  value={user.password1}
-                  onChange={(e) => {dispatch({type: "PASSWORD1", payload: e.target.value});}}
-              />
-            </div>
-            <div className="user-value" style={{display: "flex"}}>
-              <label>Confirm</label>
-              <input
-                  className="value"
-                  type="password"
-                  value={user.password2}
-                  onChange={(e) => {dispatch({type: "PASSWORD2", payload: e.target.value});}}
-              />
-            </div>
+          <div className="user-value" style={{display: "flex"}}>
+            <label>Password</label>
+            <input
+                className="value"
+                type="password"
+                value={user.password1}
+                onChange={(e) => {dispatch({type: "PASSWORD1", payload: e.target.value});}}
+            />
+          </div>
+          <div className="user-value" style={{display: "flex"}}>
+            <label>Confirm</label>
+            <input
+                className="value"
+                type="password"
+                value={user.password2}
+                onChange={(e) => {dispatch({type: "PASSWORD2", payload: e.target.value});}}
+            />
+          </div>
 
 
-            <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "40px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "40px"}}>
 
-              <>
-                <button
-                    className="button is-primary is-small"
-                    onClick={handleSetClick}
-                >
-                  Set
-                </button>
-                <button
-                className="button is-family-secondary is-small"
-                onClick={() => {handleCancelClick()}}
-                >
-                Cancel
-                </button>
-              </>
+            <>
+              <button
+                  className="button is-primary is-small"
+                  onClick={handleSetClick}
+              >
+                Set
+              </button>
+              <button
+              className="button is-family-secondary is-small"
+              onClick={() => {handleCancelClick()}}
+              >
+              Cancel
+              </button>
+            </>
 
-            </div>
+          </div>
 
+          <UserFlowStatus reqMsg="Registering User ..." email="" flowState={apiState} />
         </div>
       </div>
   );

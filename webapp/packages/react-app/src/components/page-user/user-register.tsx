@@ -160,17 +160,6 @@ const UserRegister = () => {
             Already registered? <span className="inverse-action">Login</span>
           </Link>
 
-          {/* Status section */}
-          {/*{registerState.requestStarted &&*/}
-          {/*    <div>Registering User ...</div>*/}
-          {/*}*/}
-          {/*{registerState.requestCompleted &&*/}
-          {/*  (registerState.error ?*/}
-          {/*    <span>{registerState.error}</span>*/}
-          {/*    :*/}
-          {/*    <div>{registerState.message}</div>*/}
-          {/*  )*/}
-          {/*}*/}
           <UserFlowStatus reqMsg="Registering User ..." email={user.email} flowState={apiState} />
         </div>
       </div>
