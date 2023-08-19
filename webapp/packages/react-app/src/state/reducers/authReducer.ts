@@ -9,8 +9,8 @@ interface FlowState {
   type: UserFlowType;
   requestStarted: boolean;
   requestCompleted: boolean;
-  msg: string|null;
-  err: string|null;
+  message: string|null;
+  error: string|null;
 }
 
 type FlowStateMap = {[k:string]:FlowState};
@@ -19,7 +19,8 @@ type UserMap = {[k:string]: ReduxUser};
 interface AuthState {
   flowStateMap: FlowStateMap;
 
-  // Temporary
+  // Shortcuts for a cleaner access in UI components
+  // This would work if there is only one request per flow type
   register: FlowState;
   login: FlowState;
   activate: FlowState;
@@ -31,12 +32,12 @@ interface AuthState {
   currentUser: ReduxUser|null;
 }
 
-const initialFlowState = {
+const initialFlowState:FlowState = {
   type: UserFlowType.UNKNOWN,
   requestStarted: false,
   requestCompleted: false,
-  msg: null,
-  err: null,
+  message: null,
+  error: null,
 };
 
 const initialUserState = {
@@ -80,6 +81,19 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     }
   }
 
+  // Assign shortcut property based on type of flow
+  // This will work till user sends only one request per FlowType
+  // In case we support multiple then requestId to be generated in UI component
+  const assignShortcutProperty = (type: UserFlowType, reqFlowLocalId:string, state:AuthState): void => {
+    if (type === UserFlowType.REGISTER_USER) {
+      state.register = state.flowStateMap[reqFlowLocalId];
+    } else if (type === UserFlowType.LOGIN_USER) {
+      state.login = state.flowStateMap[reqFlowLocalId];
+    } else if (type === UserFlowType.CONFIRM_EMAIL) {
+      state.activate = state.flowStateMap[reqFlowLocalId];
+    }    
+  }
+
   switch(action.type) {
     case ActionType.USER_REQUEST_START:
       state.flowStateMap[action.payload.id] = {
@@ -90,44 +104,24 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
 
       // This will work till user sends only one request per FlowType
       // Solution would be to put requestId in the UI component
-      if (action.payload.type === UserFlowType.REGISTER_USER) {
-        state.register = state.flowStateMap[action.payload.id];
-      } else if (action.payload.type === UserFlowType.LOGIN_USER) {
-        state.login = state.flowStateMap[action.payload.id];
-      } else if (action.payload.type === UserFlowType.CONFIRM_EMAIL) {
-        state.activate = state.flowStateMap[action.payload.id];
-      }
+      assignShortcutProperty(action.payload.type, action.payload.id, state);
 
       return state;
     case ActionType.USER_REQUEST_SUCCESS:
       state.flowStateMap[action.payload.id].requestCompleted = true;
-      state.flowStateMap[action.payload.id].err = action.payload.messages.join(',\n');
+      state.flowStateMap[action.payload.id].message = action.payload.messages.join(',\n');
 
-      // This will work till user sends only one request per FlowType
-      // Solution would be to put requestId in the UI component
-      if (state.flowStateMap[action.payload.id].type === UserFlowType.REGISTER_USER) {
-        state.register = state.flowStateMap[action.payload.id];
-      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.LOGIN_USER) {
-        state.login = state.flowStateMap[action.payload.id];
-      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.CONFIRM_EMAIL) {
-        state.activate = state.flowStateMap[action.payload.id];
-      }
+      assignShortcutProperty(state.flowStateMap[action.payload.id].type, action.payload.id, state);
 
       return state;
 
     case ActionType.USER_REQUEST_FAILED:
       state.flowStateMap[action.payload.id].requestCompleted = true;
-      state.flowStateMap[action.payload.id].err = action.payload.errors.join(',\n');
+      state.flowStateMap[action.payload.id].error = action.payload.errors.join(',\n');
 
       // This will work till user sends only one request per FlowType
       // Solution would be to put requestId in the UI component
-      if (state.flowStateMap[action.payload.id].type === UserFlowType.REGISTER_USER) {
-        state.register = state.flowStateMap[action.payload.id];
-      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.LOGIN_USER) {
-        state.login = state.flowStateMap[action.payload.id];
-      } else if (state.flowStateMap[action.payload.id].type === UserFlowType.CONFIRM_EMAIL) {
-        state.activate = state.flowStateMap[action.payload.id];
-      }
+      assignShortcutProperty(state.flowStateMap[action.payload.id].type, action.payload.id, state);
 
       return state;
 

@@ -49,7 +49,7 @@ const UserActivate = () => {
           </div>
 
           <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "40px"}}>
-            {(!activateState.requestCompleted || activateState.err)?
+            {(!activateState.requestCompleted || activateState.error)?
               <>
                 <button
                     className="button is-primary is-small"
@@ -79,10 +79,10 @@ const UserActivate = () => {
               <div>Activating User ...</div>
           }
           {activateState.requestCompleted &&
-              (activateState.err ?
-                      <span>{activateState.err}</span>
+              (activateState.error ?
+                      <span>{activateState.error}</span>
                       :
-                      <div>{activateState.msg}</div>
+                      <div>{activateState.message}</div>
               )
           }
         </div>

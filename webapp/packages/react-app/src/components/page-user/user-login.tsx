@@ -135,16 +135,16 @@ const UserLogin = () => {
           {loginState.requestCompleted &&
               <>
               <div>Authentication {isAuthenticated? 'Successful' : 'Failed'}</div>
-                {loginState.err ?
-                    <div>{loginState.err}
-                      {loginState.err === "E-mail is not verified." &&
+                {loginState.error ?
+                    <div>{loginState.error}
+                      {loginState.error === "E-mail is not verified." &&
                         <span className="inverse-action" onClick={handleResendActivationClick} >
                           Resend Activation
                         </span>
                       }
                     </div>
                     :
-                    <div>{loginState.msg}</div>
+                    <div>{loginState.message}</div>
                 }
               </>
           }

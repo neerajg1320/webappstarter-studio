@@ -163,10 +163,10 @@ const UserRegister = () => {
               <div>Registering User ...</div>
           }
           {registerState.requestCompleted &&
-            (registerState.err ?
-              <span>{registerState.err}</span>
+            (registerState.error ?
+              <span>{registerState.error}</span>
               :
-              <div>{registerState.msg}</div>
+              <div>{registerState.message}</div>
             )
           }
         </div>

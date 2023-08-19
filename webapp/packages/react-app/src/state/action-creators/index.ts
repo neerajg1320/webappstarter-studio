@@ -910,6 +910,8 @@ export const passwordResetConfirmUser = (uid:string, token:string, new_password1
           }
         }
         // dispatch(activateRequestFailed(errors));
+      } else {
+        console.error(err);
       }
     }
   };
@@ -924,28 +926,29 @@ export const activateUser = (key:string) => {
       try {
         const response = await axiosApiInstance.post(`/auth/registration/verify-email/`, {key});
 
-        const {refresh_token, access_token, user} = response.data;
-        if (debugAxios) {
-          console.log(refresh_token, access_token, user);
-        }
-
-        const reduxUser: ReduxUser = {
-          localId: generateLocalId(),
-          pkid: user.pk,
-          email: user.email,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          accessToken: access_token,
-          refreshToken: refresh_token
-        };
+        // const {refresh_token, access_token, user} = response.data;
+        // if (debugAxios || true) {
+        //   console.log(refresh_token, access_token, user);
+        // }
+        //
+        // const reduxUser: ReduxUser = {
+        //   localId: generateLocalId(),
+        //   pkid: user.pk,
+        //   email: user.email,
+        //   first_name: user.first_name,
+        //   last_name: user.last_name,
+        //   accessToken: access_token,
+        //   refreshToken: refresh_token
+        // };
 
         const messages = ['API user activation successful'];
 
-        await authenticationSuccess(reduxUser, messages)(dispatch, getState);
+        // await authenticationSuccess(reduxUser, messages)(dispatch, getState);
+        dispatch(userRequestSuccess(activateReqLocalId, messages));
 
-        if (enableLocalStorageAuth) {
-          saveAuthToLocalStorage(reduxUser);
-        }
+        // if (enableLocalStorageAuth) {
+        //   saveAuthToLocalStorage(reduxUser);
+        // }
       } catch (err) {
         if (err instanceof AxiosError) {
           if (debugRedux ||true) {
@@ -960,6 +963,8 @@ export const activateUser = (key:string) => {
           }
 
           dispatch(userRequestFailed(activateReqLocalId, errors));
+        } else {
+          console.error(err);
         }
       }
   };
@@ -995,6 +1000,8 @@ export const resendActivationEmail = (email:string) => {
         }
         // dispatch(activateRequestFailed(errors));
         dispatch(userRequestFailed(resendReqLocalId, errors))
+      } else {
+        console.error(err);
       }
     }
   };
@@ -1003,8 +1010,8 @@ export const resendActivationEmail = (email:string) => {
 
 export const authenticationSuccess = (user:ReduxUser, messages:string[]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    if (debugRedux) {
-      console.log(`Login successful messages:`, messages);
+    if (debugRedux || true) {
+      console.log(`Login successful messages:`, messages, user);
     }
 
     // dispatch(loginRequestSuccess(messages, authInfo));
@@ -1076,6 +1083,8 @@ export const authenticateUser = (email:string, password:string) => {
         }
         // dispatch(loginRequestFailed(errors));
         dispatch(userRequestFailed(loginReqLocalId, errors))
+      } else {
+        console.error(err);
       }
     }
   };
@@ -1134,6 +1143,8 @@ export const registerUser = (
         }
         // dispatch(registerRequestFailed(errors));
         dispatch(userRequestFailed(registerReqLocalId, errors));
+      } else {
+        console.error(err);
       }
     }
   }
