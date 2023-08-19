@@ -45,6 +45,27 @@ export enum ActionType {
   LOGIN_REQUEST_SUCCESS = 'login_request_sucess',
   LOGIN_REQUEST_FAILED = 'login_request_failed',
 
+  USER_REQUEST_START = 'user_request_start',
+  USER_REQUEST_SUCCESS = 'user_request_success',
+  USER_REQUEST_FAILED = 'user_request_failed',
+
+  // We need request set for following
+  // REGISTER_USER
+  // CONFIRM_EMAIL
+  // RESEND_CONFIRMATION_EMAIL
+  // LOGIN_USER
+  // PASSWORD_CHANGE
+  // PASSWORD_RESET_REQUEST
+  // PASSWORD_RESET_REQUEST_CONFIRM
+  // MODIFY_USER
+  // DELETE_USER
+  // REFRESH_ACCESS_TOKEN
+
+  // All API requests have request-start and request-complete
+  // After request-complete, they have request status as Success or Failure
+  // There is no point creating a bundle of all these requests
+
+
   LOGOUT_REQUEST = 'logout_request',
 
   UPDATE_USER = 'update_user',
