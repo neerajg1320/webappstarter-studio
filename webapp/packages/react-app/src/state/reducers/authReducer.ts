@@ -3,7 +3,7 @@ import {ActionType} from "../action-types";
 import {Action} from "../actions";
 import {debugRedux} from "../../config/global";
 import {ReduxUser} from "../user";
-import {UserFlowType} from "../auth";
+import {UserFlowType} from "../user";
 
 interface FlowState {
   type: UserFlowType;
@@ -14,6 +14,7 @@ interface FlowState {
 }
 
 type FlowStateMap = {[k:string]:FlowState};
+type UserMap = {[k:string]: ReduxUser};
 
 interface AuthState {
   flowStateMap: FlowStateMap;
@@ -26,6 +27,7 @@ interface AuthState {
   // We are keeping isAuthenticated as separate to keep things simplified
   isAuthenticated: boolean;
 
+  userMap: UserMap;
   currentUser: ReduxUser|null;
 }
 
@@ -37,8 +39,18 @@ const initialFlowState = {
   err: null,
 };
 
+const initialUserState = {
+  localId: '',
+  pkid: -1,
+  email: '',
+  first_name: '',
+  last_name: '',
+  accessToken: '',
+  refreshToken: '',
+};
+
 const initialState: AuthState = {
-  flowStateMap:{} as FlowStateMap,
+  flowStateMap:{},
 
   // Temporary
   register: initialFlowState,
@@ -49,14 +61,8 @@ const initialState: AuthState = {
   isAuthenticated: false,
 
   // The currentUser has been defined only to ease login easy during testing so that we do not have to type email, password everytime
-  currentUser: {
-    pkid: -1,
-    email: 'neeraj76@yahoo.com',
-    first_name: 'Neeraj',
-    last_name: 'Gupta',
-    accessToken: '',
-    refreshToken: '',
-  },
+  userMap: {},
+  currentUser: null,
 }
 
 // Note: The bundler so far doesn't differentiate about bundling a cell or a project.
@@ -104,6 +110,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
 
     case ActionType.USER_ADD:
       state.isAuthenticated = true;
+      state.userMap[action.payload.localId] = action.payload;
       state.currentUser = action.payload;
       return state;
 
@@ -116,6 +123,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     case ActionType.USER_DELETE:
       state.isAuthenticated = false;
       state.currentUser = null;
+      delete state.userMap[action.payload]
       return state;
 
     default:

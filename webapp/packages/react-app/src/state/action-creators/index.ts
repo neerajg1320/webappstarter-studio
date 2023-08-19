@@ -49,7 +49,7 @@ import {
   removeAuthFromLocalStorage,
   saveAuthToLocalStorage
 } from "../../local-storage/local-storage";
-import {AuthInfo, AuthInfoPartial, UserFlowType} from "../auth";
+import {UserFlowType} from "../user";
 import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
@@ -930,6 +930,7 @@ export const activateUser = (key:string) => {
         }
 
         const reduxUser: ReduxUser = {
+          localId: generateLocalId(),
           pkid: user.pk,
           email: user.email,
           first_name: user.first_name,
@@ -1044,6 +1045,7 @@ export const authenticateUser = (email:string, password:string) => {
       }
 
       const reduxUser: ReduxUser = {
+        localId: generateLocalId(),
         pkid: user.pk,
         email: user.email,
         first_name: user.first_name,
@@ -1078,9 +1080,10 @@ export const authenticateUser = (email:string, password:string) => {
   };
 }
 
-export const logoutUser = () => {
+export const logoutUser = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     removeAuthFromLocalStorage();
+    dispatch(userDelete(localId));
     // dispatch(logoutRequestStart());
     // TBD: We need to do this properly by calling API
   };

@@ -3,8 +3,7 @@ import { CellTypes, Cell } from "../cell";
 import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateProjectPartial} from "../project";
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
-import * as buffer from "buffer";
-import {AuthInfo, UserRequestStart, UserRequestSuccess, UserRequestFailed, AuthInfoPartial} from "../auth";
+import {UserRequestStart, UserRequestSuccess, UserRequestFailed} from "../user";
 
 export type Direction = 'up' | 'down';
 

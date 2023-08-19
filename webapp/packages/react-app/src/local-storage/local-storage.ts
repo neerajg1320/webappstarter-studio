@@ -1,4 +1,3 @@
-import {AuthInfo} from "../state/auth";
 import {anonymousUserEmail, debugAuth, storeAnonymousToLocal} from "../config/global";
 import {ReduxUser} from "../state/user";
 

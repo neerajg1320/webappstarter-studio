@@ -67,7 +67,9 @@ const UserRegister = () => {
    }
   }, []);
 
-  console.log(`UserRegister:render registerState:`, registerState);
+  useEffect(() => {
+    console.log(`UserRegister:render registerState:`, registerState);
+  }, [registerState]);
 
   const handleRegisterClick = () => {
     if (user.email) {

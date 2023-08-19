@@ -13,7 +13,10 @@ const AppNavBar = () => {
   const location = useLocation();
 
   const handleLogoutClick = () => {
-    logoutUser();
+    if (currentUser) {
+      logoutUser(currentUser.localId);
+    }
+
     navigate(RoutePath.ROOT, {replace: true});
   };
 
