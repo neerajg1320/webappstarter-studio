@@ -4,7 +4,7 @@ import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateP
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import * as buffer from "buffer";
-import {AuthInfo} from "../auth";
+import {AuthInfo, UserRequestStart, UserRequestSuccess, UserRequestFailed, AuthInfoPartial} from "../auth";
 
 export type Direction = 'up' | 'down';
 
@@ -168,74 +168,34 @@ export interface FetchFilesErrorAction {
   payload: string
 }
 
-export interface RegisterRequestStartAction {
-  type: ActionType.REGISTER_REQUEST_START
-  payload: {
-    email: string,
-    password: string
-  }
+export interface UserRequestStartAction {
+  type: ActionType.USER_REQUEST_START,
+  payload: UserRequestStart
 }
 
-export interface RegisterRequestSuccessAction {
-  type: ActionType.REGISTER_REQUEST_SUCCESS
-  payload: {
-    msg: string[]
-  }
+export interface UserRequestSuccessAction {
+  type: ActionType.USER_REQUEST_SUCCESS,
+  payload: UserRequestSuccess
 }
 
-export interface RegisterRequestFailedAction {
-  type: ActionType.REGISTER_REQUEST_FAILED,
-  payload: string[]
+export interface UserRequestFailedAction {
+  type: ActionType.USER_REQUEST_FAILED,
+  payload: UserRequestFailed
 }
 
-export interface ActivateRequestStartAction {
-  type: ActionType.ACTIVATE_REQUEST_START
-  payload: {
-    key: string
-  }
+export interface UserAddAction {
+  type: ActionType.USER_ADD,
+  payload: ReduxUser
 }
 
-export interface ActivateRequestSuccessAction {
-  type: ActionType.ACTIVATE_REQUEST_SUCCESS
-  payload: {
-    msg: string[]
-  }
-}
-
-export interface ActivateRequestFailedAction {
-  type: ActionType.ACTIVATE_REQUEST_FAILED,
-  payload: string[]
-}
-
-export interface LoginRequestStartAction {
-  type: ActionType.LOGIN_REQUEST_START
-  payload: {
-    email: string,
-    password: string
-  }
-}
-
-export interface LoginRequestSuccessAction {
-  type: ActionType.LOGIN_REQUEST_SUCCESS
-  payload: {
-    msg: string[], // Kept to pass on any messages recived from API
-    authInfo: AuthInfo
-  }
-}
-
-export interface LoginRequestFailedAction {
-  type: ActionType.LOGIN_REQUEST_FAILED,
-  payload: string[]
-}
-
-export interface LogoutRequestAction {
-  type: ActionType.LOGOUT_REQUEST,
-  payload: null;
-}
-
-export interface UpdateUserAction {
-  type: ActionType.UPDATE_USER,
+export interface UserUpdateAction {
+  type: ActionType.USER_UPDATE,
   payload: ReduxUpdateUserPartial
+}
+
+export interface UserDeleteAction {
+  type: ActionType.USER_DELETE,
+  payload: string
 }
 
 export type Action =
@@ -265,15 +225,10 @@ export type Action =
     | DeleteFileAction
     | FetchFilesCompleteAction
     | FetchFilesErrorAction
-    | RegisterRequestStartAction
-    | RegisterRequestSuccessAction
-    | RegisterRequestFailedAction
-    | ActivateRequestStartAction
-    | ActivateRequestSuccessAction
-    | ActivateRequestFailedAction
-    | LoginRequestStartAction
-    | LoginRequestSuccessAction
-    | LoginRequestFailedAction
-    | LogoutRequestAction
-    | UpdateUserAction
+    | UserRequestStartAction
+    | UserRequestSuccessAction
+    | UserRequestFailedAction
+    | UserAddAction
+    | UserUpdateAction
+    | UserDeleteAction
     ;

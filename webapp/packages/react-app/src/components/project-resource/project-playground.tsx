@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useActions} from "../../hooks/use-actions";
-import {randomIdGenerator} from "../../state/id";
+import {generateLocalId} from "../../state/id";
 import {ProjectFrameworks, ReactToolchains} from "../../state";
 import ProjectEdit from "./project-edit";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -37,7 +37,7 @@ const ProjectPlayground:React.FC = () => {
       authenticateUser('anonymous@webappstarter.com', 'Anonymous123');
     } else {
       if (!currentProjectId) {
-        const localId = randomIdGenerator();
+        const localId = generateLocalId();
         console.log(`Calling createAndSetProject: localId:${localId}`);
 
         createAndSetProject({

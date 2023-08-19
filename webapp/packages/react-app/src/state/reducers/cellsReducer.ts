@@ -2,7 +2,7 @@ import produce from 'immer';
 import {ActionType} from "../action-types";
 import {Action} from "../actions";
 import {Cell} from "../cell";
-import { randomIdGenerator } from '../id';
+import { generateLocalId } from '../id';
 
 interface CellsState {
   loading: boolean;
@@ -54,7 +54,7 @@ const reducer = produce((state: CellsState = initialState, action: Action): Cell
         filePath: action.payload.filePath || '',
         content: action.payload.content || '',
         type: action.payload.type,
-        id: randomIdGenerator()
+        id: generateLocalId()
       };
 
       state.data[cell.id] = cell;

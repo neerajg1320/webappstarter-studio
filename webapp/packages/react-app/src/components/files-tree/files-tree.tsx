@@ -6,7 +6,7 @@ import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {debugComponent} from "../../config/global";
-import {randomIdGenerator} from "../../state/id";
+import {generateLocalId} from "../../state/id";
 import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
@@ -126,7 +126,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     console.log(`handleFileTreeControlEvent():`, event);
     switch(event.name) {
       case FileTreeEventType.NEW_FILE:
-        const fileLocalId = randomIdGenerator();
+        const fileLocalId = generateLocalId();
         createFile({
           localId: fileLocalId,
           path: ensureTrailingSlash(newFilePath),
@@ -150,7 +150,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
             break;
           }
 
-          const newFileLocalId = randomIdGenerator();
+          const newFileLocalId = generateLocalId();
           const newPath = getCopyPath(origFile.path);
 
           createFile({

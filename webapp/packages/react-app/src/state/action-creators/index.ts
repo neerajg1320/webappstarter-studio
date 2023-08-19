@@ -8,16 +8,18 @@ import {
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
-  RegisterRequestFailedAction, RegisterRequestStartAction, RegisterRequestSuccessAction,
-  ActivateRequestFailedAction, ActivateRequestStartAction, ActivateRequestSuccessAction,
-  LoginRequestFailedAction, LoginRequestStartAction, LoginRequestSuccessAction,
-  LogoutRequestAction,
   MoveCellAction,
   SetCurrentProjectAction,
   UpdateCellAction,
   UpdateFileAction,
   UpdateFileSavePartialAction,
-  UpdateProjectAction, UpdateUserAction
+  UpdateProjectAction,
+  UserAddAction,
+  UserDeleteAction,
+  UserRequestFailedAction,
+  UserRequestStartAction,
+  UserRequestSuccessAction,
+  UserUpdateAction,
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import {Dispatch} from "react";
@@ -37,7 +39,7 @@ import {
   ReduxSaveFilePartial,
   ReduxUpdateFilePartial
 } from "../file";
-import {randomIdGenerator} from "../id";
+import {generateLocalId} from "../id";
 import {debugAuth, debugAxios, debugRedux, enableLocalStorageAuth, serverApiBaseUrl} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
@@ -47,8 +49,8 @@ import {
   removeAuthFromLocalStorage,
   saveAuthToLocalStorage
 } from "../../local-storage/local-storage";
-import {AuthInfo} from "../auth";
-import {AxiosError, AxiosHeaders} from "axios";
+import {AuthInfo, AuthInfoPartial, UserFlowType} from "../auth";
+import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
@@ -371,8 +373,10 @@ export const downloadFetchProjectZip = (localId:string) => {
 
     const {pkid} = projectState;
 
+    console.log(`Fetch has header in it!`);
+    // TBD: Remove Header
     fetch(`${serverApiBaseUrl}/projects/${pkid}/download/`,
-        { headers: { Authorization: `Bearer ${getState().auth.jwtToken}` }})
+        { headers: { Authorization: `Bearer ${getState().auth.currentUser?.accessToken}` }})
         .then((res) => {
 
           const header = res.headers.get('Content-Disposition');
@@ -467,7 +471,7 @@ export const fetchFiles = () => {
 
       // We need to do change this once we create a combined or server object
       const files = data.map((file) => {
-        file.localId = randomIdGenerator();
+        file.localId = generateLocalId();
 
         // file.project is the project pkid
         if (file.project) {
@@ -807,125 +811,69 @@ export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDelete
   }
 }
 
-export const registerRequestStart = (email:string, password:string): RegisterRequestStartAction => {
+// In case we decide to allow multiple requests of same requestType then the request
+// instance shall be identified by requestId.
+export const userRequestStart = (localRequestId:string, requestType:UserFlowType): UserRequestStartAction => {
   return {
-    type: ActionType.REGISTER_REQUEST_START,
+    type: ActionType.USER_REQUEST_START,
     payload: {
-      email,
-      password
+      id: localRequestId,
+      type: requestType
     }
-  };
+  }
 }
 
-export const registerRequestSuccess = (messages:string[]): RegisterRequestSuccessAction => {
+// messages is used in simple APIs which don't return json but a simple string
+export const userRequestSuccess = (localRequestId:string, messages:string[]): UserRequestSuccessAction => {
   return {
-    type: ActionType.REGISTER_REQUEST_SUCCESS,
+    type: ActionType.USER_REQUEST_SUCCESS,
     payload: {
-      msg: messages
+      id: localRequestId,
+      messages
     }
-  };
+  }
 }
 
-export const registerRequestFailed = (errors: string[]): RegisterRequestFailedAction => {
+// messages is used in simple APIs which don't return json but a simple string
+export const userRequestFailed = (localRequestId:string, errors:string[]): UserRequestFailedAction => {
   return {
-    type: ActionType.REGISTER_REQUEST_FAILED,
-    payload: errors
-  };
-}
-
-export const activateRequestStart = (key:string): ActivateRequestStartAction => {
-  return {
-    type: ActionType.ACTIVATE_REQUEST_START,
+    type: ActionType.USER_REQUEST_FAILED,
     payload: {
-      key
+      id: localRequestId,
+      errors
     }
-  };
+  }
 }
 
-export const activateRequestSuccess = (messages:string[]): ActivateRequestSuccessAction => {
+// The localId for user plays a part in case we want to use multiple users in frontend
+export const userAdd = (localId:string, user: ReduxUser): UserAddAction => {
   return {
-    type: ActionType.ACTIVATE_REQUEST_SUCCESS,
-    payload: {
-      msg: messages
-    }
-  };
+    type: ActionType.USER_ADD,
+    payload: user
+  }
 }
 
-export const activateRequestFailed = (errors: string[]): ActivateRequestFailedAction => {
+// The localId for user plays a part in case we want to use multiple users in frontend
+export const userUpdate = (localId:string, userPartial: ReduxUpdateUserPartial): UserUpdateAction => {
   return {
-    type: ActionType.ACTIVATE_REQUEST_FAILED,
-    payload: errors
-  };
+    type: ActionType.USER_UPDATE,
+    payload: userPartial
+  }
 }
 
-
-export const xxx_loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
+// The localId for user plays a part in case we want to use multiple users in frontend
+export const userDelete = (localId:string): UserDeleteAction => {
   return {
-    type: ActionType.LOGIN_REQUEST_START,
-    payload: {
-      email,
-      password
-    }
-  };
-}
-
-export const xxx_loginRequestSuccess = (messages:string[], authInfo: AuthInfo): LoginRequestSuccessAction => {
-  return {
-    type: ActionType.LOGIN_REQUEST_SUCCESS,
-    payload: {
-      msg: messages,
-      authInfo
-    }
-  };
-}
-
-export const xxx_loginRequestFailed = (errors: string[]): LoginRequestFailedAction => {
-  return {
-    type: ActionType.LOGIN_REQUEST_FAILED,
-    payload: errors
-  };
-}
-
-
-export const loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
-  return {
-    type: ActionType.LOGIN_REQUEST_START,
-    payload: {
-      email,
-      password
-    }
-  };
-}
-
-export const loginRequestSuccess = (messages:string[], authInfo: AuthInfo): LoginRequestSuccessAction => {
-  return {
-    type: ActionType.LOGIN_REQUEST_SUCCESS,
-    payload: {
-      msg: messages,
-      authInfo
-    }
-  };
-}
-
-export const loginRequestFailed = (errors: string[]): LoginRequestFailedAction => {
-  return {
-    type: ActionType.LOGIN_REQUEST_FAILED,
-    payload: errors
-  };
-}
-
-export const logoutRequestStart = (): LogoutRequestAction => {
-  return {
-    type: ActionType.LOGOUT_REQUEST,
-    payload: null
-  };
+    type: ActionType.USER_DELETE,
+    payload: localId
+  }
 }
 
 export const reAuthenticateUserNotSupported = () => {
   console.log(`reAuthenticateUser(): Reauthenticating the user`)
 
-  const authInfo:AuthInfo|null = fetchAuthFromLocalStorage();
-  if (authInfo) {
+  const user:ReduxUser|null = fetchAuthFromLocalStorage();
+  if (user) {
     removeAuthFromLocalStorage();
   }
 
@@ -969,19 +917,34 @@ export const passwordResetConfirmUser = (uid:string, token:string, new_password1
 
 export const activateUser = (key:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-      dispatch(activateRequestStart(key));
+      // dispatch(activateRequestStart(key));
+      const activateReqLocalId = generateLocalId();
+      dispatch(userRequestStart(activateReqLocalId, UserFlowType.CONFIRM_EMAIL));
 
       try {
         const response = await axiosApiInstance.post(`/auth/registration/verify-email/`, {key});
 
         const {refresh_token, access_token, user} = response.data;
-        if (debugAxios || true) {
+        if (debugAxios) {
           console.log(refresh_token, access_token, user);
         }
-        const messages = [`user activation successful`];
-        console.log(messages);
 
-        dispatch(activateRequestSuccess(messages));
+        const reduxUser: ReduxUser = {
+          pkid: user.pk,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          accessToken: access_token,
+          refreshToken: refresh_token
+        };
+
+        const messages = ['API user activation successful'];
+
+        await authenticationSuccess(reduxUser, messages)(dispatch, getState);
+
+        if (enableLocalStorageAuth) {
+          saveAuthToLocalStorage(reduxUser);
+        }
       } catch (err) {
         if (err instanceof AxiosError) {
           if (debugRedux ||true) {
@@ -994,7 +957,8 @@ export const activateUser = (key:string) => {
               console.error(`Error! activate unsuccessful errors:`, errors);
             }
           }
-          dispatch(activateRequestFailed(errors));
+
+          dispatch(userRequestFailed(activateReqLocalId, errors));
         }
       }
   };
@@ -1006,6 +970,8 @@ export const activateUser = (key:string) => {
 export const resendActivationEmail = (email:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // dispatch(activateRequestStart(key));
+    const resendReqLocalId = generateLocalId();
+    dispatch(userRequestStart(resendReqLocalId, UserFlowType.RESEND_CONFIRMATION_EMAIL));
 
     try {
       const response = await axiosApiInstance.post(`/auth/registration/resend-email/`, {email});
@@ -1013,6 +979,7 @@ export const resendActivationEmail = (email:string) => {
       console.log(response);
 
       // dispatch(activateRequestSuccess(messages));
+      dispatch(userRequestSuccess(resendReqLocalId, response.data))
     } catch (err) {
       if (err instanceof AxiosError) {
         if (debugRedux ||true) {
@@ -1025,20 +992,25 @@ export const resendActivationEmail = (email:string) => {
             console.error(`Error! activate unsuccessful errors:`, errors);
           }
         }
-        dispatch(activateRequestFailed(errors));
+        // dispatch(activateRequestFailed(errors));
+        dispatch(userRequestFailed(resendReqLocalId, errors))
       }
     }
   };
 }
 
 
-export const authenticationSuccess = (authInfo:AuthInfo, messages:string[]) => {
+export const authenticationSuccess = (user:ReduxUser, messages:string[]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
       console.log(`Login successful messages:`, messages);
     }
-    dispatch(loginRequestSuccess(messages, authInfo));
-    setAxiosAuthToken(authInfo.accessToken);
+
+    // dispatch(loginRequestSuccess(messages, authInfo));
+    const userLocalId = generateLocalId();
+    dispatch(userAdd(userLocalId, user));
+
+    setAxiosAuthToken(user.accessToken);
   }
 }
 
@@ -1046,13 +1018,13 @@ export const authenticationSuccess = (authInfo:AuthInfo, messages:string[]) => {
 export const authenticateUserFromLocalStorage = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (enableLocalStorageAuth) {
-      const authInfo = fetchAuthFromLocalStorage();
+      const user = fetchAuthFromLocalStorage();
       if (debugAuth) {
-        console.log(authInfo);
+        console.log(user);
       }
-      if (authInfo) {
-        const messages = ['LocalStorage authInfo retrieved successfully'];
-        await authenticationSuccess(authInfo, messages)(dispatch, getState);
+      if (user) {
+        const messages = ['LocalStorage user retrieved successfully'];
+        await authenticationSuccess(user, messages)(dispatch, getState);
       }
     }
   }
@@ -1061,9 +1033,9 @@ export const authenticateUserFromLocalStorage = () => {
 
 export const authenticateUser = (email:string, password:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-
-    dispatch(loginRequestStart(email, password));
-
+    const loginReqLocalId = generateLocalId();
+    // dispatch(loginRequestStart(email, password));
+    dispatch(userRequestStart(loginReqLocalId, UserFlowType.LOGIN_USER));
     try {
       const response = await axiosApiInstance.post(`/auth/login/`, {email, password});
       const {refresh_token, access_token, user} = response.data;
@@ -1075,15 +1047,17 @@ export const authenticateUser = (email:string, password:string) => {
         pkid: user.pk,
         email: user.email,
         first_name: user.first_name,
-        last_name: user.last_name
+        last_name: user.last_name,
+        accessToken: access_token,
+        refreshToken: refresh_token
       };
-      const authInfo = {accessToken: access_token, refreshToken: refresh_token, user: reduxUser};
+
       const messages = ['API authentication successful'];
 
-      await authenticationSuccess(authInfo, messages)(dispatch, getState);
+      await authenticationSuccess(reduxUser, messages)(dispatch, getState);
 
       if (enableLocalStorageAuth) {
-        saveAuthToLocalStorage(authInfo);
+        saveAuthToLocalStorage(reduxUser);
       }
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -1097,7 +1071,8 @@ export const authenticateUser = (email:string, password:string) => {
             console.error(`Error! login unsuccessful errors:`, errors);
           }
         }
-        dispatch(loginRequestFailed(errors));
+        // dispatch(loginRequestFailed(errors));
+        dispatch(userRequestFailed(loginReqLocalId, errors))
       }
     }
   };
@@ -1106,17 +1081,18 @@ export const authenticateUser = (email:string, password:string) => {
 export const logoutUser = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     removeAuthFromLocalStorage();
-    dispatch(logoutRequestStart());
+    // dispatch(logoutRequestStart());
+    // TBD: We need to do this properly by calling API
   };
 }
 
-export const updateUser = (userPartial: ReduxUpdateUserPartial): UpdateUserAction => {
-  // console.log(`updateUser: ${JSON.stringify(userPartial)}`);
-  return {
-    type: ActionType.UPDATE_USER,
-    payload: userPartial
-  }
-}
+// export const updateUser = (userPartial: ReduxUpdateUserPartial): UpdateUserAction => {
+//   // console.log(`updateUser: ${JSON.stringify(userPartial)}`);
+//   return {
+//     type: ActionType.UPDATE_USER,
+//     payload: userPartial
+//   }
+// }
 
 export const registerUser = (
     email:string,
@@ -1126,9 +1102,10 @@ export const registerUser = (
     last_name: string,
 ) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    try {
-      dispatch(registerRequestStart(email, password1));
+    const registerReqLocalId = generateLocalId();
+    dispatch(userRequestStart(registerReqLocalId, UserFlowType.REGISTER_USER));
 
+    try {
       const response = await axiosApiInstance.post(
           `/auth/registration/`,
           {email, password1, password2, first_name, last_name}
@@ -1140,7 +1117,8 @@ export const registerUser = (
       if (debugRedux) {
         console.log(`registerUser(): messages:`, messages);
       }
-      dispatch(registerRequestSuccess(messages));
+      // dispatch(registerRequestSuccess(messages));
+      dispatch(userRequestSuccess(registerReqLocalId, messages))
     } catch (err) {
       if (err instanceof AxiosError) {
         if (debugRedux) {
@@ -1150,7 +1128,8 @@ export const registerUser = (
         if (debugRedux) {
           console.error(`Error! registration unsuccessful errors:`, errors);
         }
-        dispatch(registerRequestFailed(errors));
+        // dispatch(registerRequestFailed(errors));
+        dispatch(userRequestFailed(registerReqLocalId, errors));
       }
     }
   }

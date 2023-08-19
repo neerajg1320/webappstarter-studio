@@ -77,7 +77,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       if (action.payload.length > 0) {
         state.data = action.payload.reduce((acc, file) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
-          // file.localId = randomIdGenerator();
+          // file.localId = generateLocalId();
 
           // We do not allow edit till the content is synced
           file.isEditAllowed = false;

@@ -2,7 +2,7 @@ import './add-file.css';
 import React from "react";
 import {useActions} from "../../../hooks/use-actions";
 import {ReduxCreateFilePartial, ReduxProject} from "../../../state";
-import {randomIdGenerator} from "../../../state/id";
+import {generateLocalId} from "../../../state/id";
 import {BundleLanguage} from "../../../state/bundle";
 import {CodeLanguage} from "../../../state/language";
 
@@ -17,7 +17,7 @@ const AddFile: React.FC<AddFileProps> = ({reduxProject, forceVisible}) => {
     // We should get the selected/active path for the project
     const handleAddFile = () => {
       const createFilePartial:ReduxCreateFilePartial = {
-        localId: randomIdGenerator(),
+        localId: generateLocalId(),
         bundleLanguage: BundleLanguage.UNKNOWN,
         language: CodeLanguage.UNKNOWN,
         path: '',

@@ -2,7 +2,7 @@ import produce from 'immer';
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
 import { ReduxProject } from '../project';
-import {randomIdGenerator} from "../id";
+import {generateLocalId} from "../id";
 import {debugRedux} from "../../config/global";
 
 // The difference between ProjectsState and CellsState:
@@ -69,7 +69,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         state.data = action.payload.reduce((acc, project) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           project.reduxType = 'project'
-          project.localId = randomIdGenerator();
+          project.localId = generateLocalId();
           project.synced = true;
           project.deleteMarked = true;
           acc[project.localId] = project;

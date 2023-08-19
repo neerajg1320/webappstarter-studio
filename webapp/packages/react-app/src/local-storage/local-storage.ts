@@ -1,28 +1,29 @@
 import {AuthInfo} from "../state/auth";
 import {anonymousUserEmail, debugAuth, storeAnonymousToLocal} from "../config/global";
+import {ReduxUser} from "../state/user";
 
 enum Storage {
-  AUTH_INFO = 'auth_info',
+  USER_KEY = 'user',
 }
 
 
-export const fetchAuthFromLocalStorage: () => AuthInfo|null = () => {
-  const authStr = localStorage.getItem(Storage.AUTH_INFO);
+export const fetchAuthFromLocalStorage: () => ReduxUser|null = () => {
+  const authStr = localStorage.getItem(Storage.USER_KEY);
 
   if (authStr) {
-    return JSON.parse(authStr) as AuthInfo
+    return JSON.parse(authStr) as ReduxUser
   }
 
   return null;
 }
 
-export const saveAuthToLocalStorage = (auth: AuthInfo) => {
-  if (!storeAnonymousToLocal && auth.user.email === anonymousUserEmail) {
+export const saveAuthToLocalStorage = (user: ReduxUser) => {
+  if (!storeAnonymousToLocal && user.email === anonymousUserEmail) {
     return;
   }
-  localStorage.setItem(Storage.AUTH_INFO, JSON.stringify(auth));
+  localStorage.setItem(Storage.USER_KEY, JSON.stringify(user));
 }
 
 export const removeAuthFromLocalStorage = () => {
-  localStorage.removeItem(Storage.AUTH_INFO);
+  localStorage.removeItem(Storage.USER_KEY);
 }

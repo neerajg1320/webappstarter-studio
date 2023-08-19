@@ -4,7 +4,7 @@ import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
 import {debugProject} from "../../config/global";
 import {RoutePath} from "../routes";
-import {randomIdGenerator} from "../../state/id";
+import {generateLocalId} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
 import {ProjectFrameworks, ReactToolchains} from "../../state";
 
@@ -47,7 +47,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
   const handleNewProjectClick = () => {
     createAndSetProject({
-      localId: randomIdGenerator(),
+      localId: generateLocalId(),
       title: '',
       description: '',
       framework: ProjectFrameworks.REACTJS,
