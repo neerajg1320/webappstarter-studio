@@ -42,14 +42,13 @@ import {
 import {generateLocalId} from "../id";
 import {debugAuth, debugAxios, debugRedux, enableLocalStorageAuth, serverApiBaseUrl} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
-import {ReduxUpdateUserPartial, ReduxUser} from "../user";
+import {ReduxUpdateUserPartial, ReduxUser, UserFlowType} from "../user";
 import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
 import {
   fetchAuthFromLocalStorage,
   removeAuthFromLocalStorage,
   saveAuthToLocalStorage
 } from "../../local-storage/local-storage";
-import {UserFlowType} from "../user";
 import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
@@ -878,6 +877,44 @@ export const reAuthenticateUserNotSupported = () => {
   }
 
   // We need to use refreshToken here!
+}
+
+export const passwordResetUser = (email:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const reqId = generateLocalId();
+    dispatch(userRequestStart(reqId, UserFlowType.PASSWORD_RESET))
+
+    try {
+      const response = await axiosApiInstance.post(
+          `/auth/password/reset/`,
+          {email}
+      );
+
+      if (debugAxios || true) {
+        console.log(response.data);
+      }
+      const messages = [response.data.detail];
+      console.log(messages);
+
+      dispatch(userRequestSuccess(reqId, messages))
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (debugRedux ||true) {
+          console.error(`Error! activate unsuccessful err:`, err);
+        }
+        let errors = ['Activation Failed']
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(userRequestFailed(reqId, errors))
+      } else {
+        console.error(err);
+      }
+    }
+  };
 }
 
 export const passwordResetConfirmUser = (uid:string, token:string, new_password1:string, new_password2:string) => {

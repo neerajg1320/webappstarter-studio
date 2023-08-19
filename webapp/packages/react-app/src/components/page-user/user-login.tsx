@@ -40,7 +40,7 @@ const blankUser:LoginUser = {
 const UserLogin = () => {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(reducer, blankUser);
-  const { authenticateUser, resendActivationEmail } = useActions();
+  const { authenticateUser, resendActivationEmail, passwordResetUser } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const loginState = useTypedSelector(state => state.auth.login);
 
@@ -81,6 +81,12 @@ const UserLogin = () => {
     resendActivationEmail(user.email);
   }
 
+  const handleForgotPasswordClick = () => {
+    if (user.email) {
+      passwordResetUser(user.email);
+    }
+  }
+
   return (
       <div style={{
         padding: "20px",
@@ -90,7 +96,7 @@ const UserLogin = () => {
       }}
       >
         <div className="user-value-list">
-          <div className="user-value" style={{display: "flex"}}>
+          <div className="user-value" style={{display: "flex", marginBottom: "10px"}}>
             <label>Email</label>
             <input
                 className="value"
@@ -108,8 +114,19 @@ const UserLogin = () => {
                 onChange={(e) => {dispatch({type: "PASSWORD", payload: e.target.value});}}
             />
           </div>
+          <div className="user-value" style={{display: "flex"}}>
+            <label></label>
+            <div className="value" style={{fontSize: "0.9em", textAlign: "right"}}>
+              <span
+                  style={{cursor:"pointer", color:"lightblue"}}
+                  onClick={handleForgotPasswordClick}
+              >
+                forgot password?
+              </span>
+            </div>
+          </div>
 
-          <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "40px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"40px", marginTop: "20px"}}>
             <button
                 className="button is-primary is-small"
                 onClick={handleLoginClick}

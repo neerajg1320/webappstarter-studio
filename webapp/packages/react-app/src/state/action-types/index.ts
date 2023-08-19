@@ -33,19 +33,7 @@ export enum ActionType {
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
   
-  // REGISTER_REQUEST_START = 'register_request_start',
-  // REGISTER_REQUEST_SUCCESS = 'register_request_sucess',
-  // REGISTER_REQUEST_FAILED = 'register_request_failed',
-  //
-  // ACTIVATE_REQUEST_START = 'activate_request_start',
-  // ACTIVATE_REQUEST_SUCCESS = 'activate_request_sucess',
-  // ACTIVATE_REQUEST_FAILED = 'activate_request_failed',
-  //
-  // LOGIN_REQUEST_START = 'login_request_start',
-  // LOGIN_REQUEST_SUCCESS = 'login_request_sucess',
-  // LOGIN_REQUEST_FAILED = 'login_request_failed',
-  // LOGOUT_REQUEST = 'logout_request',
-  // UPDATE_USER = 'update_user',
+
 
   // We need request set for following
   // REGISTER_USER
@@ -53,8 +41,8 @@ export enum ActionType {
   // RESEND_CONFIRMATION_EMAIL
   // LOGIN_USER
   // PASSWORD_CHANGE
-  // PASSWORD_RESET_REQUEST
-  // PASSWORD_RESET_REQUEST_CONFIRM
+  // PASSWORD_RESET
+  // PASSWORD_RESET_CONFIRM
   // MODIFY_USER
   // LOGOUT_USER
   // REFRESH_ACCESS_TOKEN
@@ -86,7 +74,7 @@ export enum ActionType {
   // So this means REGISTER_USER, RESEND_CONFIRMATION_EMAIL, CONFIRM_EMAIL will culminate to one
   // USER_ADD action-type.
   // LOGIN_USER will map to USER_ADD action-type.
-  // PASSWORD_CHANGE, PASSWORD_RESET_REQUEST, PASSWORD_RESET_REQUEST_CONFIRM will map to USER_UPDATE
+  // PASSWORD_CHANGE, PASSWORD_RESET, PASSWORD_RESET_CONFIRM will map to USER_UPDATE
   // MODIFY_USER (First Name, Last Name) will map to USER_UPDATE
   // LOGOUT_USER will map to USER_DELETE
 
