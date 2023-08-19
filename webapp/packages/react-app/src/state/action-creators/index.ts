@@ -858,6 +858,35 @@ export const activateRequestFailed = (errors: string[]): ActivateRequestFailedAc
   };
 }
 
+
+export const xxx_loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
+  return {
+    type: ActionType.LOGIN_REQUEST_START,
+    payload: {
+      email,
+      password
+    }
+  };
+}
+
+export const xxx_loginRequestSuccess = (messages:string[], authInfo: AuthInfo): LoginRequestSuccessAction => {
+  return {
+    type: ActionType.LOGIN_REQUEST_SUCCESS,
+    payload: {
+      msg: messages,
+      authInfo
+    }
+  };
+}
+
+export const xxx_loginRequestFailed = (errors: string[]): LoginRequestFailedAction => {
+  return {
+    type: ActionType.LOGIN_REQUEST_FAILED,
+    payload: errors
+  };
+}
+
+
 export const loginRequestStart = (email:string, password:string): LoginRequestStartAction => {
   return {
     type: ActionType.LOGIN_REQUEST_START,

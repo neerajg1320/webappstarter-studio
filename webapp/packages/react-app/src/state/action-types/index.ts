@@ -44,11 +44,7 @@ export enum ActionType {
   LOGIN_REQUEST_START = 'login_request_start',
   LOGIN_REQUEST_SUCCESS = 'login_request_sucess',
   LOGIN_REQUEST_FAILED = 'login_request_failed',
-
-  USER_REQUEST_START = 'user_request_start',
-  USER_REQUEST_SUCCESS = 'user_request_success',
-  USER_REQUEST_FAILED = 'user_request_failed',
-
+  
   // We need request set for following
   // REGISTER_USER
   // CONFIRM_EMAIL
@@ -58,14 +54,39 @@ export enum ActionType {
   // PASSWORD_RESET_REQUEST
   // PASSWORD_RESET_REQUEST_CONFIRM
   // MODIFY_USER
-  // DELETE_USER
+  // LOGOUT_USER
   // REFRESH_ACCESS_TOKEN
 
   // All API requests have request-start and request-complete
   // After request-complete, they have request status as Success or Failure
   // There is no point creating a bundle of all these requests
 
+  // The main purpose of request-start and request complete is to show indicators.
+  // Hence for start and complete only two action-types are enough. The payload of start and complete
+  // shall contain the flow type that is being handled.
+  // The flow complete should result in a change of state. This looks good.
+  // So our proposed structure looks like
+  USER_REQUEST_START = 'user_request_start',
+  USER_REQUEST_SUCCESS = 'user_request_success',
+  USER_REQUEST_FAILED = 'user_request_failed',
 
+  // Here we will make a list of actions that are dispatched to the authentication state.
+  USER_ADD = 'user_add',
+  USER_UPDATE = 'user_update',
+  USER_DELETE= 'user_delete',
+
+  // We need to build on this and analyze this properly.
+  // The main interplay here is between the user and the API
+  // The purpose of registration process is to engage the enroll the user with the webapps database.
+  // Till the registration process is complete, the user cannot login. Hence this means that the
+  // registration process will not cause the authentication state to change apart from flow changes.
+  // By reasoning on similar lines we will analyze all the other processes.
+  // So this means REGISTER_USER, RESEND_CONFIRMATION_EMAIL, CONFIRM_EMAIL will culminate to one
+  // USER_ADD action-type.
+  // LOGIN_USER will map to USER_ADD action-type.
+  // PASSWORD_CHANGE, PASSWORD_RESET_REQUEST, PASSWORD_RESET_REQUEST_CONFIRM will map to USER_UPDATE
+  // MODIFY_USER (First Name, Last Name) will map to USER_UPDATE
+  // LOGOUT_USER will map to USER_DELETE
   LOGOUT_REQUEST = 'logout_request',
 
   UPDATE_USER = 'update_user',
