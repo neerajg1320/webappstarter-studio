@@ -1,14 +1,22 @@
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from '@redux-devtools/extension';
+
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import { reduxManualTest } from '../config/global';
 import { persistMiddleware } from './middlewares/persist-middleware';
 import {ActionType} from "./action-types";
 
+const composeEnhancers = composeWithDevTools({
+  // Specify name here, actionsDenylist, actionsCreators and other options if needed
+});
+
 export const store = createStore(
   reducers,
   {},
-  applyMiddleware(persistMiddleware, thunk)
+  composeEnhancers(
+      applyMiddleware(persistMiddleware, thunk)
+  ),
 );
 
 export const populateStoreManual = () => {
