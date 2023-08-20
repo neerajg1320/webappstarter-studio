@@ -13,7 +13,8 @@ export const debugRedux = true;
 export const debugPlugin = false;
 
 // Bundler
-export const debugBundler = false;
+export const esbuildVersion = "0.8.27";
+export const debugBundler = true;
 export const autoBundling = false;
 export const combineCellsCode = false;
 export const cellJsxFileName = '__cell.jsx';

@@ -106,7 +106,7 @@ const UserActivate = () => {
 
           </div>
 
-          <UserFlowStatus reqMsg="Registering User ..." email="" flowState={apiState} />
+          <UserFlowStatus reqMsg="Resetting Password ..." email="" flowState={apiState} />
         </div>
       </div>
   );

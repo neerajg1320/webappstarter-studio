@@ -920,6 +920,8 @@ export const passwordResetUser = (email:string) => {
 export const passwordResetConfirmUser = (uid:string, token:string, new_password1:string, new_password2:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // dispatch(activateRequestStart(key));
+    const reqId = generateLocalId();
+    dispatch(userRequestStart(reqId, UserFlowType.PASSWORD_RESET_CONFIRM));
 
     try {
       const response = await axiosApiInstance.post(
@@ -934,6 +936,7 @@ export const passwordResetConfirmUser = (uid:string, token:string, new_password1
       console.log(messages);
 
       // dispatch(activateRequestSuccess(messages));
+      dispatch(userRequestSuccess(reqId, messages));
     } catch (err) {
       if (err instanceof AxiosError) {
         if (debugRedux ||true) {
@@ -941,12 +944,13 @@ export const passwordResetConfirmUser = (uid:string, token:string, new_password1
         }
         let errors = ['Activation Failed']
         if (err.response) {
-          errors = axiosResponseToStringList(err.response);
+          errors = axiosErrorToErrorList(err, true);
           if (debugRedux||true) {
             console.error(`Error! activate unsuccessful errors:`, errors);
           }
         }
         // dispatch(activateRequestFailed(errors));
+        dispatch(userRequestFailed(reqId, errors));
       } else {
         console.error(err);
       }

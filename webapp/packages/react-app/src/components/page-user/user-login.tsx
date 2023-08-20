@@ -79,8 +79,6 @@ const UserLogin = () => {
     navigate(RoutePath.BACK, {replace:true});
   }
 
-
-
   const handleForgotPasswordClick = () => {
     if (user.email) {
       passwordResetUser(user.email);

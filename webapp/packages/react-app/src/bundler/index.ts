@@ -2,7 +2,14 @@ import * as esbuild from 'esbuild-wasm';
 import {pluginResolve} from './plugins/plugin-resolve';
 import {pluginLoadFetch} from './plugins/plugin-load-fetch';
 import {BundleInputType, BundleLanguage} from "../state/bundle";
-import {cellJsxFileName, cellTsxFileName, combineCellsCode, debugBundler, pkgServerUrl} from "../config/global";
+import {
+  cellJsxFileName,
+  cellTsxFileName,
+  combineCellsCode,
+  debugBundler,
+  esbuildVersion,
+  pkgServerUrl
+} from "../config/global";
 import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
 
 let service: esbuild.Service;
@@ -12,7 +19,7 @@ export const getESBuildService = async (): Promise<esbuild.Service> => {
     service = await esbuild.startService({
       worker: true,
       // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
-      wasmURL: `${pkgServerUrl}/esbuild-wasm@0.8.27/esbuild.wasm`
+      wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
     });
   }
 
