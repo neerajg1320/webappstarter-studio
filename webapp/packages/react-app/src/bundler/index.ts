@@ -16,21 +16,34 @@ let service: esbuild.Service;
 
 export const getESBuildService = async (): Promise<esbuild.Service> => {
   if (!service) {
-    service = await esbuild.startService({
-      worker: true,
-      // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
-      wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
-    });
+    try {
+      service = await esbuild.startService({
+        worker: true,
+        // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
+        wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
+      });
+
+      if (debugBundler) {
+        console.log(`Esbuild Service: esbuild-wasm@${esbuildVersion}/esbuild.wasm downloaded successfully.`);
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(`Error! Esbuild Service not Initiazed.`, err);
+      }
+    }
   }
 
   return service;
 }
 
-export const bundleCodeStr = async(rawCode: string, bundleLanguage: BundleLanguage) => {
+// We have to fix the logic here.
+// In case the esbuild.wasm file is not downloaded or there is an error. We need to communicate to user
+
+export const bundleCodeStr = async (rawCode: string, bundleLanguage: BundleLanguage) => {
   return bundleCode(rawCode, 'cell', bundleLanguage);
 }
 
-export const bundleFilePath =  async(filePath: string, bundleLanguage: BundleLanguage) => {
+export const bundleFilePath =  async (filePath: string, bundleLanguage: BundleLanguage) => {
   return bundleCode(filePath, 'project', bundleLanguage);
 }
 
