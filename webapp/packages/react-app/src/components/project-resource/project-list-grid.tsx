@@ -48,10 +48,10 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
   const handleNewProjectClick = () => {
     createAndSetProject({
       localId: generateLocalId(),
-      title: '',
-      description: '',
-      framework: ProjectFrameworks.REACTJS,
-      toolchain: ReactToolchains.VITE
+      title: 'New Project',
+      description: 'This is a web application',
+      framework: ProjectFrameworks.NONE,
+      toolchain: ReactToolchains.NONE
     });
     navigate(RoutePath.PROJECT_NEW);
   }

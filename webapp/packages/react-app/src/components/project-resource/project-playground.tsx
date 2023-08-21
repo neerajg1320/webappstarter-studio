@@ -42,10 +42,10 @@ const ProjectPlayground:React.FC = () => {
 
         createAndSetProject({
           localId,
-          title: '',
-          description: '',
-          framework: ProjectFrameworks.REACTJS,
-          toolchain: ReactToolchains.CREATE_REACT_APP
+          title: 'Sample Project',
+          description: 'A temporary project for trial purpose. This project will not be accessible after the session is closed.',
+          framework: ProjectFrameworks.NONE,
+          toolchain: ReactToolchains.NONE
         });
       }
     }
