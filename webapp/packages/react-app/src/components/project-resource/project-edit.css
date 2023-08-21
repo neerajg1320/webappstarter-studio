@@ -9,6 +9,11 @@
   align-items:center;
   gap: 40px;
 }
+
+.project-value-list h1 {
+  font-size: 2em;
+}
+
 .project-value-list label {
   width: 30%;
   margin-left: 20%;
