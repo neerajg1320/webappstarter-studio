@@ -68,6 +68,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
                 pluginResolve(inputType),
+                // We shall pass a getFileFromRedux function so that it can be retrieved locally
                 pluginLoadFetch(codeOrFilePath, inputType)
             ],
             define: {
