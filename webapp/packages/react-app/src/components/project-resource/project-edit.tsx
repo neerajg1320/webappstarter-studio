@@ -102,7 +102,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
           display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap:"30px"
         }}
       >
-        <h1>Project Details</h1>
+        <span className="title">Project Details</span>
         <div className="project-value-list">
           <div className="project-value" style={{display: "flex"}}>
             <label>Title</label>

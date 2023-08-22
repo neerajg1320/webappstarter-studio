@@ -17,9 +17,13 @@ import {CodeLanguage} from "../../state/language";
 // const debugComponent = true;
 
 interface ProjectCellProps {
-  reduxProject: ReduxProject;
+  // reduxProject: ReduxProject;
+  projectLocalId: string;
 }
-const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
+
+// We will change back passing the projectLocalId as the project state gets changed by the time the component
+// is rendered.
+const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   useEffect(() => {
     if (debugComponent) {
       console.log('ProjectCell: useEffect[] firstRender');
@@ -32,20 +36,25 @@ const ProjectCell:React.FC<ProjectCellProps> = ({reduxProject}) => {
     }
   }, []);
 
-  if (debugComponent) {
-    console.log(`ProjectCell:render reduxProject`, reduxProject);
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
   const { createProjectBundle, updateProject, downloadProjectZip, downloadFetchProjectZip, updateFile } = useActions();
 
+  const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
+
+  const reduxProject = useMemo(() => {
+    return projectsState.data[projectLocalId];
+  }, [projectLocalId, projectsState]);
+
+  if (debugComponent) {
+    console.log(`ProjectCell:render reduxProject`, reduxProject);
+  }
 
   // The following is used in the FileList component
   // eslint-disable-next-line

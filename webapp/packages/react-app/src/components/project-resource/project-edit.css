@@ -10,7 +10,7 @@
   gap: 40px;
 }
 
-.project-value-list h1 {
+.project-value-list .title {
   font-size: 2em;
 }
 
