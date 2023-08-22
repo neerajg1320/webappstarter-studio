@@ -103,6 +103,14 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (debugComponent || true) {
+      console.log(`ProjectCell: useEffect([reduxProject]) reduxProject:`, reduxProject)
+    }
+
+    setEditedFileLocalId(null);
+  }, [reduxProject]);
+
 
   useEffect(() => {
     if (debugComponent) {

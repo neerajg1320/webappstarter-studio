@@ -260,6 +260,10 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
       const {id, pkid, folder} = response.data
+
+      // TBD: Need to update this.
+      // After adding template projects the POST projects call returns a lot more than folder.
+      // It returns files, entryFileId and entry_path
       // We are putting pkid in the id.
       dispatch(updateProject({localId:projectPartial.localId, id, pkid, folder, synced:true}));
     } catch (err) {
