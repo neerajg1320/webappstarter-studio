@@ -6,12 +6,13 @@ import {
   cellJsxFileName,
   cellTsxFileName,
   combineCellsCode,
-  debugBundler,
+  debugBundler, enableLoadFromCache, enableLoadFromRedux,
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
 import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
 import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
+import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 
 let service: esbuild.Service;
 
@@ -40,22 +41,48 @@ export const getESBuildService = async (): Promise<esbuild.Service> => {
 // We have to fix the logic here.
 // In case the esbuild.wasm file is not downloaded or there is an error. We need to communicate to user
 
-export const bundleCodeStr = async (rawCode: string, bundleLanguage: BundleLanguage) => {
-  return bundleCode(rawCode, 'cell', bundleLanguage);
+export const bundleCodeStr = async (
+    rawCode: string,
+    bundleLanguage: BundleLanguage
+) => {
+  return bundleCode(rawCode, 'cell', bundleLanguage, null);
 }
 
-export const bundleFilePath =  async (filePath: string, bundleLanguage: BundleLanguage) => {
-  return bundleCode(filePath, 'project', bundleLanguage);
+export const bundleFilePath =  async (
+    filePath: string,
+    bundleLanguage: BundleLanguage,
+    fileFetcher: (path:string) => esbuild.OnLoadResult
+) => {
+  return bundleCode(filePath, 'project', bundleLanguage, fileFetcher);
 }
 
 // The bundleCodeStr takes a string as input.
 // In pluginLoadFromServer, the onLoad method checks for index.js and provides this String
-const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, inputLanguage: BundleLanguage) => {
+const bundleCode = async (
+    codeOrFilePath: string,
+    inputType: BundleInputType,
+    inputLanguage: BundleLanguage,
+    fileFetcher: ((path:string) => esbuild.OnLoadResult)|null
+) => {
     if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
     }
 
-    let esbuildService = await getESBuildService();
+    const esbuildService = await getESBuildService();
+    const esbuildPlugins = [
+        pluginResolve(inputType)
+    ];
+
+    if (enableLoadFromRedux) {
+      // This would be null in case of call from bundleCodeStr
+      if (fileFetcher) {
+        esbuildPlugins.push(pluginLoadFromRedux(fileFetcher));
+      }
+    }
+    if (enableLoadFromCache) {
+      esbuildPlugins.push(pluginLoadFromCache());
+    }
+    esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
@@ -67,12 +94,7 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
             bundle: true,
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it
-            plugins: [
-                pluginResolve(inputType),
-                pluginLoadFromCache(),
-                // We shall pass a getFileFromRedux function so that it can be retrieved locally
-                pluginLoadFromServer(codeOrFilePath, inputType)
-            ],
+            plugins: esbuildPlugins,
             define: {
                 'process.env.NODE_ENV': '"production"',
                 global: 'window'
