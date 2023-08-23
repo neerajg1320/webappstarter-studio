@@ -51,7 +51,7 @@ export const bundleCodeStr = async (
 export const bundleFilePath =  async (
     filePath: string,
     bundleLanguage: BundleLanguage,
-    fileFetcher: (path:string) => esbuild.OnLoadResult
+    fileFetcher: (path:string) => string|null
 ) => {
   return bundleCode(filePath, 'project', bundleLanguage, fileFetcher);
 }
@@ -62,7 +62,7 @@ const bundleCode = async (
     codeOrFilePath: string,
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
-    fileFetcher: ((path:string) => esbuild.OnLoadResult)|null
+    fileFetcher: ((path:string) => string|null)|null
 ) => {
     if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);

@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {debugPlugin} from "../../config/global";
 
-export const pluginLoadFromRedux = (fileFetcher: (path:string) => esbuild.OnLoadResult) => {
+export const pluginLoadFromRedux = (fileFetcher: (path:string) => string|null) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {
@@ -12,9 +12,17 @@ export const pluginLoadFromRedux = (fileFetcher: (path:string) => esbuild.OnLoad
         // If we have already fetched this file then return from cache
         // We use args.path as key in the cache
 
-        const result = fileFetcher(args.path)
-        if (result.loader === "json") {
-          return result;
+        const contents = fileFetcher(args.path);
+        if (debugPlugin) {
+          console.log(`pluginLoadFromRedux: contents:`, contents);
+        }
+
+        if (contents) {
+          return {
+            loader:  "jsx",
+            contents,
+            resolveDir: new URL('./', args.path).pathname
+          }
         }
       });
     }

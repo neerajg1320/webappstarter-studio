@@ -53,6 +53,7 @@ import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
+import {joinFileParts} from "../../utils/path";
 
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -116,34 +117,63 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
 }
 
 
-export const createProjectBundle = (projectLocalId:string, input:string, bundleLanguage: BundleLanguage) => {
+export const createProjectBundle = (
+    projectLocalId:string,
+    projectDirPath:string,
+    entryFile:string,
+    bundleLanguage: BundleLanguage
+) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
-        const getFileFromRedux = (url:string) => {
-          const path = new URL('./', url).pathname;
-          console.log(`getFileFromRedux:  url=${url}  path:${path}`);
-          
-          return {
-            path,
-            contents: `console.log("Hello I am from redux")`
-          };
-        }
+      const getFileContentsFromRedux = (url:string):string|null => {
+        // const pathname = new URL('.', url); // This will remove the file name from path
+        // console.log(`getFileFromRedux:  url=${url}  pathname:${url.pathname}`);
+        const fileParts = url.split(projectDirPath + '/');
 
-        dispatch({
-            type: ActionType.PROJECT_BUNDLE_START,
-            payload: {
-                projectLocalId: projectLocalId,
-            }
-        });
+        // Example
+        // mediafiles/user_67/react-project/ will split
+        // http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
+        // ['http://api.local.webappstarter.com/', 'src/index.js']
+        // console.log(projectDirPath + '/', url, fileParts);
+        const reduxFilePath = fileParts[1];
 
-        const result = await bundleFilePath(input, bundleLanguage, getFileFromRedux);
-  
-        dispatch({
-            type: ActionType.PROJECT_BUNDLE_COMPLETE,
-            payload: {
-                projectLocalId,
-                bundle: result
-            }
-        });
+        const projectState = getState().projects.data[projectLocalId];
+        // Filter the files for project
+        // Create a new map based on filepath instead of id
+        const filesMap = getState().files.data;
+        const projectFileMap = Object.fromEntries(
+              Object.entries(filesMap)
+                  .filter(([k,v]) => v.projectLocalId === projectLocalId)
+                  .map(([k,v]) => {return [v.path, v]})
+        );
+
+        console.log(`projectState:`, projectState);
+        console.log(`filesState:`, projectFileMap);
+        // Now we will search for the file based on the reduxFilePath
+        console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
+
+        return projectFileMap[reduxFilePath].content;
+      }
+
+      dispatch({
+          type: ActionType.PROJECT_BUNDLE_START,
+          payload: {
+              projectLocalId: projectLocalId,
+          }
+      });
+
+      const result = await bundleFilePath(
+          joinFileParts(projectDirPath, entryFile),
+          bundleLanguage,
+          getFileContentsFromRedux
+      );
+
+      dispatch({
+          type: ActionType.PROJECT_BUNDLE_COMPLETE,
+          payload: {
+              projectLocalId,
+              bundle: result
+          }
+      });
     };
   }
   

@@ -163,9 +163,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       if (bundleLanguage !== BundleLanguage.UNKNOWN) {
         if (currentUser) {
           // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
+          const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
           createProjectBundle(
               reduxProject.localId,
-              `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}/${reduxProject.entry_path}`,
+              projectPath,
+              `${reduxProject.entry_path}`,
               bundleLanguage
           );
         }
