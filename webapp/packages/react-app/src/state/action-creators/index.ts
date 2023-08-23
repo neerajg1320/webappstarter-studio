@@ -43,7 +43,7 @@ import {generateLocalId} from "../id";
 import {debugAuth, debugAxios, debugRedux, enableLocalStorageAuth, serverApiBaseUrl} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser, UserFlowType} from "../user";
-import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
+import {axiosApiInstance, axiosInstance, setAxiosAuthToken} from "../../api/axiosApi";
 import {
   fetchAuthFromLocalStorage,
   removeAuthFromLocalStorage,
@@ -124,7 +124,7 @@ export const createProjectBundle = (
     bundleLanguage: BundleLanguage
 ) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
-      const getFileContentsFromRedux = (url:string):string|null => {
+      const getFileContentsFromRedux = async (url:string):Promise<string|null> => {
         console.log(`getFileContentsFromRedux: url:`, url);
         
         const fileParts = url.split(projectDirPath + '/');
@@ -152,7 +152,15 @@ export const createProjectBundle = (
         // Now we will search for the file based on the reduxFilePath
         console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
 
-        return projectFileMap[reduxFilePath].content;
+        let content = projectFileMap[reduxFilePath].content;
+        if (content === null) {
+          const response = await axiosInstance.get(url);
+          content = response.data;
+        }
+
+        // Here we should also do dispatch to add file contents
+        // TBD
+        return content;
       }
 
       dispatch({

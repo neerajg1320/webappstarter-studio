@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {debugPlugin} from "../../config/global";
 
-export const pluginLoadFromRedux = (fileFetcher: (path:string) => string|null) => {
+export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<string|null>) => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {
@@ -14,7 +14,7 @@ export const pluginLoadFromRedux = (fileFetcher: (path:string) => string|null) =
         // We use args.path as key in the cache
         console.log(`pluginLoadFromRedux:onLoad() args=`, args);
 
-        const contents = fileFetcher(args.path);
+        const contents = await fileFetcher(args.path);
         if (debugPlugin) {
           // console.log(`pluginLoadFromRedux: contents:`, contents);
         }
