@@ -8,13 +8,15 @@ export const pluginLoadFromRedux = (fileFetcher: (path:string) => string|null) =
       // Cache Check: Get from Cache if available
       // This checks if the file is in the cache. If present then returns the cached result.
       // If not then it returns nothing. This forces the esbuild to look at subsequent onLoad handlers.
-      build.onLoad({filter: /.*/}, async (args: esbuild.OnLoadArgs) => {
+      // We use any instead of esbuild.OnLoadArgs for args as we also put resolveDir in it
+      build.onLoad({filter: /.*/}, async (args: any) => {
         // If we have already fetched this file then return from cache
         // We use args.path as key in the cache
+        console.log(`pluginLoadFromRedux:onLoad() args=`, args);
 
         const contents = fileFetcher(args.path);
         if (debugPlugin) {
-          console.log(`pluginLoadFromRedux: contents:`, contents);
+          // console.log(`pluginLoadFromRedux: contents:`, contents);
         }
 
         if (contents) {

@@ -125,8 +125,8 @@ export const createProjectBundle = (
 ) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
       const getFileContentsFromRedux = (url:string):string|null => {
-        // const pathname = new URL('.', url); // This will remove the file name from path
-        // console.log(`getFileFromRedux:  url=${url}  pathname:${url.pathname}`);
+        console.log(`getFileContentsFromRedux: url:`, url);
+        
         const fileParts = url.split(projectDirPath + '/');
 
         // Example
@@ -135,6 +135,7 @@ export const createProjectBundle = (
         // ['http://api.local.webappstarter.com/', 'src/index.js']
         // console.log(projectDirPath + '/', url, fileParts);
         const reduxFilePath = fileParts[1];
+        console.log(`reduxFilePath:`, reduxFilePath);
 
         const projectState = getState().projects.data[projectLocalId];
         // Filter the files for project
