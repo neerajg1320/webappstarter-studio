@@ -27,7 +27,6 @@ export const loadData = (data:string, contentType:string|null):esbuild.OnLoadRes
   const result: esbuild.OnLoadResult = {
     loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
     contents,
-    // resolveDir: new URL('./', request.responseURL).pathname
   }
   return result;
 }
@@ -43,18 +42,7 @@ export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.
   if (debugPlugin) {
     console.log(`request.responseURL:${request.responseURL}`);
   }
-
-  // let contents = data;
-  // if (contentType === "css") {
-  //   contents = wrapScriptOnCssContent(data);
-  // }
-  //
-  // const result: esbuild.OnLoadResult = {
-  //   loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
-  //   contents,
-  //   resolveDir: new URL('./', request.responseURL).pathname
-  // }
-
+  
   const result = loadData(data, contentType);
   result.resolveDir = new URL('./', request.responseURL).pathname;
 
