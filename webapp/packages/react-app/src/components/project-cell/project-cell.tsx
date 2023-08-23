@@ -104,11 +104,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   }, []);
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`ProjectCell: useEffect([reduxProject]) reduxProject:`, reduxProject)
     }
 
-    setEditedFileLocalId(null);
+    // setEditedFileLocalId(null);
   }, [reduxProject]);
 
 
