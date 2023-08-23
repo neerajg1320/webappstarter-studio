@@ -5,7 +5,7 @@ import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
 import {CELL_REGEX} from "../../utils/patterns";
 import {isPathTypescript} from "../../utils/path";
-import {loadCssUrl, loadScriptUrl} from "./loadSourceFiles";
+import {loadCssUrl, loadFileUrl} from "./loadSourceFiles";
 
 
 
@@ -38,7 +38,7 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
           result.loader = isPathTypescript(args.path) ? 'tsx' : 'jsx';
           result.contents  =  inputCodeOrFilePath;
         } else {
-          result = await loadScriptUrl(args.path, enableLoadFromCache);
+          result = await loadFileUrl(args.path, enableLoadFromCache);
         }
 
         return result;

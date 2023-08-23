@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
 import {setFileInCache} from "./plugin-load-from-cache";
-import {isPathTypescript} from "../../utils/path";
+import {getFileType, isPathCss, isPathTypescript} from "../../utils/path";
 import {debugPlugin} from "../../config/global";
 
 export const wrapScriptOnCssContent = (cssStr:string):string => {
@@ -19,7 +19,6 @@ export const wrapScriptOnCssContent = (cssStr:string):string => {
 }
 
 export const loadCssUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
-  // Fetch the package from repo
   const {data, request} = await axiosInstance.get(url);
 
   const contents = wrapScriptOnCssContent(data);
@@ -37,21 +36,28 @@ export const loadCssUrl = async (url:string, isCached:boolean):Promise<esbuild.O
   return result;
 }
 
-export const loadScriptUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
-  let result: esbuild.OnLoadResult = {
-    loader: isPathTypescript(url) ? 'tsx' : 'jsx'
-  };
+export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
+  const fileType = getFileType(url);
 
   // Note we are parsing the request as well to get the path of the downloaded file which might be
   // different from the args.path
   const { data, request } = await axiosInstance.get(url);
 
+
   if (debugPlugin) {
     console.log(`request.responseURL:${request.responseURL}`);
   }
 
-  result.contents = data;
-  result.resolveDir = new URL('./', request.responseURL).pathname;
+  let contents = data;
+  if (fileType === "css") {
+    contents = wrapScriptOnCssContent(data);
+  }
+
+  const result: esbuild.OnLoadResult = {
+    loader: isPathCss(url) ? 'jsx' : isPathTypescript(url) ? 'tsx' : 'jsx',
+    contents,
+    resolveDir: new URL('./', request.responseURL).pathname
+  }
 
   if (isCached) {
     await setFileInCache(url, result);

@@ -101,3 +101,23 @@ export const isPathCss = (path: string): boolean => {
 export const isPathScss = (path: string): boolean => {
   return isRegexMatch(SCSS_REGEX, path);
 }
+
+export const getFileType = (path:string): string|null => {
+  if (isPathScss(path)) {
+    return "scss";
+  }
+
+  if (isPathCss(path)) {
+    return "css";
+  }
+
+  if (isPathTypescript(path)) {
+    return "ts";
+  }
+
+  if (isPathJavascript(path)) {
+    return "js";
+  }
+
+  return null;
+}
