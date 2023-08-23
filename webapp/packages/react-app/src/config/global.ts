@@ -23,8 +23,8 @@ export const cellTsxFileName = '__cell.tsx';
 export const pkgServerUrl = 'https://unpkg.com';
 
 export const enableLoadFromRedux = true
-export const enableLoadFromCache = true;
-export const enableLoadFromServer = true;
+export const enableLoadFromCache = false;
+export const enableLoadFromServer = false;
 
 
 

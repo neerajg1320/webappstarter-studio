@@ -118,9 +118,10 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
 
 export const createProjectBundle = (projectLocalId:string, input:string, bundleLanguage: BundleLanguage) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
-        const getFileFromRedux = (path:string) => {
-          console.log(`getFileFromRedux: path=${path}`);
-
+        const getFileFromRedux = (url:string) => {
+          const path = new URL('./', url).pathname;
+          console.log(`getFileFromRedux:  url=${url}  path:${path}`);
+          
           return {
             path,
             contents: `console.log("Hello I am from redux")`
