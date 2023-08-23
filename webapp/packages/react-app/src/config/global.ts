@@ -22,9 +22,9 @@ export const cellJsxFileName = '__cell.jsx';
 export const cellTsxFileName = '__cell.tsx';
 export const pkgServerUrl = 'https://unpkg.com';
 
-export const enableLoadFromRedux = true
+export const enableLoadFromRedux = false
 export const enableLoadFromCache = false;
-export const enableLoadFromServer = false;
+export const enableLoadFromServer = true;
 
 
 
