@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild-wasm";
-import {debugPlugin} from "../../config/global";
+import {debugPlugin, enableLoadFromCache} from "../../config/global";
 
 import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
@@ -22,7 +22,7 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
             console.log('onLoad', args);
         }
 
-        return await loadCssUrl(args.path);
+        return await loadCssUrl(args.path, enableLoadFromCache);
       });
 
       // We intercept the request and download from fileServer using axios
@@ -38,7 +38,7 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
           result.loader = isPathTypescript(args.path) ? 'tsx' : 'jsx';
           result.contents  =  inputCodeOrFilePath;
         } else {
-          result = await loadScriptUrl(args.path);
+          result = await loadScriptUrl(args.path, enableLoadFromCache);
         }
 
         return result;

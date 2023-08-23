@@ -4,22 +4,25 @@ import {setFileInCache} from "./plugin-load-from-cache";
 import {isPathTypescript} from "../../utils/path";
 import {debugPlugin} from "../../config/global";
 
-export const loadCssUrl = async (url:string):Promise<esbuild.OnLoadResult> => {
-  // Fetch the package from repo
-  const {data, request} = await axiosInstance.get(url);
-
+export const wrapScriptOnCssContent = (cssStr:string):string => {
   // start: The custom part for css
-  const escapedCssStr = data
+  const escapedCssStr = cssStr
       .replace(/\n/g, '')
       .replace(/"/g, '\\"')
       .replace(/'/g, "\\'" )
 
-  const contents = `
+  return `
             const style = document.createElement('style');
             style.innerText = '${escapedCssStr}';
             document.head.appendChild(style);
             `;
-  // end
+}
+
+export const loadCssUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
+  // Fetch the package from repo
+  const {data, request} = await axiosInstance.get(url);
+
+  const contents = wrapScriptOnCssContent(data);
 
   const result: esbuild.OnLoadResult = {
     loader: 'jsx',
@@ -27,12 +30,14 @@ export const loadCssUrl = async (url:string):Promise<esbuild.OnLoadResult> => {
     resolveDir: new URL('./', request.responseURL).pathname
   }
 
-  await setFileInCache(url, result);
+  if (isCached) {
+    await setFileInCache(url, result);
+  }
 
   return result;
 }
 
-export const loadScriptUrl = async (url:string):Promise<esbuild.OnLoadResult> => {
+export const loadScriptUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
   let result: esbuild.OnLoadResult = {
     loader: isPathTypescript(url) ? 'tsx' : 'jsx'
   };
@@ -48,7 +53,9 @@ export const loadScriptUrl = async (url:string):Promise<esbuild.OnLoadResult> =>
   result.contents = data;
   result.resolveDir = new URL('./', request.responseURL).pathname;
 
-  await setFileInCache(url, result);
+  if (isCached) {
+    await setFileInCache(url, result);
+  }
 
   if (debugPlugin && false) {
     console.log(`onLoad: for '${url}' returned `, result);
