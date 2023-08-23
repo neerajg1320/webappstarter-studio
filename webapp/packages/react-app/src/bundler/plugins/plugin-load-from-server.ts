@@ -17,13 +17,13 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
 
       // handle files ending in css.
       // This would handle scss files as well as . matches anything and process them as css files
-      build.onLoad({filter: /.css$/}, async (args: esbuild.OnLoadArgs) => {
-        if (debugPlugin) {
-            console.log('onLoad', args);
-        }
-
-        return await loadCssUrl(args.path, enableLoadFromCache);
-      });
+      // build.onLoad({filter: /.css$/}, async (args: esbuild.OnLoadArgs) => {
+      //   if (debugPlugin) {
+      //       console.log('onLoad', args);
+      //   }
+      //
+      //   return await loadFileUrl(args.path, enableLoadFromCache);
+      // });
 
       // We intercept the request and download from fileServer using axios
       // build.onLoad({ filter: JSTS_REGEX }, async (args: any) => {

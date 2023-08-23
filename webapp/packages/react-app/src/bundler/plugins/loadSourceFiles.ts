@@ -18,43 +18,41 @@ export const wrapScriptOnCssContent = (cssStr:string):string => {
             `;
 }
 
-export const loadCssUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
-  const {data, request} = await axiosInstance.get(url);
-
-  const contents = wrapScriptOnCssContent(data);
-
-  const result: esbuild.OnLoadResult = {
-    loader: 'jsx',
-    contents,
-    resolveDir: new URL('./', request.responseURL).pathname
+export const loadData = (data:string, contentType:string):esbuild.OnLoadResult => {
+  let contents = data;
+  if (contentType === "css") {
+    contents = wrapScriptOnCssContent(data);
   }
 
-  if (isCached) {
-    await setFileInCache(url, result);
+  const result: esbuild.OnLoadResult = {
+    loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
+    contents,
+    resolveDir: new URL('./', request.responseURL).pathname
   }
 
   return result;
 }
 
+
 export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
-  const fileType = getFileType(url);
+  const contentType = getFileType(url);
 
   // Note we are parsing the request as well to get the path of the downloaded file which might be
   // different from the args.path
   const { data, request } = await axiosInstance.get(url);
-
 
   if (debugPlugin) {
     console.log(`request.responseURL:${request.responseURL}`);
   }
 
   let contents = data;
-  if (fileType === "css") {
+  if (contentType === "css") {
     contents = wrapScriptOnCssContent(data);
   }
 
   const result: esbuild.OnLoadResult = {
-    loader: isPathCss(url) ? 'jsx' : isPathTypescript(url) ? 'tsx' : 'jsx',
+    // loader: isPathCss(url) ? 'jsx' : isPathTypescript(url) ? 'tsx' : 'jsx',
+    loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
     contents,
     resolveDir: new URL('./', request.responseURL).pathname
   }
@@ -63,8 +61,5 @@ export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.
     await setFileInCache(url, result);
   }
 
-  if (debugPlugin && false) {
-    console.log(`onLoad: for '${url}' returned `, result);
-  }
   return result;
 }
