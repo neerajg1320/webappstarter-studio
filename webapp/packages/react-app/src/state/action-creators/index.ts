@@ -168,6 +168,7 @@ export const createProjectBundle = (
           result = await loadFileUrl(url, enableLoadFromCache);
         } else {
           result = loadData(data, getFileType(url));
+          result.resolveDir = new URL('./', url).pathname;
         }
 
         if (debugPlugin) {
