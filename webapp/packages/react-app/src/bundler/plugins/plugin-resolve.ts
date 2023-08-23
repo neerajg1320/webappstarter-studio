@@ -45,14 +45,15 @@ export const pluginResolve = (inputType: BundleInputType) => {
     setup(build: esbuild.PluginBuild) {
       // onResolve are for path resolutions
 
-      // TBD: Check if we can put an if condition between following two
-
       // detection of hard coded file name for cell.
       build.onResolve({filter: CELL_REGEX}, (args: any) => {
         if (debugPlugin) {
             console.log('onResolve', args);
         }
-        return { path: args.path, namespace: 'a'}
+        return {
+          path: args.path,
+          namespace: 'a'
+        };
       });
 
       // For relative paths like ./xxx or ../xxx
@@ -82,17 +83,11 @@ export const pluginResolve = (inputType: BundleInputType) => {
         // let server = getServerFromArgs(args);
         let server = getServerFromArgs(args, false);
 
-        return { path: `${server}/${args.path}`, namespace: 'a' };
+        return {
+          path: `${server}/${args.path}`,
+          namespace: 'a'
+        };
       });
-
-      // build.onResolve({ filter: /.*/ }, async (args: any) => {
-      //   if (debugPlugin) {
-      //     console.log('onResolve', args);
-      //   }
-      //
-      //   console.error(`File '${args.path}' not handled. Further processing to be avoided`);
-      //   return undefined;
-      // });
     },
   };
 };
