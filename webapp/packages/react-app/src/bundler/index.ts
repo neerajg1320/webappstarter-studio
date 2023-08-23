@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild-wasm';
 import {pluginResolve} from './plugins/plugin-resolve';
-import {pluginLoadFetch} from './plugins/plugin-load-fetch';
+import {pluginLoadFromServer} from './plugins/plugin-load-from-server';
 import {BundleInputType, BundleLanguage} from "../state/bundle";
 import {
   cellJsxFileName,
@@ -11,6 +11,7 @@ import {
   pkgServerUrl
 } from "../config/global";
 import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
+import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 
 let service: esbuild.Service;
 
@@ -48,7 +49,7 @@ export const bundleFilePath =  async (filePath: string, bundleLanguage: BundleLa
 }
 
 // The bundleCodeStr takes a string as input.
-// In pluginLoadFetch, the onLoad method checks for index.js and provides this String
+// In pluginLoadFromServer, the onLoad method checks for index.js and provides this String
 const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, inputLanguage: BundleLanguage) => {
     if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
@@ -58,8 +59,8 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
-            // The following will be replaced by pluginLoadFetch to code for a cell
-            // For filePath the pluginLoadFetch will download file from fileServer
+            // The following will be replaced by pluginLoadFromServer to code for a cell
+            // For filePath the pluginLoadFromServer will download file from fileServer
             entryPoints: inputType === 'cell' ?
                 [inputLanguage === BundleLanguage.TYPESCRIPT ? cellTsxFileName : cellJsxFileName] :
                 [codeOrFilePath],
@@ -68,8 +69,9 @@ const bundleCode = async (codeOrFilePath: string, inputType: BundleInputType, in
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: [
                 pluginResolve(inputType),
+                pluginLoadFromCache(),
                 // We shall pass a getFileFromRedux function so that it can be retrieved locally
-                pluginLoadFetch(codeOrFilePath, inputType)
+                pluginLoadFromServer(codeOrFilePath, inputType)
             ],
             define: {
                 'process.env.NODE_ENV': '"production"',

@@ -2,15 +2,15 @@ export const debug = false;
 
 // Cache
 // We need to figure a strategy for invalidating Cache entry before we enable it.
-export const cacheEnabled = false;
-export const debugCache = false;
+export const cacheEnabled = true;
+export const debugCache = true;
 
 // Redux
 export const reduxManualTest = false;
 export const debugRedux = true;
 
 // ESBuild Plugins
-export const debugPlugin = false;
+export const debugPlugin = true;
 
 // Bundler
 export const esbuildVersion = "0.8.27";
