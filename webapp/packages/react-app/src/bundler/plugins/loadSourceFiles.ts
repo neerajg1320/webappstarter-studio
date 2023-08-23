@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
 import {setFileInCache} from "./plugin-load-from-cache";
-import {getFileType, isPathCss, isPathTypescript} from "../../utils/path";
+import {getFileType} from "../../utils/path";
 import {debugPlugin} from "../../config/global";
 
 export const wrapScriptOnCssContent = (cssStr:string):string => {
@@ -42,7 +42,7 @@ export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.
   if (debugPlugin) {
     console.log(`request.responseURL:${request.responseURL}`);
   }
-  
+
   const result = loadData(data, contentType);
   result.resolveDir = new URL('./', request.responseURL).pathname;
 

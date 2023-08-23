@@ -40,7 +40,14 @@ import {
   ReduxUpdateFilePartial
 } from "../file";
 import {generateLocalId} from "../id";
-import {debugAuth, debugAxios, debugRedux, enableLocalStorageAuth, serverApiBaseUrl} from "../../config/global";
+import {
+  debugAuth,
+  debugAxios, debugPlugin,
+  debugRedux,
+  enableLoadFromCache,
+  enableLocalStorageAuth,
+  serverApiBaseUrl
+} from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser, UserFlowType} from "../user";
 import {axiosApiInstance, axiosInstance, setAxiosAuthToken} from "../../api/axiosApi";
@@ -53,8 +60,9 @@ import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
-import {joinFileParts} from "../../utils/path";
-
+import {getFileType, joinFileParts} from "../../utils/path";
+import * as esbuild from "esbuild-wasm";
+import {loadData, loadFileUrl} from "../../bundler/plugins/loadSourceFiles";
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
   return {
@@ -124,7 +132,7 @@ export const createProjectBundle = (
     bundleLanguage: BundleLanguage
 ) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
-      const getFileContentsFromRedux = async (url:string):Promise<string|null> => {
+      const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
         console.log(`getFileContentsFromRedux: url:`, url);
         
         const fileParts = url.split(projectDirPath + '/');
@@ -152,15 +160,21 @@ export const createProjectBundle = (
         // Now we will search for the file based on the reduxFilePath
         console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
 
-        let content = projectFileMap[reduxFilePath].content;
-        if (content === null) {
-          const response = await axiosInstance.get(url);
-          content = response.data;
+        let data = projectFileMap[reduxFilePath].content;
+        let result:esbuild.OnLoadResult;
+
+        if (data === null) {
+          // We shall split the operation in case we want to update redux state
+          result = await loadFileUrl(url, enableLoadFromCache);
+        } else {
+          result = loadData(data, getFileType(url));
         }
 
-        // Here we should also do dispatch to add file contents
-        // TBD
-        return content;
+        if (debugPlugin) {
+          console.log(`result:`, result);
+        }
+
+        return result;
       }
 
       dispatch({
