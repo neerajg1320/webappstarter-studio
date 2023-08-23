@@ -1,10 +1,10 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
-import {debugPlugin, debugCache, cacheEnabled} from "../../config/global";
+import {debugPlugin} from "../../config/global";
 
 import {BundleInputType} from "../../state/bundle";
 import {isRegexMatch} from "../../utils/regex";
-import {CELL_REGEX, JSTS_REGEX} from "../../utils/patterns";
+import {CELL_REGEX} from "../../utils/patterns";
 import {isPathTypescript} from "../../utils/path";
 import {setFileInCache} from "./plugin-load-from-cache";
 
@@ -12,8 +12,10 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {          
-    // onLoad are for loading the file.
+      // onLoad are for loading the file.
 
+      // handle files ending in css.
+      // This would handle scss files as well as . matches anything and process them as css files
       build.onLoad({filter: /.css$/}, async (args: any) => {
         if (debugPlugin) {
             console.log('onLoad', args);
@@ -41,9 +43,7 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
             resolveDir: new URL('./', request.responseURL).pathname
         }
 
-        if (cacheEnabled) {
-          await setFileInCache(args.path, result);
-        }
+        await setFileInCache(args.path, result);
 
         return result;
       });
@@ -62,7 +62,8 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
         if (isRegexMatch(CELL_REGEX, args.path)) {
           result.contents  =  inputCodeOrFilePath;
         } else {
-          // Note we are parsing the request as well to get the path of the downloaded file which might be different from the args.path
+          // Note we are parsing the request as well to get the path of the downloaded file which might be
+          // different from the args.path
           const { data, request } = await axiosInstance.get(args.path);
 
           if (debugPlugin) {
@@ -72,21 +73,14 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
           result.contents = data;
           result.resolveDir = new URL('./', request.responseURL).pathname;
 
-          if (cacheEnabled) {
-            await setFileInCache(args.path, result);
-          }
+          await setFileInCache(args.path, result);
         }
 
-        if (debugPlugin) {
+        if (debugPlugin && false) {
           console.log(`onLoad: for '${args.path}' returned `, result);
         }
 
         return result;
-      });
-
-      build.onLoad({ filter: /.*$/ }, async (args: esbuild.OnLoadArgs): Promise<esbuild.OnLoadResult|undefined> => {
-        console.error(`File not handled:`, args.path);
-        return undefined;
       });
     }
   }

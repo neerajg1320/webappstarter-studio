@@ -1,6 +1,5 @@
 import localforage from "localforage";
 import {cacheEnabled, debugCache, debugPlugin} from "../../config/global";
-import {BundleInputType} from "../../state/bundle";
 import * as esbuild from "esbuild-wasm";
 
 let fileCache: LocalForage;
@@ -15,10 +14,8 @@ export const pluginLoadFromCache = () => {
   return {
     name: 'fetch-plugin',
     setup(build: esbuild.PluginBuild) {
-      // onLoad are for loading the file.
-
       // Cache Check: Get from Cache if available
-      // This check if the file is in the cache. If present then returns the cached result.
+      // This checks if the file is in the cache. If present then returns the cached result.
       // If not then it returns nothing. This forces the esbuild to look at subsequent onLoad handlers.
       build.onLoad({filter: /.*/}, async (args: any) => {
 
