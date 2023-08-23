@@ -160,15 +160,28 @@ export const createProjectBundle = (
         // Now we will search for the file based on the reduxFilePath
         console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
 
-        let data = projectFileMap[reduxFilePath].content;
-        let result:esbuild.OnLoadResult;
+        const file:ReduxFile = projectFileMap[reduxFilePath];
 
-        if (data === null) {
+        let content = file.content;
+        let result:esbuild.OnLoadResult|null = null;
+        let resolveDir = new URL('./', url).pathname;
+
+        if (content === null) {
           // We shall split the operation in case we want to update redux state
-          result = await loadFileUrl(url, enableLoadFromCache);
-        } else {
-          result = loadData(data, getFileType(url));
-          result.resolveDir = new URL('./', url).pathname;
+          const {data, request} = await axiosInstance.get(url);
+
+          // We will use result.content to fill in the file content
+          if (data) {
+            content = data;
+            dispatch(updateFile({localId: file.localId, content}));
+          }
+
+          resolveDir = new URL('./', request.responseURL).pathname;
+        }
+
+        if (content) {
+          result = loadData(content, getFileType(url));
+          result.resolveDir = resolveDir;
         }
 
         if (debugPlugin) {
