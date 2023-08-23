@@ -6,7 +6,7 @@ import {
   cellJsxFileName,
   cellTsxFileName,
   combineCellsCode,
-  debugBundler, enableLoadFromCache, enableLoadFromRedux,
+  debugBundler, enableLoadFromCache, enableLoadFromRedux, enableLoadFromServer,
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
@@ -74,7 +74,7 @@ const bundleCode = async (
     ];
 
     if (enableLoadFromRedux) {
-      // This would be null in case of call from bundleCodeStr
+      // fileFetcher would be null in case of call from bundleCodeStr
       if (fileFetcher) {
         esbuildPlugins.push(pluginLoadFromRedux(fileFetcher));
       }
@@ -82,7 +82,9 @@ const bundleCode = async (
     if (enableLoadFromCache) {
       esbuildPlugins.push(pluginLoadFromCache());
     }
-    esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
+    if (enableLoadFromServer) {
+      esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
+    }
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {

@@ -2,13 +2,12 @@ export const debug = false;
 
 // Cache
 // We need to figure a strategy for invalidating Cache entry before we enable it.
-export const enableLoadFromCache = true;
 export const debugCache = true;
 
 // Redux
 export const reduxManualTest = false;
 export const debugRedux = true;
-export const enableLoadFromRedux = false;
+;
 
 
 // ESBuild Plugins
@@ -22,6 +21,11 @@ export const combineCellsCode = false;
 export const cellJsxFileName = '__cell.jsx';
 export const cellTsxFileName = '__cell.tsx';
 export const pkgServerUrl = 'https://unpkg.com';
+
+export const enableLoadFromRedux = true
+export const enableLoadFromCache = true;
+export const enableLoadFromServer = true;
+
 
 
 // API Server
