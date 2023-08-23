@@ -18,7 +18,7 @@ export const wrapScriptOnCssContent = (cssStr:string):string => {
             `;
 }
 
-export const loadData = (data:string, contentType:string):esbuild.OnLoadResult => {
+export const loadData = (data:string, contentType:string|null):esbuild.OnLoadResult => {
   let contents = data;
   if (contentType === "css") {
     contents = wrapScriptOnCssContent(data);
@@ -27,9 +27,8 @@ export const loadData = (data:string, contentType:string):esbuild.OnLoadResult =
   const result: esbuild.OnLoadResult = {
     loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
     contents,
-    resolveDir: new URL('./', request.responseURL).pathname
+    // resolveDir: new URL('./', request.responseURL).pathname
   }
-
   return result;
 }
 
@@ -45,17 +44,19 @@ export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.
     console.log(`request.responseURL:${request.responseURL}`);
   }
 
-  let contents = data;
-  if (contentType === "css") {
-    contents = wrapScriptOnCssContent(data);
-  }
+  // let contents = data;
+  // if (contentType === "css") {
+  //   contents = wrapScriptOnCssContent(data);
+  // }
+  //
+  // const result: esbuild.OnLoadResult = {
+  //   loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
+  //   contents,
+  //   resolveDir: new URL('./', request.responseURL).pathname
+  // }
 
-  const result: esbuild.OnLoadResult = {
-    // loader: isPathCss(url) ? 'jsx' : isPathTypescript(url) ? 'tsx' : 'jsx',
-    loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
-    contents,
-    resolveDir: new URL('./', request.responseURL).pathname
-  }
+  const result = loadData(data, contentType);
+  result.resolveDir = new URL('./', request.responseURL).pathname;
 
   if (isCached) {
     await setFileInCache(url, result);
