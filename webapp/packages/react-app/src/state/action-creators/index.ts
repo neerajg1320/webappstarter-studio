@@ -135,17 +135,14 @@ export const createProjectBundle = (
 
       // We define a function closure as it needs getState() from getting files for project
       const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-        console.log(`getFileContentsFromRedux: url:`, url);
+        // console.log(`getFileContentsFromRedux: url:`, url);
         
         const fileParts = url.split(projectDirPath + '/');
 
-        // Example
-        // mediafiles/user_67/react-project/ will split
-        // http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
+        // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
         // ['http://api.local.webappstarter.com/', 'src/index.js']
-        // console.log(projectDirPath + '/', url, fileParts);
         const reduxFilePath = fileParts[1];
-        console.log(`reduxFilePath:`, reduxFilePath);
+        // console.log(`reduxFilePath:`, reduxFilePath);
 
         const projectState = getState().projects.data[projectLocalId];
         // Filter the files for project

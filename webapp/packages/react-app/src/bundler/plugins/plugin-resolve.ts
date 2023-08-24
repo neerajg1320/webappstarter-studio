@@ -15,7 +15,7 @@ export const pluginResolve = () => {
 
       // Kept for generating debug messages. It returns undefined so that lookup continues
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || true) {
+        if (debugPlugin) {
           console.log('onResolve', args);
         }
         return undefined;

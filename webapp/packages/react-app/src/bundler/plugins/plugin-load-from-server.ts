@@ -13,8 +13,6 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
     setup(build: esbuild.PluginBuild) {          
       // onLoad are for loading the file.
 
-      // We intercept the request and download from fileServer using axios
-      // build.onLoad({ filter: JSTS_REGEX }, async (args: any) => {
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
         if (debugPlugin) {
           console.log('onLoad', args);

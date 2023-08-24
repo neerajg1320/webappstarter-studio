@@ -25,7 +25,7 @@ export const pkgServerUrl = 'https://unpkg.com';
 // Flag for enabling in-memory fetching. Redux act as an ad-hoc file system.
 export const enableLoadFromRedux = true;
 // The following are required for loading packages
-export const enableLoadFromCache = false;
+export const enableLoadFromCache = true;
 export const enableLoadFromServer = true;
 
 
