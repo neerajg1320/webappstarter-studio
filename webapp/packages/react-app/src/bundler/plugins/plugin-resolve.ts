@@ -24,8 +24,11 @@ const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>
     }
   // When path is not relative then we resolve to package server in all cases other than starting file
   } else {
+    // Importer is blank when finding server for entry point.
+    // We could have avoided this call in case of entry point.
     if (args.importer === '') {
-      server = projectServer;
+      console.error(`entrypoint resovled in getServerFromArgs`);
+      server = (new URL(args.path)).origin;
     } else {
       server = pkgServer;
     }
@@ -73,6 +76,15 @@ export const pluginResolve = (inputType: BundleInputType) => {
 
       // For any other file
       build.onResolve({ filter: /.*/ }, async (args: any) => {
+        // This is for entrypoint
+        if (args.importer === '') {
+          console.log(`entrypoint resovled in build.onResovle()`);
+          return {
+            path: args.path,
+            namespace: 'a'
+          };
+        }
+
         let server = getServerFromArgs(args, false);
 
         return {

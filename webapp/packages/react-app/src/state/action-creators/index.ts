@@ -46,7 +46,7 @@ import {
   debugRedux,
   enableLoadFromCache,
   enableLocalStorageAuth,
-  serverApiBaseUrl
+  serverApiBaseUrl, serverMediaBaseUrl
 } from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser, UserFlowType} from "../user";
@@ -132,6 +132,8 @@ export const createProjectBundle = (
     bundleLanguage: BundleLanguage
 ) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+
+      // We define a function closure as it needs getState() from getting files for project
       const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
         console.log(`getFileContentsFromRedux: url:`, url);
         
@@ -200,7 +202,7 @@ export const createProjectBundle = (
       });
 
       const result = await bundleFilePath(
-          joinFileParts(projectDirPath, entryFile),
+          (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
           bundleLanguage,
           getFileContentsFromRedux
       );
