@@ -45,20 +45,16 @@ export const pluginResolve = (inputType: BundleInputType) => {
 
       // For any other file
       build.onResolve({ filter: /.*/ }, async (args: any) => {
-        // This is for entrypoint
+        // This is for entrypoint. There is no importer at the entry point.
         if (args.importer === '') {
-          console.log(`entrypoint resovled in build.onResovle()`);
           return {
             path: args.path,
             namespace: 'a'
           };
         }
-
-        // let server = getServerFromArgs(args, false);
-        let server = getPkgServer();
-
+        
         return {
-          path: `${server}/${args.path}`,
+          path: `${getPkgServer()}/${args.path}`,
           namespace: 'a'
         };
       });
