@@ -37,10 +37,10 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   const projectTemplateOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
     if (currentProject && currentProject.template) {
-      return {label: currentProject.framework, value:currentProject.framework};
+      return {label: currentProject.template, value:currentProject.template};
     }
-    return {label: 'Javascript with CSS', value: 'javascript-with-css'};
-  }, [currentProject?.framework])
+    return {label: 'javascript-css', value: 'javascript-css'};
+  }, [currentProject?.template])
 
   const projectFrameworkOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
     if (currentProject && currentProject.framework) {
@@ -90,10 +90,17 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
 
   const projectTemplateOptions = useMemo(() => {
-      return [
-        {label: 'Javascript with CSS', value: 'javascript-with-css'},
-        {label: 'Reactjs with CSS', value: 'reactjs-with-css'},
-      ];
+    // This we need to fetch from the API
+    const templates:string[] = [
+      'javascript-css',
+      'typescript-css',
+      'react-javascript-css',
+      'react-typescript-css',
+    ];
+
+    return templates.map(item => {
+      return {label: item, value: item};
+    })
   }, []);
 
   const handleSaveClick = async () => {
@@ -144,7 +151,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                 options={projectTemplateOptions}
                 onChange={(selected) => updateProject({
                   ...currentProject,
-                  framework: selected?.value || 'none'
+                  template: selected?.value || 'none'
                 } as ReduxUpdateProjectPartial)}
             />
           </div>

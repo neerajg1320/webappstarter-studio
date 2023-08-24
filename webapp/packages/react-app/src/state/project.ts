@@ -1,5 +1,12 @@
 import {ServerObject, ServerObjectPartial} from "./obj";
 
+export enum ProjectTemplates {
+  JAVASCRIPT_WITH_CSS = 'javascript-css',
+  TYPESCRIPT_WITH_CSS = 'typescript-css',
+  REACT_JSX_WITH_CSS = 'react-javascript-css',
+  REACT_TSX_WITH_CSS = 'react-typescript-css',
+}
+
 export enum ProjectFrameworks {
   REACTJS = 'reactjs',
   VUESJS = 'vuejs',
@@ -18,6 +25,7 @@ export interface ReduxProject extends ServerObject {
   localId: string;
   title: string;
   description: string;
+  template: ProjectTemplates;
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
   entryFileLocalId?: string|null;
@@ -35,6 +43,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   localId: string;
   title?: string;
   description?: string;
+  template?: ProjectTemplates;
   framework?: ProjectFrameworks;
   toolchain?: ReactToolchains;
   remoteId?: string;
@@ -53,6 +62,7 @@ export interface ReduxCreateProjectPartial {
   localId: string;
   title: string;
   description: string;
+  template?: ProjectTemplates;
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
 }
