@@ -70,7 +70,7 @@ const bundleCode = async (
 
     const esbuildService = await getESBuildService();
     const esbuildPlugins = [
-        pluginResolve(inputType)
+        pluginResolve()
     ];
 
     if (enableLoadFromRedux) {

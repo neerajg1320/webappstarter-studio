@@ -7,10 +7,7 @@ import {CELL_REGEX} from "../../utils/patterns";
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = (inputType: BundleInputType) => {
-  // console.log(`pluginResolve: closure created for inputType '${inputType}'`);
-
-
+export const pluginResolve = () => {
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
