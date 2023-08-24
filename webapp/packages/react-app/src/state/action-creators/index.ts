@@ -155,10 +155,11 @@ export const createProjectBundle = (
                   .map(([k,v]) => {return [v.path, v]})
         );
 
-        console.log(`projectState:`, projectState);
-        console.log(`filesState:`, projectFileMap);
-        // Now we will search for the file based on the reduxFilePath
-        console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
+        if (debugPlugin && debugRedux) {
+          console.log(`projectState:`, projectState);
+          console.log(`filesState:`, projectFileMap);
+          console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
+        }
 
         const file:ReduxFile = projectFileMap[reduxFilePath];
 

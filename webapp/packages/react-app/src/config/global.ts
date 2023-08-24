@@ -6,16 +6,16 @@ export const debugCache = true;
 
 // Redux
 export const reduxManualTest = false;
-export const debugRedux = true;
+export const debugRedux = false;
 ;
 
 
 // ESBuild Plugins
-export const debugPlugin = true;
+export const debugPlugin = false;
 
 // Bundler
+export const debugBundler = false;
 export const esbuildVersion = "0.8.27";
-export const debugBundler = true;
 export const autoBundling = false;
 export const combineCellsCode = false;
 export const cellJsxFileName = '__cell.jsx';
