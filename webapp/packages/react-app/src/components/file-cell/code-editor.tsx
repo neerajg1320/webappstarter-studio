@@ -2,12 +2,14 @@ import './code-editor.css';
 import './syntax.css';
 import React, {useEffect, useMemo, useRef} from 'react';
 import MonacoEditor, {EditorDidMount} from '@monaco-editor/react';
+// https://stackoverflow.com/questions/70538511/you-may-need-an-additional-loader-to-handle-the-result-of-these-loaders-upgradi
+// import * as monaco from 'monaco-editor';
+// import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
 import {debugComponent} from "../../config/global";
-import {BundleLanguage} from "../../state/bundle";
 import {CodeLanguage} from "../../state/language";
 
 interface CodeEditorProps {
@@ -33,6 +35,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
 
     return 'javascript';
   }, [language]);
+
+  // const monaco = useMonaco();
+  // useEffect(() => {
+  //
+  // }, [monaco]);
 
   useEffect(() => {
     if (debugComponent) {
@@ -67,7 +74,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
 
 
     // Use two spaces for tabs
-    monacoEditor.getModel()?.updateOptions({tabSize: 2});
+    const monacoModel = monacoEditor.getModel();
+    if (monacoModel) {
+      monacoModel.updateOptions({tabSize: 2});
+    }
 
     const highlighter = new Highlighter(
       // @ts-ignore
@@ -85,6 +95,24 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
   };
 
   const handleFormatClick = () => {
+    // https://stackoverflow.com/questions/56954280/monaco-editor-how-to-disable-errors-typescript
+    // https://blog.expo.dev/building-a-code-editor-with-monaco-f84b3a06deaf
+    // We will set the language settings for typescript
+    try {
+      // @ts-ignore
+      window.monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        // noSemanticValidation: true,
+        // noSyntaxValidation: true,
+        diagnosticCodesToIgnore: [
+          2792, // Unused imports
+          2304, 1005, 1161, // For JSX
+        ]
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+
     const unformattedCode = editorRef.current.getModel().getValue();
 
     const formattedCode = prettier.format(unformattedCode, {

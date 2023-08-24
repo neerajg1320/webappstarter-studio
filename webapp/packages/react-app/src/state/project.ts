@@ -62,7 +62,7 @@ export interface ReduxCreateProjectPartial {
   localId: string;
   title: string;
   description: string;
-  template?: ProjectTemplates;
+  template  : ProjectTemplates;
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
 }
