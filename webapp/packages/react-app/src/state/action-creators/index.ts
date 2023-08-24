@@ -344,7 +344,7 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
       // We are putting pkid in the id.
       dispatch(updateProject({localId:projectPartial.localId, ...rest, synced:true}));
 
-      await fetchFiles()(dispatch, getState);
+      await fetchFiles(rest.pkid)(dispatch, getState);
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
@@ -538,11 +538,15 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 }
 
 //
-export const fetchFiles = () => {
+export const fetchFiles = (projectPkid?:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       // Later we can created a combined object
-      const {data}:{data:ReduxFile[]} = await axiosApiInstance.get(`/files/`);
+      let params:{[k:string]:string|number} = {};
+      if (projectPkid) {
+        params['project'] = projectPkid;
+      }
+      const {data}:{data:ReduxFile[]} = await axiosApiInstance.get(`/files/`, {params});
 
       // console.log(getState().projects.data);
       const projectsPkidToLocalIdMap:{[n: number]:string} = Object.entries(getState().projects.data).reduce((acc:{[n:number]:string}, [localId,project]) => {
