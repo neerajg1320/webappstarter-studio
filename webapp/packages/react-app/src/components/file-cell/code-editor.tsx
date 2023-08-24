@@ -92,9 +92,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
       undefined,
       () => {}
     );
-  };
 
-  const handleFormatClick = () => {
     // https://stackoverflow.com/questions/56954280/monaco-editor-how-to-disable-errors-typescript
     // https://blog.expo.dev/building-a-code-editor-with-monaco-f84b3a06deaf
     // We will set the language settings for typescript
@@ -111,8 +109,9 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
     } catch (err) {
       console.error(err);
     }
+  };
 
-
+  const handleFormatClick = () => {
     const unformattedCode = editorRef.current.getModel().getValue();
 
     const formattedCode = prettier.format(unformattedCode, {
