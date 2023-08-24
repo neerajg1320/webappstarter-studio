@@ -99,12 +99,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
     try {
       // @ts-ignore
       window.monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-        // noSemanticValidation: true,
-        // noSyntaxValidation: true,
-        diagnosticCodesToIgnore: [
-          2792, // Unused imports
-          2304, 1005, 1161, // For JSX
-        ]
+        noSemanticValidation: true,
+        noSyntaxValidation: true,
+        // diagnosticCodesToIgnore: [
+        //   2792, // Unused imports
+        //   2304, 1005, 1161, // For JSX
+        // ]
       });
     } catch (err) {
       console.error(err);
