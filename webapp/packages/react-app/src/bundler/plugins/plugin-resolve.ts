@@ -1,41 +1,9 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
 import {BundleInputType} from "../../state/bundle";
-import {getFileServer, getPkgServer} from "./servers";
-import {CELL_REGEX, JSTS_REGEX} from "../../utils/patterns";
+import {getPkgServer} from "./servers";
+import {CELL_REGEX} from "../../utils/patterns";
 
-const getServerFromArgs = (args:any, isRelativePath:boolean):string|undefined =>  {
-  if (debugPlugin && false) {
-    console.log(`getServerFromArgs: `, args);
-  }
-
-  const pkgServer = getPkgServer();
-  const projectServer = getFileServer();
-
-  let server;
-
-  if (isRelativePath) {
-    if (args.importer.includes(pkgServer)) {
-      server = pkgServer;
-    } else if (args.importer.includes(projectServer)) {
-      server = projectServer;
-    } else {
-      console.error(`Error! unexpected importer '${args.importer}' in relative path '${args.path}'`);
-    }
-  // When path is not relative then we resolve to package server in all cases other than starting file
-  } else {
-    // Importer is blank when finding server for entry point.
-    // We could have avoided this call in case of entry point.
-    if (args.importer === '') {
-      console.error(`entrypoint resovled in getServerFromArgs`);
-      server = (new URL(args.path)).origin;
-    } else {
-      server = pkgServer;
-    }
-  }
-
-  return server;
-}
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
@@ -50,7 +18,7 @@ export const pluginResolve = (inputType: BundleInputType) => {
 
       // Kept for generating debug messages. It returns undefined so that lookup continues
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || true) {
+        if (debugPlugin) {
           console.log('onResolve', args);
         }
         return undefined;
@@ -66,7 +34,8 @@ export const pluginResolve = (inputType: BundleInputType) => {
 
       // For relative paths like ./xxx or ../xxx
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
-        let server = getServerFromArgs(args, true);
+        // let server = getServerFromArgs(args, true);
+        let server = (new URL(args.importer)).origin;
 
         return {
           path: new URL(args.path, server + args.resolveDir + '/').href,
@@ -85,7 +54,8 @@ export const pluginResolve = (inputType: BundleInputType) => {
           };
         }
 
-        let server = getServerFromArgs(args, false);
+        // let server = getServerFromArgs(args, false);
+        let server = getPkgServer();
 
         return {
           path: `${server}/${args.path}`,
