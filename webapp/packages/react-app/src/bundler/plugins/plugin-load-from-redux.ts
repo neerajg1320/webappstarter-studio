@@ -1,27 +1,35 @@
 import * as esbuild from "esbuild-wasm";
-import {debugPlugin} from "../../config/global";
+import {debugPlugin, serverMediaBaseUrl} from "../../config/global";
 
 export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>) => {
   return {
-    name: 'fetch-plugin',
+    name: 'fetch-from-redux-plugin',
     setup(build: esbuild.PluginBuild) {
-      // Cache Check: Get from Cache if available
-      // This checks if the file is in the cache. If present then returns the cached result.
-      // If not then it returns nothing. This forces the esbuild to look at subsequent onLoad handlers.
-      // We use any instead of esbuild.OnLoadArgs for args as we also put resolveDir in it
+      // Load the files which are being fetched from api server
       build.onLoad({filter: /.*/}, async (args: any) => {
-        // If we have already fetched this file then return from cache
-        // We use args.path as key in the cache
-        console.log(`pluginLoadFromRedux:onLoad() args=`, args);
+        if (args.path.includes(`${serverMediaBaseUrl}`)) {
+          if (debugPlugin) {
+            console.log(`pluginLoadFromRedux:onLoad() args=`, args);
+          }
 
-        const result = await fileFetcher(args.path);
-        if (debugPlugin) {
-          console.log(`pluginLoadFromRedux: result:`, result);
+          const result = await fileFetcher(args.path);
+          if (debugPlugin) {
+            console.log(`pluginLoadFromRedux: result:`, result);
+          }
+          if (result) {
+            return result;
+          }
         }
-        if (result) {
-          return result;
-        }
+        // else {
+        //   console.error(`${args.path} does not contain ${serverMediaBaseUrl}`);
+        // }
       });
+
+      // For debug purpose
+      // build.onLoad({filter: /.*/}, async (args: any) => {
+      //   console.log(`pluginLoadFromRedux:onLoad() not handled args=`, args);
+      //   return undefined;
+      // });
     }
   }
 }

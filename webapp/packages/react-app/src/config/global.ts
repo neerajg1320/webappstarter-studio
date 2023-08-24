@@ -22,7 +22,9 @@ export const cellJsxFileName = '__cell.jsx';
 export const cellTsxFileName = '__cell.tsx';
 export const pkgServerUrl = 'https://unpkg.com';
 
-export const enableLoadFromRedux = false;
+// Flag for enabling in-memory fetching. Redux act as an ad-hoc file system.
+export const enableLoadFromRedux = true;
+// The following are required for loading packages
 export const enableLoadFromCache = false;
 export const enableLoadFromServer = true;
 

@@ -15,7 +15,7 @@ if (enableLoadFromCache) {
 
 export const pluginLoadFromCache = () => {
   return {
-    name: 'fetch-plugin',
+    name: 'fetch-from-cache-plugin',
     setup(build: esbuild.PluginBuild) {
       // Cache Check: Get from Cache if available
       // This checks if the file is in the cache. If present then returns the cached result.

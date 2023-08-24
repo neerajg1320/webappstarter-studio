@@ -9,7 +9,7 @@ import {loadFileUrl} from "./loadSourceFiles";
 
 export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: BundleInputType) => {
   return {
-    name: 'fetch-plugin',
+    name: 'fetch-from-server-plugin',
     setup(build: esbuild.PluginBuild) {          
       // onLoad are for loading the file.
 
