@@ -44,7 +44,14 @@ export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.
   }
 
   const result = loadData(data, contentType);
+  // Keeping resolveDir is important
   result.resolveDir = new URL('./', request.responseURL).pathname;
+
+  if (request.responseURL !== url) {
+    if (debugPlugin) {
+      console.log(`INFO: url:${url} <not equal> responseUrl:${request.responseURL}`);
+    }
+  }
 
   if (isCached) {
     await setFileInCache(url, result);

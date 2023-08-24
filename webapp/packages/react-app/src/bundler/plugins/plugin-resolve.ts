@@ -32,7 +32,7 @@ export const pluginResolve = (inputType: BundleInputType) => {
         };
       });
 
-      // For relative paths like ./xxx or ../xxx
+      // For relative paths like ./abc, ../abc/def etc
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
         // let server = getServerFromArgs(args, true);
         let server = (new URL(args.importer)).origin;
@@ -52,7 +52,7 @@ export const pluginResolve = (inputType: BundleInputType) => {
             namespace: 'a'
           };
         }
-        
+
         return {
           path: `${getPkgServer()}/${args.path}`,
           namespace: 'a'
