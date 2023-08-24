@@ -24,6 +24,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   const navigate = useNavigate();
   const { updateProject, saveProject } = useActions();
+  const isFrameworkEnabled = useMemo(() => false, []);
 
   const projectsState = useTypedSelector(state => state.projects);
 
@@ -33,6 +34,13 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     }
     return null;
   }, [projectsState]);
+
+  const projectTemplateOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
+    if (currentProject && currentProject.template) {
+      return {label: currentProject.framework, value:currentProject.framework};
+    }
+    return {label: 'Javascript with CSS', value: 'javascript-with-css'};
+  }, [currentProject?.framework])
 
   const projectFrameworkOption = useMemo<SingleValue<{ label: string; value: string; }>>(() => {
     if (currentProject && currentProject.framework) {
@@ -81,6 +89,13 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   }, []);
 
 
+  const projectTemplateOptions = useMemo(() => {
+      return [
+        {label: 'Javascript with CSS', value: 'javascript-with-css'},
+        {label: 'Reactjs with CSS', value: 'reactjs-with-css'},
+      ];
+  }, []);
+
   const handleSaveClick = async () => {
     if (currentProject) {
       saveProject(currentProject.localId);
@@ -122,23 +137,42 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             />
           </div>
           <div className="project-value" style={{display: "flex"}}>
-            <label>Framework</label>
+            <label>Template</label>
             <Select
                 className="value framework-select"
-                value={projectFrameworkOption}
-                options={frameworkOptions}
-                onChange={(selected) => updateProject({...currentProject, framework: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
+                value={projectTemplateOption}
+                options={projectTemplateOptions}
+                onChange={(selected) => updateProject({
+                  ...currentProject,
+                  framework: selected?.value || 'none'
+                } as ReduxUpdateProjectPartial)}
             />
           </div>
-          <div className="project-value" style={{display: "flex"}}>
-            <label>Toolchain</label>
-            <Select
-                className="value framework-select"
-                value={projectToolchainOption}
-                options={toolchainOptions}
-                onChange={(selected) => updateProject({...currentProject, toolchain: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
-            />
-          </div>
+          {isFrameworkEnabled &&
+            <>
+            <div className="project-value" style={{display: "flex"}}>
+              <label>Framework</label>
+              <Select
+                  className="value framework-select"
+                  value={projectFrameworkOption}
+                  options={frameworkOptions}
+                  onChange={(selected) => updateProject({
+                    ...currentProject,
+                    framework: selected?.value || 'none'
+                  } as ReduxUpdateProjectPartial)}
+              />
+            </div>
+            <div className="project-value" style={{display: "flex"}}>
+              <label>Toolchain</label>
+              <Select
+              className="value framework-select"
+              value={projectToolchainOption}
+              options={toolchainOptions}
+              onChange={(selected) => updateProject({...currentProject, toolchain: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
+              />
+            </div>
+            </>
+          }
           <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
             <button
                 className="button is-primary is-small"
