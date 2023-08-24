@@ -18,8 +18,9 @@ export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<esbuil
         if (debugPlugin) {
           console.log(`pluginLoadFromRedux: result:`, result);
         }
-
-        return result;
+        if (result) {
+          return result;
+        }
       });
     }
   }
