@@ -58,7 +58,7 @@ import {
 } from "../../local-storage/local-storage";
 import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
-import {pathToCodeLanguage} from "../language";
+import {CodeLanguage, pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 import {getFileType, joinFileParts} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
@@ -336,13 +336,15 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
-      const {id, pkid, folder} = response.data
+      const {files, ...rest} = response.data
 
       // TBD: Need to update this.
       // After adding template projects the POST projects call returns a lot more than folder.
       // It returns files, entryFileId and entry_path
       // We are putting pkid in the id.
-      dispatch(updateProject({localId:projectPartial.localId, id, pkid, folder, synced:true}));
+      dispatch(updateProject({localId:projectPartial.localId, ...rest, synced:true}));
+
+      await fetchFiles()(dispatch, getState);
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error! ${err.message}`);
