@@ -45,11 +45,16 @@ export const pluginResolve = (inputType: BundleInputType) => {
     setup(build: esbuild.PluginBuild) {
       // onResolve are for path resolutions
 
+      // Kept for generating debug messages. It returns undefined so that lookup continues
+      build.onResolve({filter: /.*/}, (args: any) => {
+        if (debugPlugin || true) {
+          console.log('onResolve', args);
+        }
+        return undefined;
+      });
+
       // detection of hard coded file name for cell.
       build.onResolve({filter: CELL_REGEX}, (args: any) => {
-        if (debugPlugin) {
-            console.log('onResolve', args);
-        }
         return {
           path: args.path,
           namespace: 'a'
@@ -57,13 +62,7 @@ export const pluginResolve = (inputType: BundleInputType) => {
       });
 
       // For relative paths like ./xxx or ../xxx
-      // We prepend the pkgServer to the path.
-      // TBD: We have to fix this behaviour
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
-        if (debugPlugin) {
-            console.log('onResolve', args);
-        }
-
         let server = getServerFromArgs(args, true);
 
         return {
@@ -72,15 +71,8 @@ export const pluginResolve = (inputType: BundleInputType) => {
         };
       });
 
-      // For any other Javascript/Typescript file
-      // We prepend the pkgServer to the path
-      // build.onResolve({ filter: JSTS_REGEX }, async (args: any) => {
+      // For any other file
       build.onResolve({ filter: /.*/ }, async (args: any) => {
-        if (debugPlugin) {
-          console.log('onResolve', args);
-        }
-
-        // let server = getServerFromArgs(args);
         let server = getServerFromArgs(args, false);
 
         return {
