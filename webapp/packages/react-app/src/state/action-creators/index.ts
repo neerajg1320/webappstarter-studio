@@ -655,6 +655,7 @@ export const removeFile = (localId:string) => {
   }
 }
 
+// Download File
 export const fetchFileContents = (localIds: [string]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
