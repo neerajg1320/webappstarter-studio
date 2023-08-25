@@ -167,16 +167,19 @@ export const createProjectBundle = (
         let resolveDir = new URL('./', url).pathname;
 
         if (content === null) {
-          // We shall split the operation in case we want to update redux state
-          const {data, request} = await axiosInstance.get(url);
+          // const {data, request} = await axiosInstance.get(url);
+          const response = await fetchFileContents([file.localId])(dispatch, getState);
 
-          // We will use result.content to fill in the file content
-          if (data) {
-            content = data;
-            dispatch(updateFile({localId: file.localId, content}));
+          if (response) {
+            const {data, request} = response;
+            // We will use result.content to fill in the file content
+            if (data) {
+              content = data;
+              dispatch(updateFile({localId: file.localId, content}));
+            }
+
+            resolveDir = new URL('./', request.responseURL).pathname;
           }
-
-          resolveDir = new URL('./', request.responseURL).pathname;
         }
 
         if (content) {
@@ -679,19 +682,24 @@ export const fetchFileContents = (localIds: [string]) => {
     });
 
     try {
-      const {data}: {data: string} = await axiosApiInstance.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
+      if (debugRedux) {
+        console.log(`fetchFileContents: url:${fileStates[0].file}`)
+      }
+      const response = await axiosApiInstance.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
 
       dispatch({
         type: ActionType.UPDATE_FILE,
         payload: {
           localId: fileStates[0].localId,
-          content: data,
+          content: response.data,
           contentSynced: true,
           isServerResponse: true,
           requestInitiated: false,
           saveFilePartial: {localId:fileStates[0].localId}
         }
       });
+
+      return response;
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
