@@ -111,9 +111,15 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     if (isEdit) {
       navigate(RouteDepth.ONE_UP);
     } else {
-      navigate(RoutePath.PROJECT_CELL, {replace: true});
+      // navigate(RoutePath.PROJECT_CELL, {replace: true});
     }
   }
+
+  useEffect(() => {
+    if (currentProject?.pkid && currentProject?.pkid > 0) {
+      navigate(RoutePath.PROJECT_CELL, {replace: true});
+    }
+  }, [currentProject?.pkid]);
 
   return (
       <div style={{
