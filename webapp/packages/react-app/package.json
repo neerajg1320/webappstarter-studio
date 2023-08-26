@@ -43,7 +43,7 @@
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts --openssl-legacy-provider build",
     "test": "react-scripts --openssl-legacy-provider test",
     "eject": "react-scripts --openssl-legacy-provider eject",
     "prepublishOnly": "npm run build",
