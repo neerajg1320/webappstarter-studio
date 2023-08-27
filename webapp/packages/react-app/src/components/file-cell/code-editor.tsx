@@ -56,7 +56,7 @@ const activateMonacoJSXHighlighter = async (editor:MonacoEditor.editor.IStandalo
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange, disabled}) => {
-  // const debugComponent = true;
+  const debugComponent = true;
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
     if (language === CodeLanguage.JAVASCRIPT) {
