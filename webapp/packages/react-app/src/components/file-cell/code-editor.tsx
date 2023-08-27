@@ -6,15 +6,10 @@ import MonacoEditor from "monaco-editor";
 import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import {CodeLanguage} from "../../state/language";
-
-
-// https://stackoverflow.com/questions/30239060/uncaught-referenceerror-process-is-not-defined
-// Required by some npm packages
-// window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
+import {debugComponent} from "../../config/global";
 
 
 interface CodeEditorProps {
-  // localId: string;
   initialValue: string;
   language: CodeLanguage;
   onChange?: (value:string) => void | null;
@@ -40,18 +35,16 @@ const configTypescript = (monaco:Monaco) => {
 }
 
 // This function is used to active the JSX syntax highlighting
-const activateMonacoJSXHighlighter = async (monacoEditor:MonacoEditor.editor.IStandaloneCodeEditor, monaco:Monaco) => {
-  const { default: traverse } = await import('@babel/traverse')
-  const { parse } = await import('@babel/parser')
-  const { default: MonacoJSXHighlighter } = await import(
-      'monaco-jsx-highlighter'
-      )
+const activateMonacoJSXHighlighter = async (editor:MonacoEditor.editor.IStandaloneCodeEditor, monaco:Monaco) => {
+  const { default: traverse } = await import('@babel/traverse');
+  const { parse } = await import('@babel/parser');
+  const { default: MonacoJSXHighlighter } = await import( 'monaco-jsx-highlighter' );
 
   const monacoJSXHighlighter = new MonacoJSXHighlighter(
       monaco,
       parse,
       traverse,
-      monacoEditor
+      editor
   )
 
   monacoJSXHighlighter.highlightOnDidChangeModelContent()
@@ -63,7 +56,7 @@ const activateMonacoJSXHighlighter = async (monacoEditor:MonacoEditor.editor.ISt
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange, disabled}) => {
-  const debugComponent = true;
+  // const debugComponent = true;
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
     if (language === CodeLanguage.JAVASCRIPT) {
@@ -97,7 +90,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
 
   const handleEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
-
+    
     activateMonacoJSXHighlighter(editor, monaco);
 
     // Note the initial value in the listener is always blank. It doesn't get updated on rerenders
