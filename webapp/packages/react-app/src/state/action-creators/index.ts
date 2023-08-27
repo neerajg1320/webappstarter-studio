@@ -1,6 +1,9 @@
 import {ActionType} from "../action-types";
 import {
   Action,
+  ApiRequestFailedAction,
+  ApiRequestStartAction,
+  ApiRequestSuccessAction,
   CreateFileAction,
   CreateProjectAction,
   DeleteCellAction,
@@ -42,15 +45,16 @@ import {
 import {generateLocalId} from "../id";
 import {
   debugAuth,
-  debugAxios, debugPlugin,
+  debugAxios,
+  debugPlugin,
   debugRedux,
-  enableLoadFromCache,
   enableLocalStorageAuth,
-  serverApiBaseUrl, serverMediaBaseUrl
+  serverApiBaseUrl,
+  serverMediaBaseUrl
 } from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser, UserFlowType} from "../user";
-import {axiosApiInstance, axiosInstance, setAxiosAuthToken} from "../../api/axiosApi";
+import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
 import {
   fetchAuthFromLocalStorage,
   removeAuthFromLocalStorage,
@@ -58,11 +62,12 @@ import {
 } from "../../local-storage/local-storage";
 import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
-import {CodeLanguage, pathToCodeLanguage} from "../language";
+import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 import {getFileType, joinFileParts} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
-import {loadData, loadFileUrl} from "../../bundler/plugins/loadSourceFiles";
+import {loadData} from "../../bundler/plugins/loadSourceFiles";
+import {ApiFlowOperation, ApiFlowResource} from "../api";
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
   return {
@@ -337,24 +342,36 @@ export const fetchProjects = () => {
 
 export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const reqId = generateLocalId();
+    dispatch(apiRequestStart(reqId, ApiFlowResource.PROJECT, ApiFlowOperation.POST));
+    
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
       const {files, ...rest} = response.data
 
-      // TBD: Need to update this.
-      // After adding template projects the POST projects call returns a lot more than folder.
-      // It returns files, entryFileId and entry_path
-      // We are putting pkid in the id.
+      if (debugAxios || true) {
+        console.log(response.data);
+      }
+      const messages = [response.data.detail];
+      dispatch(userRequestSuccess(reqId, messages));
+      
       dispatch(updateProject({localId:projectPartial.localId, ...rest, synced:true}));
-
       await fetchFiles(rest.pkid)(dispatch, getState);
     } catch (err) {
-      if (err instanceof Error) {
-        console.error(`Error! ${err.message}`);
-        // dispatch({
-        //   type: ActionType.SAVE_CELLS_ERROR,
-        //   payload: err.message
-        // });
+      if (err instanceof AxiosError) {
+        if (debugRedux ||true) {
+          console.error(`Error! activate unsuccessful err:`, err);
+        }
+        let errors = ['Activation Failed']
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(apiRequestFailed(reqId, errors))
+      } else {
+        console.error(err);
       }
     }
   }
@@ -1265,6 +1282,41 @@ export const registerUser = (
       } else {
         console.error(err);
       }
+    }
+  }
+}
+
+// In case we decide to allow multiple requests of same requestType then the request
+// instance shall be identified by requestId.
+export const apiRequestStart = (localRequestId:string, resource:ApiFlowResource, operation:ApiFlowOperation): ApiRequestStartAction => {
+  return {
+    type: ActionType.API_REQUEST_START,
+    payload: {
+      id: localRequestId,
+      resource,
+      operation
+    }
+  }
+}
+
+// messages is used in simple APIs which don't return json but a simple string
+export const apiRequestSuccess = (localRequestId:string, messages:string[]): ApiRequestSuccessAction => {
+  return {
+    type: ActionType.API_REQUEST_SUCCESS,
+    payload: {
+      id: localRequestId,
+      messages
+    }
+  }
+}
+
+// messages is used in simple APIs which don't return json but a simple string
+export const apiRequestFailed = (localRequestId:string, errors:string[]): ApiRequestFailedAction => {
+  return {
+    type: ActionType.API_REQUEST_FAILED,
+    payload: {
+      id: localRequestId,
+      errors
     }
   }
 }
