@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {debugComponent} from "../../config/global";
+import ApiFlowStatus from "../api-status/api-flow-status";
 
 
 interface ProjectEditProps {
@@ -27,6 +28,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   const isFrameworkEnabled = useMemo(() => false, []);
 
   const projectsState = useTypedSelector(state => state.projects);
+  const apiState = useTypedSelector(state => state.api.apiFlowState);
 
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (projectsState.currentProjectId) {
@@ -196,6 +198,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             </button>
           </div>
         </div>
+        <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
       </div>
   );
 }
