@@ -90,7 +90,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
 
   const handleEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
-    
+
     activateMonacoJSXHighlighter(editor, monaco);
 
     // Note the initial value in the listener is always blank. It doesn't get updated on rerenders

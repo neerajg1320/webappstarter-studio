@@ -7,6 +7,16 @@ interface ResizableProps {
     direction: "horizontal" | "vertical";
 }
 
+class CalmResizeObserver extends ResizeObserver {
+  constructor(callback: ResizeObserverCallback) {
+    super((entries, observer) => {
+      requestAnimationFrame(() => {
+        callback(entries, observer);
+      });
+    });
+  }
+}
+
 const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
     let resizableBoxProps: ResizableBoxProps;
     const [innerHeight, setInnerHeight] = useState(window.innerHeight);
@@ -32,6 +42,9 @@ const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
                 }
             }, 100);
         }
+
+        // https://stackoverflow.com/questions/49384120/resizeobserver-loop-limit-exceeded
+        window.ResizeObserver = CalmResizeObserver;
 
         window.addEventListener('resize', listener);
 
