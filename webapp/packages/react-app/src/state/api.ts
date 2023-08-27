@@ -1,15 +1,17 @@
 export enum ApiFlowOperation {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE',
+  GET = 'get',
+  POST = 'post',
+  PUT = 'put',
+  PATCH = 'patch',
+  DELETE = 'delete',
+  UNKNOWN = 'unknown',
 }
 
 export enum ApiFlowResource {
   USER = 'user',
   PROJECT = 'project',
-  FILE = 'file'
+  FILE = 'file',
+  UNKNOWN = 'unknown',
 }
 
 export const stringToApiFlowOperation = (apiFlowOperationStr:string): ApiFlowOperation => {
@@ -33,7 +35,7 @@ export interface ApiRequestFailed {
 }
 
 export interface ApiFlowState {
-  resource: ApiFlowOperation;
+  resource: ApiFlowResource;
   operation: ApiFlowOperation;
   requestStarted: boolean;
   requestCompleted: boolean;

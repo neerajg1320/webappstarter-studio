@@ -4,6 +4,7 @@ import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateP
 import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {UserRequestStart, UserRequestSuccess, UserRequestFailed} from "../user";
+import {ApiRequestFailed, ApiRequestStart, ApiRequestSuccess} from "../api";
 
 export type Direction = 'up' | 'down';
 
@@ -197,6 +198,21 @@ export interface UserDeleteAction {
   payload: string
 }
 
+export interface ApiRequestStartAction {
+  type: ActionType.API_REQUEST_START,
+  payload: ApiRequestStart
+}
+
+export interface ApiRequestSuccessAction {
+  type: ActionType.API_REQUEST_SUCCESS,
+  payload: ApiRequestSuccess
+}
+
+export interface ApiRequestFailedAction {
+  type: ActionType.API_REQUEST_FAILED,
+  payload: ApiRequestFailed
+}
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -230,4 +246,7 @@ export type Action =
     | UserAddAction
     | UserUpdateAction
     | UserDeleteAction
+    | ApiRequestStartAction
+    | ApiRequestSuccessAction
+    | ApiRequestFailedAction  
     ;

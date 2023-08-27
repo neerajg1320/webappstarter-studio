@@ -86,4 +86,8 @@ export enum ActionType {
   USER_ADD = 'user_add',
   USER_UPDATE = 'user_update',
   USER_DELETE= 'user_delete',
+
+  API_REQUEST_START = 'api_request_start',
+  API_REQUEST_SUCCESS = 'api_request_success',
+  API_REQUEST_FAILED = 'api_request_failed',
 }
