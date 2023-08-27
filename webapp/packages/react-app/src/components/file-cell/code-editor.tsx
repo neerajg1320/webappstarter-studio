@@ -1,7 +1,7 @@
 import './code-editor.css';
 import './syntax.css';
 import React, {useEffect, useMemo, useRef} from 'react';
-import MonacoEditor, {EditorDidMount} from '@monaco-editor/react';
+import MonacoEditor, {OnMount} from '@monaco-editor/react';
 // https://stackoverflow.com/questions/70538511/you-may-need-an-additional-loader-to-handle-the-result-of-these-loaders-upgradi
 // import * as monaco from 'monaco-editor';
 // import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -57,14 +57,17 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
     console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled}`);
   }
 
-  const onEditorDidMount: EditorDidMount = (getValue, monacoEditor) => {
-    editorRef.current = monacoEditor;
+  const handleEditorMount: OnMount = (editor, monaco) => {
+    editorRef.current = editor;
 
     // Note the initial value in the listener is always blank. It doesn't get updated on rerenders
-    monacoEditor.onDidChangeModelContent((e) => {
-      // https://github.com/microsoft/monaco-editor/issues/432
+    editor.onDidChangeModelContent((e) => {
+      // https://github.com/suren-atoyan/monaco-react#usemonaco
 
-      const newValue = getValue();
+
+      const newValue = editorRef.current.getValue();
+
+
       // console.log(`initialValue: ${initialValue}`);
       // console.log(`newValue: ${newValue}`);
       if (onChange) {
@@ -72,18 +75,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
       }
     });
 
-
+    editor.getModel()?.updateOptions({tabSize: 2});
     // Use two spaces for tabs
-    const monacoModel = monacoEditor.getModel();
-    if (monacoModel) {
-      monacoModel.updateOptions({tabSize: 2});
-    }
 
     const highlighter = new Highlighter(
       // @ts-ignore
       window.monaco,
       codeShift,
-      monacoEditor
+      editor
     )
 
     highlighter.highLightOnDidChangeModelContent(
@@ -148,7 +147,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
               <MonacoEditor
                   language={editorLanguage}
                   value={initialValue}
-                  editorDidMount={onEditorDidMount}
+                  onMount={handleEditorMount}
                   theme='dark'
                   height="calc(100% - 20px)"
                   options={{
