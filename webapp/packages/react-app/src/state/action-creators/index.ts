@@ -353,8 +353,8 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
         console.log(response.data);
       }
       const messages = [response.data.detail];
-      dispatch(userRequestSuccess(reqId, messages));
-      
+      dispatch(apiRequestSuccess(reqId, messages));
+
       dispatch(updateProject({localId:projectPartial.localId, ...rest, synced:true}));
       await fetchFiles(rest.pkid)(dispatch, getState);
     } catch (err) {
