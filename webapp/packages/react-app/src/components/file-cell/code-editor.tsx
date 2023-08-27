@@ -12,12 +12,40 @@ import Highlighter from 'monaco-jsx-highlighter';
 import {debugComponent} from "../../config/global";
 import {CodeLanguage} from "../../state/language";
 
+// https://stackoverflow.com/questions/30239060/uncaught-referenceerror-process-is-not-defined
+// Required by some npm packages
+// window.process = { browser: true, env: { ENVIRONMENT: 'BROWSER' } };
+
+
 interface CodeEditorProps {
   // localId: string;
   initialValue: string;
   language: CodeLanguage;
   onChange?: (value:string) => void | null;
   disabled?: boolean;
+}
+
+// This function is used to active the JSX syntax highlighting
+const activateMonacoJSXHighlighter = async (monacoEditor:any, monaco:any) => {
+  const { default: traverse } = await import('@babel/traverse')
+  const { parse } = await import('@babel/parser')
+  const { default: MonacoJSXHighlighter } = await import(
+      'monaco-jsx-highlighter'
+      )
+
+  const monacoJSXHighlighter = new MonacoJSXHighlighter(
+      monaco,
+      parse,
+      traverse,
+      monacoEditor
+  )
+
+  monacoJSXHighlighter.highlightOnDidChangeModelContent()
+  monacoJSXHighlighter.addJSXCommentCommand()
+
+  return {
+    monacoJSXHighlighter,
+  }
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange, disabled}) => {
@@ -35,12 +63,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
 
     return 'javascript';
   }, [language]);
-
-  // const monaco = useMonaco();
-  // useEffect(() => {
-  //
-  // }, [monaco]);
-
+  
   useEffect(() => {
     if (debugComponent) {
       console.log(`CodeEditor: useEffect([]) created`);
@@ -75,22 +98,12 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
       }
     });
 
-    editor.getModel()?.updateOptions({tabSize: 2});
-    // Use two spaces for tabs
+    const model = editor.getModel();
+    if (model) {
+      // Use two spaces for tabs
+      model.updateOptions({tabSize: 2});
+    }
 
-    const highlighter = new Highlighter(
-      // @ts-ignore
-      window.monaco,
-      codeShift,
-      editor
-    )
-
-    highlighter.highLightOnDidChangeModelContent(
-      () => {},
-      () => {},
-      undefined,
-      () => {}
-    );
 
     // https://stackoverflow.com/questions/56954280/monaco-editor-how-to-disable-errors-typescript
     // https://blog.expo.dev/building-a-code-editor-with-monaco-f84b3a06deaf
