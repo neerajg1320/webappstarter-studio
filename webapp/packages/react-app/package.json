@@ -51,9 +51,9 @@
   },
   "scripts": {
     "start": "react-app-rewired --openssl-legacy-provider start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts --openssl-legacy-provider build",
-    "test": "react-scripts --openssl-legacy-provider test",
-    "eject": "react-scripts --openssl-legacy-provider eject",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired --openssl-legacy-provider build",
+    "test": "react-app-rewired --openssl-legacy-provider test",
+    "eject": "react-app-rewired --openssl-legacy-provider eject",
     "prepublishOnly": "npm run build",
     "dev-local": "REACT_APP_WEBAPPSTATER_API=http://api.local.webappstarter.com npm start",
     "dev-server": "npm start",
