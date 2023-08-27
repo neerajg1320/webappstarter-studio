@@ -1,10 +1,12 @@
 import './code-editor.css';
 import './syntax.css';
 import React, {useEffect, useMemo, useRef} from 'react';
-import MonacoEditor, {OnMount} from '@monaco-editor/react';
+import MonacoEditorReact, {Monaco, OnMount} from '@monaco-editor/react';
+import MonacoEditor from "monaco-editor";
 import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import {CodeLanguage} from "../../state/language";
+
 
 // https://stackoverflow.com/questions/30239060/uncaught-referenceerror-process-is-not-defined
 // Required by some npm packages
@@ -19,7 +21,7 @@ interface CodeEditorProps {
   disabled?: boolean;
 }
 
-const configTypescript = (monaco:any) => {
+const configTypescript = (monaco:Monaco) => {
   // https://stackoverflow.com/questions/56954280/monaco-editor-how-to-disable-errors-typescript
   // https://blog.expo.dev/building-a-code-editor-with-monaco-f84b3a06deaf
   // We will set the language settings for typescript
@@ -38,7 +40,7 @@ const configTypescript = (monaco:any) => {
 }
 
 // This function is used to active the JSX syntax highlighting
-const activateMonacoJSXHighlighter = async (monacoEditor:any, monaco:any) => {
+const activateMonacoJSXHighlighter = async (monacoEditor:MonacoEditor.editor.IStandaloneCodeEditor, monaco:Monaco) => {
   const { default: traverse } = await import('@babel/traverse')
   const { parse } = await import('@babel/parser')
   const { default: MonacoJSXHighlighter } = await import(
@@ -151,11 +153,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
               Format {editorLanguage}
             </button>
             <div className="editor-main">
-              <MonacoEditor
+              <MonacoEditorReact
                   language={editorLanguage}
                   value={initialValue}
                   onMount={handleEditorMount}
-                  theme='dark'
+                  theme='vs-dark'
                   height="calc(100% - 20px)"
                   options={{
                     wordWrap: "on",
