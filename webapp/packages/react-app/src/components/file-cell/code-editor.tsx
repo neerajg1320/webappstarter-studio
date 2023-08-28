@@ -10,7 +10,8 @@ import {debugComponent} from "../../config/global";
 
 
 interface CodeEditorProps {
-  initialValue: string;
+  path: string;
+  value: string;
   language: CodeLanguage;
   onChange?: (value:string) => void | null;
   disabled?: boolean;
@@ -55,8 +56,15 @@ const activateMonacoJSXHighlighter = async (editor:MonacoEditor.editor.IStandalo
   }
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange, disabled}) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({path, value:propValue, language, onChange:propOnChange, disabled}) => {
   const debugComponent = true;
+  // const initValue = useMemo(() => {
+  //   if (debugComponent) {
+  //     console.log(`CodeEditor:useMemo[] initValue=`, value);
+  //   }
+  //   return value;
+  // }, []);
+
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
     if (language === CodeLanguage.JAVASCRIPT) {
@@ -85,7 +93,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
   }, []);
 
   if (debugComponent) {
-    console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled}`);
+    console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled} path=${path} propValue=`, propValue);
   }
 
   const handleEditorMount: OnMount = (editor, monaco) => {
@@ -93,13 +101,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
 
     activateMonacoJSXHighlighter(editor, monaco);
 
-    // Note the initial value in the listener is always blank. It doesn't get updated on rerenders
     editor.onDidChangeModelContent((e) => {
       // https://github.com/suren-atoyan/monaco-react#usemonaco
       const newValue = editorRef.current.getValue();
 
-      if (onChange) {
-        onChange(newValue);
+      if (debugComponent) {
+        console.log(`CodeEditor: onDidChangeModelContent() newValue=`, newValue);
+      }
+
+      if (propOnChange) {
+        propOnChange(newValue);
       }
     });
 
@@ -147,8 +158,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({initialValue, language, onChange
             </button>
             <div className="editor-main">
               <MonacoEditorReact
+                  value={propValue}
                   language={editorLanguage}
-                  value={initialValue}
                   onMount={handleEditorMount}
                   theme='vs-dark'
                   height="calc(100% - 20px)"

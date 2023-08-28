@@ -79,7 +79,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     return null;
   }, [editedFileLocalId, filesState]);
 
-  if (debugComponent) {
+  if (debugComponent || true) {
     console.log(`ProjectCell: editedFile:`, editedFile);
   }
 
@@ -229,12 +229,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
                   {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 </div>
 
-                <CodeEditor
-                    initialValue={editedFile?.content || ""}
-                    language={editedFile?.language || CodeLanguage.UNKNOWN}
-                    onChange={handleEditorChange}
-                    disabled={!editedFile}
-                />
+                {(editedFile && editedFile.contentSynced) ?
+                  <CodeEditor
+                      path={editedFile?.path}
+                      value={editedFile?.content || ""}
+                      language={editedFile?.language || CodeLanguage.UNKNOWN}
+                      onChange={handleEditorChange}
+                      disabled={!editedFile}
+                  />
+                    :
+                  <h3>Select a file</h3>
+                }
               </div>
             </Resizable>
             {/* <pre>{code}</pre> */}

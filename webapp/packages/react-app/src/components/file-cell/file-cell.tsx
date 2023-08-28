@@ -74,7 +74,8 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
             <CodeEditor
-                initialValue={reduxFile.content || ''}
+                path={reduxFile.path}
+                value={reduxFile.content || ''}
                 language={reduxFile.language}
                 onChange={handleEditorChange}
             />
