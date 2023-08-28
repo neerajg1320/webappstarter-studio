@@ -79,7 +79,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     return null;
   }, [editedFileLocalId, filesState]);
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`ProjectCell: editedFile:`, editedFile);
   }
 

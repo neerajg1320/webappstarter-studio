@@ -35,12 +35,12 @@ export const pluginLoadFromCache = () => {
   }
 }
 
-export const setFileInCache = async (file:string, contents:esbuild.OnLoadResult) => {
+export const setFileInCache = async (url:string, contents:esbuild.OnLoadResult) => {
   if (enableLoadFromCache) {
     // Store result in cache
-    await fileCache.setItem(file, contents);
+    await fileCache.setItem(url, contents);
     if (debugPlugin) {
-      console.log(`stored ${file} to cache`);
+      console.log(`stored ${url} to cache`);
     }
   }
 }

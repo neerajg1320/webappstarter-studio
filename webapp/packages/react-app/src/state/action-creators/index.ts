@@ -1146,7 +1146,7 @@ export const resendActivationEmail = (email:string) => {
 
 export const authenticationSuccess = (user:ReduxUser, messages:string[]) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    if (debugRedux || true) {
+    if (debugRedux || debugAuth) {
       console.log(`Login successful messages:`, messages, user);
     }
 

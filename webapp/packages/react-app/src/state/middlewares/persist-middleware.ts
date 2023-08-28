@@ -3,7 +3,13 @@ import {Action, UpdateFileAction} from "../actions";
 import {ActionType} from "../action-types";
 import {saveCells, saveProject, updateFileSavePartial} from "../action-creators";
 import {RootState} from "../reducers";
-import {debugRedux, syncCellsToServer, syncFilesToServer, syncProjectsToServer} from "../../config/global";
+import {
+  debugOptimizationMarker,
+  debugRedux,
+  syncCellsToServer,
+  syncFilesToServer,
+  syncProjectsToServer
+} from "../../config/global";
 import {ReduxSaveFilePartial} from "../file";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
@@ -20,7 +26,9 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           const fileState = getState().files.data[localId];
 
           if (content === fileState.content) {
-            console.log(`The content is not changed. This should be handled in view`);
+            if (debugOptimizationMarker) {
+              console.log(`The content is not changed. This should be handled in view`);
+            }
             // delete the content for action.payload
             delete (action as UpdateFileAction).payload['content'];
           }

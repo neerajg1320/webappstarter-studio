@@ -2,7 +2,7 @@ export const debug = false;
 
 // Cache
 // We need to figure a strategy for invalidating Cache entry before we enable it.
-export const debugCache = true;
+export const debugCache = false;
 
 // Redux
 export const reduxManualTest = false;
@@ -57,3 +57,5 @@ export const enableLocalStorageAuth = true;
 export const anonymousUserEmail = "anonymous@webappstarter.com";
 export const storeAnonymousToLocal = false;
 
+// Optimization Markers
+export const debugOptimizationMarker = false;
