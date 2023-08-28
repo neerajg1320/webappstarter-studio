@@ -6,6 +6,7 @@ import {useActions} from "../../hooks/use-actions";
 import {debugComponent} from "../../config/global";
 
 const AppNavBar = () => {
+  const enableProjectsList = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const currentUser = useTypedSelector(state => state.auth.currentUser);
   const {logoutUser} = useActions();
@@ -48,25 +49,24 @@ const AppNavBar = () => {
             </div>
             {isAuthenticated &&
               <div style={{marginLeft: "40px", display: "flex", flexDirection:"row", alignItems:"center"}}>
-                <div className="navbar-item has-dropdown is-hoverable">
-                  <div className="navbar-link">
-                    <Link to="/">Projects</Link>
+                <div className={"navbar-item " + (enableProjectsList ? "has-dropdown is-hoverable" : "")}>
+                  <div className={enableProjectsList ? "navbar-link" : ""}>
+                    <Link className="navbar-item" to="/">Projects</Link>
                   </div>
 
-                  <div className="navbar-dropdown">
-                    <div className="navbar-item">
-                      Project 1
+                  {enableProjectsList &&
+                    <div className="navbar-dropdown">
+                      <div className="navbar-item">
+                        Project 1
+                      </div>
+                      <div className="navbar-item">
+                        Project 2
+                      </div>
+                      <div className="navbar-item">
+                        Project 3
+                      </div>
                     </div>
-                    <div className="navbar-item">
-                      Project 2
-                    </div>
-                    <div className="navbar-item">
-                      Project 3
-                    </div>
-                  </div>
-                </div>
-                <div className="navbar-item" onClick={handleBackClick}>
-                  Close
+                  }
                 </div>
               </div>
             }
