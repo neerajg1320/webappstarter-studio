@@ -16,7 +16,7 @@ interface ProjectsDashboardProps {
 }
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
-  const debugComponent = true;
+  // const debugComponent = true;
   const navigate = useNavigate();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const {createAndSetProject, fetchProjectsAndFiles} = useActions();

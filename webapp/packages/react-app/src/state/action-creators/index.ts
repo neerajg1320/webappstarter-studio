@@ -138,7 +138,7 @@ export const createProjectBundle = (
 ) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-      if (debugBundler || debugRedux || true) {
+      if (debugBundler || debugRedux) {
         console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}' bundleLanguage:${bundleLanguage}`);
       }
 
@@ -149,7 +149,7 @@ export const createProjectBundle = (
         const projectState = getState().projects.data[projectLocalId];
         const filesLocalIdMap = getState().files.data;
 
-        if (debugPlugin || debugRedux || true) {
+        if (debugPlugin || debugRedux) {
           console.log(`getFileContentsFromRedux: url:`, url);
           console.log(`projectState:`, projectState);
         }
@@ -165,7 +165,7 @@ export const createProjectBundle = (
           );
           reduxFile = projectUrlMap[url];
 
-          if (debugPlugin || debugRedux || true) {
+          if (debugPlugin || debugRedux) {
             console.log(`projectUrlMap:`, projectUrlMap);
           }
         } else {
@@ -185,12 +185,12 @@ export const createProjectBundle = (
 
           reduxFile = projectFileMap[reduxFilePath];
 
-          if (debugPlugin || debugRedux || true) {
+          if (debugPlugin || debugRedux) {
             console.log(`projectFileMap:`, projectFileMap);
           }
         }
 
-        if (debugPlugin || debugRedux || true) {
+        if (debugPlugin || debugRedux) {
           console.log(`File Contents:`, reduxFile.content);
         }
 
@@ -376,7 +376,7 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
       const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
       const {files, ...rest} = response.data
 
-      if (debugAxios || true) {
+      if (debugAxios) {
         console.log(response.data);
       }
       const messages = [response.data.detail];
@@ -1030,7 +1030,7 @@ export const passwordResetUser = (email:string) => {
           {email}
       );
 
-      if (debugAxios || true) {
+      if (debugAxios) {
         console.log(response.data);
       }
       const messages = [response.data.detail];
@@ -1069,7 +1069,7 @@ export const passwordResetConfirmUser = (uid:string, token:string, new_password1
           {uid, token, new_password1, new_password2}
       );
 
-      if (debugAxios || true) {
+      if (debugAxios) {
         console.log(response.data);
       }
       const messages = [response.data.detail];
@@ -1240,7 +1240,7 @@ export const authenticateUser = (email:string, password:string) => {
         let errors = ['Authentication Failed']
         if (err.response) {
           errors = axiosResponseToStringList(err.response);
-          if (debugRedux || true) {
+          if (debugRedux) {
             console.error(`Error! login unsuccessful errors:`, errors);
           }
         }
