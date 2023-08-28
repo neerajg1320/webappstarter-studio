@@ -91,7 +91,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     const bundleLanguage = pathToBundleLanguage(value);
     const language = pathToCodeLanguage(value);
 
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
     updateFile({localId, path:value, bundleLanguage, language});

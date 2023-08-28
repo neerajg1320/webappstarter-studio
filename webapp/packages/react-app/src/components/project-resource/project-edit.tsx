@@ -58,7 +58,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     return {label: 'none', value: 'none'};
   }, [currentProject?.toolchain])
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`ProjectEdit: render  projectsState:`, projectsState);
     console.log(`ProjectEdit: render  currentProjectId: ${projectsState.currentProjectId} currentProject:`, currentProject);
   }
