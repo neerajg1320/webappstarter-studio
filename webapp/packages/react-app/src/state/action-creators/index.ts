@@ -45,7 +45,7 @@ import {
 import {generateLocalId} from "../id";
 import {
   debugAuth,
-  debugAxios,
+  debugAxios, debugBundler,
   debugPlugin,
   debugRedux,
   enableLocalStorageAuth,
@@ -138,49 +138,76 @@ export const createProjectBundle = (
 ) => {
     return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
+      if (debugBundler || debugRedux || true) {
+        console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}' bundleLanguage:${bundleLanguage}`);
+      }
+
       // We define a function closure as it needs getState() from getting files for project
       const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-        // console.log(`getFileContentsFromRedux: url:`, url);
-        
-        const fileParts = url.split(projectDirPath + '/');
-
-        // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
-        // ['http://api.local.webappstarter.com/', 'src/index.js']
-        const reduxFilePath = fileParts[1];
-        // console.log(`reduxFilePath:`, reduxFilePath);
+        const enableUrlMap = true;
 
         const projectState = getState().projects.data[projectLocalId];
-        // Filter the files for project
-        // Create a new map based on filepath instead of id
-        const filesMap = getState().files.data;
-        const projectFileMap = Object.fromEntries(
-              Object.entries(filesMap)
-                  .filter(([k,v]) => v.projectLocalId === projectLocalId)
-                  .map(([k,v]) => {return [v.path, v]})
-        );
+        const filesLocalIdMap = getState().files.data;
 
-        if (debugPlugin && debugRedux) {
+        if (debugPlugin || debugRedux || true) {
+          console.log(`getFileContentsFromRedux: url:`, url);
           console.log(`projectState:`, projectState);
-          console.log(`filesState:`, projectFileMap);
-          console.log(`File Contents:`, projectFileMap[reduxFilePath].content);
         }
 
-        const file:ReduxFile = projectFileMap[reduxFilePath];
+        let reduxFile:ReduxFile;
 
-        let content = file.content;
+        if (enableUrlMap) {
+          // Create a new map based on url instead of id
+          const projectUrlMap = Object.fromEntries(
+              Object.entries(filesLocalIdMap)
+                  .filter(([k,v]) => v.projectLocalId === projectLocalId)
+                  .map(([k,v]) => {return [v.file, v]})
+          );
+          reduxFile = projectUrlMap[url];
+
+          if (debugPlugin || debugRedux || true) {
+            console.log(`projectUrlMap:`, projectUrlMap);
+          }
+        } else {
+          // Create a new map based on filepath instead of id
+          const fileParts = url.split(projectDirPath + '/');
+
+          // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
+          // ['http://api.local.webappstarter.com/', 'src/index.js']
+          const reduxFilePath = fileParts[1];
+          // console.log(`reduxFilePath:`, reduxFilePath);
+
+          const projectFileMap = Object.fromEntries(
+              Object.entries(filesLocalIdMap)
+                  .filter(([k,v]) => v.projectLocalId === projectLocalId)
+                  .map(([k,v]) => {return [v.path, v]})
+          );
+
+          reduxFile = projectFileMap[reduxFilePath];
+
+          if (debugPlugin || debugRedux || true) {
+            console.log(`projectFileMap:`, projectFileMap);
+          }
+        }
+
+        if (debugPlugin || debugRedux || true) {
+          console.log(`File Contents:`, reduxFile.content);
+        }
+
+        let content = reduxFile.content;
         let result:esbuild.OnLoadResult|null = null;
         let resolveDir = new URL('./', url).pathname;
 
         if (content === null) {
           // const {data, request} = await axiosInstance.get(url);
-          const response = await fetchFileContents([file.localId])(dispatch, getState);
+          const response = await fetchFileContents([reduxFile.localId])(dispatch, getState);
 
           if (response) {
             const {data, request} = response;
-            // We will use result.content to fill in the file content
+            // We will use result.content to fill in the reduxFile content
             if (data) {
               content = data;
-              dispatch(updateFile({localId: file.localId, content}));
+              dispatch(updateFile({localId: reduxFile.localId, content}));
             }
 
             resolveDir = new URL('./', request.responseURL).pathname;
