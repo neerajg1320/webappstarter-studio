@@ -7,6 +7,7 @@ import {debugComponent} from "../../config/global";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
+  const enableUserMenu = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const currentUser = useTypedSelector(state => state.auth.currentUser);
   const {logoutUser} = useActions();
@@ -80,15 +81,19 @@ const AppNavBar = () => {
                 </div>
 
                 <div className="navbar-dropdown">
-                  <div className="navbar-item">
-                    Profile
-                  </div>
-                  <div className="navbar-item">
-                    Messages
-                  </div>
-                  <div className="navbar-item">
-                    Contact info
-                  </div>
+                  {enableUserMenu &&
+                    <>
+                      <div className="navbar-item">
+                        Profile
+                      </div>
+                      <div className="navbar-item">
+                        Messages
+                      </div>
+                      <div className="navbar-item">
+                        Contact info
+                      </div>
+                    </>
+                  }
                   <div className="navbar-item" onClick={() => handleLogoutClick()}>
                     Logout
                   </div>
