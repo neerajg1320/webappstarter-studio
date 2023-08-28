@@ -144,7 +144,7 @@ export const createProjectBundle = (
 
       // We define a function closure as it needs getState() from getting files for project
       const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-        const enableUrlMap = true;
+        const enableUrlMap = false;
 
         const projectState = getState().projects.data[projectLocalId];
         const filesLocalIdMap = getState().files.data;

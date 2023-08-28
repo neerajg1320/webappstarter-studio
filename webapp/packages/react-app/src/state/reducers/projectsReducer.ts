@@ -10,6 +10,7 @@ import {debugRedux} from "../../config/global";
 //  - Cells do not have currentCellId
 interface ProjectsState {
   loading: boolean;
+  loadCount: number;
   error: string | null;
   currentProjectId: string|null,
   data: {
@@ -19,6 +20,7 @@ interface ProjectsState {
 
 const initialState: ProjectsState = {
   loading: false,
+  loadCount: 0,
   error: null,
   currentProjectId: null,
   data: {}
@@ -76,7 +78,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           return acc;
         }, {} as ProjectsState['data']);
       }
-
+      state.loadCount += 1;
       return state;
 
     case ActionType.SET_CURRENT_PROJECT:

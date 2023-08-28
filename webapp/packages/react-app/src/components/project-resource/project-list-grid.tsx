@@ -2,7 +2,7 @@ import React, {useEffect, useMemo} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {useNavigate} from "react-router-dom";
-import {debugProject} from "../../config/global";
+import {debugComponent, debugProject} from "../../config/global";
 import {RoutePath} from "../routes";
 import {generateLocalId} from "../../state/id";
 import {useActions} from "../../hooks/use-actions";
@@ -16,6 +16,7 @@ interface ProjectsDashboardProps {
 }
 
 const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
+  const debugComponent = true;
   const navigate = useNavigate();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const {createAndSetProject, fetchProjectsAndFiles} = useActions();
@@ -27,10 +28,21 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
 
   useEffect(() => {
+    if (debugComponent) {
+      console.log(`ProjectListGrid:useEffect[] projectState:`, projectsState);
+    }
     if (!isAuthenticated) {
       console.log(`Error! projects listed before authentication `)
     } else {
-      fetchProjectsAndFiles();
+      if (projectsState.loadCount <= 0) {
+        fetchProjectsAndFiles();
+      }
+    }
+
+    return () => {
+      if (debugComponent) {
+        console.log(`ProjectListGrid:useEffect[] destroyed`);
+      }
     }
   }, []);
 
