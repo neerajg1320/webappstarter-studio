@@ -240,7 +240,13 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
                       disabled={!editedFile}
                   />
                     :
-                  <h3>Select a file</h3>
+                    <div style={{
+                      height: "100%", width:"100%",
+                      display:"flex", flexDirection: "column", justifyContent:"center", alignItems: "center",
+                    }}
+                    >
+                      <h3>Select a File</h3>
+                    </div>
                 }
               </div>
             </Resizable>
