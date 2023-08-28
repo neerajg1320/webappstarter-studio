@@ -685,7 +685,9 @@ export const saveFile = (localId: string) => {
 
 export const removeFile = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(`removeFile:`, localId);
+    if (debugRedux) {
+      console.log(`removeFile:`, localId);
+    }
 
     const fileState = getState().files.data[localId];
     if (!fileState) {
@@ -763,7 +765,9 @@ const projectLocalUpdate = false;
 // This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log(`fileCreatePartial:`, fileCreatePartial);
+    if (debugRedux) {
+      console.log(`fileCreatePartial:`, fileCreatePartial);
+    }
 
     const {localId} = fileCreatePartial;
 
@@ -775,7 +779,9 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
 
     if (fileCreatePartial.projectLocalId) {
       const project = getState().projects.data[fileCreatePartial.projectLocalId];
-      console.log(project)
+      if (debugRedux && false) {
+        console.log(project)
+      }
       if (project.pkid > 0) {
         formData.append("project", project.pkid as unknown as string); // We could use pkid as well
       }
@@ -783,7 +789,9 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
 
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/files/`, formData, {headers: __rm__gHeaders});
-      console.log(response);
+      if (debugRedux) {
+        console.log(response);
+      }
 
       // const {id, pkid} = response.data
       // We are putting pkid in the id
@@ -799,7 +807,10 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
       const {projectLocalId, isEntryPoint, path}  = fileCreatePartial;
       if (projectLocalId) {
         if (isEntryPoint) {
-          console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
+          if (debugRedux) {
+            console.log(`file['${localId}'] path:${path} is an entry point for project['${projectLocalId}']`);
+          }
+
           if (projectLocalUpdate) {
             dispatch(updateProject({
               localId: projectLocalId,
@@ -925,13 +936,17 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
 
 export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDeleteFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    console.log('saveFilePartial:', deleteFilePartial);
+    if (debugRedux) {
+      console.log('deleteFilePartial:', deleteFilePartial);
+    }
 
     const {localId} = deleteFilePartial;
 
     try {
       const response = await axiosApiInstance.delete(`${gApiUri}/files/${pkid}/`,{headers: __rm__gHeaders});
-      console.log(response);
+      if (debugRedux) {
+        console.log(response);
+      }
 
       // const {id, pkid} = response.data
       // We are putting pkid in the id

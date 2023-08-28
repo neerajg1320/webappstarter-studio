@@ -110,7 +110,9 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
   const handleInputBlur = () => {
     if (selectedFileLocalId) {
       const reduxFile = filesState.data[selectedFileLocalId];
-      console.log(`onBlur: file.path:${reduxFile.path}`);
+      if (debugComponent) {
+        console.log(`onBlur: file.path:${reduxFile.path}`);
+      }
       // If the path is a folder path we do not allow it as yet i.e folders have to be created by creating file in them
       // The name should not have a slash at the end
       if (hasTrailingSlash(reduxFile.path)) {
@@ -133,7 +135,10 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       }
     }
 
-    console.log(`handleFileTreeControlEvent():`, event);
+    if (debugComponent) {
+      console.log(`handleFileTreeControlEvent():`, event);
+    }
+
     switch(event.name) {
       case FileTreeEventType.NEW_FILE:
         const fileLocalId = generateLocalId();
@@ -143,7 +148,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           bundleLanguage: BundleLanguage.UNKNOWN,
           language: CodeLanguage.UNKNOWN,
           content: '',
-          contentSynced: false,
+          contentSynced: true,
           projectLocalId: reduxProject.localId,
           isEntryPoint: false,
         });
@@ -169,7 +174,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
             bundleLanguage: origFile.bundleLanguage,
             language: CodeLanguage.UNKNOWN,
             content: origFile.content,
-            contentSynced: false,
+            contentSynced: true,
             projectLocalId: reduxProject.localId,
             isEntryPoint: false,
           });

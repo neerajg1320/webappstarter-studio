@@ -24,6 +24,8 @@ interface ProjectCellProps {
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
 const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
+  // const debugComponent = true;
+
   useEffect(() => {
     if (debugComponent) {
       console.log('ProjectCell: useEffect[] firstRender');

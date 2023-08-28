@@ -24,7 +24,9 @@ const initialState: FilesState = {
 const reducer = produce((state: FilesState = initialState, action: Action): FilesState => {
   switch(action.type) {
     case ActionType.CREATE_FILE:
-      console.log(`filesReducer: ${JSON.stringify(action)}`);
+      if (debugRedux) {
+        console.log(`filesReducer: ${JSON.stringify(action)}`);
+      }
       var {localId} = action.payload;
       const file: ReduxFile = {
         reduxType: 'file',
