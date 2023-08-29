@@ -5,10 +5,11 @@ export const simpleJavascriptCode = `
 
 export const parentCommunicationJavascriptCode = `
     const window_console_log = window.console.log;
+    const window_console_error = window.console.error;
     
     window.console.log = function(...args) {
       // We save the console.log function before we override it
-      window_console_log(...args);
+      // window_console_log(...args);
       
       const message = {
         source: "iframe",
@@ -20,9 +21,12 @@ export const parentCommunicationJavascriptCode = `
     
     // TBD: Need to verify the flow here
     const handleError = (err) => {
+      // TBD: We can look for all divs or all elements with id specified and then announce the error.
       const root = document.querySelector('#root');
-      root.innerHTML = '<div style="color:red"><h4>Runtime Error:</h4>' + err + '</div>';
-      // console.error(err);
+      if (root) {
+        root.innerHTML = '<div style="color:red"><h4>Runtime Error:</h4>' + err + '</div>';
+      }
+      window_console_error(err);
       
       const message = {
         source: "iframe",
