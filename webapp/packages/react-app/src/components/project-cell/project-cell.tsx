@@ -111,8 +111,15 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       console.log(`ProjectCell: useEffect([reduxProject]) reduxProject:`, reduxProject)
     }
 
-    // setEditedFileLocalId(null);
-  }, [reduxProject]);
+    // This has been placed here so that we can download index.html even when we reach here after creating project,
+    // because in that case the projectLocalId does not change but the project state changes.
+    if (reduxProject.entryHtmlFileLocalId) {
+      const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
+      if (!htmlFile.contentSynced && !htmlFile.requestInitiated) {
+        fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+      }
+    }
+  }, [reduxProject, filesState.data]);
 
 
   useEffect(() => {
