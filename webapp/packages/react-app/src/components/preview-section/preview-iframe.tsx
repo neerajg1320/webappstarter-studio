@@ -1,15 +1,7 @@
 import './preview-iframe.css';
 import {useEffect, useRef, useState} from "react";
 
-const htmlWithScript = `
-<html>
-  <head>
-    <title>HTML With Script</title>
-    <style>html {background-color: white}</style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script>
+const parentCommunicationJavascriptCode = `
       const window_console_log = window.console.log;
       
       window.console.log = function(...args) {
@@ -51,6 +43,18 @@ const htmlWithScript = `
           handleError(err);
         }
       }, false);
+`;
+
+const htmlWithScript = `
+<html>
+  <head>
+    <title>HTML With Script</title>
+    <style>html {background-color: white}</style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+        ${parentCommunicationJavascriptCode}
     </script>
   </body>
 </html>
@@ -109,9 +113,8 @@ const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   useEffect(() => {
     const htmlWithInjectedScript = parseHtml(htmlNoScript);
 
-    // iframeRef.current.srcdoc = htmlWithScript;
-    iframeRef.current.srcdoc = htmlWithInjectedScript;
-
+    iframeRef.current.srcdoc = htmlWithScript;
+    // iframeRef.current.srcdoc = htmlWithInjectedScript;
 
 
     // To make it fool proof we should convert it to be dependent on message from iframe
