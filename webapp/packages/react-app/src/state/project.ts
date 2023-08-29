@@ -28,6 +28,7 @@ export interface ReduxProject extends ServerObject {
   template: ProjectTemplates;
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
+  entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
   htmlFileLocalId?: string|null;
   bundleLocalId?: string|null;
@@ -37,6 +38,7 @@ export interface ReduxProject extends ServerObject {
   folder?: string;
   entry_file?: number;
   entry_path?: string;
+  entry_html_path?: string;
   entryPath?: string|null;
 }
 
@@ -48,6 +50,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   framework?: ProjectFrameworks;
   toolchain?: ReactToolchains;
   remoteId?: string;
+  entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
   htmlFileLocalId?: string|null;
   bundleLocalId?: string|null;
@@ -57,6 +60,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   folder?: string;
   entry_file?: number;
   entry_path?: string;
+  entry_html_path?: string;
   entryPath?: string|null;
 }
 

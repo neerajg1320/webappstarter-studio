@@ -384,7 +384,8 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
       const messages = [response.data.detail];
       dispatch(apiRequestSuccess(reqId, messages));
 
-      dispatch(updateProject({localId:projectPartial.localId, ...rest, synced:true}));
+      // TBD: For now we will hard code the entry_html_path to 'index.html'
+      dispatch(updateProject({localId:projectPartial.localId, ...rest, entry_html_path: 'index.html', synced:true}));
       await fetchFiles(rest.pkid)(dispatch, getState);
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -615,6 +616,14 @@ export const fetchFiles = (projectPkid?:string) => {
           file.bundleLanguage = pathToBundleLanguage(file.path);
           file.language = pathToCodeLanguage(file.path);
 
+          if (file.isEntryPoint) {
+            dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
+          }
+
+          // TBD: Hardcoding to be removed
+          if (file.path === 'index.html') {
+            dispatch(updateProject({localId: file.projectLocalId, entryHtmlFileLocalId: file.localId}));
+          }
           // This dispatch is unnecessary
           // dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
