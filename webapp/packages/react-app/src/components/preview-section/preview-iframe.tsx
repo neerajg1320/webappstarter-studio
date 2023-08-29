@@ -1,5 +1,5 @@
 import './preview-iframe.css';
-import { useEffect, useRef } from "react";
+import {useEffect, useRef, useState} from "react";
 
 const htmlWithScript = `
 <html>
@@ -74,11 +74,21 @@ const htmlNoScript = `
 </html>
 `;
 
+const parseHtml = (markupStr:string):string => {
+  let resultMarkupStr = "Not processed";
+
+
+  return resultMarkupStr;
+}
+
 const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
+  const [markup, setMarkup] = useState<string>("");
 
   useEffect(() => {
     iframeRef.current.srcdoc = htmlWithScript;
+
+    setMarkup(parseHtml(htmlNoScript));
 
     // To make it fool proof we should convert it to be dependent on message from iframe
     setTimeout(() => {
@@ -93,6 +103,7 @@ const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
         title="preview" 
         sandbox="allow-scripts allow-modals allow-same-origin" />
       {err && <div className="preview-error">{err}</div>}
+      <pre>{markup}</pre>
     </div>
   );
 }
