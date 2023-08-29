@@ -7,7 +7,7 @@ import {useActions} from "../../hooks/use-actions";
 import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
 import {debugComponent} from "../../config/global";
 import {generateLocalId} from "../../state/id";
-import {ensureTrailingSlash, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
+import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 
@@ -113,9 +113,11 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       if (debugComponent) {
         console.log(`onBlur: file.path:${reduxFile.path}`);
       }
+
+      // Check if folder: The name should not have a slash at the end
       // If the path is a folder path we do not allow it as yet i.e folders have to be created by creating file in them
-      // The name should not have a slash at the end
-      if (hasTrailingSlash(reduxFile.path)) {
+      // Check if blank
+      if (reduxFile.path === "" || hasTrailingSlash(reduxFile.path)) {
         console.log('Error! No file name specified');
         removeFile(selectedFileLocalId);
       } else {
@@ -144,7 +146,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
         const fileLocalId = generateLocalId();
         createFile({
           localId: fileLocalId,
-          path: ensureTrailingSlash(newFilePath),
+          path: validatePath(newFilePath),
           bundleLanguage: BundleLanguage.UNKNOWN,
           language: CodeLanguage.UNKNOWN,
           content: '',

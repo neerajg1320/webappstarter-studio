@@ -23,7 +23,7 @@ export const htmlWithScript = `
 export const htmlNoScript = `
 <html>
   <head>
-    <title>WebappStarter Project Preview </title>
+    <title>WebappStarter Project Preview</title>
   </head>
   <body>
     <div id="root"></div>

@@ -14,6 +14,7 @@ import PreviewTabs from "../preview-section/preview-tabs";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
 import {CodeLanguage} from "../../state/language";
+import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -315,6 +316,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
             <div style={{height: "100%"}}>
               {/* We can pass iframe id in case we are using multiple preview windows. */}
               <PreviewTabs
+                  html={htmlNoScript}
                   code={bundlesState[reduxProject.bundleLocalId]!.code}
                   err={bundlesState[reduxProject.bundleLocalId]!.err}
               />

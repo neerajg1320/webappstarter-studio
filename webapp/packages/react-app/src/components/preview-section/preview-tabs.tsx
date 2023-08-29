@@ -5,14 +5,14 @@ import PreviewIframe from "./preview-iframe/preview-iframe";
 import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
-import {htmlNoScript} from "./preview-iframe/markup";
 
 interface PreviewTabsProps {
+  html: string;
   code: string;
   err: string
 }
 
-const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
+const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Preview');
 
   if (debugComponent) {
@@ -45,7 +45,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
         {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
         {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
         <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>
-          <PreviewIframe html={htmlNoScript} code={code} err={err} />
+          <PreviewIframe html={html} code={code} err={err} />
         </div>
         <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
           <PreviewConsole onChange={handleConsoleTextChange}/>

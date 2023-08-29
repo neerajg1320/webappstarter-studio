@@ -27,10 +27,18 @@ export const joinFileParts = (dirname:string, basename:string): string => {
   return path.join(dirname, basename);
 }
 
-export const ensureTrailingSlash = (path:string):string => {
+// if '.' then return ""
+// validatePath if not '.'
+export const validatePath = (path:string):string => {
+  console.log(`validatePath: path:`, path)
+
   let newPath = path;
-  if (path && path.length > 0 && path[path.length-1] !== '/') {
-    newPath = path + '/'
+  if (path && path.length > 0) {
+    if (path === ".") {
+      newPath = "";
+    } else if (path[path.length-1] !== '/') {
+      newPath = path + '/';
+    }
   }
   return newPath;
 }
