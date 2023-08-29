@@ -30,7 +30,7 @@ export const joinFileParts = (dirname:string, basename:string): string => {
 // if '.' then return ""
 // validatePath if not '.'
 export const validatePath = (path:string):string => {
-  console.log(`validatePath: path:`, path)
+  // console.log(`validatePath: path:`, path)
 
   let newPath = path;
   if (path && path.length > 0) {
