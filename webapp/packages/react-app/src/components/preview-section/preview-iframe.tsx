@@ -76,8 +76,7 @@ interface PreviewProps {
 const htmlNoScript = `
 <html>
   <head>
-    <title>HTML No Script</title>
-    <style>html {background-color: white}</style>
+    <title>WebappStarter Project Preview </title>
   </head>
   <body>
     <div id="root"></div>
@@ -107,11 +106,11 @@ const injectScriptInHtml = (markupStr:string, javscriptCodeStr:string):string =>
 
 const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
-  const [markup, setMarkup] = useState<string>("");
+  // const [markup, setMarkup] = useState<string>("");
 
   useEffect(() => {
     const htmlWithInjectedScript = injectScriptInHtml(htmlNoScript, parentCommunicationJavascriptCode);
-    setMarkup(htmlWithInjectedScript);
+    // setMarkup(htmlWithInjectedScript);
 
     // iframeRef.current.srcdoc = htmlWithScript;
     iframeRef.current.srcdoc = htmlWithInjectedScript;
@@ -129,7 +128,7 @@ const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
         title="preview" 
         sandbox="allow-scripts allow-modals allow-same-origin" />
       {err && <div className="preview-error">{err}</div>}
-      <pre>{markup}</pre>
+      {/*<pre>{markup}</pre>*/}
     </div>
   );
 }
