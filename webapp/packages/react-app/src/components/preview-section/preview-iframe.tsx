@@ -1,7 +1,7 @@
 import './preview-iframe.css';
 import { useEffect, useRef } from "react";
 
-const html = `
+const htmlWithScript = `
 <html>
   <head>
     <style>html {background-color: white}</style>
@@ -65,7 +65,9 @@ const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
 
   useEffect(() => {
-    iframeRef.current.srcdoc = html;
+    iframeRef.current.srcdoc = htmlWithScript;
+
+    // To make it fool proof we should convert it to be dependent on message from iframe
     setTimeout(() => {
       iframeRef.current.contentWindow.postMessage(code, '*');
     }, 50);
