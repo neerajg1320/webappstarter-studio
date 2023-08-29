@@ -200,6 +200,8 @@ export const createProjectBundle = (
 
         if (content === null) {
           // const {data, request} = await axiosInstance.get(url);
+          // We should be using cache here or we should be using loadFileUrl
+          // We can make fetchFileContents to use loadFileUrl
           const response = await fetchFileContents([reduxFile.localId])(dispatch, getState);
 
           if (response) {
@@ -614,7 +616,7 @@ export const fetchFiles = (projectPkid?:string) => {
           file.language = pathToCodeLanguage(file.path);
 
           // This dispatch is unnecessary
-          dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
+          // dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
         return file;
       });

@@ -1,8 +1,8 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
-import {setFileInCache} from "./plugin-load-from-cache";
+import {getFileFromCache, setFileInCache} from "./plugin-load-from-cache";
 import {getFileType} from "../../utils/path";
-import {debugPlugin} from "../../config/global";
+import {debugCache, debugPlugin, enableLoadFromCache} from "../../config/global";
 
 export const wrapScriptOnCssContent = (cssStr:string):string => {
   // start: The custom part for css
@@ -32,9 +32,18 @@ export const loadData = (data:string, contentType:string|null):esbuild.OnLoadRes
 }
 
 
-export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.OnLoadResult> => {
+export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbuild.OnLoadResult> => {
   const contentType = getFileType(url);
 
+  // This is needed here as this function is called directly from redix.
+  // We might remove it later as this is getting repeated
+  // Also this check is not necessary as the file is already looked up in the load-from-cache-plugin
+  if (cacheEnabled) {
+    const cachedResult = await getFileFromCache(url);
+    if (cachedResult) {
+      return cachedResult
+    }
+  }
   // Note we are parsing the request as well to get the path of the downloaded file which might be
   // different from the args.path
   const { data, request } = await axiosInstance.get(url);
@@ -53,7 +62,7 @@ export const loadFileUrl = async (url:string, isCached:boolean):Promise<esbuild.
     }
   }
 
-  if (isCached) {
+  if (cacheEnabled) {
     await setFileInCache(url, result);
   }
 
