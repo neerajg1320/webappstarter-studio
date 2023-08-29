@@ -74,21 +74,45 @@ const htmlNoScript = `
 </html>
 `;
 
-const parseHtml = (markupStr:string):string => {
-  let resultMarkupStr = "Not processed";
-
-
-  return resultMarkupStr;
-}
 
 const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
   const [markup, setMarkup] = useState<string>("");
 
-  useEffect(() => {
-    iframeRef.current.srcdoc = htmlWithScript;
+  const parseHtml = (markupStr:string):string => {
+    let resultMarkupStr = "Not processed";
 
-    setMarkup(parseHtml(htmlNoScript));
+    var detachedHtml = document.createElement( 'html' );
+    // el.innerHTML = "<html><head><title>titleTest</title></head><body><a href='test0'>test01</a><a href='test1'>test02</a><a href='test2'>test03</a></body></html>";
+    // const elements = el.getElementsByTagName( 'a' ); // Live NodeList of your anchor elements
+    detachedHtml.innerHTML = htmlNoScript;
+
+    const titleEl = detachedHtml.getElementsByTagName('title');
+    if (titleEl.length > 0) {
+      setMarkup(titleEl[0].innerText);
+    }
+
+    const bodyEl = detachedHtml.getElementsByTagName('body');
+    if (bodyEl.length > 0) {
+      const scriptEl = document.createElement('script');
+      scriptEl.innerText = "console.log('hello from script')"
+
+      bodyEl[0].appendChild(scriptEl);
+    }
+
+    resultMarkupStr = detachedHtml.innerHTML;
+    setMarkup(resultMarkupStr);
+
+    return resultMarkupStr;
+  }
+
+  useEffect(() => {
+    const htmlWithInjectedScript = parseHtml(htmlNoScript);
+
+    // iframeRef.current.srcdoc = htmlWithScript;
+    iframeRef.current.srcdoc = htmlWithInjectedScript;
+
+
 
     // To make it fool proof we should convert it to be dependent on message from iframe
     setTimeout(() => {
