@@ -1,10 +1,11 @@
 import './preview-tabs.css';
 import TabsBulma from "../common/tabs-bulma";
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import PreviewIframe from "./preview-iframe";
+import PreviewIframe from "./preview-iframe/preview-iframe";
 import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
+import {htmlNoScript} from "./preview-iframe/markup";
 
 interface PreviewTabsProps {
   code: string;
@@ -44,7 +45,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({code, err}) => {
         {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
         {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
         <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>
-          <PreviewIframe code={code} err={err} />
+          <PreviewIframe html={htmlNoScript} code={code} err={err} />
         </div>
         <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
           <PreviewConsole onChange={handleConsoleTextChange}/>
