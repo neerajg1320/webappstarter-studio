@@ -613,6 +613,7 @@ export const fetchFiles = (projectPkid?:string) => {
           file.bundleLanguage = pathToBundleLanguage(file.path);
           file.language = pathToCodeLanguage(file.path);
 
+          // This dispatch is unnecessary
           dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
         return file;

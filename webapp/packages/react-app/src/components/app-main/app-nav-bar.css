@@ -7,10 +7,15 @@
   top: 0px;
 }
 
+.navbar-menu {
+  background-color: #2b3e50!important;
+}
+
 .navbar .navbar-end {
   padding: 0 40px;
 }
 
 .navbar .navbar-item {
   cursor: pointer;
+  /*border: 1px solid lightblue;*/
 }

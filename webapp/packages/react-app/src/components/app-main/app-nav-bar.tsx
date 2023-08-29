@@ -4,6 +4,7 @@ import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 import {debugComponent} from "../../config/global";
+import {useState} from "react";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -13,6 +14,7 @@ const AppNavBar = () => {
   const {logoutUser} = useActions();
   const navigate = useNavigate();
   const location = useLocation();
+  const [burgerMenuActive, setBurgerMenuActive] = useState(false);
 
   const handleLogoutClick = () => {
     if (currentUser) {
@@ -38,16 +40,30 @@ const AppNavBar = () => {
     navigate(RoutePath.ROOT, {replace: true});
   }
 
+  const handleBurgerClick = () => {
+    setBurgerMenuActive((prev) => {
+      console.log(`prev:`, prev);
+      return !prev;
+    });
+  }
+
   return (
       <nav className="navbar">
-        <div  className="navbar-menu">
-          <div className="navbar-start">
-            <div className="navbar-item" onClick={handleLogoClick}>
-              <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"10px"}}>
-                <img src="/logo192.png" alt="logo"/>
-                <span>WebappStarter</span>
-              </div>
+        <div className="navbar-brand">
+          <div className="navbar-item" onClick={handleLogoClick}>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"10px"}}>
+              <img src="/logo192.png" alt="logo"/>
+              <span>WebappStarter</span>
             </div>
+          </div>
+          <a id="nav-burger" className="navbar-burger" onClick={handleBurgerClick}>
+            <span></span>
+            <span></span>
+            <span></span>
+          </a>
+        </div>
+        <div id="nav-links" className={"navbar-menu " + (burgerMenuActive ? "is-active" : "") }>
+          <div className="navbar-end">
             {isAuthenticated &&
               <div style={{marginLeft: "40px", display: "flex", flexDirection:"row", alignItems:"center"}}>
                 <div className={"navbar-item " + (enableProjectsList ? "has-dropdown is-hoverable" : "")}>
@@ -71,9 +87,7 @@ const AppNavBar = () => {
                 </div>
               </div>
             }
-          </div>
 
-          <div className="navbar-end">
             {isAuthenticated &&
               <div className="navbar-item has-dropdown is-hoverable">
                 <div className="navbar-link">
