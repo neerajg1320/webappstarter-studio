@@ -46,7 +46,7 @@ export const parentCommunicationJavascriptCode = `
       }
     }, false);
     
-    console.log('Parent Communicated Script Injected');
+    // console.log('Parent Communicated Script Injected');
 `;
 
 
