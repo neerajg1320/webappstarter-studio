@@ -1,5 +1,6 @@
 import './preview-iframe.css';
 import {useEffect, useRef, useState} from "react";
+import {injectScriptInHtml} from "../../utils/markup";
 
 const simpleJavascriptCode = `
     console.log('hello from script');
@@ -67,12 +68,8 @@ const htmlWithScript = `
 </html>
 `;
 
-
-interface PreviewProps {
-  code: string;
-  err: string;
-}
-
+// The advantage of script injection in a plain html is that it gives the opportunity to user to provide any
+// arbitrary but a valid html file.
 const htmlNoScript = `
 <html>
   <head>
@@ -84,36 +81,18 @@ const htmlNoScript = `
 </html>
 `;
 
-const injectScriptInHtml = (markupStr:string, javscriptCodeStr:string):string => {
-  let resultMarkupStr = "Not processed";
 
-  // https://stackoverflow.com/questions/10585029/parse-an-html-string-with-js
-  var detachedHtml = document.createElement( 'html' );
-  detachedHtml.innerHTML = htmlNoScript;
 
-  const bodyEl = detachedHtml.getElementsByTagName('body');
-  if (bodyEl.length > 0) {
-    const scriptEl = document.createElement('script');
-    scriptEl.innerHTML = javscriptCodeStr;
-
-    bodyEl[0].appendChild(scriptEl);
-  }
-
-  resultMarkupStr = detachedHtml.innerHTML;
-
-  return resultMarkupStr;
+interface PreviewIframeProps {
+  code: string;
+  err: string;
 }
 
-const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
+const PreviewIframe:React.FC<PreviewIframeProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
-  // const [markup, setMarkup] = useState<string>("");
 
   useEffect(() => {
-    const htmlWithInjectedScript = injectScriptInHtml(htmlNoScript, parentCommunicationJavascriptCode);
-    // setMarkup(htmlWithInjectedScript);
-
-    // iframeRef.current.srcdoc = htmlWithScript;
-    iframeRef.current.srcdoc = htmlWithInjectedScript;
+    iframeRef.current.srcdoc = injectScriptInHtml(htmlNoScript, parentCommunicationJavascriptCode);
 
     // To make it fool proof we should convert it to be dependent on message from iframe
     setTimeout(() => {
@@ -128,7 +107,6 @@ const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
         title="preview" 
         sandbox="allow-scripts allow-modals allow-same-origin" />
       {err && <div className="preview-error">{err}</div>}
-      {/*<pre>{markup}</pre>*/}
     </div>
   );
 }
