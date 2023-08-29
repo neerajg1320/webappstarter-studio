@@ -50,6 +50,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
+  const [htmlContent, setHtmlContent] = useState<string|null>(null);
 
   const reduxProject = useMemo(() => {
     return projectsState.data[projectLocalId];
@@ -115,8 +116,12 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     // because in that case the projectLocalId does not change but the project state changes.
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
-      if (!htmlFile.contentSynced && !htmlFile.requestInitiated) {
-        fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+      if (htmlFile.contentSynced) {
+        setHtmlContent(htmlFile.content);
+      } else {
+        if (!htmlFile.requestInitiated) {
+          fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+        }
       }
     }
   }, [reduxProject, filesState.data]);
@@ -319,11 +324,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       <div style={{}}>
         {/* We have to put Tab component here*/}
         {
-            (reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+            (htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
             <div style={{height: "100%"}}>
               {/* We can pass iframe id in case we are using multiple preview windows. */}
               <PreviewTabs
-                  html={htmlNoScript}
+                  html={htmlContent}
                   code={bundlesState[reduxProject.bundleLocalId]!.code}
                   err={bundlesState[reduxProject.bundleLocalId]!.err}
               />

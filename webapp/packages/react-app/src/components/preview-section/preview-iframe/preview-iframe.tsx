@@ -13,6 +13,8 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({html, code, err}) => {
   const iframeRef = useRef<any>();
 
   useEffect(() => {
+    console.log(`PreviewIframe: html:`, html);
+
     iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode);
 
     // To make it fool proof we should convert it to be dependent on message from iframe
