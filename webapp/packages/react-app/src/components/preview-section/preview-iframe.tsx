@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 const htmlWithScript = `
 <html>
   <head>
+    <title>HTML With Script</title>
     <style>html {background-color: white}</style>
   </head>
   <body>
@@ -60,6 +61,18 @@ interface PreviewProps {
   code: string;
   err: string;
 }
+
+const htmlNoScript = `
+<html>
+  <head>
+    <title>HTML No Script</title>
+    <style>html {background-color: white}</style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+`;
 
 const PreviewIframe:React.FC<PreviewProps> = ({code, err}) => {
   const iframeRef = useRef<any>();
