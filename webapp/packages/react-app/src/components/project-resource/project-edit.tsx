@@ -17,9 +17,13 @@ interface ProjectEditProps {
 
 const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   useEffect(() => {
-    console.log(`ProjectNewEdit: first render`);
+    if (debugComponent) {
+      console.log(`ProjectNewEdit: first render`);
+    }
     return () => {
-      console.log(`ProjectNewEdit: destroyed`);
+      if (debugComponent) {
+        console.log(`ProjectNewEdit: destroyed`);
+      }
     }
   }, []);
 

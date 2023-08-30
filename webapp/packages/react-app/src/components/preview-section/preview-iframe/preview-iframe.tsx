@@ -2,6 +2,7 @@ import './preview-iframe.css';
 import {useEffect, useRef, useState} from "react";
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
+import {debugComponent} from "../../../config/global";
 
 interface PreviewIframeProps {
   html: string;
@@ -13,7 +14,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({html, code, err}) => {
   const iframeRef = useRef<any>();
 
   useEffect(() => {
-    console.log(`PreviewIframe: html:`, html);
+    if (debugComponent) {
+      console.log(`PreviewIframe: html:`, html);
+    }
 
     iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode);
 

@@ -114,16 +114,26 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
     // This has been placed here so that we can download index.html even when we reach here after creating project,
     // because in that case the projectLocalId does not change but the project state changes.
+    let _htmlContent:string|null = null;
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
-      if (htmlFile.contentSynced) {
-        setHtmlContent(htmlFile.content);
-      } else {
-        if (!htmlFile.requestInitiated) {
-          fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+      if (htmlFile) {
+        if (htmlFile.contentSynced) {
+          _htmlContent = htmlFile.content || "File loaded with no content"
+        } else {
+          if (!htmlFile.requestInitiated) {
+            fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+          }
         }
+      } else {
+        console.log("The project html not found. Using default html file");
       }
     }
+    if (!_htmlContent) {
+      _htmlContent = htmlNoScript
+    }
+
+    setHtmlContent(_htmlContent);
   }, [reduxProject, filesState.data]);
 
 

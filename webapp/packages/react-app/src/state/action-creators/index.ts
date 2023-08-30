@@ -539,9 +539,13 @@ export const downloadProjectZip = (localId:string) => {
           `/projects/${pkid}/download/`,
           {responseType: 'blob'}
       );
-      console.log(response);
+      if (debugRedux) {
+        console.log(response);
+      }
       const contentDisposition = response.headers['content-disposition'];
-      console.log(contentDisposition);
+      if (debugRedux) {
+        console.log(contentDisposition);
+      }
 
       dispatch(updateProject({
         localId,

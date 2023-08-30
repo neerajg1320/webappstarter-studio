@@ -26,6 +26,7 @@ export const htmlNoScript = `
     <title>WebappStarter Project Preview</title>
   </head>
   <body>
+    <!-- default html file used when user does not provide one -->
     <div id="root"></div>
   </body>
 </html>
