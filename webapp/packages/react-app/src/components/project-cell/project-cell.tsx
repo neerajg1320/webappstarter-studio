@@ -47,11 +47,18 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
+  const [htmlContent, setHtmlContent] = useState<string|null>(null);
+
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
-  const [htmlContent, setHtmlContent] = useState<string|null>(null);
   const hotReload = useTypedSelector(state => state.application.hotReload);
+  // Kept due to the behaviour of the editor onChange callback
+  const hotReloadRef = useRef<boolean>(hotReload);
+
+  useEffect(() => {
+    hotReloadRef.current = hotReload;
+  }, [hotReload])
 
   const reduxProject = useMemo(() => {
     return projectsState.data[projectLocalId];
@@ -93,18 +100,19 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   const { fetchFileContents } = useActions();
 
   // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
+  // This function is stuck in time :) It gets embedded in editor with initial state
   const handleEditorChange = useCallback((value:string) => {
     const _editedFile = editedFileRef.current;
-    console.log('editedFile:', editedFile);
+    console.log('editedFile:', _editedFile);
 
     if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
-      if (debugComponent) {
+      if (debugComponent || true) {
         console.log(`file[${_editedFile.localId}]: value=${value}`)
       }
 
       updateFile({localId: _editedFile.localId, content:value});
 
-      if (hotReload) {
+      if (hotReloadRef.current) {
         bundleProject();
       }
     }
@@ -179,6 +187,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   }, [JSON.stringify(editedFile)]);
 
   const bundleProject = () => {
+    console.log(`bundleProject: called()`);
+
     if (reduxProject.entry_path) {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
