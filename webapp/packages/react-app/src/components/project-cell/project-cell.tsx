@@ -95,7 +95,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
   const handleEditorChange = useCallback((value:string) => {
     const _editedFile = editedFileRef.current;
-    // console.log('editedFile:', editedFile);
+    console.log('editedFile:', editedFile);
 
     if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
       if (debugComponent) {
@@ -103,6 +103,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       }
 
       updateFile({localId: _editedFile.localId, content:value});
+
+      if (hotReload) {
+        bundleProject();
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -174,12 +178,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
-  const handleProjectBundleClick = () => {
-    if (debugComponent) {
-      console.log(`reduxProject:`, reduxProject);
-      console.log(`currentUser: `, currentUser);
-    }
-
+  const bundleProject = () => {
     if (reduxProject.entry_path) {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
@@ -204,6 +203,15 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }
+  }
+
+  const handleProjectBundleClick = () => {
+    if (debugComponent) {
+      console.log(`reduxProject:`, reduxProject);
+      console.log(`currentUser: `, currentUser);
+    }
+
+    bundleProject();
   }
 
   const handleProjectZipClick = () => {

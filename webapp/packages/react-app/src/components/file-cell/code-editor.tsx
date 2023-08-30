@@ -56,7 +56,12 @@ const activateMonacoJSXHighlighter = async (editor:MonacoEditor.editor.IStandalo
   }
 }
 
-const CodeEditor: React.FC<CodeEditorProps> = ({path, value:propValue, language, onChange:propOnChange, disabled}) => {
+const CodeEditor: React.FC<CodeEditorProps> = ({
+                                                 path,
+                                                 value:propValue,
+                                                 language,
+                                                 onChange:propOnChange,
+                                                 disabled}) => {
   // const debugComponent = true;
 
   const editorRef = useRef<any>();
