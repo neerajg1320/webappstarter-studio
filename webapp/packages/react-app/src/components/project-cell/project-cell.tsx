@@ -154,7 +154,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
   useEffect( () => {
     if (debugComponent || true) {
-      console.log(`editedFile:`, editedFile);
+      console.log(`JSON.stringify(editedFile):`, JSON.stringify(editedFile, null, 2));
     }
 
     if (!editedFile) {

@@ -96,6 +96,7 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
               saveFilePartial['content']= content;
           }
 
+          // We are causing unnecessary dispatch here
           dispatch(updateFileSavePartial(saveFilePartial));
         }
       }

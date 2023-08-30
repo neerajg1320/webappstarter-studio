@@ -122,8 +122,8 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
                 <label>Editable</label>
                 <input
                     type="checkbox"
-                    checked={hotReload}
-                    onChange={(e) => updateApplication({hotReload: e.target.checked})}
+                    checked={(reduxFile && reduxFile.isEditAllowed) || false}
+                    onChange={(e) => handleFileEditableChange( e.target.checked)}
                 />
               </div>
           }
@@ -131,8 +131,8 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
             <label>Hot-Reload</label>
             <input
                 type="checkbox"
-                checked={ false}
-                onChange={(e) => handleEntryPointChange(e.target.checked)}
+                checked={hotReload}
+                onChange={(e) => updateApplication({hotReload: e.target.checked})}
             />
           </div>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
