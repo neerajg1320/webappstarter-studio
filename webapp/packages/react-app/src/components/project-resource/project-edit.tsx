@@ -111,6 +111,9 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   const handleSaveClick = async () => {
     if (currentProject) {
+      // TBD: Here we should add the checks for validation
+      // We confirm the creation locally
+      updateProject({localId:currentProject.localId, confirmed: true});
       saveProject(currentProject.localId);
     }
 

@@ -1,22 +1,35 @@
 import "./file-cell-control-bar.css";
 import React, {useRef, useState} from "react";
-import {ReduxFile, ReduxUpdateFilePartial,} from "../../state";
+import {ReduxFile, ReduxProject, ReduxUpdateFilePartial,} from "../../state";
 import {replaceFilePart} from "../../utils/path";
 import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
 import {debugComponent} from "../../config/global";
-import {BundleLanguage} from "../../state/bundle";
-import {saveProject} from "../../state/action-creators";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
 
-interface FileControlBarProps {
-  reduxFile: ReduxFile;
+export enum FileCellEventType {
+  NEW_FILE = 'new_file',
+  COPY_FILE = 'copy_file',
+  DELETE_FILE = 'delete_file',
 }
 
-const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
-  const selectFileInputRef = useRef<HTMLInputElement | null>(null);
-  const { updateFile, saveFile, createCellBundle, updateProject } = useActions();
-  const [isAdmin, setAdmin] = useState(false);
+export interface FileCellEvent {
+  name: FileCellEventType;
+  data: {[k:string]:any}
+}
 
+interface FileCellControlBarProps {
+  reduxFile: ReduxFile;
+  // onEvent: (event: FileCellEvent) => void;
+}
+
+const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
+  const selectFileInputRef = useRef<HTMLInputElement | null>(null);
+  const { updateFile, saveFile, createCellBundle, updateProject, updateApplication } = useActions();
+  const [isAdmin, setAdmin] = useState(false);
+  const hotReload = useTypedSelector(state => state.application.hotReload);
+
+  // Function to bundle a single file. Not used anymore. Kept for possible use in single file syntax checking.
   const handleBundleClick = () => {
     if (debugComponent) {
       console.log(reduxFile.content);
@@ -34,6 +47,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
     createCellBundle(reduxFile.localId, reduxFile.content, reduxFile.bundleLanguage);
   }
 
+  // Function to modify filename from the FileCellControlBar. Not used anymore. Kept for possible use in tabs
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       console.log('No file selected');
@@ -73,6 +87,7 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
       return;
     }
 
+    updateFile({localId: reduxFile.localId, confirmed: true})
     saveFile(reduxFile.localId);
   }
 
@@ -107,11 +122,19 @@ const FileCellControlBar:React.FC<FileControlBarProps> = ({reduxFile}) => {
                 <label>Editable</label>
                 <input
                     type="checkbox"
-                    checked={(reduxFile && reduxFile.isEditAllowed) || false}
-                    onChange={(e) => handleFileEditableChange(e.target.checked)}
+                    checked={hotReload}
+                    onChange={(e) => updateApplication({hotReload: e.target.checked})}
                 />
               </div>
           }
+          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
+            <label>Hot-Reload</label>
+            <input
+                type="checkbox"
+                checked={ false}
+                onChange={(e) => handleEntryPointChange(e.target.checked)}
+            />
+          </div>
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>EntryPoint</label>
             <input

@@ -5,6 +5,7 @@ import projectsReducer from './projectsReducer';
 import filesReducer from "./filesReducer";
 import authReducer from "./authReducer";
 import apiReducer from "./apiReducer";
+import applicationReducer from "./applicationReducer";
 
 const reducers = combineReducers({
   cells: cellsReducer,
@@ -13,6 +14,7 @@ const reducers = combineReducers({
   files: filesReducer,
   auth: authReducer,
   api: apiReducer,
+  application: applicationReducer
 });
 
 export default reducers;

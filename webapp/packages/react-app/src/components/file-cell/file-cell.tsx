@@ -1,24 +1,23 @@
 import './file-cell.css';
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import PreviewIframe from "../preview-section/preview-iframe/preview-iframe";
 import {autoBundling, debugRedux} from '../../config/global';
-import {ReduxFile} from "../../state";
-import FileCellControlBar from "./file-cell-control-bar";
+import {ReduxFile, ReduxProject} from "../../state";
+import FileCellControlBar, {FileCellEvent} from "./file-cell-control-bar";
 import {BundleLanguage} from "../../state/bundle";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 
-interface CodeCellProps {
-  reduxFile: ReduxFile
+interface FileCellProps {
+  reduxFile: ReduxFile;
+  reduxProject?: ReduxProject;
 }
 
-const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
-  const autoBundle = useMemo(() => {
-    return autoBundling;
-  }, []);
+const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
+  const hotReload = useTypedSelector(state => state.application.hotReload);
 
   const {createCellBundle, updateFile} = useActions();
 
@@ -37,7 +36,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
       return;
     }
 
-    if (autoBundle) {
+    if (hotReload) {
       // In subsequent attempts we wait for debounce time before bundling
       const timer = setTimeout(async () => {
         // console.log("Calling bundle");
@@ -55,7 +54,7 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduxFile.content, autoBundle]);
+  }, [reduxFile.content, hotReload]);
 
   // handleEditorChange goes to another component hence cellState doesn't work properly in it.
   const handleEditorChange = (value:string) => {
@@ -67,7 +66,6 @@ const FileCell: React.FC<CodeCellProps> = ({reduxFile}) => {
 
     updateFile({localId:reduxFile.localId, content:value})
   };
-
 
   return (
     <div>

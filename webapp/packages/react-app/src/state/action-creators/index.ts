@@ -13,6 +13,7 @@ import {
   InsertCellAfterAction,
   MoveCellAction,
   SetCurrentProjectAction,
+  UpdateApplicationAction,
   UpdateCellAction,
   UpdateFileAction,
   UpdateFileSavePartialAction,
@@ -45,7 +46,8 @@ import {
 import {generateLocalId} from "../id";
 import {
   debugAuth,
-  debugAxios, debugBundler,
+  debugAxios,
+  debugBundler,
   debugPlugin,
   debugRedux,
   enableLocalStorageAuth,
@@ -68,6 +70,7 @@ import {getFileType, joinFileParts} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
 import {loadData} from "../../bundler/plugins/loadSourceFiles";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
+import {ApplicatonStatePartial} from "../application";
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
   return {
@@ -1376,5 +1379,12 @@ export const apiRequestFailed = (localRequestId:string, errors:string[]): ApiReq
       id: localRequestId,
       errors
     }
+  }
+}
+
+export const updateApplication = (applicationStatePartial:ApplicatonStatePartial):UpdateApplicationAction => {
+  return {
+    type: ActionType.UPDATE_APPLICATION,
+    payload: applicationStatePartial
   }
 }

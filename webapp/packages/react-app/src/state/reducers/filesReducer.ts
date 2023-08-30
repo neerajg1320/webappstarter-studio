@@ -32,6 +32,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         reduxType: 'file',
         id: '',
         pkid: -1,
+        confirmed: false,
         synced: false,
         isServerResponse: false,
         requestInitiated: false,
@@ -84,6 +85,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           // We do not allow edit till the content is synced
           file.isEditAllowed = false;
           file.reduxType = 'file';
+          file.confirmed = true;
           file.synced = true;
           file.content = null;
           file.contentSynced = false;

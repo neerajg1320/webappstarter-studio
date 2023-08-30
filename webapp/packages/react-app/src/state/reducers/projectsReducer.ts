@@ -11,6 +11,7 @@ import {debugRedux} from "../../config/global";
 interface ProjectsState {
   loading: boolean;
   loadCount: number;
+  autoBundle: boolean;
   error: string | null;
   currentProjectId: string|null,
   data: {
@@ -21,6 +22,7 @@ interface ProjectsState {
 const initialState: ProjectsState = {
   loading: false,
   loadCount: 0,
+  autoBundle: false,
   error: null,
   currentProjectId: null,
   data: {}
@@ -44,6 +46,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         ...action.payload,
         id: '',
         pkid: -1,
+        confirmed: false,
         synced: false,
         isServerResponse: false,
         requestInitiated: false,
@@ -72,6 +75,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           project.reduxType = 'project'
           project.localId = generateLocalId();
+          project.confirmed = true;
           project.synced = true;
           project.deleteMarked = true;
           acc[project.localId] = project;

@@ -23,7 +23,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
 
   const projectsState = useTypedSelector((state) => state.projects);
   const projectList = useMemo(() => {
-    return Object.entries(projectsState.data).map(([k,v]) => v)
+    return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
 
 

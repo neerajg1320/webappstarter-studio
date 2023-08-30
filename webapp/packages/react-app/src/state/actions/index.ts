@@ -5,6 +5,7 @@ import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFile
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {UserRequestStart, UserRequestSuccess, UserRequestFailed} from "../user";
 import {ApiRequestFailed, ApiRequestStart, ApiRequestSuccess} from "../api";
+import {ApplicatonStatePartial} from "../application";
 
 export type Direction = 'up' | 'down';
 
@@ -213,6 +214,11 @@ export interface ApiRequestFailedAction {
   payload: ApiRequestFailed
 }
 
+export interface UpdateApplicationAction {
+  type: ActionType.UPDATE_APPLICATION,
+  payload: ApplicatonStatePartial
+}
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -248,5 +254,6 @@ export type Action =
     | UserDeleteAction
     | ApiRequestStartAction
     | ApiRequestSuccessAction
-    | ApiRequestFailedAction  
+    | ApiRequestFailedAction
+    | UpdateApplicationAction
     ;

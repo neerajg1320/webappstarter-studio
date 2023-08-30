@@ -8,7 +8,7 @@ import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
 import {debugComponent} from "../../config/global";
 
-import FileCellControlBar from "../file-cell/file-cell-control-bar";
+import FileCellControlBar, {FileCellEventType} from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
 import PreviewTabs from "../preview-section/preview-tabs";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
@@ -51,6 +51,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
   const [htmlContent, setHtmlContent] = useState<string|null>(null);
+  const hotReload = useTypedSelector(state => state.application.hotReload);
 
   const reduxProject = useMemo(() => {
     return projectsState.data[projectLocalId];
@@ -152,7 +153,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   }, [bundlesState]);
 
   useEffect( () => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`editedFile:`, editedFile);
     }
 
@@ -238,6 +239,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     setEditedFileLocalId(fileLocalId);
   }
 
+  const handleFileCellEvent = (event:FileCellEventType) => {
+
+  }
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>
