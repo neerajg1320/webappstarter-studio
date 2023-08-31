@@ -34,7 +34,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       console.log('ProjectCell: useEffect[] firstRender');
     }
 
-    bundleProject();
+    // Using bundleProject causes plugin-load-from-redux to give error
+    bundleProjectDebounced();
 
     return () => {
       if (debugComponentLifecycle) {
