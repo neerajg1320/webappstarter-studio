@@ -157,14 +157,16 @@ export const createProjectBundle = (
           console.log(`projectState:`, projectState);
         }
 
-        let reduxFile:ReduxFile;
+        let reduxFile: ReduxFile;
 
         if (enableUrlMap) {
           // Create a new map based on url instead of id
           const projectUrlMap = Object.fromEntries(
               Object.entries(filesLocalIdMap)
-                  .filter(([k,v]) => v.projectLocalId === projectLocalId)
-                  .map(([k,v]) => {return [v.file, v]})
+                  .filter(([k, v]) => v.projectLocalId === projectLocalId)
+                  .map(([k, v]) => {
+                    return [v.file, v]
+                  })
           );
           reduxFile = projectUrlMap[url];
 
@@ -182,8 +184,10 @@ export const createProjectBundle = (
 
           const projectFileMap = Object.fromEntries(
               Object.entries(filesLocalIdMap)
-                  .filter(([k,v]) => v.projectLocalId === projectLocalId)
-                  .map(([k,v]) => {return [v.path, v]})
+                  .filter(([k, v]) => v.projectLocalId === projectLocalId)
+                  .map(([k, v]) => {
+                    return [v.path, v]
+                  })
           );
 
           reduxFile = projectFileMap[reduxFilePath];
@@ -197,35 +201,37 @@ export const createProjectBundle = (
           console.log(`File Contents:`, reduxFile.content);
         }
 
-        let content = reduxFile.content;
-        let result:esbuild.OnLoadResult|null = null;
-        let resolveDir = new URL('./', url).pathname;
+        let result: esbuild.OnLoadResult | null = null;
+        if (reduxFile) {
+          let content = reduxFile.content;
+          let resolveDir = new URL('./', url).pathname;
 
-        if (content === null) {
-          // const {data, request} = await axiosInstance.get(url);
-          // We should be using cache here or we should be using loadFileUrl
-          // We can make fetchFileContents to use loadFileUrl
-          const response = await fetchFileContents([reduxFile.localId])(dispatch, getState);
+          if (content === null) {
+            // const {data, request} = await axiosInstance.get(url);
+            // We should be using cache here or we should be using loadFileUrl
+            // We can make fetchFileContents to use loadFileUrl
+            const response = await fetchFileContents([reduxFile.localId])(dispatch, getState);
 
-          if (response) {
-            const {data, request} = response;
-            // We will use result.content to fill in the reduxFile content
-            if (data) {
-              content = data;
-              dispatch(updateFile({localId: reduxFile.localId, content}));
+            if (response) {
+              const {data, request} = response;
+              // We will use result.content to fill in the reduxFile content
+              if (data) {
+                content = data;
+                dispatch(updateFile({localId: reduxFile.localId, content}));
+              }
+
+              resolveDir = new URL('./', request.responseURL).pathname;
             }
-
-            resolveDir = new URL('./', request.responseURL).pathname;
           }
-        }
 
-        if (content) {
-          result = loadData(content, getFileType(url));
-          result.resolveDir = resolveDir;
-        }
+          if (content) {
+            result = loadData(content, getFileType(url));
+            result.resolveDir = resolveDir;
+          }
 
-        if (debugPlugin) {
-          console.log(`result:`, result);
+          if (debugPlugin) {
+            console.log(`result:`, result);
+          }
         }
 
         return result;
