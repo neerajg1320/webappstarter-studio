@@ -34,6 +34,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       console.log('ProjectCell: useEffect[] firstRender');
     }
 
+    bundleProject();
+
     return () => {
       if (debugComponentLifecycle) {
         console.log('ProjectCell: destroyed');
