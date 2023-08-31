@@ -28,12 +28,12 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   // const debugComponent = true;
 
   useEffect(() => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log('ProjectCell: useEffect[] firstRender');
     }
 
     return () => {
-      if (debugComponent) {
+      if (debugComponent || true) {
         console.log('ProjectCell: destroyed');
       }
     }
@@ -55,10 +55,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   const hotReload = useTypedSelector(state => state.application.hotReload);
   // Kept due to the behaviour of the editor onChange callback
   const hotReloadRef = useRef<boolean>(hotReload);
+  const autoSave = useTypedSelector(state => state.application.autoSave);
+  // Kept due to the behaviour of the editor onChange callback
+  const autoSaveRef = useRef<boolean>(hotReload);
 
   useEffect(() => {
     hotReloadRef.current = hotReload;
   }, [hotReload])
+
+  useEffect(() => {
+    autoSaveRef.current = autoSave;
+  }, [autoSave])
 
   const reduxProject = useMemo(() => {
     return projectsState.data[projectLocalId];
@@ -113,6 +120,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       updateFile({localId: _editedFile.localId, content:value});
 
       if (hotReloadRef.current) {
+        const bundleDebounceTimer = setTimeout(bundleProject, 750);
         bundleProject();
       }
     }
