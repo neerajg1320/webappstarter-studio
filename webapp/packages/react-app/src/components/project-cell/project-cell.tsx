@@ -43,7 +43,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showCellsList, setShowCellsList] = useState<boolean>(false);
-  const { createProjectBundle, updateProject, downloadProjectZip, downloadFetchProjectZip, updateFile } = useActions();
+  const { createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -108,8 +108,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   // const [editorContent, setEditorContent] = useState<string>('');
   const { fetchFileContents } = useActions();
 
-  // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
-  // This function is stuck in time :) It gets embedded in editor with initial state
+  // We are using refs because this function is stuck in time :) It gets embedded in editor with initial state
   const handleEditorChange = (value:string) => {
     const _editedFile = editedFileRef.current;
 
@@ -122,12 +121,13 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       updateFile({localId: _editedFile.localId, content:value});
 
       if (hotReloadRef.current) {
-        // eslint-disable-next-line
-        bundleProjectDebounce();
+        bundleProjectDebounced();
+      }
+
+      if (autoSaveRef.current) {
+        saveFileDebounced();
       }
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   useEffect(() => {
@@ -224,7 +224,19 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     }
   }
 
-  const bundleProjectDebounce = useDebouncedCallback(bundleProject, 500);
+  // TBD: Need to put in settings
+  const bundleProjectDebounced = useDebouncedCallback(bundleProject, 500);
+  const saveFileDebounced = useDebouncedCallback(
+      () => {
+        const _editedFile = editedFileRef.current;
+        // In this function also editedFile does not work properly as it is not there in the dependency list
+        console.log(`saveFileDebounced: _editedFile:`, _editedFile);
+        if (_editedFile) {
+          saveFile(_editedFile.localId);
+        }
+      },
+      750
+  );
 
   const handleProjectBundleClick = () => {
     if (debugComponent) {
@@ -268,9 +280,6 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     setEditedFileLocalId(fileLocalId);
   }
 
-  const handleFileCellEvent = (event:FileCellEventType) => {
-
-  }
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>

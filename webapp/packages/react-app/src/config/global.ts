@@ -60,3 +60,6 @@ export const storeAnonymousToLocal = false;
 // Optimization Markers
 export const debugOptimizationMarker = false;
 export const debugLocalOnlyPendingSupport = false;
+
+// Features Visibility
+export const advancedFeatures = true;

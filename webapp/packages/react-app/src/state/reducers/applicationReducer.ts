@@ -8,7 +8,8 @@ import {ApplicatonState} from "../application";
 
 const initialState: ApplicatonState = {
   hotReload: true,
-  autoSave: false,
+  autoSave: true,
+  advanceFeatures: false,
 }
 
 // Note: The bundler so far doesn't differentiate about bundling a cell or a project.

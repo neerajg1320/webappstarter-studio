@@ -28,6 +28,8 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
   const { updateFile, saveFile, createCellBundle, updateProject, updateApplication } = useActions();
   const [isAdmin, setAdmin] = useState(false);
   const hotReload = useTypedSelector(state => state.application.hotReload);
+  const autoSave = useTypedSelector(state => state.application.autoSave);
+  const advanceFeatures = useTypedSelector(state => state.application.advanceFeatures);
 
   // Function to bundle a single file. Not used anymore. Kept for possible use in single file syntax checking.
   const handleBundleClick = () => {
@@ -116,6 +118,8 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
             </div>
         }
 
+
+
         <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
           {isAdmin &&
               <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
@@ -128,6 +132,14 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
               </div>
           }
           <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
+            <label>Auto-Save</label>
+            <input
+                type="checkbox"
+                checked={autoSave}
+                onChange={(e) => updateApplication({autoSave: e.target.checked})}
+            />
+          </div>
+          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
             <label>Hot-Reload</label>
             <input
                 type="checkbox"
@@ -135,34 +147,41 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
                 onChange={(e) => updateApplication({hotReload: e.target.checked})}
             />
           </div>
-          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
-            <label>EntryPoint</label>
-            <input
-                type="checkbox"
-                checked={(reduxFile && reduxFile.isEntryPoint) || false}
-                onChange={(e) => handleEntryPointChange(e.target.checked)}
-            />
-          </div>
+          {advanceFeatures &&
+            <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
+              <label>EntryPoint</label>
+              <input
+                  type="checkbox"
+                  checked={(reduxFile && reduxFile.isEntryPoint) || false}
+                  onChange={(e) => handleEntryPointChange(e.target.checked)}
+              />
+            </div>
+          }
         </div>
 
-        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+        <div style={{
+          display: "flex", flexDirection:"row", gap:"20px", alignItems:"center",
+          visibility: autoSave ? "hidden" : "visible"
+        }}
+        >
           <button
               className="button is-primary is-small"
               onClick={() => handleSaveClick()}
-              disabled={!(Object.keys(reduxFile.saveFilePartial).length > 0)}
+              disabled={!reduxFile.contentSynced}
           >
             Save
           </button>
           {isAdmin &&
-            <button
-                className="button is-family-secondary is-small"
-                onClick={() => handleBundleClick()}
-                disabled={!(reduxFile.content && reduxFile.content.length > 0)}
-            >
-              Bundle
-            </button>
+              <button
+                  className="button is-family-secondary is-small"
+                  onClick={() => handleBundleClick()}
+                  disabled={!(reduxFile.content && reduxFile.content.length > 0)}
+              >
+                Bundle
+              </button>
           }
         </div>
+
       </div>
   );
 }
