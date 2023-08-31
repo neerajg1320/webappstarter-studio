@@ -15,6 +15,7 @@ import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
 import {CodeLanguage} from "../../state/language";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
+import useDebounceCallback from "../../hooks/use-debounce-callback";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -108,25 +109,25 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
   // We use the callback with no subsequent updates no avoid unnecessary rerender of Editor
   // This function is stuck in time :) It gets embedded in editor with initial state
-  const handleEditorChange = useCallback((value:string) => {
+  const handleEditorChange = (value:string) => {
     const _editedFile = editedFileRef.current;
-    console.log('editedFile:', _editedFile);
 
     if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
-      if (debugComponent || true) {
+      if (debugComponent || false) {
+        console.log('_editedFile:', _editedFile);
         console.log(`file[${_editedFile.localId}]: value=${value}`)
       }
 
       updateFile({localId: _editedFile.localId, content:value});
 
       if (hotReloadRef.current) {
-        const bundleDebounceTimer = setTimeout(bundleProject, 750);
+        // eslint-disable-next-line
         bundleProject();
       }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   useEffect(() => {
     if (debugComponent) {
@@ -173,7 +174,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   }, [bundlesState]);
 
   useEffect( () => {
-    if (debugComponent || true) {
+    if (debugComponent || false) {
       console.log(`JSON.stringify(editedFile):`, JSON.stringify(editedFile, null, 2));
     }
 
@@ -194,7 +195,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
-  const bundleProject = () => {
+  const bundleProject = useDebounceCallback(() => {
     console.log(`bundleProject: called()`);
 
     if (reduxProject.entry_path) {
@@ -221,7 +222,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }
-  }
+  }, 2000);
 
   const handleProjectBundleClick = () => {
     if (debugComponent) {

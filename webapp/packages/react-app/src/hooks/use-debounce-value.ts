@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 
 // Ref: https://www.telerik.com/blogs/how-to-create-custom-debounce-hook-react
 // The solution in the reference is javascript based.
-const useDebounce = async <T> (value:T, delay:number):Promise<T> => {
+const useDebounceValue = async <T> (value:T, delay:number):Promise<T> => {
    const debugComponentLifecycle = true;
    const debugComponent = true;
 
@@ -38,4 +38,4 @@ const useDebounce = async <T> (value:T, delay:number):Promise<T> => {
   return debouncedValue;
 }
 
-export default useDebounce;
+export default useDebounceValue;
