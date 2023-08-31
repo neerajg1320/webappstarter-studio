@@ -42,7 +42,6 @@ const AppNavBar = () => {
 
   const handleBurgerClick = () => {
     setBurgerMenuActive((prev) => {
-      console.log(`prev:`, prev);
       return !prev;
     });
   }

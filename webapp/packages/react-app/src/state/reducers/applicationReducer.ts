@@ -7,7 +7,7 @@ import {ApplicatonState} from "../application";
 
 
 const initialState: ApplicatonState = {
-  hotReload: false,
+  hotReload: true,
   autoSave: false,
 }
 

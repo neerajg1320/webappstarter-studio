@@ -15,7 +15,7 @@ import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
 import {CodeLanguage} from "../../state/language";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
-import useDebounceCallback from "../../hooks/use-debounce-callback";
+import useDebouncedCallback from "../../hooks/use-debounced-callback";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -27,14 +27,15 @@ interface ProjectCellProps {
 // is rendered.
 const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   // const debugComponent = true;
+  const debugComponentLifecycle = false;
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponentLifecycle) {
       console.log('ProjectCell: useEffect[] firstRender');
     }
 
     return () => {
-      if (debugComponent || true) {
+      if (debugComponentLifecycle) {
         console.log('ProjectCell: destroyed');
       }
     }
@@ -122,7 +123,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
       if (hotReloadRef.current) {
         // eslint-disable-next-line
-        bundleProject();
+        bundleProjectDebounce();
       }
     }
 
@@ -195,9 +196,8 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
-  const bundleProject = useDebounceCallback(() => {
-    console.log(`bundleProject: called()`);
-
+  // Make sure that we do not use useCallback( ,[]) here as it matters in useDebouncedCallback
+  const bundleProject = () => {
     if (reduxProject.entry_path) {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
@@ -222,7 +222,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     } else {
       console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
     }
-  }, 2000);
+  }
+
+  const bundleProjectDebounce = useDebouncedCallback(bundleProject, 500);
 
   const handleProjectBundleClick = () => {
     if (debugComponent) {
