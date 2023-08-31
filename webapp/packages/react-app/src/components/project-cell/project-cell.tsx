@@ -114,18 +114,26 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
     if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
       if (debugComponent || false) {
-        console.log('_editedFile:', _editedFile);
-        console.log(`file[${_editedFile.localId}]: value=${value}`)
+        console.log('handleEditorChange: _editedFile:', _editedFile);
+        console.log(`handleEditorChange: file[${_editedFile.localId}]: value=${value}`)
       }
 
-      updateFile({localId: _editedFile.localId, content:value});
+      if (_editedFile.content !== value) {
+        updateFile({localId: _editedFile.localId, content: value});
 
-      if (hotReloadRef.current) {
-        bundleProjectDebounced();
-      }
+        if (hotReloadRef.current) {
+          bundleProjectDebounced();
+        }
 
-      if (autoSaveRef.current) {
-        saveFileDebounced();
+        if (autoSaveRef.current) {
+          saveFileDebounced();
+        }
+      } else {
+        // This happens when we select a file in the file-tree component. Its just the editor content that changes, but
+        // the contents of the selected file haven't changed
+        if (debugComponent) {
+          console.log(`The file content has not changed.`);
+        }
       }
     }
   };
@@ -207,6 +215,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       if (bundleLanguage !== BundleLanguage.UNKNOWN) {
         if (currentUser) {
           // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
+          // TBD: Remove the hardcoding of the project path
           const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
           createProjectBundle(
               reduxProject.localId,
@@ -230,7 +239,9 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       () => {
         const _editedFile = editedFileRef.current;
         // In this function also editedFile does not work properly as it is not there in the dependency list
-        console.log(`saveFileDebounced: _editedFile:`, _editedFile);
+        if (debugComponent) {
+          console.log(`saveFileDebounced: _editedFile:`, _editedFile);
+        }
         if (_editedFile) {
           saveFile(_editedFile.localId);
         }
@@ -345,7 +356,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
                       onClick={handleProjectBundleClick}
                       disabled={!reduxProject.synced}
                   >
-                    Bundle
+                    Run
                   </button>
                   <button
                       className="button is-family-secondary is-small"
