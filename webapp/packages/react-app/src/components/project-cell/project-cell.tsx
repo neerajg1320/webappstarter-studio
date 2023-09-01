@@ -60,6 +60,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   const autoSave = useTypedSelector(state => state.application.autoSave);
   // Kept due to the behaviour of the editor onChange callback
   const autoSaveRef = useRef<boolean>(hotReload);
+  const downloadClickedRef = useRef<boolean>(false);
 
   useEffect(() => {
     hotReloadRef.current = hotReload;
@@ -304,6 +305,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
   const handleProjectDownloadClick = () => {
     // TBD: Add the condition of project sync and some time limit :) to avoid misuse
     if (!reduxProject.downloadingZip) {
+      downloadClickedRef.current = true;
       downloadProjectZip(reduxProject.localId);
     }
   }
@@ -314,7 +316,10 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       // In the initial state the we are not downloading and zipBlob is null
       if (reduxProject.zipBlob) {
         // console.log(`[reduxProject.downloadingZip]: Project available to download`);
-        createDownloadLinkAndClick();
+        if (downloadClickedRef.current) {
+          createDownloadLinkAndClick();
+          downloadClickedRef.current = false;
+        }
       }
     }
   }, [reduxProject.downloadingZip]);
