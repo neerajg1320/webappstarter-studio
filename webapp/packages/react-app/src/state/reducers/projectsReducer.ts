@@ -47,6 +47,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         id: '',
         pkid: -1,
         confirmed: false,
+        ideReady: false,
         synced: false,
         isServerResponse: false,
         requestInitiated: false,
@@ -76,6 +77,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           project.reduxType = 'project'
           project.localId = generateLocalId();
           project.confirmed = true;
+          project.ideReady = false;
           project.synced = true;
           project.deleteMarked = true;
           acc[project.localId] = project;

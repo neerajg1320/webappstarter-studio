@@ -26,16 +26,13 @@ interface ProjectCellProps {
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
 const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
-  // const debugComponent = true;
-  const debugComponentLifecycle = false;
+  const debugComponent = false;
+  const debugComponentLifecycle = debugComponent || false;
 
   useEffect(() => {
     if (debugComponentLifecycle) {
       console.log('ProjectCell: useEffect[] firstRender');
     }
-
-    // Using bundleProject causes plugin-load-from-redux to give error
-    bundleProjectDebounced();
 
     return () => {
       if (debugComponentLifecycle) {
@@ -76,7 +73,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);
 
-  if (debugComponent) {
+  if (debugComponent && false) {
     console.log(`ProjectCell:render reduxProject`, reduxProject);
   }
 
@@ -103,7 +100,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     return null;
   }, [editedFileLocalId, filesState]);
 
-  if (debugComponent) {
+  if (debugComponent && false) {
     console.log(`ProjectCell: editedFile:`, editedFile);
   }
 
@@ -143,6 +140,14 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
   useEffect(() => {
     if (debugComponent) {
+      console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady}`);
+    }
+    // Using bundleProject causes plugin-load-from-redux to give error
+    bundleProject();
+  }, [reduxProject.ideReady]);
+
+  useEffect(() => {
+    if (debugComponent) {
       console.log(`ProjectCell: useEffect([reduxProject]) reduxProject:`, reduxProject)
     }
 
@@ -153,7 +158,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
       if (htmlFile) {
         if (htmlFile.contentSynced) {
-          _htmlContent = htmlFile.content || "File loaded with no content"
+          _htmlContent = htmlFile.content;
         } else {
           if (!htmlFile.requestInitiated) {
             fetchFileContents([reduxProject.entryHtmlFileLocalId]);
@@ -168,7 +173,27 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     }
 
     setHtmlContent(_htmlContent);
-  }, [reduxProject, filesState.data]);
+
+
+    if (reduxProject.entryFileLocalId) {
+      const entryFile = filesState.data[reduxProject.entryFileLocalId];
+      if (entryFile) {
+        if (!entryFile.contentSynced) {
+          if (!entryFile.requestInitiated) {
+            fetchFileContents([reduxProject.entryFileLocalId]);
+          }
+        } else {
+          if (!reduxProject.ideReady) {
+            updateProject({localId:projectLocalId, ideReady: true})
+          }
+        }
+      } else {
+        // This could happen when we render the project and the files haven't been loaded
+        console.log("ProejectCell:useEffect entryFile not found");
+      }
+    }
+
+  }, [filesState.data]);
 
 
   useEffect(() => {
