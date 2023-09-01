@@ -8,9 +8,10 @@ import {useEffect} from "react";
 const LandingPage = () => {
   const navigate = useNavigate();
   const isAuthenticated = useTypedSelector(state => state.auth.isAuthenticated);
+  const currentUser = useTypedSelector(state => state.auth.currentUser);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !currentUser?.is_anonymous) {
       navigate(RoutePath.PROJECTS, {replace:true});
     }
   }, [isAuthenticated]);

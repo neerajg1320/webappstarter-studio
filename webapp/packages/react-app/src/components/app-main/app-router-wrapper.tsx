@@ -29,6 +29,7 @@ const AppRouterWrapper = () => {
   const {setCurrentProjectId} = useActions();
   const projectsState = useTypedSelector((state) => state.projects);
   const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+  const currentUser = useTypedSelector(state => state.auth.currentUser);
 
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (currentProjectId) {
@@ -55,13 +56,16 @@ const AppRouterWrapper = () => {
             <Route path={`${RoutePath.USER_ACTIVATE}/:key`} element={<UserActivate />} />
             <Route path={`${RoutePath.USER_PASSWORD_RESET_CONFIRM}/:uid/:token`} element={<UserPasswordResetConfirm />} />
 
-            <Route path={RoutePath.PROJECTS}
-                   element={
-                     <ProtectedRoute>
-                       <ProjectListGrid onProjectChange={handleProjectChange}/>
-                     </ProtectedRoute>
-                   }
-            />
+            {(currentUser && !currentUser.is_anonymous) &&
+              <Route path={RoutePath.PROJECTS}
+                     element={
+                       <ProtectedRoute>
+                         <ProjectListGrid onProjectChange={handleProjectChange}/>
+                       </ProtectedRoute>
+                     }
+              />
+            }
+
             <Route path={RoutePath.PROJECT_CELL}
                    element={
                      <ProtectedRoute>
