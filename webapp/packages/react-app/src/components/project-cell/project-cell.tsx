@@ -286,15 +286,11 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     bundleProject();
   }
 
-  const handleProjectZipClick = () => {
-    // Even download with fetch did not give content disposition !!
-    // downloadFetchProjectZip(reduxProject.localId);
-    downloadProjectZip(reduxProject.localId);
-  }
-
-  const handleProjectDownloadClick = () => {
+  const createDownloadLinkAndClick = () => {
     if (reduxProject.zipBlob) {
-      console.log(`Download blob.`);
+      if (debugComponent) {
+        console.log(`createDownloadLinkAndClick(): download blob.`);
+      }
 
       const tempObjUrl = window.URL.createObjectURL(new Blob([reduxProject.zipBlob]));
       const link = document.createElement('a');
@@ -304,6 +300,24 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
       link.click();
     }
   }
+
+  const handleProjectDownloadClick = () => {
+    // TBD: Add the condition of project sync and some time limit :) to avoid misuse
+    if (!reduxProject.downloadingZip) {
+      downloadProjectZip(reduxProject.localId);
+    }
+  }
+
+  useEffect(() => {
+    // If not already downloading
+    if (!reduxProject.downloadingZip) {
+      // In the initial state the we are not downloading and zipBlob is null
+      if (reduxProject.zipBlob) {
+        // console.log(`[reduxProject.downloadingZip]: Project available to download`);
+        createDownloadLinkAndClick();
+      }
+    }
+  }, [reduxProject.downloadingZip]);
 
   useEffect(() => {
     if (debugComponent) {
@@ -378,7 +392,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
                       onSelectedFileChange={handleFileTreeSelectedFileChange}
                   />
                 </div>
-                <div style={{display:"flex", flexDirection:"row", gap:"10px", padding: "10px"}}>
+                <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
                   <button
                       className="button is-family-secondary is-small"
                       onClick={handleProjectBundleClick}
@@ -386,20 +400,13 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
                   >
                     Run
                   </button>
-                  <button
-                      className="button is-family-secondary is-small"
-                      style={{width: "80px"}}
-                      onClick={handleProjectZipClick}
-                      disabled={!reduxProject.synced}
-                  >
-                    Zip
-                  </button>
+
                   <div style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
                     <button
                         className="button is-family-secondary is-small"
                         // style={{width: "80px"}}
                         onClick={handleProjectDownloadClick}
-                        disabled={!reduxProject.zipBlob}
+                        disabled={reduxProject.downloadingZip}
                     >
                       Download
                     </button>

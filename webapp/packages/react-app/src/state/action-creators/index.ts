@@ -540,7 +540,7 @@ export const downloadProjectZip = (localId:string) => {
       console.error(`Error! project id '${localId}' not found in store`)
     }
 
-    dispatch(updateProject({localId, downloadingZip: true}));
+    dispatch(updateProject({localId, downloadingZip: true, zipBlob: null}));
 
     const {pkid} = projectState;
 
@@ -558,11 +558,11 @@ export const downloadProjectZip = (localId:string) => {
         console.log(contentDisposition);
       }
 
-      dispatch(updateProject({
-        localId,
-        zipBlob: response.data,
-        downloadingZip: false,
-      }));
+      // Forced wait for testing
+      // await setTimeout(() => {
+      //   dispatch(updateProject({localId, downloadingZip: false, zipBlob: response.data}));
+      // }, 3000);
+      dispatch(updateProject({localId, downloadingZip: false, zipBlob: response.data}));
     } catch (err) {
       if (err instanceof Error) {
         // dispatch({
