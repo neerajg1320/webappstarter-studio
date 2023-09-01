@@ -1250,7 +1250,7 @@ export const authenticateUser = (email:string, password:string) => {
     try {
       const response = await axiosApiInstance.post(`/auth/login/`, {email, password});
       const {refresh_token, access_token, user} = response.data;
-      if (debugAxios) {
+      if (debugAxios || true) {
         console.log(refresh_token, access_token, user);
       }
 
@@ -1260,6 +1260,7 @@ export const authenticateUser = (email:string, password:string) => {
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
+        is_anonymous: user.is_anonymous,
         accessToken: access_token,
         refreshToken: refresh_token
       };

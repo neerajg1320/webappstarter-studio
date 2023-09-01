@@ -4,6 +4,7 @@ export interface ReduxUser {
   email: string,
   first_name: string,
   last_name: string,
+  is_anonymous: boolean,
   accessToken: string;
   refreshToken: string;
 };
@@ -12,7 +13,8 @@ export interface ReduxCreateUserPartial {
   localId:string,
   email: string,
   first_name: string,
-  last_name: string
+  last_name: string,
+  is_anonymous: boolean,
 };
 
 export interface ReduxUpdateUserPartial {
@@ -20,6 +22,7 @@ export interface ReduxUpdateUserPartial {
   email?: string,
   first_name?: string,
   last_name?: string,
+  is_anonymous?: boolean,
   accessToken?: string;
   refreshToken?: string;
 };

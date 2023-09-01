@@ -63,7 +63,7 @@ const AppNavBar = () => {
         </div>
         <div id="nav-links" className={"navbar-menu " + (burgerMenuActive ? "is-active" : "") }>
           <div className="navbar-end">
-            {isAuthenticated &&
+            {(isAuthenticated && !currentUser?.is_anonymous) &&
               <div style={{marginLeft: "40px", display: "flex", flexDirection:"row", alignItems:"center"}}>
                 <div className={"navbar-item " + (enableProjectsList ? "has-dropdown is-hoverable" : "")}>
                   <div className={enableProjectsList ? "navbar-link" : ""}>
@@ -87,7 +87,7 @@ const AppNavBar = () => {
               </div>
             }
 
-            {isAuthenticated &&
+            {(isAuthenticated && !currentUser?.is_anonymous) &&
               <div className="navbar-item has-dropdown is-hoverable">
                 <div className="navbar-link">
                   {currentUser?.first_name}
