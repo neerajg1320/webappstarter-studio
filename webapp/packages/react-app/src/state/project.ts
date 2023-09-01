@@ -34,6 +34,7 @@ export interface ReduxProject extends ServerObject {
   htmlFileLocalId?: string|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
+  downloadingZip?: boolean;
 
   // Below are server fields
   folder?: string;
@@ -57,6 +58,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   htmlFileLocalId?: string|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
+  downloadingZip?: boolean;
 
   // Below are server fields
   folder?: string;

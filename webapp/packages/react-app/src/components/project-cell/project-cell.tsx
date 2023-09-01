@@ -394,14 +394,17 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
                   >
                     Zip
                   </button>
-                  <button
-                      className="button is-family-secondary is-small"
-                      style={{width: "80px"}}
-                      onClick={handleProjectDownloadClick}
-                      disabled={!reduxProject.zipBlob}
-                  >
-                    Download
-                  </button>
+                  <div style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
+                    <button
+                        className="button is-family-secondary is-small"
+                        // style={{width: "80px"}}
+                        onClick={handleProjectDownloadClick}
+                        disabled={!reduxProject.zipBlob}
+                    >
+                      Download
+                    </button>
+                    <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
+                  </div>
                 </div>
 
               </div>
