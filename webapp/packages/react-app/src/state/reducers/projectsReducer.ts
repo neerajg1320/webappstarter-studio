@@ -62,7 +62,8 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
       const {localId} = action.payload;
       state.data[localId] = {
         ...state.data[localId],
-        ...action.payload
+        synced: !(Object.entries(action.payload).length > 0),
+        ...action.payload,
       }
       return state;
 

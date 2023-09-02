@@ -1,5 +1,5 @@
 import './project-edit.css';
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useActions} from "../../hooks/use-actions";
 import Select from "react-select";
 import {SingleValue} from "react-select";
@@ -33,6 +33,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
 
   const projectsState = useTypedSelector(state => state.projects);
   const apiState = useTypedSelector(state => state.api.apiFlowState);
+  const saveClickRef = useRef<boolean>(false);
 
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (projectsState.currentProjectId) {
@@ -110,6 +111,8 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   }, []);
 
   const handleSaveClick = async () => {
+    saveClickRef.current = true;
+
     if (currentProject) {
       // TBD: Here we should add the checks for validation
       // We confirm the creation locally
@@ -117,18 +120,22 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       saveProject(currentProject.localId);
     }
 
-    if (isEdit) {
-      navigate(RouteDepth.ONE_UP);
-    } else {
-      // navigate(RoutePath.PROJECT_CELL, {replace: true});
-    }
+
   }
 
   useEffect(() => {
-    if (currentProject?.pkid && currentProject?.pkid > 0) {
-      navigate(RoutePath.PROJECT_CELL, {replace: true});
+    console.log(`useEffect[currentProject?.synced] synced:`, currentProject?.synced)
+
+    if (saveClickRef.current && currentProject && currentProject.synced) {
+      if (isEdit) {
+        navigate(RouteDepth.ONE_UP);
+      } else {
+        navigate(RoutePath.PROJECT_CELL, {replace: true});
+      }
+
+      saveClickRef.current = false;
     }
-  }, [currentProject?.pkid]);
+  }, [currentProject?.synced]);
 
   return (
       <div style={{
@@ -146,7 +153,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             <input
                 className="value"
                 type="text" value={currentProject?.title}
-                onChange={(e) => {updateProject({...currentProject, title: e.target.value} as ReduxUpdateProjectPartial)}}
+                onChange={(e) => {updateProject({localId: currentProject?.localId, title: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
           <div className="project-value" style={{display: "flex"}}>
@@ -155,21 +162,23 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                 rows={4}
                 className="value"
                 value={currentProject?.description}
-                onChange={(e) => {updateProject({...currentProject, description: e.target.value} as ReduxUpdateProjectPartial)}}
+                onChange={(e) => {updateProject({localId: currentProject?.localId, description: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
-          <div className="project-value" style={{display: "flex"}}>
-            <label>Template</label>
-            <Select
-                className="value framework-select"
-                value={projectTemplateOption}
-                options={projectTemplateOptions}
-                onChange={(selected) => updateProject({
-                  ...currentProject,
-                  template: selected?.value || 'none'
-                } as ReduxUpdateProjectPartial)}
-            />
-          </div>
+          {!isEdit &&
+            <div className="project-value" style={{display: "flex"}}>
+              <label>Template</label>
+              <Select
+                  className="value framework-select"
+                  value={projectTemplateOption}
+                  options={projectTemplateOptions}
+                  onChange={(selected) => updateProject({
+                    localId: currentProject?.localId,
+                    template: selected?.value || 'none'
+                  } as ReduxUpdateProjectPartial)}
+              />
+            </div>
+          }
           {isFrameworkEnabled &&
             <>
             <div className="project-value" style={{display: "flex"}}>
@@ -179,7 +188,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                   value={projectFrameworkOption}
                   options={frameworkOptions}
                   onChange={(selected) => updateProject({
-                    ...currentProject,
+                    localId: currentProject?.localId,
                     framework: selected?.value || 'none'
                   } as ReduxUpdateProjectPartial)}
               />
@@ -190,7 +199,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
               className="value framework-select"
               value={projectToolchainOption}
               options={toolchainOptions}
-              onChange={(selected) => updateProject({...currentProject, toolchain: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
+              onChange={(selected) => updateProject({localId: currentProject?.localId, toolchain: selected?.value || 'none'} as ReduxUpdateProjectPartial)}
               />
             </div>
             </>
@@ -199,7 +208,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             <button
                 className="button is-primary is-small"
                 onClick={handleSaveClick}
-                // disabled={!currentProject}
+                disabled={currentProject?.synced}
             >
               Save
             </button>

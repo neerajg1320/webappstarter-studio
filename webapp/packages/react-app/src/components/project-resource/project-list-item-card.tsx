@@ -15,7 +15,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
   const navigate = useNavigate();
   const {setCurrentProjectId, updateProject} = useActions();
 
-  const handleCardClick = () => {
+  const selectAndNavigateToProject = () => {
     if (propOnClick) {
       propOnClick(reduxProject.localId);
     }
@@ -24,6 +24,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
   }
 
   const handleEditProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, localId:string) => {
+    console.log(`handleEditProjectClick()`);
     e.stopPropagation();
     setCurrentProjectId(localId);
     navigate(RoutePath.PROJECT_EDIT);
@@ -43,7 +44,11 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         cursor: "pointer",
         display: "flex", flexDirection: "column", justifyContent: "space-evenly"
       }}
-      onClick={handleCardClick}
+      onClick={(e) => {
+        console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
+        updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId});
+        selectAndNavigateToProject();
+      }}
     >
       <div className="card-header" style={{padding: "0 10px", margin: "0"}}>
         <div>
@@ -65,9 +70,10 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
           <span
               className="value"
               onClick={(e) => {
+                e.stopPropagation();
                 console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
                 updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId});
-                // Since click propagetes, after this card-item onClick is invoked
+                selectAndNavigateToProject();
               }}
           >
             {reduxProject.entry_path}
@@ -79,9 +85,10 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
               <span
                   className="value"
                   onClick={(e) => {
+                    e.stopPropagation();
                     console.log(`Set selectedFileLocalId to entryHtmlFileLocalId:`, reduxProject.entryHtmlFileLocalId);
                     updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryHtmlFileLocalId});
-                    // Since click propagetes, after this card-item onClick is invoked
+                    selectAndNavigateToProject();
                   }}
               >
                 {reduxProject.entry_html_path}
