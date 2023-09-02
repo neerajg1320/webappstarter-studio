@@ -74,7 +74,7 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 
 const apiForceDelay = true;
-const apiDelayMs = 3000;
+const apiDelayMs = 1000;
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
   return {
@@ -510,7 +510,7 @@ export const removeProject = (localId:string) => {
 }
 
 
-export const downloadProjectZip = (localId:string) => {
+export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const projectState = getState().projects.data[localId];
     if (!projectState) {
@@ -521,25 +521,26 @@ export const downloadProjectZip = (localId:string) => {
 
     const {pkid} = projectState;
 
+    let zipBlob:Blob|null = null;
     try {
-      // const {headers, data}:{headers:AxiosHeaders, data:Blob}
-      const response = await axiosApiInstance.get(
-          `/projects/${pkid}/download/`,
-          {responseType: 'blob'}
-      );
-      if (debugRedux) {
-        console.log(response);
-      }
-      const contentDisposition = response.headers['content-disposition'];
-      if (debugRedux) {
-        console.log(contentDisposition);
+      if (!zipLocal) {
+        const response = await axiosApiInstance.get(
+            `/projects/${pkid}/download/`,
+            {responseType: 'blob'}
+        );
+        if (debugRedux) {
+          console.log(response);
+        }
+        zipBlob = response.data;
+      } else {
+        // here we will create local zip
       }
 
       if (apiForceDelay) {
         await delayTimer(apiDelayMs);
       }
 
-      dispatch(updateProject({localId, downloadingZip: false, zipBlob: response.data}));
+      dispatch(updateProject({localId, downloadingZip: false, zipBlob}));
     } catch (err) {
       if (err instanceof Error) {
         // dispatch({
