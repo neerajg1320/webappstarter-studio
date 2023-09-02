@@ -71,6 +71,10 @@ import * as esbuild from "esbuild-wasm";
 import {loadData} from "../../bundler/plugins/loadSourceFiles";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
+import {delayTimer} from "../../utils/delay";
+
+const apiForceDelay = true;
+const apiDelayMs = 3000;
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
   return {
@@ -505,33 +509,6 @@ export const removeProject = (localId:string) => {
   }
 }
 
-export const downloadFetchProjectZip = (localId:string) => {
-  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    const projectState = getState().projects.data[localId];
-    if (!projectState) {
-      console.error(`Error! project id '${localId}' not found in store`)
-    }
-
-    const {pkid} = projectState;
-
-    console.log(`Fetch has header in it!`);
-    // TBD: Remove Header
-    fetch(`${serverApiBaseUrl}/projects/${pkid}/download/`,
-        { headers: { Authorization: `Bearer ${getState().auth.currentUser?.accessToken}` }})
-        .then((res) => {
-
-          const header = res.headers.get('Content-Disposition');
-          console.log(`header`, header);
-
-          // const parts = header!.split(';');
-          // filename = parts[1].split('=')[1];
-          return res.blob();
-        }).then((blob) => {
-          // Use `filename` here e.g. with file-saver:
-          // saveAs(blob, filename);
-        });
-  }
-}
 
 export const downloadProjectZip = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
@@ -558,10 +535,10 @@ export const downloadProjectZip = (localId:string) => {
         console.log(contentDisposition);
       }
 
-      // Forced wait for testing
-      // await setTimeout(() => {
-      //   dispatch(updateProject({localId, downloadingZip: false, zipBlob: response.data}));
-      // }, 3000);
+      if (apiForceDelay) {
+        await delayTimer(apiDelayMs);
+      }
+
       dispatch(updateProject({localId, downloadingZip: false, zipBlob: response.data}));
     } catch (err) {
       if (err instanceof Error) {
