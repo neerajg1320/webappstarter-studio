@@ -304,13 +304,20 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
 
   const handleProjectDownloadClick = () => {
     // TBD: Add the condition of project sync and some time limit :) to avoid misuse
+    // console.log(`handleProjectDownloadClick: reduxProject.downloadingZip:`, reduxProject.downloadingZip);
     if (!reduxProject.downloadingZip) {
+      // console.log(`handleProjectDownloadClick: initiating download`);
       downloadClickedRef.current = true;
-      downloadProjectZip(reduxProject.localId, true);
+      downloadProjectZip(reduxProject.localId, false);
     }
   }
 
+  // We can put reduxProject.zipBlob from dependency array. In synchronous mode this won't see downloadingZip
+  // as true as that true to false will happen in downloadProjectZip only.
+  // Right now we have forced the action-creator downloadProjectZip to be asynchronous.
   useEffect(() => {
+    // console.log(`useEffect[reduxProject.downloadingZip]: `, reduxProject.downloadingZip);
+
     // If not already downloading
     if (!reduxProject.downloadingZip) {
       // In the initial state the we are not downloading and zipBlob is null
@@ -322,7 +329,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
         }
       }
     }
-  }, [reduxProject.downloadingZip]);
+  }, [reduxProject.downloadingZip, reduxProject.zipBlob]);
 
   useEffect(() => {
     if (debugComponent) {

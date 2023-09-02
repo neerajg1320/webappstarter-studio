@@ -72,9 +72,9 @@ import {loadData} from "../../bundler/plugins/loadSourceFiles";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
-import {convertStrToUint8, getSampleZipBlob, getZipBlob} from "../../utils/zip";
+import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
 
-const apiForceDelay = true;
+const apiForceDelay = false;
 const apiDelayMs = 1000;
 
 export const updateCell = (id: string, content: string, filePath: string): UpdateCellAction => {
@@ -534,6 +534,8 @@ export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => 
         }
         zipBlob = response.data;
       } else {
+        await delayTimer(0);
+
         // Create filepathContentPath where key in file.path and value is file.content
         const projecatFilepathContentMap = Object.fromEntries(
             // Get files that belong to project and then provide [file.path, file.content] item
@@ -553,14 +555,10 @@ export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => 
 
         // const bytes = fflate.strToU8("I can be a huge file");
         // const compressed = fflate.gzipSync(bytes, {level:6});
-        // const compressed = getSampleZipBlob();
+        // const compressed = getSampleZipBlobSync();
 
-        const compressed = getZipBlob(projecatFilepathContentMap);
+        const compressed = getZipBlobSync(projecatFilepathContentMap);
         zipBlob = new Blob([compressed.buffer], { type: 'application/octet-stream' });
-      }
-
-      if (apiForceDelay) {
-        await delayTimer(apiDelayMs);
       }
 
       dispatch(updateProject({localId, downloadingZip: false, zipBlob}));

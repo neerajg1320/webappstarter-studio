@@ -4,7 +4,7 @@ export const convertStrToUint8 = (str:string):Uint8Array => {
   return fflate.strToU8(str);
 }
 
-export const getSampleZipBlob = ():Uint8Array => {
+export const getSampleZipBlobSync = ():Uint8Array => {
   return fflate.zipSync({
     // Directories can be nested structures, as in an actual filesystem
     'dir1': {
@@ -18,6 +18,6 @@ export const getSampleZipBlob = ():Uint8Array => {
   });
 }
 
-export const getZipBlob = (filepathContentMap:{[k:string]: any}):Uint8Array => {
+export const getZipBlobSync = (filepathContentMap:{[k:string]: any}):Uint8Array => {
   return fflate.zipSync(filepathContentMap);
 }
