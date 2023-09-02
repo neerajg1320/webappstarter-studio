@@ -72,6 +72,7 @@ import {loadData} from "../../bundler/plugins/loadSourceFiles";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
+import {convertStrToUint8, getSampleZipBlob, getZipBlob} from "../../utils/zip";
 
 const apiForceDelay = true;
 const apiDelayMs = 1000;
@@ -533,7 +534,29 @@ export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => 
         }
         zipBlob = response.data;
       } else {
-        // here we will create local zip
+        // Create filepathContentPath where key in file.path and value is file.content
+        const projecatFilepathContentMap = Object.fromEntries(
+            // Get files that belong to project and then provide [file.path, file.content] item
+            Object.entries(getState().files.data).filter(([k,v]) =>
+                v.projectLocalId === localId
+            ).map(([k,v]) => {
+              if (!v.content) {
+                console.error(`file ${k} contents are`, v);
+              }
+              return [v.path, convertStrToUint8(v.content || '')];
+            })
+        );
+
+        if (debugRedux) {
+          Object.entries(projecatFilepathContentMap).map(([k, v]) => console.log(k, v));
+        }
+
+        // const bytes = fflate.strToU8("I can be a huge file");
+        // const compressed = fflate.gzipSync(bytes, {level:6});
+        // const compressed = getSampleZipBlob();
+
+        const compressed = getZipBlob(projecatFilepathContentMap);
+        zipBlob = new Blob([compressed.buffer], { type: 'application/octet-stream' });
       }
 
       if (apiForceDelay) {

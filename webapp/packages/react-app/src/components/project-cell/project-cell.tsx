@@ -306,7 +306,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     // TBD: Add the condition of project sync and some time limit :) to avoid misuse
     if (!reduxProject.downloadingZip) {
       downloadClickedRef.current = true;
-      downloadProjectZip(reduxProject.localId);
+      downloadProjectZip(reduxProject.localId, true);
     }
   }
 
