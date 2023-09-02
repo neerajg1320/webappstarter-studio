@@ -203,7 +203,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`ProjectCell: useEffect([reduxProject])`)
     }
 
-    setEditedFileLocalId(null);
+    setEditedFileLocalId(reduxProject.selectedFileLocalId);
   }, [reduxProject.localId]);
 
   useEffect(() => {
@@ -338,7 +338,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }, [reduxProject.zipBlob]);
 
-  const handleFileTreeSelectedFileChange = (fileLocalId: string) => {
+  const handleFilesTreeOnSelect = (fileLocalId: string) => {
     if (debugComponent) {
       console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
     }
@@ -403,7 +403,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 >
                   <FilesTree
                       reduxProject={reduxProject}
-                      onSelect={handleFileTreeSelectedFileChange}
+                      onSelect={handleFilesTreeOnSelect}
                   />
                 </div>
                 <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>

@@ -32,7 +32,7 @@ export interface ReduxProject extends ServerObject {
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
   ideReady: boolean;
-  selectedFileLocalId  ?: string|null;
+  selectedFileLocalId: string|null;
   entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
   htmlFileLocalId?: string|null;
@@ -57,7 +57,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   toolchain?: ReactToolchains;
   ideReady?: boolean;
   remoteId?: string;
-  selectedFileLocalId  ?: string|null;
+  selectedFileLocalId?: string|null;
   entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
   htmlFileLocalId?: string|null;

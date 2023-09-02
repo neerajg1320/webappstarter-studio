@@ -48,6 +48,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         pkid: -1,
         confirmed: false,
         ideReady: false,
+        selectedFileLocalId: null,
         synced: false,
         isServerResponse: false,
         requestInitiated: false,
