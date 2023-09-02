@@ -26,23 +26,8 @@ const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
 
 
 const AppRouterWrapper = () => {
-  const {setCurrentProjectId} = useActions();
-  const projectsState = useTypedSelector((state) => state.projects);
-  const currentProjectId = useTypedSelector((state) => state.projects.currentProjectId);
+  const currentProjectLocalId = useTypedSelector((state) => state.projects.currentProjectId);
   const currentUser = useTypedSelector(state => state.auth.currentUser);
-
-  const currentProject = useMemo<ReduxProject|null>(() => {
-    if (currentProjectId) {
-      return projectsState.data[currentProjectId]
-    }
-    return null;
-  }, [projectsState.data, currentProjectId]);
-
-  const handleProjectChange = useCallback((localId:string) => {
-    // setCurrentProjectId(localId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
 
   return (
       <BrowserRouter>
@@ -60,7 +45,7 @@ const AppRouterWrapper = () => {
               <Route path={RoutePath.PROJECTS}
                      element={
                        <ProtectedRoute>
-                         <ProjectListGrid onProjectChange={handleProjectChange}/>
+                         <ProjectListGrid />
                        </ProtectedRoute>
                      }
               />
@@ -69,8 +54,8 @@ const AppRouterWrapper = () => {
             <Route path={RoutePath.PROJECT_CELL}
                    element={
                      <ProtectedRoute>
-                       {currentProject && <ProjectCell projectLocalId={currentProject.localId}/>}
-                       {!currentProject && <h1>Current project is null</h1>}
+                       {currentProjectLocalId && <ProjectCell />}
+                       {!currentProjectLocalId && <h1>Current project is null</h1>}
                      </ProtectedRoute>
                    }
             />

@@ -20,12 +20,12 @@ import useDebouncedCallback from "../../hooks/use-debounced-callback";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
-  projectLocalId: string;
+  // projectLocalId: string;
 }
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
-const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
+const ProjectCell:React.FC<ProjectCellProps> = () => {
   const debugComponent = false;
   const debugComponentLifecycle = debugComponent || false;
 
@@ -70,6 +70,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     autoSaveRef.current = autoSave;
   }, [autoSave])
 
+  const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
   const reduxProject = useMemo(() => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);
