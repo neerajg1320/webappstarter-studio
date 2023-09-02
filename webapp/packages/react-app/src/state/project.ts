@@ -20,6 +20,9 @@ export enum ReactToolchains {
   NONE = 'none',
 };
 
+// TBD: Need to add a strong documentation here as this is one of the focal points of our application
+// selectedFileLocalId: This is the selected to be shown in the editor
+
 export interface ReduxProject extends ServerObject {
   reduxType: 'project',
   localId: string;
@@ -29,6 +32,7 @@ export interface ReduxProject extends ServerObject {
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
   ideReady: boolean;
+  selectedFileLocalId  ?: string|null;
   entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
   htmlFileLocalId?: string|null;
@@ -53,6 +57,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   toolchain?: ReactToolchains;
   ideReady?: boolean;
   remoteId?: string;
+  selectedFileLocalId  ?: string|null;
   entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
   htmlFileLocalId?: string|null;

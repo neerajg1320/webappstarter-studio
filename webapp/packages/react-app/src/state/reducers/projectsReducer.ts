@@ -80,6 +80,8 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           project.ideReady = false;
           project.synced = true;
           project.deleteMarked = true;
+          // TBD: This has to be cleaned
+          project.entry_html_path = "index.html";
           acc[project.localId] = project;
           return acc;
         }, {} as ProjectsState['data']);

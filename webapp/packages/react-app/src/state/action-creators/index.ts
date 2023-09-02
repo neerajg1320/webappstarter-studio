@@ -635,7 +635,7 @@ export const fetchFiles = (projectPkid?:string) => {
             dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
           }
 
-          // TBD: Hardcoding to be removed
+          // TBD: Hardcoding to be removed entry_html_path hardcoding
           if (file.path === 'index.html') {
             dispatch(updateProject({localId: file.projectLocalId, entryHtmlFileLocalId: file.localId}));
           }

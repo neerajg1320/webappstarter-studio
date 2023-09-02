@@ -13,7 +13,7 @@ interface ProjectCardProps {
 const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:propOnClick}) => {
   const { removeProject } = useActions();
   const navigate = useNavigate();
-  const {setCurrentProjectId} = useActions();
+  const {setCurrentProjectId, updateProject} = useActions();
 
   const handleCardClick = () => {
     if (propOnClick) {
@@ -51,12 +51,42 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         </div>
       </div>
       <div className="card-content" style={{flexGrow: 1}}>
-        <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
-          <span style={{width:"50%"}}>Folder:</span><span>{reduxProject.folder}</span>
+        {/*<div className="card-item" style={{display:"flex", flexDirection:"row", gap:"10px"}}>*/}
+        {/*  <label>Folder:</label>*/}
+        {/*  <span className="value">{reduxProject.folder}</span>*/}
+        {/*</div>*/}
+        <div className="card-item" >
+          <label>Template:</label>
+          <span className="value">
+            {reduxProject.template}
+          </span>
         </div>
-        <div style={{display:"flex", flexDirection:"row", gap:"10px"}}>
-          <span>Framework:</span><span>{reduxProject.framework}</span>
+        <div className="card-item" >
+          <label>Entry Javascript:</label>
+          <span
+              className="value"
+              onClick={() => {
+                console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
+                updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId})
+              }}
+          >
+            {reduxProject.entry_path}
+          </span>
         </div>
+        {reduxProject.entryHtmlFileLocalId &&
+            <div className="card-item" >
+              <label>Entry HTML:</label>
+              <span
+                  className="value"
+                  onClick={() => {
+                    console.log(`Set selectedFileLocalId to entryHtmlFileLocalId:`, reduxProject.entryHtmlFileLocalId);
+                    updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryHtmlFileLocalId})
+                  }}
+              >
+                {reduxProject.entry_html_path}
+              </span>
+            </div>
+        }
       </div>
       <div className="card-footer" style={{
         display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center",
