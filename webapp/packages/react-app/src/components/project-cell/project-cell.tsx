@@ -155,6 +155,28 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     let _selectedFileId = reduxProject.selectedFileLocalId;
 
+    if (reduxProject.entryFileLocalId) {
+      const entryFile = filesState.data[reduxProject.entryFileLocalId];
+      if (entryFile) {
+        if (!entryFile.contentSynced) {
+          if (!entryFile.requestInitiated) {
+            fetchFileContents([reduxProject.entryFileLocalId]);
+          }
+        } else {
+          if (!reduxProject.ideReady) {
+            updateProject({localId:projectLocalId, ideReady: true})
+          }
+        }
+      } else {
+        // This could happen when we render the project and the files haven't been loaded
+        console.log("ProejectCell:useEffect entryFile not found");
+      }
+
+      if (!_selectedFileId) {
+        _selectedFileId = reduxProject.entryFileLocalId;
+      }
+    }
+
     // This has been placed here so that we can download index.html even when we reach here after creating project,
     // because in that case the projectLocalId does not change but the project state changes.
     let _htmlContent:string|null = null;
@@ -180,27 +202,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
 
     setHtmlContent(_htmlContent);
-
-
-    if (reduxProject.entryFileLocalId) {
-      const entryFile = filesState.data[reduxProject.entryFileLocalId];
-      if (entryFile) {
-        if (!entryFile.contentSynced) {
-          if (!entryFile.requestInitiated) {
-            fetchFileContents([reduxProject.entryFileLocalId]);
-          }
-        } else {
-          if (!reduxProject.ideReady) {
-            updateProject({localId:projectLocalId, ideReady: true})
-          }
-        }
-      } else {
-        // This could happen when we render the project and the files haven't been loaded
-        console.log("ProejectCell:useEffect entryFile not found");
-      }
-
-      _selectedFileId = reduxProject.entryFileLocalId;
-    }
 
     // This happens when we reach here after creating a project
     // Check if this can be optimized since selected and edited are supposed to be same
