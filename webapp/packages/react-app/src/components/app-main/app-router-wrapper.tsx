@@ -39,7 +39,7 @@ const AppRouterWrapper = () => {
   }, [projectsState.data, currentProjectId]);
 
   const handleProjectChange = useCallback((localId:string) => {
-    setCurrentProjectId(localId);
+    // setCurrentProjectId(localId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

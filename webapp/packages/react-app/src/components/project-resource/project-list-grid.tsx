@@ -46,16 +46,16 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
     }
   }, []);
 
-  const handleProjectCardClick = (localId:string) => {
-    if (debugProject) {
-      console.log(`handleProjectCardClick:`, localId);
-    }
-
-    if (propOnProjectChange) {
-      propOnProjectChange(localId);
-      navigate(RoutePath.PROJECT_CELL);
-    }
-  }
+  // const handleProjectCardClick = (localId:string) => {
+  //   if (debugProject) {
+  //     console.log(`handleProjectCardClick:`, localId);
+  //   }
+  //
+  //   if (propOnProjectChange) {
+  //     propOnProjectChange(localId);
+  //     navigate(RoutePath.PROJECT_CELL);
+  //   }
+  // }
 
   const handleNewProjectClick = () => {
     createAndSetProject({
@@ -106,7 +106,7 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
           overflowY: "scroll",
         }}>
           {projectList &&
-              projectList.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} onClick={handleProjectCardClick}/>)
+              projectList.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
           }
         </div>
       </div>

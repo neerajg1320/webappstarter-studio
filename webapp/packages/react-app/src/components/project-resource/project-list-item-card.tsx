@@ -19,6 +19,8 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
     if (propOnClick) {
       propOnClick(reduxProject.localId);
     }
+    setCurrentProjectId(reduxProject.localId);
+    navigate(RoutePath.PROJECT_CELL);
   }
 
   const handleEditProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, localId:string) => {
@@ -31,6 +33,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
     e.stopPropagation();
     removeProject(reduxProject.localId)
   }
+
 
   return (
     <div className="card" style={{
@@ -51,23 +54,20 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         </div>
       </div>
       <div className="card-content" style={{flexGrow: 1}}>
-        {/*<div className="card-item" style={{display:"flex", flexDirection:"row", gap:"10px"}}>*/}
-        {/*  <label>Folder:</label>*/}
-        {/*  <span className="value">{reduxProject.folder}</span>*/}
-        {/*</div>*/}
         <div className="card-item" >
           <label>Template:</label>
           <span className="value">
             {reduxProject.template}
           </span>
         </div>
-        <div className="card-item" >
+        <div className="card-item">
           <label>Entry Javascript:</label>
           <span
               className="value"
-              onClick={() => {
+              onClick={(e) => {
                 console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
-                updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId})
+                updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId});
+                // Since click propagetes, after this card-item onClick is invoked
               }}
           >
             {reduxProject.entry_path}
@@ -78,9 +78,10 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
               <label>Entry HTML:</label>
               <span
                   className="value"
-                  onClick={() => {
+                  onClick={(e) => {
                     console.log(`Set selectedFileLocalId to entryHtmlFileLocalId:`, reduxProject.entryHtmlFileLocalId);
-                    updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryHtmlFileLocalId})
+                    updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryHtmlFileLocalId});
+                    // Since click propagetes, after this card-item onClick is invoked
                   }}
               >
                 {reduxProject.entry_html_path}
