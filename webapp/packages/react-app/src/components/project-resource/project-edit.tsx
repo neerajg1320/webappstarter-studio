@@ -119,8 +119,6 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       updateProject({localId:currentProject.localId, confirmed: true});
       saveProject(currentProject.localId);
     }
-
-
   }
 
   useEffect(() => {

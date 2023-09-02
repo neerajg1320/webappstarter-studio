@@ -78,7 +78,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       state.loading = false;
 
       if (action.payload.length > 0) {
-        state.data = action.payload.reduce((acc, file) => {
+        const newFiles = action.payload.reduce((acc, file) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           // file.localId = generateLocalId();
 
@@ -97,7 +97,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           return acc;
         }, {} as FilesState['data']);
 
-
+        state.data = {...state.data, ...newFiles}
       }
 
       return state;

@@ -153,6 +153,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`ProjectCell: useEffect([reduxProject]) reduxProject:`, reduxProject)
     }
 
+    let _selectedFileId = reduxProject.selectedFileLocalId;
+
     // This has been placed here so that we can download index.html even when we reach here after creating project,
     // because in that case the projectLocalId does not change but the project state changes.
     let _htmlContent:string|null = null;
@@ -168,6 +170,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         }
       } else {
         console.log("The project html not found. Using default html file");
+      }
+      if (!_selectedFileId) {
+        _selectedFileId = reduxProject.entryHtmlFileLocalId;
       }
     }
     if (!_htmlContent) {
@@ -193,8 +198,18 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         // This could happen when we render the project and the files haven't been loaded
         console.log("ProejectCell:useEffect entryFile not found");
       }
+
+      _selectedFileId = reduxProject.entryFileLocalId;
     }
 
+    // This happens when we reach here after creating a project
+    // Check if this can be optimized since selected and edited are supposed to be same
+    if (!reduxProject.selectedFileLocalId) {
+      updateProject({localId: reduxProject.localId, selectedFileLocalId:_selectedFileId});
+    }
+    if (!editedFileLocalId) {
+      setEditedFileLocalId(_selectedFileId);
+    }
   }, [filesState.data]);
 
 
@@ -343,6 +358,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
     }
 
+    // TBD: see if this can be combined
     updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
     setEditedFileLocalId(fileLocalId);
   }
