@@ -308,7 +308,7 @@ const ProjectCell:React.FC<ProjectCellProps> = ({projectLocalId}) => {
     if (!reduxProject.downloadingZip) {
       // console.log(`handleProjectDownloadClick: initiating download`);
       downloadClickedRef.current = true;
-      downloadProjectZip(reduxProject.localId, false);
+      downloadProjectZip(reduxProject.localId, true);
     }
   }
 
