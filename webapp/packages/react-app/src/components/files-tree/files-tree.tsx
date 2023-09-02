@@ -10,15 +10,13 @@ import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {updateProject} from "../../state/action-creators";
-
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
-  onSelectedFileChange: (fileLocalId:string) => void
+  onSelect: (fileLocalId:string) => void
 }
 
-const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange}) => {
+const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
   // const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
@@ -71,20 +69,14 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduxProject.localId]);
 
-  useEffect(() => {
-    if (selectedFileLocalId) {
-      onSelectedFileChange(selectedFileLocalId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFileLocalId]);
 
   // Needed for selecting file
   const handleSelectFileClick = (fileLocalId:string) => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(fileLocalId);
     }
-    // setSelectedFileLocalId(fileLocalId);
-    updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
+
+    propOnSelect(fileLocalId);
   }
 
   const handleSelectFileDoubleClick = (fileLocalId:string) => {
@@ -92,7 +84,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
       console.log(`handleSelectFileDoubleClick()`, fileLocalId);
     }
     // setSelectedFileLocalId(fileLocalId);
-    updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
+    propOnSelect(fileLocalId);
     setEditPathEnabled(true);
   }
 
@@ -164,8 +156,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           isEntryPoint: false,
         });
 
-        // setSelectedFileLocalId(fileLocalId);
-        updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
+        propOnSelect(fileLocalId);
         setEditPathEnabled(true);
         break;
 
@@ -192,7 +183,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelectedFileChange
           });
 
           // setSelectedFileLocalId(newFileLocalId);
-          updateProject({localId:reduxProject.localId, selectedFileLocalId: newFileLocalId});
+          propOnSelect(newFileLocalId);
           setEditPathEnabled(true);
         }
         break;

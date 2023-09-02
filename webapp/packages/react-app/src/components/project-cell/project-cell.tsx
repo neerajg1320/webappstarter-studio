@@ -343,6 +343,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
     }
 
+    updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
     setEditedFileLocalId(fileLocalId);
   }
 
@@ -402,7 +403,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 >
                   <FilesTree
                       reduxProject={reduxProject}
-                      onSelectedFileChange={handleFileTreeSelectedFileChange}
+                      onSelect={handleFileTreeSelectedFileChange}
                   />
                 </div>
                 <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
