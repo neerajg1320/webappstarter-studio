@@ -426,7 +426,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                   <button
                       className="button is-family-secondary is-small"
                       onClick={handleProjectBundleClick}
-                      disabled={!reduxProject.synced}
+                      // disabled={!reduxProject.synced}
                   >
                     Run
                   </button>
