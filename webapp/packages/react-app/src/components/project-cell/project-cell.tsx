@@ -480,9 +480,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 <h4>file.content</h4>
                 <pre>{editedFile.content}</pre>
 
-                <h4>saveFilePartial.content</h4>
-                <pre>{editedFile.saveFilePartial.content}</pre>
-                {/*<pre>{JSON.stringify(editedFile.saveFilePartial, null, 2)}</pre>*/}
+                <h4>modifiedKeys</h4>
+                <pre>{editedFile.modifiedKeys}</pre>
               </div>
           }
         </div>

@@ -148,11 +148,6 @@ export interface UpdateFileAction {
   payload: ReduxUpdateFilePartial
 }
 
-export interface UpdateFileSavePartialAction {
-  type: ActionType.UPDATE_FILE_SAVE_PARTIAL,
-  payload: ReduxSaveFilePartial
-}
-
 export interface DeleteFileAction {
   type: ActionType.DELETE_FILE,
   payload: string
@@ -242,7 +237,6 @@ export type Action =
     | SetCurrentProjectAction
     | CreateFileAction
     | UpdateFileAction
-    | UpdateFileSavePartialAction
     | DeleteFileAction
     | FetchFilesCompleteAction
     | FetchFilesErrorAction

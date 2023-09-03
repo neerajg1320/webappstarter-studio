@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
 import {Action, UpdateFileAction} from "../actions";
 import {ActionType} from "../action-types";
-import {saveCells, saveProject, updateFileSavePartial} from "../action-creators";
+import {saveCells} from "../action-creators";
 import {RootState} from "../reducers";
 import {
   debugOptimizationMarker,
@@ -51,53 +51,6 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           saveTimer = setTimeout(() => {
             saveCells()(dispatch, getState)
           }, 1000);
-        }
-      }
-
-      // We are avoiding this so far and project is being saved using a manual click
-      // if (syncProjectsToServer) {
-      //   if (action.type === ActionType.UPDATE_PROJECT) {
-      //     saveProject(action.payload.localId)
-      //   }
-      // }
-
-      if (syncFilesToServer) {
-        if (action.type === ActionType.UPDATE_FILE) {
-          // The middleware take the responsibility of syncing
-          // console.log(`middleware: `, action.payload)
-          const {localId, path, content, bundleLanguage, isEntryPoint} = action.payload;
-          const fileState = getState().files.data[localId];
-
-          if (debugRedux) {
-            console.log('fileState:', fileState);
-            console.log('action.payload', action.payload);
-          }
-
-          const {isServerResponse} = action.payload;
-          if (isServerResponse) {
-            if (debugRedux) {
-              console.log(`Server Response Detected`);
-            }
-            return;
-          }
-
-          const saveFilePartial:ReduxSaveFilePartial = {localId};
-
-          if (Object.keys(action.payload).includes('path')) {
-            saveFilePartial['path']= path;
-          }
-          if (Object.keys(action.payload).includes('bundleLanguage')) {
-            saveFilePartial['bundleLanguage']= bundleLanguage;
-          }
-          if (Object.keys(action.payload).includes('isEntryPoint')) {
-            saveFilePartial['is_entry_point']= isEntryPoint;
-          }
-          if (Object.keys(action.payload).includes('content') && content !== undefined && content !== null) {
-              saveFilePartial['content']= content;
-          }
-
-          // We are causing unnecessary dispatch here
-          dispatch(updateFileSavePartial(saveFilePartial));
         }
       }
     }

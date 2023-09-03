@@ -33,10 +33,11 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         id: '',
         pkid: -1,
         confirmed: false,
+        prevContent: null,
         synced: false,
         isServerResponse: false,
         requestInitiated: false,
-        saveFilePartial: {localId},
+        modifiedKeys: [],
         isEditAllowed: true,
         deleteMarked: false,
         ...action.payload,
@@ -51,18 +52,6 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       state.data[localId] = {
         ...state.data[localId],
         ...action.payload
-      }
-      return state;
-
-    case ActionType.UPDATE_FILE_SAVE_PARTIAL:
-      // eslint-disable-next-line @typescript-eslint/no-redeclare
-      var {localId} = action.payload;
-      state.data[localId] = {
-        ...state.data[localId],
-        saveFilePartial: {
-          ...state.data[localId].saveFilePartial,
-          ...action.payload,
-        }
       }
       return state;
 
@@ -91,7 +80,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           file.contentSynced = false;
           file.requestInitiated = false;
           file.deleteMarked = false;
-          file.saveFilePartial = {localId: file.localId}
+          file.modifiedKeys = [];
 
           acc[file.localId] = file;
           return acc;

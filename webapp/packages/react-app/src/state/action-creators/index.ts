@@ -16,7 +16,6 @@ import {
   UpdateApplicationAction,
   UpdateCellAction,
   UpdateFileAction,
-  UpdateFileSavePartialAction,
   UpdateProjectAction,
   UserAddAction,
   UserDeleteAction,
@@ -74,6 +73,7 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
+import {file} from "jscodeshift";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -589,13 +589,6 @@ export const updateFile = (filePartial:ReduxUpdateFilePartial): UpdateFileAction
   }
 }
 
-export const updateFileSavePartial = (saveFilePartial: ReduxSaveFilePartial): UpdateFileSavePartialAction => {
-  return {
-    type: ActionType.UPDATE_FILE_SAVE_PARTIAL,
-    payload: saveFilePartial
-  }
-}
-
 export const deleteFile = (localId:string): DeleteFileAction => {
   return {
     type: ActionType.DELETE_FILE,
@@ -696,24 +689,12 @@ export const saveFile = (localId: string) => {
       }
       createFileOnServer(_createFilePartial)(dispatch, getState);
     } else {
-      let _saveFilePartial = {...fileState.saveFilePartial};
 
-      if (Object.keys(_saveFilePartial).length < 2) {
-        console.log(`Warning! nothing needs to be saved. Disable save controls`);
-        return;
+      const _updateFilePartial:ReduxUpdateFilePartial = {localId};
+      if (!fileState.contentSynced) {
+        _updateFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
+        updateFileOnServer(pkid, _updateFilePartial)(dispatch, getState);
       }
-
-
-      if (Object.keys(_saveFilePartial).includes('content')) {
-        if (enableDiffForFileUpdate) {
-          const diffText = createDiff("hello", "hello from webappstarter")
-          console.log(`diffText:`, diffText);
-        }
-
-        _saveFilePartial['file'] = createFileFromString(fileState.content || '', fileState.localId);
-      }
-
-      updateFileOnServer(pkid, _saveFilePartial)(dispatch, getState);
     }
   }
 }
@@ -871,8 +852,8 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
   }
 }
 
-// This action is dispatched from the persistMiddleware.
-export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePartial) => {
+
+export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxUpdateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
       console.log('saveFilePartial:', saveFilePartial);
@@ -908,7 +889,7 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxSaveFilePa
         localId,
         synced:true,
         isServerResponse: true,
-        saveFilePartial: {localId},
+        // saveFilePartial: {localId},
         // language: pathToBundleLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
