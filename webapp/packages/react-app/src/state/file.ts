@@ -15,7 +15,8 @@ export interface ReduxFile extends ServerObject {
   content: string|null;
 
   contentSynced: boolean;
-  localFile?: File;
+  // To verify if we beed localFile blob
+  // localFile?: File;
   projectLocalId?: string;
   isEntryPoint?: boolean;
   isEditAllowed?:boolean;
@@ -38,6 +39,8 @@ export interface ReduxCreateFilePartial extends ServerObjectPartial {
   language: CodeLanguage,
   content: string|null;
   contentSynced: boolean;
+
+  // Only used while sending request to server
   localFile?: File;
   projectLocalId?: string;
   isEntryPoint?: boolean;
@@ -56,7 +59,11 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   language?: CodeLanguage,
   content?: string|null;
   contentSynced?: boolean;
+
+  // We will send either file blob or diffText
   localFile?: File;
+  contentDiff?: string;
+
   projectLocalId?: string;
   isEntryPoint?: boolean;
   isEditAllowed?:boolean;
@@ -70,20 +77,6 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   modifiedKeys?: string[];
 }
 
-// TBD: Proper documentation to be added here
-// When updating file on the server either of the file or diff would be sent
-// In case both are sent, then file shall be used for update
-export interface ReduxSaveFilePartial {
-  localId: string;
-  pkid?:string;
-  file?: File;
-  diff?: string;
-  bundleLanguage?: BundleLanguage,
-  language?: CodeLanguage,
-  content?: string;
-  path?: string;
-  is_entry_point?: boolean;
-}
 
 export interface ReduxDeleteFilePartial {
   localId: string;

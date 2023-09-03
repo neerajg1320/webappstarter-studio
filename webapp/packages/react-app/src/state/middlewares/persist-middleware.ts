@@ -10,7 +10,6 @@ import {
   syncFilesToServer,
   syncProjectsToServer
 } from "../../config/global";
-import {ReduxSaveFilePartial} from "../file";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;

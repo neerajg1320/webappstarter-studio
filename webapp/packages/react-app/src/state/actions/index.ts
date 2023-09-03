@@ -1,7 +1,7 @@
 import { ActionType } from "../action-types";
 import { CellTypes, Cell } from "../cell";
 import {ReduxProject, ProjectFrameworks, ReduxUpdateProjectPartial, ReduxCreateProjectPartial} from "../project";
-import {ReduxCreateFilePartial, ReduxFile, ReduxSaveFilePartial, ReduxUpdateFilePartial} from "../file";
+import {ReduxCreateFilePartial, ReduxFile, ReduxUpdateFilePartial} from "../file";
 import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {UserRequestStart, UserRequestSuccess, UserRequestFailed} from "../user";
 import {ApiRequestFailed, ApiRequestStart, ApiRequestSuccess} from "../api";

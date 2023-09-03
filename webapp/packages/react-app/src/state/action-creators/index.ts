@@ -39,7 +39,6 @@ import {
   ReduxCreateFilePartial,
   ReduxDeleteFilePartial,
   ReduxFile,
-  ReduxSaveFilePartial,
   ReduxUpdateFilePartial
 } from "../file";
 import {generateLocalId} from "../id";
@@ -683,14 +682,17 @@ export const saveFile = (localId: string) => {
     // Here we can use member based type narrowing
     const {pkid} = fileState;
     if (!pkid || pkid < 0) {
-      let _createFilePartial:ReduxCreateFilePartial = {...fileState};
+      const _createFilePartial:ReduxCreateFilePartial = {...fileState};
+
       if (Object.keys(_createFilePartial).includes('content')) {
-        _createFilePartial['localFile'] = createFileFromString(fileState.content || '', fileState.localId);
+        _createFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
       }
+
       createFileOnServer(_createFilePartial)(dispatch, getState);
     } else {
       if (fileState.modifiedKeys.length > 0) {
         const _updateFilePartial: ReduxUpdateFilePartial = {localId};
+
         for (const key of fileState.modifiedKeys) {
           if (key !== 'content') {
             // @ts-ignore
@@ -702,6 +704,7 @@ export const saveFile = (localId: string) => {
                 if (debugRedux) {
                   console.log(`diffText:\n`, diffText);
                 }
+                _updateFilePartial.contentDiff = diffText;
               }
             }
             _updateFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
@@ -889,6 +892,9 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
     }
     if (Object.keys(updateFilePartial).includes('isEntryPoint')) {
       formData.append("is_entry_point", updateFilePartial.isEntryPoint! as unknown as string);
+    }
+    if (Object.keys(updateFilePartial).includes('contentDiff')) {
+      formData.append("content_diff", updateFilePartial.contentDiff!);
     }
 
     const {localId} = updateFilePartial;
