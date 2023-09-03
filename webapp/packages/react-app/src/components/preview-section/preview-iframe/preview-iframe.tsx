@@ -20,10 +20,12 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({html, code, err}) => {
 
     iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode);
 
-    // To make it fool proof we should convert it to be dependent on message from iframe
+    // TBD: To make it fool proof we should convert it to be dependent on message from iframe
+    // Get the initialization message from iframe and then send.
+    // iframe is yet to support an initialization message
     setTimeout(() => {
       iframeRef.current.contentWindow.postMessage(code, '*');
-    }, 50);
+    }, 200);
   }, [code]);
 
   return (
