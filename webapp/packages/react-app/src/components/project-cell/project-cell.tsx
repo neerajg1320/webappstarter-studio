@@ -243,7 +243,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
 
     if (editedFile.contentSynced) {
-      updateFile({localId:editedFile.localId, isEditAllowed:true})
+      if (!editedFile.isEditAllowed) {
+        updateFile({localId: editedFile.localId, isEditAllowed: true})
+      }
     }
 
     // Note we have to make sure that we do not use editedFile with JSON.stringify
@@ -473,7 +475,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         
       </div>
 
-      {(debugComponent || true) &&
+      {(debugComponent) &&
         <div style={{height: "100px"}}>
           {editedFile &&
               <div style={{height: "100%"}}>

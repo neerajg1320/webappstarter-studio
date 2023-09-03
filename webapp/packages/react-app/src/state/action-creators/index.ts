@@ -689,10 +689,17 @@ export const saveFile = (localId: string) => {
       }
       createFileOnServer(_createFilePartial)(dispatch, getState);
     } else {
+      if (fileState.modifiedKeys.length > 0) {
+        const _updateFilePartial: ReduxUpdateFilePartial = {localId};
+        for (const key of fileState.modifiedKeys) {
+          if (key !== 'content') {
+            // @ts-ignore
+            _updateFilePartial[key] = fileState[key];
+          } else {
+            _updateFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
+          }
+        }
 
-      const _updateFilePartial:ReduxUpdateFilePartial = {localId};
-      if (!fileState.contentSynced) {
-        _updateFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
         updateFileOnServer(pkid, _updateFilePartial)(dispatch, getState);
       }
     }
@@ -858,19 +865,18 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
       console.log('updateFilePartial:', updateFilePartial);
     }
 
-
     const formData = new FormData();
     if (Object.keys(updateFilePartial).includes('path')) {
       formData.append("path", updateFilePartial.path!);
     }
-    if (Object.keys(updateFilePartial).includes('file')) {
-      formData.append("file", updateFilePartial.file!);
+    if (Object.keys(updateFilePartial).includes('localFile')) {
+      formData.append("file", updateFilePartial.localFile!);
     }
     if (Object.keys(updateFilePartial).includes('language')) {
       formData.append("language", updateFilePartial.language!);
     }
-    if (Object.keys(updateFilePartial).includes('is_entry_point')) {
-      formData.append("is_entry_point", updateFilePartial.is_entry_point! as unknown as string);
+    if (Object.keys(updateFilePartial).includes('isEntryPoint')) {
+      formData.append("is_entry_point", updateFilePartial.isEntryPoint! as unknown as string);
     }
 
     const {localId} = updateFilePartial;

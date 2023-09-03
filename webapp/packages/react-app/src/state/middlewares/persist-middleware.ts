@@ -34,6 +34,30 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }
         }
       }
+      if (syncFilesToServer) {
+        // if ([ActionType.UPDATE_FILE].includes(action.type)) {
+        if (action.type === ActionType.UPDATE_FILE) {
+          if(!action.payload.isServerResponse) {
+            // console.log(`persistMiddleware: keys:`, JSON.stringify(action.payload, null, 2));
+            for (const key in action.payload) {
+              // console.log(`key:`, key);
+
+              if (['content', 'path', 'isEntryPoint', 'language'].includes(key)) {
+                if (!action.payload.modifiedKeys) {
+                  action.payload.modifiedKeys = []
+                }
+                if (!(key in action.payload.modifiedKeys)) {
+                  action.payload.modifiedKeys.push(key);
+                }
+              }
+            }
+            // console.log(`persistMiddleware: keys:`, JSON.stringify(action.payload, null, 2));
+          } else {
+            // Here we set reset modifiedKeys as the content is synced with server
+            action.payload.modifiedKeys = [];
+          }
+        }
+      }
 
       // After this point the state is changed
       next(action);
@@ -53,6 +77,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           }, 1000);
         }
       }
+
+
     }
   }
 }

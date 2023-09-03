@@ -28,12 +28,8 @@ export enum ActionType {
   UPDATE_FILE = 'update_file',
   DELETE_FILE = 'delete_file',
 
-  UPDATE_FILE_SAVE_PARTIAL = 'update_file_save_partial',
-
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
-  
-
 
   // We need request set for following
   // REGISTER_USER

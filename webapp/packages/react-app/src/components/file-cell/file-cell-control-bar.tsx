@@ -147,7 +147,7 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
                 onChange={(e) => updateApplication({hotReload: e.target.checked})}
             />
           </div>
-          {advanceFeatures &&
+          {(advanceFeatures || true) &&
             <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
               <label>EntryPoint</label>
               <input

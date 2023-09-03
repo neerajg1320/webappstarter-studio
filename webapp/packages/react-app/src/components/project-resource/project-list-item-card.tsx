@@ -45,7 +45,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         display: "flex", flexDirection: "column", justifyContent: "space-evenly"
       }}
       onClick={(e) => {
-        console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
+        // console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
         updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId});
         selectAndNavigateToProject();
       }}
@@ -71,7 +71,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
               className="value"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
+                // console.log(`Set selectedFileLocalId to entryFileLocalId:`, reduxProject.entryFileLocalId);
                 updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId});
                 selectAndNavigateToProject();
               }}
@@ -86,7 +86,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
                   className="value"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log(`Set selectedFileLocalId to entryHtmlFileLocalId:`, reduxProject.entryHtmlFileLocalId);
+                    // console.log(`Set selectedFileLocalId to entryHtmlFileLocalId:`, reduxProject.entryHtmlFileLocalId);
                     updateProject({localId:reduxProject.localId, selectedFileLocalId: reduxProject.entryHtmlFileLocalId});
                     selectAndNavigateToProject();
                   }}

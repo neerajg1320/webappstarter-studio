@@ -24,11 +24,11 @@ export interface ReduxFile extends ServerObject {
   project?:number; // This is project.pkid
   is_entry_point?: boolean; // This is from server
 
-  // The following are managed by redux and hence not exposed in Create and Update Partials
+  // The following are managed by redux and hence not exposed only in Update Partials
   // Saved content for comparison to send diff
   // It can give us better idea than contentSynced for the contents being in syncß
   prevContent: string|null;
-  modifiedKeys?: string[];
+  modifiedKeys: string[];
 }
 
 export interface ReduxCreateFilePartial extends ServerObjectPartial {
@@ -65,6 +65,9 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   file?: string;
   project?:number;
   is_entry_point?: boolean;
+
+  prevContent?: string|null;
+  modifiedKeys?: string[];
 }
 
 // TBD: Proper documentation to be added here

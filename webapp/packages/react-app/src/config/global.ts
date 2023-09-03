@@ -67,4 +67,4 @@ export const advancedFeatures = true;
 
 // Files
 export const enableDiffForFileUpdate = true;
-export const autoSaveDebounce = 3000;
+export const autoSaveDebounce = 750;

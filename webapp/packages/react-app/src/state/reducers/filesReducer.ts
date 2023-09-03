@@ -49,10 +49,22 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       // console.log(`filesReducer: ${JSON.stringify(action)}`);
       // eslint-disable-next-line @typescript-eslint/no-redeclare
       var {localId} = action.payload;
+
+      const modifiedKeys = [...state.data[localId].modifiedKeys];
+
+      if (action.payload.modifiedKeys) {
+        for (const key of action.payload.modifiedKeys) {
+          if (!(modifiedKeys.includes(key))) {
+            modifiedKeys.push(key);
+          }
+        }
+      }
       state.data[localId] = {
         ...state.data[localId],
-        ...action.payload
+        ...action.payload,
+        modifiedKeys
       }
+      // console.log(`filesReducer: localId:${localId} modifiedKeys:${modifiedKeys}`);
       return state;
 
     case ActionType.DELETE_FILE:
