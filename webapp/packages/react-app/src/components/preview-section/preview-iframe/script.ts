@@ -26,7 +26,8 @@ export const parentCommunicationJavascriptCode = `
       if (root) {
         root.innerHTML = '<div style="color:red"><h4>Runtime Error:</h4>' + err + '</div>';
       }
-      window_console_error(err);
+      // This is causing problem
+      // window_console_error(err);
       
       const message = {
         source: "iframe",
