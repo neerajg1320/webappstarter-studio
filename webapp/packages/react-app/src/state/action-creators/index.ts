@@ -696,6 +696,12 @@ export const saveFile = (localId: string) => {
             // @ts-ignore
             _updateFilePartial[key] = fileState[key];
           } else {
+            if (enableDiffForFileUpdate) {
+              if (fileState.prevContent && fileState.content) {
+                const diffText = createDiff(fileState.prevContent, fileState.content);
+                console.log(`diffText:\n`, diffText);
+              }
+            }
             _updateFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
           }
         }
