@@ -13,9 +13,6 @@ export interface ReduxFile extends ServerObject {
   bundleLanguage: BundleLanguage;
   language: CodeLanguage,
   content: string|null;
-  // Saved content for comparison to send diff
-  // It can give us better idea than contentSynced for the contents being in syncß
-  prevContent: string|null;
 
   contentSynced: boolean;
   localFile?: File;
@@ -26,6 +23,11 @@ export interface ReduxFile extends ServerObject {
   file?: string;
   project?:number; // This is project.pkid
   is_entry_point?: boolean; // This is from server
+
+  // The following are managed by redux and hence not exposed in Create and Update Partials
+  // Saved content for comparison to send diff
+  // It can give us better idea than contentSynced for the contents being in syncß
+  prevContent: string|null;
   modifiedKeys?: string[];
 }
 
@@ -63,7 +65,6 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   file?: string;
   project?:number;
   is_entry_point?: boolean;
-  saveFilePartial?: ReduxSaveFilePartial;
 }
 
 // TBD: Proper documentation to be added here

@@ -757,7 +757,6 @@ export const fetchFileContents = (localIds: [string]) => {
           contentSynced: true,
           isServerResponse: true,
           requestInitiated: false,
-          saveFilePartial: {localId:fileStates[0].localId}
         }
       });
 
@@ -853,28 +852,28 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
 }
 
 
-export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxUpdateFilePartial) => {
+export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
-      console.log('saveFilePartial:', saveFilePartial);
+      console.log('updateFilePartial:', updateFilePartial);
     }
 
 
     const formData = new FormData();
-    if (Object.keys(saveFilePartial).includes('path')) {
-      formData.append("path", saveFilePartial.path!);
+    if (Object.keys(updateFilePartial).includes('path')) {
+      formData.append("path", updateFilePartial.path!);
     }
-    if (Object.keys(saveFilePartial).includes('file')) {
-      formData.append("file", saveFilePartial.file!);
+    if (Object.keys(updateFilePartial).includes('file')) {
+      formData.append("file", updateFilePartial.file!);
     }
-    if (Object.keys(saveFilePartial).includes('language')) {
-      formData.append("language", saveFilePartial.language!);
+    if (Object.keys(updateFilePartial).includes('language')) {
+      formData.append("language", updateFilePartial.language!);
     }
-    if (Object.keys(saveFilePartial).includes('is_entry_point')) {
-      formData.append("is_entry_point", saveFilePartial.is_entry_point! as unknown as string);
+    if (Object.keys(updateFilePartial).includes('is_entry_point')) {
+      formData.append("is_entry_point", updateFilePartial.is_entry_point! as unknown as string);
     }
 
-    const {localId} = saveFilePartial;
+    const {localId} = updateFilePartial;
 
     try {
       const response = await axiosApiInstance.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: __rm__gHeaders});
@@ -889,14 +888,14 @@ export const updateFileOnServer = (pkid:number, saveFilePartial: ReduxUpdateFile
         localId,
         synced:true,
         isServerResponse: true,
-        // saveFilePartial: {localId},
+        // updateFilePartial: {localId},
         // language: pathToBundleLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
 
       // TBD: We need to fix this logic
       // We have to resolve the syncing problem most probably outside this.
-      const {is_entry_point, path} = saveFilePartial;
+      const {is_entry_point, path} = updateFilePartial;
       const fileState = getState().files.data[localId] as ReduxFile;
 
       if (is_entry_point !== undefined || (path !== undefined && fileState.isEntryPoint)) {
