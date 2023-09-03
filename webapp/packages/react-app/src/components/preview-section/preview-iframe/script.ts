@@ -26,15 +26,18 @@ export const parentCommunicationJavascriptCode = `
       if (root) {
         root.innerHTML = '<div style="color:red"><h4>Runtime Error:</h4>' + err + '</div>';
       }
-      // This is causing problem
-      // window_console_error(err);
+      if (err) {
+        // This is causing problem
+        window_console_error(err);
+      }
       
       const message = {
         source: "iframe",
         type: 'error',
-        content: err,
+        // TBD: We have to resolve browser messaging issues!
+        content: err ? err : {message: "err is null"},
       }
-      window.parent.postMessage(message, '*');        
+      window.parent.postMessage(message, '*');
     };
 
     window.addEventListener('error', (event) => {

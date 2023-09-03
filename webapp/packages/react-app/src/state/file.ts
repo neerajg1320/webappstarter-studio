@@ -62,10 +62,14 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   saveFilePartial?: ReduxSaveFilePartial;
 }
 
+// TBD: Proper documentation to be added here
+// When updating file on the server either of the file or diff would be sent
+// In case both are sent, then file shall be used for update
 export interface ReduxSaveFilePartial {
   localId: string;
   pkid?:string;
   file?: File;
+  diff?: string;
   bundleLanguage?: BundleLanguage,
   language?: CodeLanguage,
   content?: string;

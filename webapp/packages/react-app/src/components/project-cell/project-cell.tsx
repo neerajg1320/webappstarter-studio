@@ -169,7 +169,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         }
       } else {
         // This could happen when we render the project and the files haven't been loaded
-        console.log("ProejectCell:useEffect entryFile not found");
+        console.log("ProjectCell:useEffect entryFile not found");
       }
 
       if (!_selectedFileId) {

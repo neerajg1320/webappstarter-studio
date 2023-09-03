@@ -63,3 +63,6 @@ export const debugLocalOnlyPendingSupport = false;
 
 // Features Visibility
 export const advancedFeatures = true;
+
+// Files
+export const enableDiffForFileUpdate = true;

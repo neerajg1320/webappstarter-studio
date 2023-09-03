@@ -49,7 +49,7 @@ import {
   debugAxios,
   debugBundler,
   debugPlugin,
-  debugRedux,
+  debugRedux, enableDiffForFileUpdate,
   enableLocalStorageAuth,
   serverApiBaseUrl,
   serverMediaBaseUrl
@@ -73,6 +73,7 @@ import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
+import {createDiff} from "../../utils/diff";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -702,9 +703,16 @@ export const saveFile = (localId: string) => {
         return;
       }
 
+
       if (Object.keys(_saveFilePartial).includes('content')) {
+        if (enableDiffForFileUpdate) {
+          const diffText = createDiff("hello", "hello from webappstarter")
+          console.log(`diffText:`, diffText);
+        }
+
         _saveFilePartial['file'] = createFileFromString(fileState.content || '', fileState.localId);
       }
+
       updateFileOnServer(pkid, _saveFilePartial)(dispatch, getState);
     }
   }
