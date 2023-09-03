@@ -699,7 +699,9 @@ export const saveFile = (localId: string) => {
             if (enableDiffForFileUpdate) {
               if (fileState.prevContent && fileState.content) {
                 const diffText = createDiff(fileState.prevContent, fileState.content);
-                console.log(`diffText:\n`, diffText);
+                if (debugRedux) {
+                  console.log(`diffText:\n`, diffText);
+                }
               }
             }
             _updateFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);

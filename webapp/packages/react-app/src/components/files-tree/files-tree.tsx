@@ -72,7 +72,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
 
   // Needed for selecting file
   const handleSelectFileClick = (fileLocalId:string) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(fileLocalId);
     }
 
