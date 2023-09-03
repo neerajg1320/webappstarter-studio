@@ -280,7 +280,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
   // TBD: Need to put in settings
-  const bundleProjectDebounced = useDebouncedCallback(bundleProject, autoBundleDebounce);
+  const bundleProjectDebounced = useDebouncedCallback(
+      bundleProject,
+      autoBundleDebounce
+  );
+
   const saveFileDebounced = useDebouncedCallback(
       () => {
         const _editedFile = editedFileRef.current;
@@ -469,7 +473,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         
       </div>
 
-      {debugComponent &&
+      {(debugComponent || true) &&
         <div style={{height: "100px"}}>
           {editedFile &&
               <div style={{height: "100%"}}>
@@ -477,7 +481,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 <pre>{editedFile.content}</pre>
 
                 <h4>saveFilePartial.content</h4>
-                {/*<pre>{editedFile.saveFilePartial.content}</pre>*/}
+                <pre>{editedFile.saveFilePartial.content}</pre>
                 {/*<pre>{JSON.stringify(editedFile.saveFilePartial, null, 2)}</pre>*/}
               </div>
           }
