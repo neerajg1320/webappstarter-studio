@@ -815,13 +815,16 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
         console.log(response);
       }
 
+      const fileState = getState().files.data[localId] as ReduxFile;
+
       // const {id, pkid} = response.data
       // We are putting pkid in the id
       // We can put a field here response t
       dispatch(updateFile({
         localId,
-        synced:true,
         isServerResponse: true,
+        synced:true,
+        prevContent: fileState.content,
         language: pathToCodeLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
@@ -887,23 +890,22 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
         console.log(response);
       }
 
+      const fileState = getState().files.data[localId] as ReduxFile;
+
       // const {id, pkid} = response.data
       // We are putting pkid in the id
       // We can put a field here response t
       dispatch(updateFile({
         localId,
-        synced:true,
         isServerResponse: true,
-        // updateFilePartial: {localId},
-        // language: pathToBundleLanguage(response.data.path), // Need to be fixed
+        synced:true,
+        prevContent: fileState.content,
         ...response.data
       })); //
 
-      // TBD: We need to fix this logic
-      // We have to resolve the syncing problem most probably outside this.
-      const {is_entry_point, path} = updateFilePartial;
-      const fileState = getState().files.data[localId] as ReduxFile;
 
+      const {is_entry_point, path} = updateFilePartial;
+      
       if (is_entry_point !== undefined || (path !== undefined && fileState.isEntryPoint)) {
         if (fileState.projectLocalId) {
 
