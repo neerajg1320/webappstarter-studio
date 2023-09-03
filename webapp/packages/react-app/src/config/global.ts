@@ -21,6 +21,7 @@ export const combineCellsCode = false;
 export const cellJsxFileName = '__cell.jsx';
 export const cellTsxFileName = '__cell.tsx';
 export const pkgServerUrl = 'https://unpkg.com';
+export const autoBundleDebounce = 500;
 
 // Flag for enabling in-memory fetching. Redux act as an ad-hoc file system.
 export const enableLoadFromRedux = true;
@@ -66,3 +67,4 @@ export const advancedFeatures = true;
 
 // Files
 export const enableDiffForFileUpdate = true;
+export const autoSaveDebounce = 3000;

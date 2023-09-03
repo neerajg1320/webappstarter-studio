@@ -6,7 +6,7 @@ import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
 import FilesTree from "../files-tree/files-tree";
 import {ReduxFile, ReduxProject} from "../../state";
-import {debugComponent} from "../../config/global";
+import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
 import FileCellControlBar, {FileCellEventType} from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
@@ -280,7 +280,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
   // TBD: Need to put in settings
-  const bundleProjectDebounced = useDebouncedCallback(bundleProject, 500);
+  const bundleProjectDebounced = useDebouncedCallback(bundleProject, autoBundleDebounce);
   const saveFileDebounced = useDebouncedCallback(
       () => {
         const _editedFile = editedFileRef.current;
@@ -292,7 +292,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           saveFile(_editedFile.localId);
         }
       },
-      750
+      autoSaveDebounce
   );
 
   const handleProjectBundleClick = () => {
