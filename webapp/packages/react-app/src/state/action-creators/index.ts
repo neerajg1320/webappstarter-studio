@@ -761,6 +761,7 @@ export const fetchFileContents = (localIds: [string]) => {
         payload: {
           localId: fileStates[0].localId,
           content: response.data,
+          prevContent: response.data,
           contentSynced: true,
           isServerResponse: true,
           requestInitiated: false,
@@ -905,7 +906,7 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
 
 
       const {is_entry_point, path} = updateFilePartial;
-      
+
       if (is_entry_point !== undefined || (path !== undefined && fileState.isEntryPoint)) {
         if (fileState.projectLocalId) {
 

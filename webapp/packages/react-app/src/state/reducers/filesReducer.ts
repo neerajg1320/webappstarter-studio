@@ -64,7 +64,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         ...action.payload,
         modifiedKeys
       }
-      // console.log(`filesReducer: localId:${localId} modifiedKeys:${modifiedKeys}`);
+      console.log(`filesReducer: localId:${localId} modifiedKeys:${modifiedKeys}`);
       return state;
 
     case ActionType.DELETE_FILE:
@@ -89,6 +89,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           file.confirmed = true;
           file.synced = true;
           file.content = null;
+          file.prevContent = null;
           file.contentSynced = false;
           file.requestInitiated = false;
           file.deleteMarked = false;
