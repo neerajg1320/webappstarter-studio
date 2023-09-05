@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
+import {debugComponent} from "../../../config/global";
+import Arg from "./arg";
 
 interface ExpandableSpanProps {
   obj: object;
@@ -10,8 +12,10 @@ interface ExpandableSpanProps {
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded}) => {
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
-  const handleExpandClick = (k:string) => {
-    console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
+  const handleExpandClick = (k:string|number) => {
+    if (debugComponent) {
+      console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
+    }
     setExpanded((prev) => {
       return {...prev, [k]: !prev[k]};
     });
@@ -25,16 +29,12 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
         Object.entries(obj).map(([k, v], index:number) => {
             return (
                 <div key={index} >
-                  {typeof(v) === "object" ?
-                    <div className="entry-object" onClick={(e) => handleExpandClick(k)}>
-                      <span>{k}:&gt;</span>
-                      <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} />
-                    </div>
-                    :
+
                     <div className="entry" >
-                      <span>{k}:{v}</span>
+                      {typeof(v) !== "object" && <span>{k}:</span>}
+                      <Arg item={v} index={k} expanded={expanded[k]} onClick={handleExpandClick}/>
                     </div>
-                  }
+
                 </div>
             );
         })

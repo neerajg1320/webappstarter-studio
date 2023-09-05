@@ -4,12 +4,13 @@ import './arg.css';
 
 interface ArgProps {
   item: any;
-  index: number;
-  expanded: boolean;
-  onClick?: (index:number) => void;
+  index: number|string;
+  showIndex?: boolean;
+  expanded?: boolean;
+  onClick?: (index:number|string) => void;
 }
-const Arg:React.FC<ArgProps> = ({item, index, expanded, onClick:propOnClick}) => {
-  const handleExpandClick = (index:number) => {
+const Arg:React.FC<ArgProps> = ({item, index, showIndex=true, expanded=false, onClick:propOnClick}) => {
+  const handleExpandClick = (index:number|string) => {
     if (propOnClick) {
       propOnClick(index)
     }
@@ -18,7 +19,9 @@ const Arg:React.FC<ArgProps> = ({item, index, expanded, onClick:propOnClick}) =>
   if (typeof(item) === "object") {
     return (
         <div  className="arg-object" >
-          <span onClick={(e) => handleExpandClick(index)}>{index}:&gt;</span>
+          <span onClick={(e) => handleExpandClick(index)}>
+            {showIndex ? `${index}:` : ""}&gt;
+          </span>
           <ExpandableSpan obj={item} level={1} expanded={expanded}/>
         </div>
     );

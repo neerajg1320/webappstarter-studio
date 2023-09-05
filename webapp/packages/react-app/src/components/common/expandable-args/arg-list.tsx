@@ -10,7 +10,7 @@ interface ArgListProps {
 const ArgList:React.FC<ArgListProps> = ({list}) => {
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
-  const handleArgClick = (k:number) => {
+  const handleArgClick = (k:number|string) => {
     setExpanded((prev) => {
       return {...prev, [k]: !prev[k]};
     });
