@@ -10,11 +10,11 @@ export interface ConsoleMessage {
 }
 
 interface PreviewConsoleProps {
-  aggregate?: boolean;
+  count?: number;
   onChange?: (value:string) => void
 }
 
-const PreviewConsole:React.FC<PreviewConsoleProps> = ({aggregate=false, onChange:propOnChange}) => {
+const PreviewConsole:React.FC<PreviewConsoleProps> = ({count=0, onChange:propOnChange}) => {
   const [messages, setMessages] = useState<ConsoleMessage[]>([]);
   const consoleRef = useRef<HTMLDivElement|null>(null);
 
@@ -30,11 +30,8 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({aggregate=false, onChange
   }, []);
 
   useEffect(() => {
-    if (!aggregate) {
-      setMessages([]);
-    }
-
-  }, [aggregate]);
+    setMessages([]);
+  }, [count]);
 
   useEffect(() => {
 

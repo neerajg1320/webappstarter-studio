@@ -14,10 +14,15 @@ interface PreviewTabsProps {
 
 const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Preview');
+  const [count, setCount] = useState(0);
 
   if (debugComponent) {
     console.log(`PreviewTabs:render selectedTab=${selectedTab}`);
   }
+
+  useEffect(() => {
+    setCount((prev) => prev + 1);
+  }, [code]);
 
   const previewChoices = useMemo(() => {
     return ['Preview', 'Console', 'Bundle'];
@@ -48,7 +53,7 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
           <PreviewIframe html={html} code={code} err={err} />
         </div>
         <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
-          <PreviewConsole onChange={handleConsoleTextChange}/>
+          <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
         </div>
         <div style={{display: selectedTab === 'Bundle' ? "flex" : "none", height: "100%"}}>
           <PreviewBundle bundle={code}/>
