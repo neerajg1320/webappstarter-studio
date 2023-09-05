@@ -11,6 +11,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string) => {
+    console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
     setExpanded((prev) => {
       return {...prev, [k]: !prev[k]};
     });
@@ -18,6 +19,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
 
   return (
     <div className="object-wrapper">
+      {/*<pre>{JSON.stringify(expanded)}</pre>*/}
       <div className="object-box">
       {propExpanded &&
         Object.entries(obj).map(([k, v], index:number) => {

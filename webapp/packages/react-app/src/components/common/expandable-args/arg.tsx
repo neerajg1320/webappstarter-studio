@@ -24,6 +24,12 @@ const Arg:React.FC<ArgProps> = ({item, index, expanded, onClick:propOnClick}) =>
     );
   }
 
+  if (typeof(item) === "string") {
+    return (
+        <span>"{item}"</span>
+    );
+  }
+
   return (
       <span>{item}</span>
   );
