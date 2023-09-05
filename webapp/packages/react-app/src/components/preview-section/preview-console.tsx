@@ -1,12 +1,12 @@
 import './preview-console.css';
 import {useEffect, useMemo, useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
-import Args from "../common/expandable-args/args";
+import ArgList from "../common/expandable-args/arg-list";
 
 export interface ConsoleMessage {
   source: string,
   type: string,
-  content: string|TypeError,
+  content: any[]|TypeError,
 }
 
 interface PreviewConsoleProps {
@@ -93,18 +93,13 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
         {(messages.length > 0) &&
           messages.map((message, index) => {
             if (message.type === "log") {
-              let retComp;
-              if (['string', 'number'].includes(typeof message.content)) {
-                retComp = <li key={index} className={`console-${message.type}`}>{message.content as string}</li>
-              } else {
-                retComp = <li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>
-              }
-
+              console.log(`message.content:`, message.content);
               return (
-                  <>
-                    <Args list={["first", 34, infoObj, "new", ["one", "two"], infoObj]} />
-                    {retComp}
-                  </>
+                  <div key={index}>
+                    {/*<ArgList list={["first", 34, infoObj, "new", ["one", "two"], infoObj]} />*/}
+                    <ArgList list={message.content as any[]} />
+                    <li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>
+                  </div>
               )
             }
             return <li key={index} className={`console-${message.type}`}>{(message.content as TypeError).message}</li>
