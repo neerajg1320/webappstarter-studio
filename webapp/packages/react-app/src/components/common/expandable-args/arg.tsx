@@ -19,9 +19,10 @@ const Arg:React.FC<ArgProps> = ({item, index, showIndex=true, expanded=false, on
   if (typeof(item) === "object") {
     return (
         <div  className="arg-object" >
-          <span onClick={(e) => handleExpandClick(index)}>
-            {showIndex ? `${index}:` : ""}&gt;
-          </span>
+          <div className="arg-object-title" onClick={(e) => handleExpandClick(index)}>
+            {showIndex && <span>{index}</span>}
+            <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
+          </div>
           <ExpandableSpan obj={item} level={1} expanded={expanded}/>
         </div>
     );
