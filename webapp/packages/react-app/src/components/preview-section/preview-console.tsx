@@ -16,6 +16,7 @@ interface PreviewConsoleProps {
 const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) => {
   const [messages, setMessages] = useState<ConsoleMessage[]>([]);
   const consoleRef = useRef<HTMLDivElement|null>(null);
+  // Kept for debugging purpose
   const infoObj = useMemo(() => {
     return {
       name:"Neeraj",
@@ -93,12 +94,13 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
         {(messages.length > 0) &&
           messages.map((message, index) => {
             if (message.type === "log") {
-              console.log(`message.content:`, message.content);
+              if (debugComponent) {
+                console.log(`message.content:`, message.content);
+              }
               return (
                   <div key={index}>
-                    {/*<ArgList list={["first", 34, infoObj, "new", ["one", "two"], infoObj]} />*/}
                     <ArgList list={message.content as any[]} />
-                    <li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>
+                    {/*<li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>*/}
                   </div>
               )
             }
