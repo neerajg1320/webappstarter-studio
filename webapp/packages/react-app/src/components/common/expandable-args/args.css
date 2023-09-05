@@ -1,0 +1,7 @@
+.args-box {
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+}

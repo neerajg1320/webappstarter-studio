@@ -1,0 +1,18 @@
+.object-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.object-wrapper .root-object {
+  border: 1px solid gray;
+}
+
+.entry-object {
+  font-weight: bold;
+}
+
+.object-box {
+  /* border: 1px solid blueviolet; */
+  font-weight: normal;
+}

@@ -1,6 +1,7 @@
 import './preview-console.css';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
+import Args from "../common/expandable-args/args";
 
 export interface ConsoleMessage {
   source: string,
@@ -15,6 +16,15 @@ interface PreviewConsoleProps {
 const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) => {
   const [messages, setMessages] = useState<ConsoleMessage[]>([]);
   const consoleRef = useRef<HTMLDivElement|null>(null);
+  const infoObj = useMemo(() => {
+    return {
+      name:"Neeraj",
+      height:171,
+      school: {name: "SSN", batch:1994},
+      age: 46,
+      hobbies: ["badminton", "harmonica", "sudoku"]
+    };
+  }, []);
 
   useEffect(() => {
 
@@ -83,10 +93,19 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
         {(messages.length > 0) &&
           messages.map((message, index) => {
             if (message.type === "log") {
+              let retComp;
               if (['string', 'number'].includes(typeof message.content)) {
-                return <li key={index} className={`console-${message.type}`}>{message.content as string}</li>
+                retComp = <li key={index} className={`console-${message.type}`}>{message.content as string}</li>
+              } else {
+                retComp = <li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>
               }
-              return <li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>
+
+              return (
+                  <>
+                    <Args list={["first", 34, infoObj, "new", ["one", "two"], infoObj]} />
+                    {retComp}
+                  </>
+              )
             }
             return <li key={index} className={`console-${message.type}`}>{(message.content as TypeError).message}</li>
           })
