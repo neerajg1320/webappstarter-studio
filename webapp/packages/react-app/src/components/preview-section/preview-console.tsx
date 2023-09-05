@@ -10,12 +10,14 @@ export interface ConsoleMessage {
 }
 
 interface PreviewConsoleProps {
+  aggregate?: boolean;
   onChange?: (value:string) => void
 }
 
-const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) => {
+const PreviewConsole:React.FC<PreviewConsoleProps> = ({aggregate=false, onChange:propOnChange}) => {
   const [messages, setMessages] = useState<ConsoleMessage[]>([]);
   const consoleRef = useRef<HTMLDivElement|null>(null);
+
   // Kept for debugging purpose
   const infoObj = useMemo(() => {
     return {
@@ -28,6 +30,13 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
   }, []);
 
   useEffect(() => {
+    if (!aggregate) {
+      setMessages([]);
+    }
+
+  }, [aggregate]);
+
+  useEffect(() => {
 
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
       if (debugComponent) {
@@ -37,7 +46,7 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({onChange:propOnChange}) =
       const {source} = event.data as ConsoleMessage;
       if (source && source === "iframe") {
         setMessages((prev) => {
-          return [...prev, event.data]
+          return [...prev, event.data];
         });
       }
     };
