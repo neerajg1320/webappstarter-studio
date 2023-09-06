@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import ArgItem, {ConsoleComponentMap, getConsoleItemType} from "./arg-item";
+import ArgItem, {consoleComponentMap, getConsoleItemType} from "./arg-item";
 
 interface ArgListProps {
   list: any[];  
@@ -25,7 +25,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           return (
             <div key={index}>
               <ArgItem item={item} keyName={index} level={0} expanded={expanded[index]} onClick={handleArgClick}
-                       getType={getConsoleItemType} componentMap={ConsoleComponentMap}
+                       getType={getConsoleItemType} componentMap={consoleComponentMap}
               />
             </div>
           );

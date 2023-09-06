@@ -13,6 +13,13 @@
   cursor: pointer;
 }
 
+.entry {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: flex-end;
+}
+
 .object-box {
   /* border: 1px solid blueviolet; */
   font-weight: normal;

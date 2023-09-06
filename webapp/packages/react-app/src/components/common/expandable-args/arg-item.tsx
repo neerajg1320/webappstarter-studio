@@ -1,40 +1,48 @@
 import React, {useEffect} from "react";
-import ExpandableSpan from "./espan";
 import './arg-item.css';
-import {getItem} from "localforage";
+import ExpandableSpan from "./espan";
 
 interface ArgValueProps {
   item: any;
-  keyName: string|number;
-  expanded: boolean;
-  onClick: (keyName:string|number) => void
+  keyName?: string|number;
+  expanded?: boolean;
+  onClick?: (keyName:string|number) => void
 }
 
 export const getConsoleItemType = (item:any):string => {
   return typeof(item);
 }
 
-export const ConsoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
-  "object": ({item, keyName, expanded, onClick:propOnClick}) => {
-    return (
-        <div className="arg-object-title" onClick={(e) => propOnClick(keyName)}>
-          <span>{keyName}</span>
-          <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
-        </div>
-    );
-  },
-  "string": ({item}) => {
-    return (
+const ArgObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
+  return (
+      <div className="arg-object-title" onClick={(e) => {
+        if (keyName && propOnClick) {
+          propOnClick(keyName)
+        }
+      }}>
+        <span>{keyName}</span>
+        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
+      </div>
+  );
+};
+
+const ArgStringItem:React.FC<ArgValueProps> = ({item}) => {
+  return (
       <div>"{item}"</div>
-    );
-  },
-  "default": ({item}) => {
-    return (
-        <div>{item}</div>
-    );
-  },
+  );
 }
 
+const ArgDefaultItem:React.FC<ArgValueProps> = ({item}) => {
+  return (
+      <div>{item}</div>
+  );
+}
+
+export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
+  "object": ArgObjectItem,
+  "string": ArgStringItem,
+  "default": ArgDefaultItem,
+}
 
 interface ArgItemProps {
   item: any;
@@ -53,7 +61,7 @@ const ArgItem:React.FC<ArgItemProps> = ({
                                       keyName,
                                       level:propLevel,
                                       showKeyName=true,
-                                      expanded=false,
+                                      expanded:propExpanded=false,
                                       onClick:propOnClick,
                                       getType,
                                       componentMap
@@ -67,35 +75,33 @@ const ArgItem:React.FC<ArgItemProps> = ({
       propOnClick(keyName)
     }
   }
+  const _getItemType = getType || getConsoleItemType;
+  const _itemComponentMap = componentMap || consoleComponentMap;
 
-  let itemType:string;
-  if (getType) {
-    itemType = getType(item);
-  } else {
-    itemType = typeof(item);
-  }
+  let itemType:string = _getItemType(item);
+  let itemComponent:React.FC<ArgValueProps> = _itemComponentMap[itemType];
+
 
   if (itemType === "object") {
     return (
         <div  className="arg-object" >
-          <div className="arg-object-title" onClick={(e) => handleExpandClick(keyName)}>
-            {showKeyName && <span>{keyName}</span>}
-            <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
-          </div>
-          <ExpandableSpan obj={item} level={propLevel + 1} expanded={expanded}/>
+          <ArgObjectItem item={item} keyName={keyName} expanded={propExpanded} onClick={(e) => handleExpandClick(keyName)}/>
+          <ExpandableSpan obj={item} level={propLevel + 1} expanded={propExpanded}/>
         </div>
     );
   }
 
   if (itemType === "string") {
     return (
-        <span>"{item}"</span>
+        <ArgStringItem item={item} />
     );
   }
 
   return (
-      <span>{item}</span>
+      <ArgDefaultItem item={item} />
   );
+
+  // return React.createElement(itemComponent, {item, keyName, expanded:propExpanded, onClick:handleExpandClick}, null );
 }
 
 export default ArgItem;
