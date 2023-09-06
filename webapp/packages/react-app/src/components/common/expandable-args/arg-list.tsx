@@ -19,11 +19,13 @@ export const consoleComponentMap:StringComponentMap = {
 
 export const getConsoleItemInfo = (value:any):ItemInfo => {
   const _itemType = typeof (value);
+  const _isArray = _itemType === "object" && value.length !== undefined;
   const itemInfo:ItemInfo = {
     type: _itemType,
     isRecursive: _itemType === "object",
     component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
-    traversalFunc: _itemType === "object" ? (value.length) ? ArrayTraversalFunc : ObjectTraversalFunc : null,
+    isArray: _isArray,
+    traversalFunc: _itemType === "object" ? (_isArray) ? ArrayTraversalFunc : ObjectTraversalFunc : null,
   };
 
   return itemInfo;

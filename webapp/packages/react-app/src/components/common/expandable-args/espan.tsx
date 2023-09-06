@@ -19,6 +19,7 @@ export type ItemInfo = {
   type:string,
   component:React.FC<KeyValueRepresentationComponentProps>
   isRecursive:boolean,
+  isArray?: boolean,
   traversalFunc?: TraversalFunc|null,
 };
 
@@ -78,6 +79,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
       {propExpanded &&
         Object.entries(obj).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
+            console.log(`itemInfo:`, itemInfo);
 
             return (
                 <div key={index} >
