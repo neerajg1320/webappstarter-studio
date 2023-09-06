@@ -1,20 +1,17 @@
-import React,{useState} from 'react';
+import React from 'react';
 import "./arg-list.css";
 import {
-  ClickableKeyArrayItem,
   ClickableKeyCurlyBracketsObjectItem,
   ClickableKeySquareBracketsArrayItem,
   DivItem,
   DoubleQuotedDivItem
 } from "./default-item-components";
 import ExpandableSpan, {
-  KeyValueHOComponent,
   KeyValueRepresentationComponentProps,
   ItemInfo,
   ObjectTraversalFunc, ArrayTraversalFunc
 } from "./espan";
 
-// export type ItemType =  "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function" ;
 
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
 
@@ -41,19 +38,15 @@ export const getConsoleItemInfo = (value:any):ItemInfo => {
       _traversalFunc = ObjectTraversalFunc;
       _enclosingClass = "object-box";
     }
-
   }
 
-
-  const itemInfo:ItemInfo = {
+  return {
     type: _itemType,
     isRecursive: _isRecursive,
     traversalFunc: _traversalFunc,
     enclosingClass: _enclosingClass,
     component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
   };
-
-  return itemInfo;
 }
 
 
@@ -63,7 +56,6 @@ interface ArgListProps {
 
 
 const ArgList:React.FC<ArgListProps> = ({list}) => {
-
   const listInfo = getConsoleItemInfo(list);
 
   return (
