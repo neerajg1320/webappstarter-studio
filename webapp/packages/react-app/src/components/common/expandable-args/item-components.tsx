@@ -3,7 +3,6 @@ import {ArgValueProps} from "./espan";
 import './item-components.css';
 
 
-
 export const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
       <div className="arg-object-title" onClick={(e) => {

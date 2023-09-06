@@ -14,6 +14,7 @@ export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
 
 export interface ArgValueProps {
   item: any;
+  level?: number;
   keyName?: string|number;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
@@ -22,7 +23,6 @@ export interface ArgValueProps {
 interface KeyValueItemProps {
   item: any;
   keyName?: number|string;
-  showKeyName?: boolean;
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
   component: React.FC<ArgValueProps>;
