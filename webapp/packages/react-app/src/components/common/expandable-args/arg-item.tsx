@@ -12,7 +12,7 @@ export const getConsoleItemType = (item:any):string => {
   return typeof(item);
 }
 
-const ArgArrayObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
+const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
       <div className="arg-object-title" onClick={(e) => {
         if (keyName && propOnClick) {
@@ -26,41 +26,35 @@ const ArgArrayObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, on
 };
 
 
-const ExpandableSpanObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
+const DisplayNoneObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
-      <div className="arg-object-title" onClick={(e) => {
-        if (keyName && propOnClick) {
-          propOnClick(keyName)
-        }
-      }}>
-        {keyName && <span>{keyName}</span>}
-        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
+      <div>
       </div>
   );
 };
 
-const ArgStringItem:React.FC<ArgValueProps> = ({item}) => {
+const DoubleQuotedDivItem:React.FC<ArgValueProps> = ({item}) => {
   return (
       <div>"{item}"</div>
   );
 }
 
-const ArgDefaultItem:React.FC<ArgValueProps> = ({item}) => {
+const DivItem:React.FC<ArgValueProps> = ({item}) => {
   return (
       <div>{item}</div>
   );
 }
 
 export const expandableSpanComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
-  "object": ExpandableSpanObjectItem,
-  "string": ArgStringItem,
-  "default": ArgDefaultItem,
+  "object": DisplayNoneObjectItem,
+  "string": DoubleQuotedDivItem,
+  "default": DivItem,
 }
 
 export const argArrayComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
-  "object": ArgArrayObjectItem,
-  "string": ArgStringItem,
-  "default": ArgDefaultItem,
+  "object": ClickableKeyObjectItem,
+  "string": DoubleQuotedDivItem,
+  "default": DivItem,
 }
 
 
