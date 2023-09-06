@@ -13,14 +13,18 @@ interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps 
   component: React.FC<KeyValueRepresentationComponentProps>;
 }
 
+export type TraversalFunc = (value:any) => [string, any][];
 
 export type ItemInfo = {
   type:string,
   component:React.FC<KeyValueRepresentationComponentProps>
   isRecursive:boolean,
+  traversalFunc?: TraversalFunc|null,
 };
 
 export type GetItemInfoFunc = (value:any) => ItemInfo;
+
+
 
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
@@ -32,6 +36,17 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                              }) => {
 
   return React.createElement(component, {value, keyName, expanded, onClick}, null);
+}
+
+
+export const ObjectTraversalFunc:TraversalFunc= (value) => {
+  return Object.entries(value);
+}
+
+export const ArrayTraversalFunc:TraversalFunc= (value) => {
+  return value.map((item:any, index:number) => {
+    return [index, item];
+  });
 }
 
 interface ExpandableSpanProps {

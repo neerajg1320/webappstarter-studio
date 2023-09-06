@@ -22,6 +22,7 @@
 
 .object-vertical-box{
   /* border: 1px solid blueviolet; */
+  display: flex;
+  flex-direction: column;
   font-weight: normal;
-
 }

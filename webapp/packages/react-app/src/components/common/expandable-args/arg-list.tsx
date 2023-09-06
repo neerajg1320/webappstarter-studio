@@ -1,7 +1,12 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
 import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./default-item-components";
-import ExpandableSpan, {KeyValueHOComponent, KeyValueRepresentationComponentProps, ItemInfo} from "./espan";
+import ExpandableSpan, {
+  KeyValueHOComponent,
+  KeyValueRepresentationComponentProps,
+  ItemInfo,
+  ObjectTraversalFunc, ArrayTraversalFunc
+} from "./espan";
 
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
 
@@ -11,13 +16,17 @@ export const consoleComponentMap:StringComponentMap = {
   "default": DivItem,
 }
 
+
 export const getConsoleItemInfo = (value:any):ItemInfo => {
-  const itemType = typeof(value);
-  let component = consoleComponentMap["default"];
-  if (Object.keys(consoleComponentMap).includes(itemType)) {
-    component = consoleComponentMap[itemType]
-  }
-  return {type: itemType, isRecursive: itemType === "object", component};
+  const _itemType = typeof (value);
+  const itemInfo:ItemInfo = {
+    type: _itemType,
+    isRecursive: _itemType === "object",
+    component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
+    traversalFunc: _itemType === "object" ? (value.length) ? ArrayTraversalFunc : ObjectTraversalFunc : null,
+  };
+
+  return itemInfo;
 }
 
 
