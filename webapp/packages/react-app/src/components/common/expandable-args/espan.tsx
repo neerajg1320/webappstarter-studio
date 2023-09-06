@@ -71,7 +71,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string|number) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
     }
     setChildrenExpandedMap((prev) => {
@@ -85,10 +85,13 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
       <div className={isArray ? "array-horizontal-box" : "object-vertical-box"}>
       {propExpanded &&
-        // Object.entries(propObjectOrArray).map(([k, v], index:number) => {
+        // Object.entries(obj)
+        // arr.map((v, index) => [index,v])
         traversalFunc(propObjectOrArray).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
-            console.log(`k:${k} v:${v} itemInfo(v)`, itemInfo);
+            if (debugComponent) {
+              console.log(`k:${k} v:${v} itemInfo(v)`, itemInfo);
+            }
 
             return (
                 <div key={index} >
