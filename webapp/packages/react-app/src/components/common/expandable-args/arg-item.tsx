@@ -9,8 +9,9 @@ export interface ArgValueProps {
   onClick?: (keyName:string|number) => void
 }
 
-export const getConsoleItemType = (item:any):ItemType => {
-  return {type: typeof(item), isRecursive: false};
+export const getConsoleItemInfo = (item:any):ItemInfo => {
+  const itemType = typeof(item);
+  return {type: itemType, isRecursive: itemType === "object"};
 }
 
 const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
@@ -51,8 +52,8 @@ export const argArrayComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
   "default": DivItem,
 }
 
-export type ItemType = {type:string, isRecursive:boolean};
-export type GetItemTypeFunc = (item:any) => ItemType;
+export type ItemInfo = {type:string, isRecursive:boolean};
+export type GetItemInfoFunc = (item:any) => ItemInfo;
 
 interface ArgItemProps {
   item: any;
@@ -60,7 +61,7 @@ interface ArgItemProps {
   showKeyName?: boolean;
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
-  getItemType: GetItemTypeFunc;
+  itemType: string;
   componentMap: {[k:string]:React.FC<ArgValueProps>}
 }
 
@@ -70,7 +71,7 @@ const ArgItem:React.FC<ArgItemProps> = ({
                                       keyName,
                                       expanded=false,
                                       onClick,
-                                      getItemType,
+                                      itemType,
                                       componentMap
                                     }) => {
   useEffect(() => {
@@ -80,7 +81,7 @@ const ArgItem:React.FC<ArgItemProps> = ({
   }, [componentMap]);
 
 
-  let itemType:string = getItemType(item).type;
+  // let itemType:string = getItemTypeFunc(item).type;
 
   if (!Object.keys(componentMap).includes(itemType)) {
     itemType = "default";

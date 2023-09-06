@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import ArgItem, {argArrayComponentMap, getConsoleItemType} from "./arg-item";
+import ArgItem, {argArrayComponentMap, getConsoleItemInfo} from "./arg-item";
 import ExpandableSpan from "./espan";
 
 interface ArgListProps {
@@ -23,14 +23,25 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       <div className="args-box">
       {(list && list.length > 0) &&
         list.map((item:any, index:number) => {
+          const itemInfo = getConsoleItemInfo(item);
           return (
             <div key={index}>
-              <ArgItem item={item} keyName={typeof(item) === "object" ? index : undefined} expanded={expanded[index]} onClick={handleArgClick}
-                       getItemType={getConsoleItemType} componentMap={argArrayComponentMap}
+              <ArgItem item={item}
+                       keyName={typeof(item) === "object" ? index : undefined}
+                       expanded={expanded[index]}
+                       onClick={handleArgClick}
+                       itemType={itemInfo.type}
+                       componentMap={argArrayComponentMap}
               />
-              {typeof(item) === "object" &&
-                  <ExpandableSpan obj={item} level={0} expanded={expanded[index]}
-                                  getItemType={getConsoleItemType} componentMap={argArrayComponentMap}/>}
+              {itemInfo.isRecursive &&
+                  <ExpandableSpan
+                      obj={item}
+                      level={0}
+                      expanded={expanded[index]}
+                      getItemInfoFunc={getConsoleItemInfo}
+                      componentMap={argArrayComponentMap}
+                  />
+              }
             </div>
           );
         })
