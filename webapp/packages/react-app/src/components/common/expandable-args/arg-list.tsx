@@ -62,13 +62,14 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                                    onClick={handleArgClick}
                                    component={itemInfo.component}
               />
-              {itemInfo.isRecursive &&
+              {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
                   <ExpandableSpan
                       objectOrArray={value}
                       isArray={itemInfo.isArray}
                       level={0}
                       expanded={childrenExpandedMap[index]}
                       getItemInfoFunc={getConsoleItemInfo}
+                      traversalFunc={itemInfo.traversalFunc}
                   />
               }
             </div>
