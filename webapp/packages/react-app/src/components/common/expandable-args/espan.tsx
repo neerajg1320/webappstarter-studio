@@ -1,19 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import ArgItem, {ArgValueProps} from "./arg-item";
+import ArgItem, {ArgValueProps, GetItemTypeFunc} from "./arg-item";
+
+
 
 interface ExpandableSpanProps {
   obj: object;
   level: number;
   expanded: boolean;
-  getType: (item:any) => string;
+  getItemType: GetItemTypeFunc;
   componentMap: {[k:string]:React.FC<ArgValueProps>}
 };
 
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded,
-                                                        getType:propGetType, componentMap:propComponentMap}) => {
+                                                        getItemType:propGetType, componentMap:propComponentMap}) => {
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string|number) => {
@@ -36,10 +38,10 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
                 <div key={index} >
                     <div className="entry" >
 
-                      <ArgItem item={v} keyName={k} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} onClick={(e) => handleExpandClick(k)} />
+                      <ArgItem item={v} keyName={k} expanded={expanded[k]} getItemType={propGetType} componentMap={propComponentMap} onClick={(e) => handleExpandClick(k)} />
 
                     </div>
-                    {typeof(v) === "object" && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} />}
+                    {typeof(v) === "object" && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} getItemType={propGetType} componentMap={propComponentMap} />}
                 </div>
             );
         })

@@ -9,8 +9,8 @@ export interface ArgValueProps {
   onClick?: (keyName:string|number) => void
 }
 
-export const getConsoleItemType = (item:any):string => {
-  return typeof(item);
+export const getConsoleItemType = (item:any):ItemType => {
+  return {type: typeof(item), isRecursive: false};
 }
 
 const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
@@ -51,6 +51,8 @@ export const argArrayComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
   "default": DivItem,
 }
 
+export type ItemType = {type:string, isRecursive:boolean};
+export type GetItemTypeFunc = (item:any) => ItemType;
 
 interface ArgItemProps {
   item: any;
@@ -58,7 +60,7 @@ interface ArgItemProps {
   showKeyName?: boolean;
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
-  getType: (item:any) => string;
+  getItemType: GetItemTypeFunc;
   componentMap: {[k:string]:React.FC<ArgValueProps>}
 }
 
@@ -68,7 +70,7 @@ const ArgItem:React.FC<ArgItemProps> = ({
                                       keyName,
                                       expanded=false,
                                       onClick,
-                                      getType,
+                                      getItemType,
                                       componentMap
                                     }) => {
   useEffect(() => {
@@ -77,18 +79,16 @@ const ArgItem:React.FC<ArgItemProps> = ({
     }
   }, [componentMap]);
 
-  const getItemType = getType;
-  const itemComponentMap = componentMap;
 
-  let itemType:string = getItemType(item);
+  let itemType:string = getItemType(item).type;
 
-  if (!Object.keys(itemComponentMap).includes(itemType)) {
+  if (!Object.keys(componentMap).includes(itemType)) {
     itemType = "default";
   }
 
   // https://stackoverflow.com/questions/29875869/react-jsx-dynamic-component-name
   // React createElement expects string or a React class as first element
-  return React.createElement(itemComponentMap[itemType], {item, keyName, expanded, onClick}, null);
+  return React.createElement(componentMap[itemType], {item, keyName, expanded, onClick}, null);
 }
 
 export default ArgItem;

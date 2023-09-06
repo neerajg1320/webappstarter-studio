@@ -26,11 +26,11 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           return (
             <div key={index}>
               <ArgItem item={item} keyName={typeof(item) === "object" ? index : undefined} expanded={expanded[index]} onClick={handleArgClick}
-                       getType={getConsoleItemType} componentMap={argArrayComponentMap}
+                       getItemType={getConsoleItemType} componentMap={argArrayComponentMap}
               />
               {typeof(item) === "object" &&
                   <ExpandableSpan obj={item} level={0} expanded={expanded[index]}
-                                  getType={getConsoleItemType} componentMap={argArrayComponentMap}/>}
+                                  getItemType={getConsoleItemType} componentMap={argArrayComponentMap}/>}
             </div>
           );
         })
