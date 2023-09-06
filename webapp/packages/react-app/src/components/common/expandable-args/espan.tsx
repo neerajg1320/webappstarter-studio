@@ -44,13 +44,13 @@ interface ExpandableSpanProps {
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded,
                                                         getItemInfoFunc}) => {
-  const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
+  const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string|number) => {
     if (debugComponent) {
       console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
     }
-    setExpanded((prev) => {
+    setChildrenExpandedMap((prev) => {
       return {...prev, [k]: !prev[k]};
     });
   }
@@ -58,7 +58,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
 
   return (
     <div className="object-wrapper">
-      {/*<pre>{JSON.stringify(expanded)}</pre>*/}
+      {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
       <div className="object-box">
       {propExpanded &&
         Object.entries(obj).map(([k, v], index:number) => {
@@ -69,11 +69,11 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
                   <KeyValueHOComponent
                       value={v}
                       keyName={k}
-                      expanded={expanded[k]}
+                      expanded={childrenExpandedMap[k]}
                       component={itemInfo.component}
                       onClick={(e) => handleExpandClick(k)}
                   />
-                  {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} {...{getItemInfoFunc}} />}
+                  {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={childrenExpandedMap[k]} {...{getItemInfoFunc}} />}
                 </div>
             );
         })
