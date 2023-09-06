@@ -56,6 +56,7 @@ interface ExpandableSpanProps {
   objectOrArray: object;
   type: string;
   traversalFunc: TraversalFunc;
+  enclosingClass: string|null;
   level: number;
   expanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
@@ -66,8 +67,9 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         objectOrArray:propObjectOrArray,
                                                         type,
                                                         traversalFunc,
+                                                        enclosingClass,
                                                         level:propLevel,
-                                                        expanded:propExpanded,
+                                                        expanded,
                                                         getItemInfoFunc
                                                       }) => {
   const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
@@ -85,8 +87,8 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   return (
     <div className="object-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
-      <div className={`${type}-box`}>
-      {propExpanded &&
+      <div className={`${enclosingClass||''}`}>
+      {expanded &&
         // Object.entries(obj)
         // arr.map((v, index) => [index,v])
         traversalFunc(propObjectOrArray).map(([k, v], index:number) => {
@@ -111,6 +113,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                         <ExpandableSpan objectOrArray={v}
                                         type={itemInfo.type}
                                         traversalFunc={itemInfo.traversalFunc}
+                                        enclosingClass={itemInfo.enclosingClass}
                                         level={propLevel + 1}
                                         expanded={childrenExpandedMap[k]}
                                         {...{getItemInfoFunc}}
