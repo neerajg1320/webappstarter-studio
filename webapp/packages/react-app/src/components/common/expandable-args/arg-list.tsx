@@ -22,17 +22,28 @@ export const consoleComponentMap:StringComponentMap = {
 
 export const getConsoleItemInfo = (value:any):ItemInfo => {
   let _itemType:string = typeof (value);
+  let _isRecursive = _itemType === "object";
   const _isArray = _itemType === "object" && value.length !== undefined;
-  // if (_isArray) {
-  //   _itemType = "array";
-  // }
+
+  if (_isArray) {
+    _itemType = "array";
+  }
+
+  let _traversalFunc = null;
+  if (_isRecursive) {
+    if (_isArray) {
+      _traversalFunc = ArrayTraversalFunc;
+    } else {
+      _traversalFunc = ObjectTraversalFunc;
+    }
+  }
 
   const itemInfo:ItemInfo = {
     type: _itemType,
     isRecursive: _itemType === "object" || _itemType === "array",
-    component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
     isArray: _isArray,
-    traversalFunc: _itemType === "object" ? (_isArray) ? ArrayTraversalFunc : ObjectTraversalFunc : null,
+    traversalFunc: _traversalFunc,
+    component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
   };
 
   return itemInfo;
