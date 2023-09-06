@@ -90,7 +90,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
               {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
                   <ExpandableSpan
                       objectOrArray={value}
-                      isArray={itemInfo.isArray}
+                      // isArray={itemInfo.isArray}
                       type={itemInfo.type}
                       level={0}
                       expanded={childrenExpandedMap[index]}

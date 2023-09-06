@@ -54,7 +54,7 @@ export const ArrayTraversalFunc:TraversalFunc= (value) => {
 
 interface ExpandableSpanProps {
   objectOrArray: object;
-  isArray: boolean;
+  // isArray: boolean;
   type: string;
   traversalFunc: TraversalFunc;
   level: number;
@@ -65,7 +65,7 @@ interface ExpandableSpanProps {
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         objectOrArray:propObjectOrArray,
-                                                        isArray=false,
+                                                        // isArray=false,
                                                         type,
                                                         traversalFunc,
                                                         level:propLevel,
@@ -102,7 +102,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                   <KeyValueHOComponent
                       value={v}
                       keyName={k}
-                      parentType={isArray ? "array" : "object"}
+                      parentType={type}
                       expanded={childrenExpandedMap[k]}
                       component={itemInfo.component}
                       onClick={(e) => handleExpandClick(k)}
@@ -111,7 +111,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                       <>
                       {/*<pre>{JSON.stringify(itemInfo.traversalFunc(v))}</pre>*/}
                         <ExpandableSpan objectOrArray={v}
-                                        isArray={itemInfo.isArray}
+                                        // isArray={itemInfo.isArray}
                                         type={itemInfo.type}
                                         traversalFunc={itemInfo.traversalFunc}
                                         level={propLevel + 1}
