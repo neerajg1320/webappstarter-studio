@@ -35,12 +35,8 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
             return (
                 <div key={index} >
                     <div className="entry" >
-                      <span onClick={(e) => handleExpandClick(k)}>
-                        {k}:
-                      </span>
-                      {/*{typeof(v) === "object" && <i className={"fas" +  (expanded[k] ? " fa-caret-down" : " fa-caret-right")} />}*/}
 
-                      <ArgItem item={v} keyName={k} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} />
+                      <ArgItem item={v} keyName={k} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} onClick={(e) => handleExpandClick(k)} />
 
                     </div>
                     {typeof(v) === "object" && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} />}
