@@ -20,9 +20,17 @@
   align-items: center;
 }
 
-.object-vertical-box{
+.object-box {
   /* border: 1px solid blueviolet; */
   display: flex;
   flex-direction: column;
   font-weight: normal;
+}
+
+.array-box {
+  /*border: 1px solid blue;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
 }

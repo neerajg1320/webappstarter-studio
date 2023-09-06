@@ -59,13 +59,6 @@ interface ArgListProps {
 
 
 const ArgList:React.FC<ArgListProps> = ({list}) => {
-  const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
-
-  const handleArgClick = (k:number|string) => {
-    setChildrenExpandedMap((prev) => {
-      return {...prev, [k]: !prev[k]};
-    });
-  }
 
   const listInfo = getConsoleItemInfo(list);
 
