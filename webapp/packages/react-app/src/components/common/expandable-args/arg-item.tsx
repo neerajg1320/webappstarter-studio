@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import './arg-item.css';
 import ExpandableSpan from "./espan";
 
-interface ArgValueProps {
+export interface ArgValueProps {
   item: any;
   keyName?: string|number;
   expanded?: boolean;
@@ -47,7 +47,6 @@ export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
 interface ArgItemProps {
   item: any;
   keyName: number|string;
-  level: number;
   showKeyName?: boolean;
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
@@ -59,7 +58,6 @@ interface ArgItemProps {
 const ArgItem:React.FC<ArgItemProps> = ({
                                       item,
                                       keyName,
-                                      level:propLevel,
                                       showKeyName=true,
                                       expanded:propExpanded=false,
                                       onClick:propOnClick,
@@ -75,33 +73,23 @@ const ArgItem:React.FC<ArgItemProps> = ({
       propOnClick(keyName)
     }
   }
-  const _getItemType = getType || getConsoleItemType;
-  const _itemComponentMap = componentMap || consoleComponentMap;
+  const getItemType = getType || getConsoleItemType;
+  const itemComponentMap = componentMap || consoleComponentMap;
 
-  let itemType:string = _getItemType(item);
-  let itemComponent:React.FC<ArgValueProps> = _itemComponentMap[itemType];
+  let itemType:string = getItemType(item);
 
+  if (!Object.keys(itemComponentMap).includes(itemType)) {
+    itemType = "default";
+  }
 
+  let props:ArgValueProps = {item};
   if (itemType === "object") {
-    return (
-        <div  className="arg-object" >
-          <ArgObjectItem item={item} keyName={keyName} expanded={propExpanded} onClick={(e) => handleExpandClick(keyName)}/>
-          <ExpandableSpan obj={item} level={propLevel + 1} expanded={propExpanded}/>
-        </div>
-    );
+    props = {...props, keyName, expanded:propExpanded, onClick:handleExpandClick}
   }
 
-  if (itemType === "string") {
-    return (
-        <ArgStringItem item={item} />
-    );
-  }
-
-  return (
-      <ArgDefaultItem item={item} />
-  );
-
-  // return React.createElement(itemComponent, {item, keyName, expanded:propExpanded, onClick:handleExpandClick}, null );
+  // https://stackoverflow.com/questions/29875869/react-jsx-dynamic-component-name
+  // React createElement expects string or a React class as first element
+  return React.createElement(itemComponentMap[itemType], props, null);
 }
 
 export default ArgItem;

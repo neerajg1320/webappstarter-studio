@@ -1,16 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import ArgItem from "./arg-item";
+import ArgItem, {ArgValueProps} from "./arg-item";
 
 interface ExpandableSpanProps {
   obj: object;
   level: number;
   expanded: boolean;
+  getType?: (item:any) => string;
+  componentMap?: {[k:string]:React.FC<ArgValueProps>}
 };
 
 
-const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded}) => {
+const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded,
+                                                        getType:propGetType, componentMap:propComponentMap}) => {
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string|number) => {
@@ -22,6 +25,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
     });
   }
 
+  const recursiveProps = {level: propLevel+1, getType:propGetType, componentMap:propComponentMap}
   return (
     <div className="object-wrapper">
       {/*<pre>{JSON.stringify(expanded)}</pre>*/}
@@ -31,10 +35,13 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
             return (
                 <div key={index} >
                     <div className="entry" >
-                      {typeof(v) !== "object" && <span>{k}:</span>}
-                      <ArgItem item={v} keyName={k} level={propLevel}expanded={expanded[k]} onClick={handleExpandClick}/>
+                      <span onClick={(e) => handleExpandClick(k)}>
+                        {k}:
+                      </span>
+                      {typeof(v) === "object" && <i className={"fas" +  (expanded[k] ? " fa-caret-down" : " fa-caret-right")} />}
+                      {typeof(v) !== "object" && <ArgItem item={v} keyName={k} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap}/>}
                     </div>
-
+                    {typeof(v) === "object" && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} />}
                 </div>
             );
         })
