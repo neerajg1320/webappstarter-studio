@@ -9,6 +9,8 @@ interface ExpandableSpanProps {
   expanded: boolean;
 };
 
+
+
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded}) => {
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
