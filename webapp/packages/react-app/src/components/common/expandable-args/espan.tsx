@@ -31,7 +31,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
                 <div key={index} >
                     <div className="entry" >
                       {typeof(v) !== "object" && <span>{k}:</span>}
-                      <ArgItem item={v} index={k} expanded={expanded[k]} onClick={handleExpandClick}/>
+                      <ArgItem item={v} keyName={k} level={propLevel}expanded={expanded[k]} onClick={handleExpandClick}/>
                     </div>
 
                 </div>

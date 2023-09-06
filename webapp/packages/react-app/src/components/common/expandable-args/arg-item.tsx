@@ -4,32 +4,35 @@ import './arg-item.css';
 
 interface ArgProps {
   item: any;
-  index: number|string;
-  showIndex?: boolean;
+  keyName: number|string;
+  level: number;
+  showKeyName?: boolean;
   expanded?: boolean;
-  onClick?: (index:number|string) => void;
+  onClick?: (keyName:number|string) => void;
 }
+
 const ArgItem:React.FC<ArgProps> = ({
                                       item,
-                                      index,
-                                      showIndex=true,
+                                      keyName,
+                                      level:propLevel,
+                                      showKeyName=true,
                                       expanded=false,
                                       onClick:propOnClick
-}) => {
-  const handleExpandClick = (index:number|string) => {
+                                    }) => {
+  const handleExpandClick = (keyName:number|string) => {
     if (propOnClick) {
-      propOnClick(index)
+      propOnClick(keyName)
     }
   }
 
   if (typeof(item) === "object") {
     return (
         <div  className="arg-object" >
-          <div className="arg-object-title" onClick={(e) => handleExpandClick(index)}>
-            {showIndex && <span>{index}</span>}
+          <div className="arg-object-title" onClick={(e) => handleExpandClick(keyName)}>
+            {showKeyName && <span>{keyName}</span>}
             <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
           </div>
-          <ExpandableSpan obj={item} level={1} expanded={expanded}/>
+          <ExpandableSpan obj={item} level={propLevel + 1} expanded={expanded}/>
         </div>
     );
   }

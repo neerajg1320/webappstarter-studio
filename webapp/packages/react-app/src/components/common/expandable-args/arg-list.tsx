@@ -24,7 +24,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
         list.map((item:any, index:number) => {
           return (
             <div key={index}>
-              <ArgItem item={item} index={index} expanded={expanded[index]} onClick={handleArgClick} />
+              <ArgItem item={item} keyName={index} level={0} expanded={expanded[index]} onClick={handleArgClick} />
             </div>
           );
         })
