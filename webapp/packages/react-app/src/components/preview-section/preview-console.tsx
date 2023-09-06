@@ -106,7 +106,6 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({count=0, onChange:propOnC
               return (
                   <div key={index}>
                     <ArgList list={message.content as any[]} />
-                    {/*<li key={index} className={`console-${message.type}`}>{JSON.stringify(message.content)}</li>*/}
                   </div>
               )
             }
