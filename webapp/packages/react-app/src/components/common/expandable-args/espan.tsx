@@ -7,8 +7,8 @@ interface ExpandableSpanProps {
   obj: object;
   level: number;
   expanded: boolean;
-  getType?: (item:any) => string;
-  componentMap?: {[k:string]:React.FC<ArgValueProps>}
+  getType: (item:any) => string;
+  componentMap: {[k:string]:React.FC<ArgValueProps>}
 };
 
 
@@ -38,10 +38,12 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
                       <span onClick={(e) => handleExpandClick(k)}>
                         {k}:
                       </span>
-                      {typeof(v) === "object" && <i className={"fas" +  (expanded[k] ? " fa-caret-down" : " fa-caret-right")} />}
-                      {typeof(v) !== "object" && <ArgItem item={v} keyName={k} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap}/>}
+                      {/*{typeof(v) === "object" && <i className={"fas" +  (expanded[k] ? " fa-caret-down" : " fa-caret-right")} />}*/}
+
+                      <ArgItem item={v} keyName={k} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} />
+
                     </div>
-                    {typeof(v) === "object" && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} />}
+                    {typeof(v) === "object" && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} getType={propGetType} componentMap={propComponentMap} />}
                 </div>
             );
         })

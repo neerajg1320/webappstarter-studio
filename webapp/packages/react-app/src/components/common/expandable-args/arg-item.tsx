@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import './arg-item.css';
-import ExpandableSpan from "./espan";
 
 export interface ArgValueProps {
   item: any;
@@ -13,14 +12,28 @@ export const getConsoleItemType = (item:any):string => {
   return typeof(item);
 }
 
-const ArgObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
+const ArgArrayObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
       <div className="arg-object-title" onClick={(e) => {
         if (keyName && propOnClick) {
           propOnClick(keyName)
         }
       }}>
-        <span>{keyName}</span>
+        {keyName && <span>{keyName}</span>}
+        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
+      </div>
+  );
+};
+
+
+const ExpandableSpanObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
+  return (
+      <div className="arg-object-title" onClick={(e) => {
+        if (keyName && propOnClick) {
+          propOnClick(keyName)
+        }
+      }}>
+        {keyName && <span>{keyName}</span>}
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
@@ -38,20 +51,27 @@ const ArgDefaultItem:React.FC<ArgValueProps> = ({item}) => {
   );
 }
 
-export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
-  "object": ArgObjectItem,
+export const expandableSpanComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
+  "object": ExpandableSpanObjectItem,
   "string": ArgStringItem,
   "default": ArgDefaultItem,
 }
 
+export const argArrayComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
+  "object": ArgArrayObjectItem,
+  "string": ArgStringItem,
+  "default": ArgDefaultItem,
+}
+
+
 interface ArgItemProps {
   item: any;
-  keyName: number|string;
+  keyName?: number|string;
   showKeyName?: boolean;
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
-  getType?: (item:any) => string;
-  componentMap?: {[k:string]:React.FC<ArgValueProps>}
+  getType: (item:any) => string;
+  componentMap: {[k:string]:React.FC<ArgValueProps>}
 }
 
 
@@ -73,8 +93,8 @@ const ArgItem:React.FC<ArgItemProps> = ({
       propOnClick(keyName)
     }
   }
-  const getItemType = getType || getConsoleItemType;
-  const itemComponentMap = componentMap || consoleComponentMap;
+  const getItemType = getType;
+  const itemComponentMap = componentMap;
 
   let itemType:string = getItemType(item);
 

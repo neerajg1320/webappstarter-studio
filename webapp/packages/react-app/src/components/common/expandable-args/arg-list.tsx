@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import ArgItem, {consoleComponentMap, getConsoleItemType} from "./arg-item";
+import ArgItem, {argArrayComponentMap, expandableSpanComponentMap, getConsoleItemType} from "./arg-item";
 import ExpandableSpan from "./espan";
 
 interface ArgListProps {
@@ -26,9 +26,9 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           return (
             <div key={index}>
               <ArgItem item={item} keyName={index} expanded={expanded[index]} onClick={handleArgClick}
-                       getType={getConsoleItemType} componentMap={consoleComponentMap}
+                       getType={getConsoleItemType} componentMap={argArrayComponentMap}
               />
-              {typeof(item) === "object" && <ExpandableSpan obj={item} level={0} expanded={expanded[index]}/>}
+              {typeof(item) === "object" && <ExpandableSpan obj={item} level={0} expanded={expanded[index]} getType={getConsoleItemType} componentMap={expandableSpanComponentMap}/>}
             </div>
           );
         })
