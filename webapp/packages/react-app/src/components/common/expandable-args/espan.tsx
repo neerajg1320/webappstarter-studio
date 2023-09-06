@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import ArgItem, {GetItemInfoFunc, StringComponentMap} from "./arg-item";
+import KeyValueItem, {GetItemInfoFunc, StringComponentMap} from "./key-value-item";
 
 
 
@@ -38,7 +38,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
 
             return (
                 <div key={index} >
-                  <ArgItem
+                  <KeyValueItem
                       item={v}
                       keyName={k}
                       expanded={expanded[k]}

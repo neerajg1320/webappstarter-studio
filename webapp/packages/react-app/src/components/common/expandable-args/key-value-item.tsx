@@ -1,5 +1,5 @@
 import React from "react";
-import './arg-item.css';
+import './key-value-item.css';
 
 
 export interface ArgValueProps {
@@ -9,7 +9,12 @@ export interface ArgValueProps {
   onClick?: (keyName:string|number) => void
 }
 
-export type ItemInfo = {type:string, isRecursive:boolean, component:React.FC<ArgValueProps>};
+export type ItemInfo = {
+  type:string,
+  component:React.FC<ArgValueProps>
+  isRecursive:boolean,
+};
+
 export type GetItemInfoFunc = (item:any) => ItemInfo;
 export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
 
@@ -46,10 +51,6 @@ export const DivItem:React.FC<ArgValueProps> = ({item,keyName}) => {
 }
 
 
-
-
-
-
 interface ArgItemProps {
   item: any;
   keyName?: number|string;
@@ -60,7 +61,7 @@ interface ArgItemProps {
 }
 
 
-const ArgItem:React.FC<ArgItemProps> = ({
+const KeyValueItem:React.FC<ArgItemProps> = ({
                                           item,
                                           keyName,
                                           expanded=false,
@@ -71,4 +72,4 @@ const ArgItem:React.FC<ArgItemProps> = ({
   return React.createElement(component, {item, keyName, expanded, onClick}, null);
 }
 
-export default ArgItem;
+export default KeyValueItem;
