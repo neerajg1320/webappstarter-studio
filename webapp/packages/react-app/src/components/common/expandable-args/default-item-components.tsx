@@ -1,6 +1,6 @@
 import React from "react";
 import {KeyValueRepresentationComponentProps} from "./espan";
-import './item-components.css';
+import './default-item-components.css';
 
 
 export const ClickableKeyObjectItem:React.FC<KeyValueRepresentationComponentProps> = (

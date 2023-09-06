@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./item-components";
+import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./default-item-components";
 import ExpandableSpan, {KeyValueHOComponent, KeyValueRepresentationComponentProps, ItemInfo} from "./espan";
 
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
@@ -38,7 +38,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
   return (
     <div className="args-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap, null, 2)}</pre>*/}
-      <div className="args-box">
+      <div className="array-horizontal-box">
       {(list && list.length > 0) &&
         list.map((value:any, index:number) => {
           const itemInfo = getConsoleItemInfo(value);

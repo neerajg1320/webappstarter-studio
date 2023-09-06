@@ -59,7 +59,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
   return (
     <div className="object-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
-      <div className="object-box">
+      <div className="object-vertical-box">
       {propExpanded &&
         Object.entries(obj).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
