@@ -87,7 +87,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   return (
     <div className="object-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
-      <div className={isArray ? "array-horizontal-box" : "object-vertical-box"}>
+      <div className={type === "array" ? "array-horizontal-box" : "object-vertical-box"}>
       {propExpanded &&
         // Object.entries(obj)
         // arr.map((v, index) => [index,v])
