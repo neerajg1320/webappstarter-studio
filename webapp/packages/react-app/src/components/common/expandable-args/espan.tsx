@@ -63,6 +63,7 @@ interface ExpandableSpanProps {
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         objectOrArray:propObjectOrArray,
                                                         isArray=false,
+                                                        traversalFunc,
                                                         level:propLevel,
                                                         expanded:propExpanded,
                                                         getItemInfoFunc
@@ -70,7 +71,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string|number) => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
     }
     setChildrenExpandedMap((prev) => {
@@ -84,9 +85,10 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
       <div className={isArray ? "array-horizontal-box" : "object-vertical-box"}>
       {propExpanded &&
-        Object.entries(propObjectOrArray).map(([k, v], index:number) => {
+        // Object.entries(propObjectOrArray).map(([k, v], index:number) => {
+        traversalFunc(propObjectOrArray).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
-            console.log(`itemInfo:`, itemInfo);
+            console.log(`k:${k} v:${v} itemInfo(v)`, itemInfo);
 
             return (
                 <div key={index} >
@@ -98,12 +100,15 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                       onClick={(e) => handleExpandClick(k)}
                   />
                   {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
+                      <>
+                      {/*<pre>{JSON.stringify(itemInfo.traversalFunc(v))}</pre>*/}
                       <ExpandableSpan objectOrArray={v}
                                                            isArray={itemInfo.isArray}
                                                            traversalFunc={itemInfo.traversalFunc}
                                                            level={propLevel + 1}
                                                            expanded={childrenExpandedMap[k]}
                                                            {...{getItemInfoFunc}} />
+                      </>
                   }
                 </div>
             );
