@@ -55,7 +55,6 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                       level={0}
                       expanded={expanded[index]}
                       getItemInfoFunc={getConsoleItemInfo}
-                      componentMap={consoleComponentMap}
                   />
               }
             </div>

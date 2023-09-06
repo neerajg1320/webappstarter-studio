@@ -40,12 +40,12 @@ interface ExpandableSpanProps {
   level: number;
   expanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
-  componentMap: StringComponentMap
+  // componentMap: StringComponentMap
 };
 
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, expanded:propExpanded,
-                                                        getItemInfoFunc, componentMap}) => {
+                                                        getItemInfoFunc}) => {
   const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
 
   const handleExpandClick = (k:string|number) => {
@@ -75,7 +75,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
                       component={itemInfo.component}
                       onClick={(e) => handleExpandClick(k)}
                   />
-                  {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} {...{getItemInfoFunc, componentMap}} />}
+                  {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} {...{getItemInfoFunc}} />}
                 </div>
             );
         })
