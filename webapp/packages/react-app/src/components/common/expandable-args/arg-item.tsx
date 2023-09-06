@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React from "react";
 import './arg-item.css';
-import {debugComponent} from "../../../config/global";
+
 
 export interface ArgValueProps {
   item: any;
@@ -13,7 +13,7 @@ export type ItemInfo = {type:string, isRecursive:boolean, component:React.FC<Arg
 export type GetItemInfoFunc = (item:any) => ItemInfo;
 export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
 
-const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
+export const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
       <div className="arg-object-title" onClick={(e) => {
         if (keyName && propOnClick) {
@@ -27,7 +27,7 @@ const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded
 };
 
 
-const DoubleQuotedDivItem:React.FC<ArgValueProps> = ({item, keyName}) => {
+export const DoubleQuotedDivItem:React.FC<ArgValueProps> = ({item, keyName}) => {
   return (
       <div>
         {keyName && <span>{keyName}:</span>}
@@ -36,7 +36,7 @@ const DoubleQuotedDivItem:React.FC<ArgValueProps> = ({item, keyName}) => {
   );
 }
 
-const DivItem:React.FC<ArgValueProps> = ({item,keyName}) => {
+export const DivItem:React.FC<ArgValueProps> = ({item,keyName}) => {
   return (
       <div>
         {keyName && <span>{keyName}:</span>}
@@ -47,33 +47,8 @@ const DivItem:React.FC<ArgValueProps> = ({item,keyName}) => {
 
 
 
-export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
-  "object": ClickableKeyObjectItem,
-  "string": DoubleQuotedDivItem,
-  "default": DivItem,
-}
-
-export const getConsoleItemInfo = (value:any):ItemInfo => {
-  const itemType = typeof(value);
-  let component = consoleComponentMap["default"];
-  if (Object.keys(consoleComponentMap).includes(itemType)) {
-    component = consoleComponentMap[itemType]
-  }
-  return {type: itemType, isRecursive: itemType === "object", component};
-}
 
 
-
-
-// export const getItemInfo = (item:any, getItemInfoFunc:GetItemInfoFunc, componentMap:StringComponentMap):ItemInfo => {
-//   let _itemInfo = getItemInfoFunc(item);
-//
-//   if (!Object.keys(componentMap).includes(_itemInfo.type)) {
-//     _itemInfo = {type: "default", isRecursive:false}
-//   }
-//
-//   return _itemInfo;
-// }
 
 interface ArgItemProps {
   item: any;

@@ -1,7 +1,23 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import ArgItem, {consoleComponentMap, getConsoleItemInfo} from "./arg-item";
+import ArgItem, {ArgValueProps, ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem, ItemInfo} from "./arg-item";
 import ExpandableSpan from "./espan";
+
+export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
+  "object": ClickableKeyObjectItem,
+  "string": DoubleQuotedDivItem,
+  "default": DivItem,
+}
+
+export const getConsoleItemInfo = (value:any):ItemInfo => {
+  const itemType = typeof(value);
+  let component = consoleComponentMap["default"];
+  if (Object.keys(consoleComponentMap).includes(itemType)) {
+    component = consoleComponentMap[itemType]
+  }
+  return {type: itemType, isRecursive: itemType === "object", component};
+}
+
 
 interface ArgListProps {
   list: any[];  
