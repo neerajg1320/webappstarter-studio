@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import ArgItem, {ArgValueProps, GetItemInfoFunc} from "./arg-item";
+import ArgItem, {ArgValueProps, GetItemInfoFunc, StringComponentMap} from "./arg-item";
 
 
 
@@ -10,7 +10,7 @@ interface ExpandableSpanProps {
   level: number;
   expanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
-  componentMap: {[k:string]:React.FC<ArgValueProps>}
+  componentMap: StringComponentMap
 };
 
 
@@ -37,10 +37,15 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
             const itemInfo = getItemInfoFunc(v)
             return (
                 <div key={index} >
-                    <div className="entry" >
-                      <ArgItem item={v} keyName={k} expanded={expanded[k]} itemType={itemInfo.type} componentMap={componentMap} onClick={(e) => handleExpandClick(k)} />
-                    </div>
-                    {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} {...{getItemInfoFunc, componentMap}} />}
+                  <ArgItem
+                      item={v}
+                      keyName={k}
+                      expanded={expanded[k]}
+                      itemType={itemInfo.type}
+                      componentMap={componentMap}
+                      onClick={(e) => handleExpandClick(k)}
+                  />
+                  {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} {...{getItemInfoFunc, componentMap}} />}
                 </div>
             );
         })

@@ -46,14 +46,24 @@ const DivItem:React.FC<ArgValueProps> = ({item,keyName}) => {
   );
 }
 
+export type ItemInfo = {type:string, isRecursive:boolean};
+export type GetItemInfoFunc = (item:any) => ItemInfo;
+export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
 export const argArrayComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
   "object": ClickableKeyObjectItem,
   "string": DoubleQuotedDivItem,
   "default": DivItem,
 }
 
-export type ItemInfo = {type:string, isRecursive:boolean};
-export type GetItemInfoFunc = (item:any) => ItemInfo;
+export const getItemInfo = (item:any, getItemInfoFunc:GetItemInfoFunc, componentMap:StringComponentMap):ItemInfo => {
+  let _itemInfo = getItemInfoFunc(item);
+
+  if (!Object.keys(componentMap).includes(_itemInfo.type)) {
+    _itemInfo = {type: "default", isRecursive:false}
+  }
+
+  return _itemInfo;
+}
 
 interface ArgItemProps {
   item: any;
@@ -62,7 +72,7 @@ interface ArgItemProps {
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
   itemType: string;
-  componentMap: {[k:string]:React.FC<ArgValueProps>}
+  componentMap: StringComponentMap
 }
 
 
@@ -74,12 +84,6 @@ const ArgItem:React.FC<ArgItemProps> = ({
                                       itemType,
                                       componentMap
                                     }) => {
-  useEffect(() => {
-    if (debugComponent) {
-      console.log(`componentMap:`, componentMap);
-    }
-  }, [componentMap]);
-
 
   // let itemType:string = getItemTypeFunc(item).type;
 

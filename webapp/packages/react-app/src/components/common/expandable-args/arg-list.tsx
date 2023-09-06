@@ -24,6 +24,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       {(list && list.length > 0) &&
         list.map((item:any, index:number) => {
           const itemInfo = getConsoleItemInfo(item);
+
           return (
             <div key={index}>
               <ArgItem item={item}
