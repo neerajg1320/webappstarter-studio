@@ -1,9 +1,11 @@
 import React from "react";
-import {LeafItemProps} from "./espan";
+import {KeyValueRepresentationComponentProps} from "./espan";
 import './item-components.css';
 
 
-export const ClickableKeyObjectItem:React.FC<LeafItemProps> = ({value, keyName, expanded, onClick:propOnClick}) => {
+export const ClickableKeyObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
+    {value, keyName, expanded, onClick:propOnClick}
+) => {
   return (
       <div className="arg-object-title" onClick={(e) => {
         if (keyName && propOnClick) {
@@ -17,7 +19,9 @@ export const ClickableKeyObjectItem:React.FC<LeafItemProps> = ({value, keyName, 
 };
 
 
-export const DoubleQuotedDivItem:React.FC<LeafItemProps> = ({value, keyName}) => {
+export const DoubleQuotedDivItem:React.FC<KeyValueRepresentationComponentProps> = (
+    {value, keyName}
+) => {
   return (
       <div>
         {keyName && <span>{keyName}:</span>}
@@ -26,7 +30,9 @@ export const DoubleQuotedDivItem:React.FC<LeafItemProps> = ({value, keyName}) =>
   );
 }
 
-export const DivItem:React.FC<LeafItemProps> = ({value,keyName}) => {
+export const DivItem:React.FC<KeyValueRepresentationComponentProps> = (
+    {value,keyName}
+) => {
   return (
       <div>
         {keyName && <span>{keyName}:</span>}

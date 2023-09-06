@@ -1,9 +1,9 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
 import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./item-components";
-import ExpandableSpan, {KeyValueItem, LeafItemProps, ItemInfo} from "./espan";
+import ExpandableSpan, {KeyValueHOComponent, KeyValueRepresentationComponentProps, ItemInfo} from "./espan";
 
-export type StringComponentMap = {[k:string]:React.FC<LeafItemProps>};
+export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
 
 export const consoleComponentMap:StringComponentMap = {
   "object": ClickableKeyObjectItem,
@@ -45,11 +45,11 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
 
           return (
             <div key={index}>
-              <KeyValueItem value={value}
-                            keyName={typeof(value) === "object" ? index : undefined}
-                            expanded={childrenExpandedMap[index]}
-                            onClick={handleArgClick}
-                            component={itemInfo.component}
+              <KeyValueHOComponent value={value}
+                                   keyName={typeof(value) === "object" ? index : undefined}
+                                   expanded={childrenExpandedMap[index]}
+                                   onClick={handleArgClick}
+                                   component={itemInfo.component}
               />
               {itemInfo.isRecursive &&
                   <ExpandableSpan

@@ -2,28 +2,28 @@ import React, {useState} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
 
-export interface LeafItemProps {
+export interface KeyValueRepresentationComponentProps {
   value: any;
   keyName?: string|number;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
 }
 
-interface ComponentItemProps extends LeafItemProps {
-  component: React.FC<LeafItemProps>;
+interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
+  component: React.FC<KeyValueRepresentationComponentProps>;
 }
 
 
 export type ItemInfo = {
   type:string,
-  component:React.FC<LeafItemProps>
+  component:React.FC<KeyValueRepresentationComponentProps>
   isRecursive:boolean,
 };
 
 export type GetItemInfoFunc = (value:any) => ItemInfo;
 
 
-export const KeyValueItem:React.FC<ComponentItemProps> = ({
+export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                value,
                                                keyName,
                                                expanded=false,
@@ -66,7 +66,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
 
             return (
                 <div key={index} >
-                  <KeyValueItem
+                  <KeyValueHOComponent
                       value={v}
                       keyName={k}
                       expanded={expanded[k]}
