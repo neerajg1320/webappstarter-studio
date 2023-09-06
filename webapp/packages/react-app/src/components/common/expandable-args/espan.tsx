@@ -2,32 +2,29 @@ import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
 
-
-export type ItemInfo = {
-  type:string,
-  component:React.FC<LeftItemArgs>
-  isRecursive:boolean,
-};
-
-export type GetItemInfoFunc = (item:any) => ItemInfo;
-export type StringComponentMap = {[k:string]:React.FC<LeftItemArgs>};
-
-export interface LeftItemArgs {
+export interface LeftItemProps {
   item: any;
   keyName?: string|number;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
 }
 
-interface KeyValueItemProps extends LeftItemArgs{
-  // item: any;
-  // keyName?: number|string;
-  // expanded?: boolean;
-  // onClick?: (keyName:number|string) => void;
-  component: React.FC<LeftItemArgs>;
+interface ComponentItemProps extends LeftItemProps {
+  component: React.FC<LeftItemProps>;
 }
 
-export const KeyValueItem:React.FC<KeyValueItemProps> = ({
+
+export type ItemInfo = {
+  type:string,
+  component:React.FC<LeftItemProps>
+  isRecursive:boolean,
+};
+
+export type GetItemInfoFunc = (item:any) => ItemInfo;
+export type StringComponentMap = {[k:string]:React.FC<LeftItemProps>};
+
+
+export const KeyValueItem:React.FC<ComponentItemProps> = ({
                                                item,
                                                keyName,
                                                expanded=false,

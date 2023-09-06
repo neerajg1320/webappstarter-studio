@@ -1,9 +1,9 @@
 import React from "react";
-import {LeftItemArgs} from "./espan";
+import {LeftItemProps} from "./espan";
 import './item-components.css';
 
 
-export const ClickableKeyObjectItem:React.FC<LeftItemArgs> = ({item, keyName, expanded, onClick:propOnClick}) => {
+export const ClickableKeyObjectItem:React.FC<LeftItemProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
       <div className="arg-object-title" onClick={(e) => {
         if (keyName && propOnClick) {
@@ -17,7 +17,7 @@ export const ClickableKeyObjectItem:React.FC<LeftItemArgs> = ({item, keyName, ex
 };
 
 
-export const DoubleQuotedDivItem:React.FC<LeftItemArgs> = ({item, keyName}) => {
+export const DoubleQuotedDivItem:React.FC<LeftItemProps> = ({item, keyName}) => {
   return (
       <div>
         {keyName && <span>{keyName}:</span>}
@@ -26,7 +26,7 @@ export const DoubleQuotedDivItem:React.FC<LeftItemArgs> = ({item, keyName}) => {
   );
 }
 
-export const DivItem:React.FC<LeftItemArgs> = ({item,keyName}) => {
+export const DivItem:React.FC<LeftItemProps> = ({item,keyName}) => {
   return (
       <div>
         {keyName && <span>{keyName}:</span>}

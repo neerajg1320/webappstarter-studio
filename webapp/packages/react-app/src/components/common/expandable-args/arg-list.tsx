@@ -1,9 +1,9 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
 import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./item-components";
-import ExpandableSpan, {KeyValueItem, LeftItemArgs, ItemInfo} from "./espan";
+import ExpandableSpan, {KeyValueItem, LeftItemProps, ItemInfo} from "./espan";
 
-export const consoleComponentMap:{[k:string]:React.FC<LeftItemArgs>} = {
+export const consoleComponentMap:{[k:string]:React.FC<LeftItemProps>} = {
   "object": ClickableKeyObjectItem,
   "string": DoubleQuotedDivItem,
   "default": DivItem,
