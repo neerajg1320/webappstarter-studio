@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import ArgItem, {argArrayComponentMap, getConsoleItemInfo, getItemInfo} from "./arg-item";
+import ArgItem, {consoleComponentMap, getConsoleItemInfo} from "./arg-item";
 import ExpandableSpan from "./espan";
 
 interface ArgListProps {
@@ -23,8 +23,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       <div className="args-box">
       {(list && list.length > 0) &&
         list.map((item:any, index:number) => {
-          const itemInfo = getItemInfo(item, getConsoleItemInfo, argArrayComponentMap);
-          const component = argArrayComponentMap[itemInfo.type]
+          const itemInfo = getConsoleItemInfo(item);
 
           return (
             <div key={index}>
@@ -32,7 +31,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                        keyName={typeof(item) === "object" ? index : undefined}
                        expanded={expanded[index]}
                        onClick={handleArgClick}
-                       component={component}
+                       component={itemInfo.component}
               />
               {itemInfo.isRecursive &&
                   <ExpandableSpan
@@ -40,7 +39,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                       level={0}
                       expanded={expanded[index]}
                       getItemInfoFunc={getConsoleItemInfo}
-                      componentMap={argArrayComponentMap}
+                      componentMap={consoleComponentMap}
                   />
               }
             </div>

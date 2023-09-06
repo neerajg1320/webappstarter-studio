@@ -9,10 +9,9 @@ export interface ArgValueProps {
   onClick?: (keyName:string|number) => void
 }
 
-export const getConsoleItemInfo = (item:any):ItemInfo => {
-  const itemType = typeof(item);
-  return {type: itemType, isRecursive: itemType === "object"};
-}
+export type ItemInfo = {type:string, isRecursive:boolean, component:React.FC<ArgValueProps>};
+export type GetItemInfoFunc = (item:any) => ItemInfo;
+export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
 
 const ClickableKeyObjectItem:React.FC<ArgValueProps> = ({item, keyName, expanded, onClick:propOnClick}) => {
   return (
@@ -46,24 +45,35 @@ const DivItem:React.FC<ArgValueProps> = ({item,keyName}) => {
   );
 }
 
-export type ItemInfo = {type:string, isRecursive:boolean};
-export type GetItemInfoFunc = (item:any) => ItemInfo;
-export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
-export const argArrayComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
+
+
+export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
   "object": ClickableKeyObjectItem,
   "string": DoubleQuotedDivItem,
   "default": DivItem,
 }
 
-export const getItemInfo = (item:any, getItemInfoFunc:GetItemInfoFunc, componentMap:StringComponentMap):ItemInfo => {
-  let _itemInfo = getItemInfoFunc(item);
-
-  if (!Object.keys(componentMap).includes(_itemInfo.type)) {
-    _itemInfo = {type: "default", isRecursive:false}
+export const getConsoleItemInfo = (value:any):ItemInfo => {
+  const itemType = typeof(value);
+  let component = consoleComponentMap["default"];
+  if (Object.keys(consoleComponentMap).includes(itemType)) {
+    component = consoleComponentMap[itemType]
   }
-
-  return _itemInfo;
+  return {type: itemType, isRecursive: itemType === "object", component};
 }
+
+
+
+
+// export const getItemInfo = (item:any, getItemInfoFunc:GetItemInfoFunc, componentMap:StringComponentMap):ItemInfo => {
+//   let _itemInfo = getItemInfoFunc(item);
+//
+//   if (!Object.keys(componentMap).includes(_itemInfo.type)) {
+//     _itemInfo = {type: "default", isRecursive:false}
+//   }
+//
+//   return _itemInfo;
+// }
 
 interface ArgItemProps {
   item: any;
