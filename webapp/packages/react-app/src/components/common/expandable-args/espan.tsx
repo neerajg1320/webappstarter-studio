@@ -1,9 +1,43 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import KeyValueItem, {GetItemInfoFunc, StringComponentMap} from "./key-value-item";
 
 
+export type ItemInfo = {
+  type:string,
+  component:React.FC<ArgValueProps>
+  isRecursive:boolean,
+};
+
+export type GetItemInfoFunc = (item:any) => ItemInfo;
+export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
+
+export interface ArgValueProps {
+  item: any;
+  keyName?: string|number;
+  expanded?: boolean;
+  onClick?: (keyName:string|number) => void
+}
+
+interface KeyValueItemProps {
+  item: any;
+  keyName?: number|string;
+  showKeyName?: boolean;
+  expanded?: boolean;
+  onClick?: (keyName:number|string) => void;
+  component: React.FC<ArgValueProps>;
+}
+
+export const KeyValueItem:React.FC<KeyValueItemProps> = ({
+                                               item,
+                                               keyName,
+                                               expanded=false,
+                                               onClick,
+                                               component
+                                             }) => {
+
+  return React.createElement(component, {item, keyName, expanded, onClick}, null);
+}
 
 interface ExpandableSpanProps {
   obj: object;

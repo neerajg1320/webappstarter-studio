@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import KeyValueItem, {ArgValueProps, ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem, ItemInfo} from "./key-value-item";
-import ExpandableSpan from "./espan";
+import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./item-components";
+import ExpandableSpan, {KeyValueItem, ArgValueProps, ItemInfo} from "./espan";
 
 export const consoleComponentMap:{[k:string]:React.FC<ArgValueProps>} = {
   "object": ClickableKeyObjectItem,
