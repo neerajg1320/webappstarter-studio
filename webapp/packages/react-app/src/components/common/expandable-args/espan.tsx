@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import ArgItem, {ArgValueProps, GetItemInfoFunc, StringComponentMap} from "./arg-item";
+import ArgItem, {ArgValueProps, getItemInfo, GetItemInfoFunc, StringComponentMap} from "./arg-item";
 
 
 
@@ -34,15 +34,15 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
       <div className="object-box">
       {propExpanded &&
         Object.entries(obj).map(([k, v], index:number) => {
-            const itemInfo = getItemInfoFunc(v)
+            // const itemInfo = getItemInfoFunc(v)
+            const itemInfo = getItemInfo(v, getItemInfoFunc, componentMap);
             return (
                 <div key={index} >
                   <ArgItem
                       item={v}
                       keyName={k}
                       expanded={expanded[k]}
-                      itemType={itemInfo.type}
-                      componentMap={componentMap}
+                      component={componentMap[itemInfo.type]}
                       onClick={(e) => handleExpandClick(k)}
                   />
                   {itemInfo.isRecursive && <ExpandableSpan obj={v} level={propLevel + 1} expanded={expanded[k]} {...{getItemInfoFunc, componentMap}} />}

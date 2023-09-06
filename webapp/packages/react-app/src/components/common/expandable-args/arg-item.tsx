@@ -71,29 +71,19 @@ interface ArgItemProps {
   showKeyName?: boolean;
   expanded?: boolean;
   onClick?: (keyName:number|string) => void;
-  itemType: string;
-  componentMap: StringComponentMap
+  component: React.FC<ArgValueProps>;
 }
 
 
 const ArgItem:React.FC<ArgItemProps> = ({
-                                      item,
-                                      keyName,
-                                      expanded=false,
-                                      onClick,
-                                      itemType,
-                                      componentMap
-                                    }) => {
+                                          item,
+                                          keyName,
+                                          expanded=false,
+                                          onClick,
+                                          component
+                                        }) => {
 
-  // let itemType:string = getItemTypeFunc(item).type;
-
-  if (!Object.keys(componentMap).includes(itemType)) {
-    itemType = "default";
-  }
-
-  // https://stackoverflow.com/questions/29875869/react-jsx-dynamic-component-name
-  // React createElement expects string or a React class as first element
-  return React.createElement(componentMap[itemType], {item, keyName, expanded, onClick}, null);
+  return React.createElement(component, {item, keyName, expanded, onClick}, null);
 }
 
 export default ArgItem;
