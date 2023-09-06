@@ -64,7 +64,8 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
               />
               {itemInfo.isRecursive &&
                   <ExpandableSpan
-                      obj={value}
+                      objectOrArray={value}
+                      isArray={itemInfo.isArray}
                       level={0}
                       expanded={childrenExpandedMap[index]}
                       getItemInfoFunc={getConsoleItemInfo}
