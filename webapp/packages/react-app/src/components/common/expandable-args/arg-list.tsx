@@ -1,9 +1,11 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
 import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./item-components";
-import ExpandableSpan, {KeyValueItem, LeftItemProps, ItemInfo} from "./espan";
+import ExpandableSpan, {KeyValueItem, LeafItemProps, ItemInfo} from "./espan";
 
-export const consoleComponentMap:{[k:string]:React.FC<LeftItemProps>} = {
+export type StringComponentMap = {[k:string]:React.FC<LeafItemProps>};
+
+export const consoleComponentMap:StringComponentMap = {
   "object": ClickableKeyObjectItem,
   "string": DoubleQuotedDivItem,
   "default": DivItem,
@@ -25,17 +27,17 @@ interface ArgListProps {
 
 
 const ArgList:React.FC<ArgListProps> = ({list}) => {
-  const [expanded, setExpanded] = useState<{[k:string]:boolean}>({});
+  const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
 
   const handleArgClick = (k:number|string) => {
-    setExpanded((prev) => {
+    setChildrenExpandedMap((prev) => {
       return {...prev, [k]: !prev[k]};
     });
   }
 
   return (
     <div className="args-wrapper">
-      {/*<pre>{JSON.stringify(expanded, null, 2)}</pre>*/}
+      {/*<pre>{JSON.stringify(childrenExpandedMap, null, 2)}</pre>*/}
       <div className="args-box">
       {(list && list.length > 0) &&
         list.map((value:any, index:number) => {
@@ -45,7 +47,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
             <div key={index}>
               <KeyValueItem value={value}
                             keyName={typeof(value) === "object" ? index : undefined}
-                            expanded={expanded[index]}
+                            expanded={childrenExpandedMap[index]}
                             onClick={handleArgClick}
                             component={itemInfo.component}
               />
@@ -53,7 +55,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                   <ExpandableSpan
                       obj={value}
                       level={0}
-                      expanded={expanded[index]}
+                      expanded={childrenExpandedMap[index]}
                       getItemInfoFunc={getConsoleItemInfo}
                   />
               }

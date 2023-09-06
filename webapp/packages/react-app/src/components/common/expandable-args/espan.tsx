@@ -1,27 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
 
-export interface LeftItemProps {
+export interface LeafItemProps {
   value: any;
   keyName?: string|number;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
 }
 
-interface ComponentItemProps extends LeftItemProps {
-  component: React.FC<LeftItemProps>;
+interface ComponentItemProps extends LeafItemProps {
+  component: React.FC<LeafItemProps>;
 }
 
 
 export type ItemInfo = {
   type:string,
-  component:React.FC<LeftItemProps>
+  component:React.FC<LeafItemProps>
   isRecursive:boolean,
 };
 
 export type GetItemInfoFunc = (value:any) => ItemInfo;
-export type StringComponentMap = {[k:string]:React.FC<LeftItemProps>};
 
 
 export const KeyValueItem:React.FC<ComponentItemProps> = ({
@@ -40,7 +39,6 @@ interface ExpandableSpanProps {
   level: number;
   expanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
-  // componentMap: StringComponentMap
 };
 
 
