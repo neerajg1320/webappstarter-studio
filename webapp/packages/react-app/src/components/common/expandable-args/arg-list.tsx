@@ -30,13 +30,16 @@ export const getConsoleItemInfo = (value:any):ItemInfo => {
   let _itemType:string = typeof (value);
   let _isRecursive = _itemType === "object";
   let _traversalFunc = null;
+  let _enclosingClass = null;
 
   if (_isRecursive) {
     if (value.length !== undefined) {
       _itemType = "array";
       _traversalFunc = ArrayTraversalFunc;
+      _enclosingClass = "array-box";
     } else {
       _traversalFunc = ObjectTraversalFunc;
+      _enclosingClass = "object-box";
     }
 
   }
@@ -46,6 +49,7 @@ export const getConsoleItemInfo = (value:any):ItemInfo => {
     type: _itemType,
     isRecursive: _isRecursive,
     traversalFunc: _traversalFunc,
+    enclosingClass: _enclosingClass,
     component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
   };
 

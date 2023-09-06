@@ -21,6 +21,7 @@ export type ItemInfo = {
   component:React.FC<KeyValueRepresentationComponentProps>
   isRecursive:boolean,
   traversalFunc: TraversalFunc|null,
+  enclosingClass: string|null,
 };
 
 export type GetItemInfoFunc = (value:any) => ItemInfo;
