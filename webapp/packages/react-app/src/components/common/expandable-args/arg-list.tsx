@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import {ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./default-item-components";
+import {ClickableKeyArrayItem, ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./default-item-components";
 import ExpandableSpan, {
   KeyValueHOComponent,
   KeyValueRepresentationComponentProps,
@@ -8,21 +8,28 @@ import ExpandableSpan, {
   ObjectTraversalFunc, ArrayTraversalFunc
 } from "./espan";
 
+// export type ItemType =  "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function" ;
+
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
 
 export const consoleComponentMap:StringComponentMap = {
   "object": ClickableKeyObjectItem,
+  "array": ClickableKeyArrayItem,
   "string": DoubleQuotedDivItem,
   "default": DivItem,
 }
 
 
 export const getConsoleItemInfo = (value:any):ItemInfo => {
-  const _itemType = typeof (value);
+  let _itemType:string = typeof (value);
   const _isArray = _itemType === "object" && value.length !== undefined;
+  // if (_isArray) {
+  //   _itemType = "array";
+  // }
+
   const itemInfo:ItemInfo = {
     type: _itemType,
-    isRecursive: _itemType === "object",
+    isRecursive: _itemType === "object" || _itemType === "array",
     component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
     isArray: _isArray,
     traversalFunc: _itemType === "object" ? (_isArray) ? ArrayTraversalFunc : ObjectTraversalFunc : null,
