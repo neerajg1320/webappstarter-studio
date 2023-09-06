@@ -1,10 +1,6 @@
-.arg-object {
+.arg-object-title {
   cursor: pointer;
   font-weight: bold;
-}
-
-.arg-object-title {
-  /*border: 1px solid black;*/
   display: flex;
   flex-direction: row;
   gap: 2px;
