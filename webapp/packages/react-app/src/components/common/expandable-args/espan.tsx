@@ -5,27 +5,26 @@ import {debugComponent} from "../../../config/global";
 
 export type ItemInfo = {
   type:string,
-  component:React.FC<ArgValueProps>
+  component:React.FC<LeftItemArgs>
   isRecursive:boolean,
 };
 
 export type GetItemInfoFunc = (item:any) => ItemInfo;
-export type StringComponentMap = {[k:string]:React.FC<ArgValueProps>};
+export type StringComponentMap = {[k:string]:React.FC<LeftItemArgs>};
 
-export interface ArgValueProps {
+export interface LeftItemArgs {
   item: any;
-  level?: number;
   keyName?: string|number;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
 }
 
-interface KeyValueItemProps {
-  item: any;
-  keyName?: number|string;
-  expanded?: boolean;
-  onClick?: (keyName:number|string) => void;
-  component: React.FC<ArgValueProps>;
+interface KeyValueItemProps extends LeftItemArgs{
+  // item: any;
+  // keyName?: number|string;
+  // expanded?: boolean;
+  // onClick?: (keyName:number|string) => void;
+  component: React.FC<LeftItemArgs>;
 }
 
 export const KeyValueItem:React.FC<KeyValueItemProps> = ({
