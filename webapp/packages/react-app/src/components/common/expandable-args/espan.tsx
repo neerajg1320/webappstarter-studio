@@ -53,7 +53,7 @@ export const ArrayTraversalFunc:TraversalFunc= (value) => {
 }
 
 interface ExpandableSpanProps {
-  objectOrArray: object;
+  expandableValue: object;
   type: string;
   traversalFunc: TraversalFunc;
   enclosingClass: string|null;
@@ -64,7 +64,7 @@ interface ExpandableSpanProps {
 
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
-                                                        objectOrArray:propObjectOrArray,
+                                                        expandableValue,
                                                         type,
                                                         traversalFunc,
                                                         enclosingClass,
@@ -91,7 +91,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
       {expanded &&
         // Object.entries(obj)
         // arr.map((v, index) => [index,v])
-        traversalFunc(propObjectOrArray).map(([k, v], index:number) => {
+        traversalFunc(expandableValue).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
             if (debugComponent) {
               console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, itemInfo);
@@ -110,7 +110,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                   {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
                       <>
                       {/*<pre>{JSON.stringify(itemInfo.traversalFunc(v))}</pre>*/}
-                        <ExpandableSpan objectOrArray={v}
+                        <ExpandableSpan expandableValue={v}
                                         type={itemInfo.type}
                                         traversalFunc={itemInfo.traversalFunc}
                                         enclosingClass={itemInfo.enclosingClass}

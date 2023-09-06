@@ -73,7 +73,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       {(list && list.length > 0) &&
           <>
           {listInfo.traversalFunc ?
-                <ExpandableSpan objectOrArray={list}
+                <ExpandableSpan expandableValue={list}
                                 type={listInfo.type}
                                 traversalFunc={listInfo.traversalFunc}
                                 enclosingClass={listInfo.enclosingClass}
