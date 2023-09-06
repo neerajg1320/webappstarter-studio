@@ -55,6 +55,7 @@ export const ArrayTraversalFunc:TraversalFunc= (value) => {
 interface ExpandableSpanProps {
   objectOrArray: object;
   isArray: boolean;
+  type: string;
   traversalFunc: TraversalFunc;
   level: number;
   expanded: boolean;
@@ -65,6 +66,7 @@ interface ExpandableSpanProps {
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         objectOrArray:propObjectOrArray,
                                                         isArray=false,
+                                                        type,
                                                         traversalFunc,
                                                         level:propLevel,
                                                         expanded:propExpanded,
@@ -108,12 +110,14 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                   {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
                       <>
                       {/*<pre>{JSON.stringify(itemInfo.traversalFunc(v))}</pre>*/}
-                      <ExpandableSpan objectOrArray={v}
-                                                           isArray={itemInfo.isArray}
-                                                           traversalFunc={itemInfo.traversalFunc}
-                                                           level={propLevel + 1}
-                                                           expanded={childrenExpandedMap[k]}
-                                                           {...{getItemInfoFunc}} />
+                        <ExpandableSpan objectOrArray={v}
+                                        isArray={itemInfo.isArray}
+                                        type={itemInfo.type}
+                                        traversalFunc={itemInfo.traversalFunc}
+                                        level={propLevel + 1}
+                                        expanded={childrenExpandedMap[k]}
+                                        {...{getItemInfoFunc}}
+                        />
                       </>
                   }
                 </div>
