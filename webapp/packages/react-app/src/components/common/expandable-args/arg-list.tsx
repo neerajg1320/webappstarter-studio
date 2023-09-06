@@ -29,25 +29,22 @@ export const consoleComponentMap:StringComponentMap = {
 export const getConsoleItemInfo = (value:any):ItemInfo => {
   let _itemType:string = typeof (value);
   let _isRecursive = _itemType === "object";
-  const _isArray = _itemType === "object" && value.length !== undefined;
-
-  if (_isArray) {
-    _itemType = "array";
-  }
-
   let _traversalFunc = null;
+
   if (_isRecursive) {
-    if (_isArray) {
+    if (value.length !== undefined) {
+      _itemType = "array";
       _traversalFunc = ArrayTraversalFunc;
     } else {
       _traversalFunc = ObjectTraversalFunc;
     }
+
   }
+
 
   const itemInfo:ItemInfo = {
     type: _itemType,
-    isRecursive: _itemType === "object" || _itemType === "array",
-    isArray: _isArray,
+    isRecursive: _isRecursive,
     traversalFunc: _traversalFunc,
     component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
   };
@@ -90,7 +87,6 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
               {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
                   <ExpandableSpan
                       objectOrArray={value}
-                      // isArray={itemInfo.isArray}
                       type={itemInfo.type}
                       level={0}
                       expanded={childrenExpandedMap[index]}

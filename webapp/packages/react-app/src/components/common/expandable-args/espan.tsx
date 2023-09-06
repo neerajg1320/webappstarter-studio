@@ -20,7 +20,6 @@ export type ItemInfo = {
   type:string,
   component:React.FC<KeyValueRepresentationComponentProps>
   isRecursive:boolean,
-  isArray: boolean,
   traversalFunc: TraversalFunc|null,
 };
 
@@ -54,7 +53,6 @@ export const ArrayTraversalFunc:TraversalFunc= (value) => {
 
 interface ExpandableSpanProps {
   objectOrArray: object;
-  // isArray: boolean;
   type: string;
   traversalFunc: TraversalFunc;
   level: number;
@@ -65,7 +63,6 @@ interface ExpandableSpanProps {
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         objectOrArray:propObjectOrArray,
-                                                        // isArray=false,
                                                         type,
                                                         traversalFunc,
                                                         level:propLevel,
@@ -111,7 +108,6 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                       <>
                       {/*<pre>{JSON.stringify(itemInfo.traversalFunc(v))}</pre>*/}
                         <ExpandableSpan objectOrArray={v}
-                                        // isArray={itemInfo.isArray}
                                         type={itemInfo.type}
                                         traversalFunc={itemInfo.traversalFunc}
                                         level={propLevel + 1}
