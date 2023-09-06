@@ -5,6 +5,7 @@ import {debugComponent} from "../../../config/global";
 export interface KeyValueRepresentationComponentProps {
   value: any;
   keyName?: string|number;
+  parentType: string;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
 }
@@ -29,14 +30,15 @@ export type GetItemInfoFunc = (value:any) => ItemInfo;
 
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
-                                               value,
-                                               keyName,
-                                               expanded=false,
-                                               onClick,
-                                               component
-                                             }) => {
+                                                                         value,
+                                                                         keyName,
+                                                                         parentType,
+                                                                         expanded=false,
+                                                                         onClick,
+                                                                         component
+                                                                       }) => {
 
-  return React.createElement(component, {value, keyName, expanded, onClick}, null);
+  return React.createElement(component, {value, keyName, parentType, expanded, onClick}, null);
 }
 
 
@@ -98,6 +100,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                   <KeyValueHOComponent
                       value={v}
                       keyName={k}
+                      parentType={isArray ? "array" : "object"}
                       expanded={childrenExpandedMap[k]}
                       component={itemInfo.component}
                       onClick={(e) => handleExpandClick(k)}

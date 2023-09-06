@@ -4,7 +4,7 @@ import './default-item-components.css';
 
 
 export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, expanded, onClick:propOnClick}
+    {value, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableKeyCurlyBracketsObjectItem:`,value, keyName);
   return (
@@ -13,14 +13,15 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
           propOnClick(keyName)
         }
       }}>
-        {keyName !== undefined && <span>{keyName}{"{}"}</span>}
+        {parentType !== "array" && <span>{keyName}</span>}
+        <span>{"{}"}</span>
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
 };
 
 export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, expanded, onClick:propOnClick}
+    {value, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableKeyArrayItem:`,value, keyName);
   return (
@@ -29,14 +30,14 @@ export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps
           propOnClick(keyName)
         }
       }}>
-        {keyName !== undefined && <span>{keyName}</span>}
+        {parentType !== "array"&& <span>{keyName}</span>}
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
 };
 
 export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, expanded, onClick:propOnClick}
+    {value, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableKeyArrayItem:`,value, keyName);
   return (
@@ -45,7 +46,8 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
           propOnClick(keyName)
         }
       }}>
-        {keyName !== undefined && <span>{keyName}[]</span>}
+        {parentType !== "array" && <span>{keyName}</span>}
+        <span>[]</span>
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );

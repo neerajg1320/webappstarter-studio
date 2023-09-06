@@ -82,6 +82,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
             <div key={index}>
               <KeyValueHOComponent value={value}
                                    keyName={typeof(value) === "object" ? index : undefined}
+                                   parentType={"array"}
                                    expanded={childrenExpandedMap[index]}
                                    onClick={handleArgClick}
                                    component={itemInfo.component}
