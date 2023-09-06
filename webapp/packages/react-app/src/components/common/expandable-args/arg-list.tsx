@@ -1,6 +1,12 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import {ClickableKeyArrayItem, ClickableKeyObjectItem, DivItem, DoubleQuotedDivItem} from "./default-item-components";
+import {
+  ClickableKeyArrayItem,
+  ClickableKeyCurlyBracketsObjectItem,
+  ClickableKeySquareBracketsArrayItem,
+  DivItem,
+  DoubleQuotedDivItem
+} from "./default-item-components";
 import ExpandableSpan, {
   KeyValueHOComponent,
   KeyValueRepresentationComponentProps,
@@ -13,8 +19,8 @@ import ExpandableSpan, {
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
 
 export const consoleComponentMap:StringComponentMap = {
-  "object": ClickableKeyObjectItem,
-  "array": ClickableKeyArrayItem,
+  "object": ClickableKeyCurlyBracketsObjectItem,
+  "array": ClickableKeySquareBracketsArrayItem,
   "string": DoubleQuotedDivItem,
   "default": DivItem,
 }

@@ -3,17 +3,17 @@ import {KeyValueRepresentationComponentProps} from "./espan";
 import './default-item-components.css';
 
 
-export const ClickableKeyObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
+export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
     {value, keyName, expanded, onClick:propOnClick}
 ) => {
-  // console.log(`ClickableKeyObjectItem:`,value, keyName);
+  // console.log(`ClickableKeyCurlyBracketsObjectItem:`,value, keyName);
   return (
       <div className="arg-object-title" onClick={(e) => {
         if (keyName !== undefined && propOnClick) {
           propOnClick(keyName)
         }
       }}>
-        {keyName && <span>{keyName}</span>}
+        {keyName !== undefined && <span>{keyName}{"{}"}</span>}
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
@@ -29,7 +29,23 @@ export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps
           propOnClick(keyName)
         }
       }}>
-        {keyName && <span>{keyName}</span>}
+        {keyName !== undefined && <span>{keyName}</span>}
+        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
+      </div>
+  );
+};
+
+export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
+    {value, keyName, expanded, onClick:propOnClick}
+) => {
+  // console.log(`ClickableKeyArrayItem:`,value, keyName);
+  return (
+      <div className="arg-object-title" onClick={(e) => {
+        if (keyName !== undefined && propOnClick) {
+          propOnClick(keyName)
+        }
+      }}>
+        {keyName !== undefined && <span>{keyName}[]</span>}
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
