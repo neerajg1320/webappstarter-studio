@@ -38,20 +38,20 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       {/*<pre>{JSON.stringify(expanded, null, 2)}</pre>*/}
       <div className="args-box">
       {(list && list.length > 0) &&
-        list.map((item:any, index:number) => {
-          const itemInfo = getConsoleItemInfo(item);
+        list.map((value:any, index:number) => {
+          const itemInfo = getConsoleItemInfo(value);
 
           return (
             <div key={index}>
-              <KeyValueItem item={item}
-                            keyName={typeof(item) === "object" ? index : undefined}
+              <KeyValueItem value={value}
+                            keyName={typeof(value) === "object" ? index : undefined}
                             expanded={expanded[index]}
                             onClick={handleArgClick}
                             component={itemInfo.component}
               />
               {itemInfo.isRecursive &&
                   <ExpandableSpan
-                      obj={item}
+                      obj={value}
                       level={0}
                       expanded={expanded[index]}
                       getItemInfoFunc={getConsoleItemInfo}

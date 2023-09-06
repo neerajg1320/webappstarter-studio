@@ -3,7 +3,7 @@ import './espan.css';
 import {debugComponent} from "../../../config/global";
 
 export interface LeftItemProps {
-  item: any;
+  value: any;
   keyName?: string|number;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
@@ -20,19 +20,19 @@ export type ItemInfo = {
   isRecursive:boolean,
 };
 
-export type GetItemInfoFunc = (item:any) => ItemInfo;
+export type GetItemInfoFunc = (value:any) => ItemInfo;
 export type StringComponentMap = {[k:string]:React.FC<LeftItemProps>};
 
 
 export const KeyValueItem:React.FC<ComponentItemProps> = ({
-                                               item,
+                                               value,
                                                keyName,
                                                expanded=false,
                                                onClick,
                                                component
                                              }) => {
 
-  return React.createElement(component, {item, keyName, expanded, onClick}, null);
+  return React.createElement(component, {value, keyName, expanded, onClick}, null);
 }
 
 interface ExpandableSpanProps {
@@ -69,7 +69,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
             return (
                 <div key={index} >
                   <KeyValueItem
-                      item={v}
+                      value={v}
                       keyName={k}
                       expanded={expanded[k]}
                       component={itemInfo.component}
