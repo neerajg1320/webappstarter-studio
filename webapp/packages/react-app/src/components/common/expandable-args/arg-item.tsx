@@ -1,6 +1,6 @@
 import React from "react";
 import ExpandableSpan from "./espan";
-import './arg.css';
+import './arg-item.css';
 
 interface ArgProps {
   item: any;
@@ -9,7 +9,13 @@ interface ArgProps {
   expanded?: boolean;
   onClick?: (index:number|string) => void;
 }
-const Arg:React.FC<ArgProps> = ({item, index, showIndex=true, expanded=false, onClick:propOnClick}) => {
+const ArgItem:React.FC<ArgProps> = ({
+                                      item,
+                                      index,
+                                      showIndex=true,
+                                      expanded=false,
+                                      onClick:propOnClick
+}) => {
   const handleExpandClick = (index:number|string) => {
     if (propOnClick) {
       propOnClick(index)
@@ -39,4 +45,4 @@ const Arg:React.FC<ArgProps> = ({item, index, showIndex=true, expanded=false, on
   );
 }
 
-export default Arg;
+export default ArgItem;

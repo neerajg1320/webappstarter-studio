@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import "./arg-list.css";
-import Arg from "./arg";
+import ArgItem from "./arg-item";
 
 interface ArgListProps {
   list: any[];  
@@ -24,7 +24,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
         list.map((item:any, index:number) => {
           return (
             <div key={index}>
-              <Arg item={item} index={index} expanded={expanded[index]} onClick={handleArgClick} />
+              <ArgItem item={item} index={index} expanded={expanded[index]} onClick={handleArgClick} />
             </div>
           );
         })

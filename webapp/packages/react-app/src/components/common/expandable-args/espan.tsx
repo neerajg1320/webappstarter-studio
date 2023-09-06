@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './espan.css';
 import {debugComponent} from "../../../config/global";
-import Arg from "./arg";
+import ArgItem from "./arg-item";
 
 interface ExpandableSpanProps {
   obj: object;
@@ -29,10 +29,9 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({obj, level:propLevel, exp
         Object.entries(obj).map(([k, v], index:number) => {
             return (
                 <div key={index} >
-
                     <div className="entry" >
                       {typeof(v) !== "object" && <span>{k}:</span>}
-                      <Arg item={v} index={k} expanded={expanded[k]} onClick={handleExpandClick}/>
+                      <ArgItem item={v} index={k} expanded={expanded[k]} onClick={handleExpandClick}/>
                     </div>
 
                 </div>
