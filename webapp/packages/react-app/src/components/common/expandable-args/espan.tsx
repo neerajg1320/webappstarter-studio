@@ -91,7 +91,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
         traversalFunc(propObjectOrArray).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
             if (debugComponent) {
-              console.log(`k:${k} v:${v} itemInfo(v)`, itemInfo);
+              console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, itemInfo);
             }
 
             return (

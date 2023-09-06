@@ -54,22 +54,22 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
 };
 
 export const DoubleQuotedDivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName}
+    {value, keyName, parentType}
 ) => {
   return (
       <div>
-        {keyName !== undefined && <span>{keyName}:</span>}
+        {parentType !== "array" && <span>{keyName}:</span>}
         "{value}"
       </div>
   );
 }
 
 export const DivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value,keyName}
+    {value,keyName, parentType}
 ) => {
   return (
       <div>
-        {keyName != undefined && <span>{keyName}:</span>}
+        {parentType !== "array" && <span>{keyName}:</span>}
         {value}
       </div>
   );

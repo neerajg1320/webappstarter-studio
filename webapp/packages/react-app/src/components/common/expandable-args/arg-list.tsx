@@ -67,36 +67,26 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
     });
   }
 
+  const listInfo = getConsoleItemInfo(list);
+
   return (
     <div className="args-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap, null, 2)}</pre>*/}
       <div className="array-horizontal-box">
       {(list && list.length > 0) &&
-        list.map((value:any, index:number) => {
-          const itemInfo = getConsoleItemInfo(value);
-
-          return (
-            <div key={index}>
-              <KeyValueHOComponent value={value}
-                                   keyName={typeof(value) === "object" ? index : undefined}
-                                   parentType={"array"}
-                                   expanded={childrenExpandedMap[index]}
-                                   onClick={handleArgClick}
-                                   component={itemInfo.component}
-              />
-              {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
-                  <ExpandableSpan
-                      objectOrArray={value}
-                      type={itemInfo.type}
-                      level={0}
-                      expanded={childrenExpandedMap[index]}
-                      getItemInfoFunc={getConsoleItemInfo}
-                      traversalFunc={itemInfo.traversalFunc}
-                  />
-              }
-            </div>
-          );
-        })
+          <>
+          {listInfo.traversalFunc ?
+                <ExpandableSpan objectOrArray={list}
+                                type={listInfo.type}
+                                traversalFunc={listInfo.traversalFunc}
+                                level={0}
+                                expanded={true}
+                                getItemInfoFunc={getConsoleItemInfo}
+                />
+                :
+                <div>List can't be traversed</div>
+          }
+          </>
       }
       </div>
     </div>
