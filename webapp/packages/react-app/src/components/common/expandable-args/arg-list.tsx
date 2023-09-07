@@ -74,7 +74,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                                 type={listInfo.type}
                                 traversalFunc={listInfo.traversalFunc}
                                 enclosingClass={listInfo.enclosingClass}
-                                parentType={null}
+                                parentInfo={null}
                                 level={0}
                                 initialExpanded={true}
                                 getItemInfoFunc={getConsoleItemInfo}

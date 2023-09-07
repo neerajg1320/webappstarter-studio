@@ -21,7 +21,7 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
 
 
 const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentInfo, expanded, onClick:propOnClick}
 ) => {
   const handleFolderClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
@@ -42,7 +42,7 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
 };
 
 const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentInfo, expanded, onClick:propOnClick}
 ) => {
   const handleFileClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {

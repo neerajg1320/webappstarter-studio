@@ -4,7 +4,7 @@ import './default-item-components.css';
 
 
 export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentInfo, expanded, onClick:propOnClick}
 ) => {
   const handleObjectClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
@@ -14,7 +14,7 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
 
   return (
       <div className="arg-object-title" onClick={handleObjectClick}>
-        {parentType !== "array" && <span>{keyName}</span>}
+        {parentInfo && parentInfo.type !== "array" && <span>{keyName}</span>}
         <span>{"{}"}</span>
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
@@ -22,10 +22,10 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
 };
 
 
-// Show only non-root components. For root component parentType is null
+// Show only non-root components. For root component parentInfo is null
 // For root component the class becomes 'arg-object-title-none' otherwise it is 'arg-object-title'
 export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentInfo, expanded, onClick:propOnClick}
 ) => {
   const handleArrayClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
@@ -34,8 +34,8 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
   }
 
   return (
-      <div className={`arg-object-title${parentType === null ? "-none" : ""}`} onClick={handleArrayClick}>
-        {parentType !== "array" && <span>{keyName}</span>}
+      <div className={`arg-object-title${parentInfo === null ? "-none" : ""}`} onClick={handleArrayClick}>
+        {parentInfo && parentInfo.type !== "array" && <span>{keyName}</span>}
         <span>[]</span>
         <i className={"fas" + (expanded ? " fa-caret-down" : " fa-caret-right")}/>
       </div>
@@ -43,22 +43,22 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
 };
 
 export const DoubleQuotedDivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentType}
+    {itemInfo, keyName, parentInfo}
 ) => {
   return (
       <div>
-        {parentType !== "array" && <span>{keyName}:</span>}
+        {parentInfo && parentInfo.type !== "array"  && <span>{keyName}:</span>}
         "{itemInfo.value}"
       </div>
   );
 }
 
 export const DivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo,keyName, parentType}
+    {itemInfo,keyName, parentInfo}
 ) => {
   return (
       <div>
-        {parentType !== "array" && <span>{keyName}:</span>}
+        {parentInfo && parentInfo.type !== "array"  && <span>{keyName}:</span>}
         {itemInfo.value}
       </div>
   );

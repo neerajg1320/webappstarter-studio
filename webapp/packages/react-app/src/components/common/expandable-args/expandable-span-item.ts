@@ -3,7 +3,7 @@ import React from "react";
 export interface KeyValueRepresentationComponentProps {
   itemInfo: ItemInfo;
   keyName?: string|number|null;
-  parentType: string|null;
+  parentInfo: ItemInfo|null;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
 }
