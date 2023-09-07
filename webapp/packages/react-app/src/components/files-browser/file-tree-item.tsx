@@ -13,10 +13,11 @@ import {debugComponent} from "../../config/global";
 //
 
 const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
-  if (fileNode && fileNode.childFileNodes) {
-    return fileNode.childFileNodes.map((node, index) => {
-      return [index, node];
-    })
+  if (fileNode && fileNode.childrenFileNodeMap) {
+    // return fileNode.childrenFileNodeMap.map((node, index) => {
+    //   return [index, node];
+    // })
+    return Object.entries(fileNode.childrenFileNodeMap)
   }
   return [];
 }
