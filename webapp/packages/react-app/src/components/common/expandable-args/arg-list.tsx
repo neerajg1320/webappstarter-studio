@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import "./arg-list.css";
 import {
   ClickableKeyCurlyBracketsObjectItem,
@@ -57,7 +57,9 @@ interface ArgListProps {
 
 
 const ArgList:React.FC<ArgListProps> = ({list}) => {
-  const listInfo = getConsoleItemInfo(list);
+  const listInfo = useMemo(() => {
+    return getConsoleItemInfo(list)
+  }, [list]);
 
   return (
     <div>
