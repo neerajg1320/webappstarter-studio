@@ -59,9 +59,9 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
       <div className={`${enclosingClass||''}`}>
       {expanded &&
         traversalFunc(expandableValue).map(([k, v], index:number) => {
-            const itemInfo = getItemInfoFunc(v)
+            const childItemInfo = getItemInfoFunc(v)
             if (debugComponent) {
-              console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, itemInfo);
+              console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, childItemInfo);
             }
 
             return (
@@ -71,16 +71,16 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                       keyName={k}
                       parentType={type}
                       expanded={childrenExpandedMap[k]}
-                      component={itemInfo.component}
+                      component={childItemInfo.component}
                       onClick={(e) => handleExpandClick(k)}
                   />
-                  {(itemInfo.isRecursive && itemInfo.traversalFunc) &&
+                  {(childItemInfo.isRecursive && childItemInfo.traversalFunc) &&
                       <>
-                      {/*<pre>{JSON.stringify(itemInfo.traversalFunc(v))}</pre>*/}
+                      {/*<pre>{JSON.stringify(childItemInfo.traversalFunc(v))}</pre>*/}
                         <ExpandableSpan expandableValue={v}
-                                        type={itemInfo.type}
-                                        traversalFunc={itemInfo.traversalFunc}
-                                        enclosingClass={itemInfo.enclosingClass}
+                                        type={childItemInfo.type}
+                                        traversalFunc={childItemInfo.traversalFunc}
+                                        enclosingClass={childItemInfo.enclosingClass}
                                         level={propLevel + 1}
                                         expanded={childrenExpandedMap[k]}
                                         {...{getItemInfoFunc}}
