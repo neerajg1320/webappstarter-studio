@@ -267,7 +267,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
                                 traversalFunc={fileRootNodeItemInfo.traversalFunc}
                                 enclosingClass={fileRootNodeItemInfo.enclosingClass}
                                 level={0}
-                                parentType={null}
+                                parentType={"folder"}
                                 // expanded={true}
                                 getItemInfoFunc={getFileTreeItemInfo}
                 />
