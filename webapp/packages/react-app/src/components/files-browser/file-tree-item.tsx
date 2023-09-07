@@ -14,9 +14,6 @@ import {debugComponent} from "../../config/global";
 
 const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
   if (fileNode && fileNode.childrenFileNodeMap) {
-    // return fileNode.childrenFileNodeMap.map((node, index) => {
-    //   return [index, node];
-    // })
     return Object.entries(fileNode.childrenFileNodeMap)
   }
   return [];
