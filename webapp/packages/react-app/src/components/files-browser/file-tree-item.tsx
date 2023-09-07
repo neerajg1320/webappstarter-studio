@@ -3,7 +3,7 @@ import {
   ItemInfo, KeyValueRepresentationComponentProps,
   TraversalFunc
 } from "../common/expandable-args/expandable-span-item";
-import {FileNode} from "./file-node";
+import {FileNode, safeFileNodeTraveral} from "./file-node";
 import React from "react";
 import './file-tree-item.css';
 import {debugComponent} from "../../config/global";
@@ -11,7 +11,6 @@ import {debugComponent} from "../../config/global";
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
 //
-
 
 const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
   if (fileNode && fileNode.childFileNodes) {
@@ -22,27 +21,16 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
   return [];
 }
 
+
 const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   const handleFolderClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
       propOnClick(keyName)
-      if (debugComponent || true) {
+      if (debugComponent) {
         const fileNode:FileNode = itemInfo.value;
-
-        console.log(`ExpandableSpan:handleExpandClick() itemInfo:${
-            JSON.stringify(fileNode,
-                function (key, value) {
-                  if (key === "parentNode") {
-                    if (value != null) {
-                      return value.info.name;
-                    }
-                  }
-                  return value;
-                },
-                2)
-        }`)
+        console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
       }
     }
   }

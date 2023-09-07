@@ -1,7 +1,22 @@
+import {ReduxFile} from "../../state";
+
 export type FileType = "folder" | "file";
 export type FileInfo = {type: FileType, name: string, parentNode: FileNode|null};
 export type FileNode = {info: FileInfo, childFileNodes?: FileNode[]};
 
+
+// Used in console.log
+// This is not the traversal function used by ExpansionSpan component
+export const safeFileNodeTraveral = (key:string, value:FileNode) => {
+  if (key === "parentNode") {
+    if (value != null) {
+      return value.info.name;
+    }
+  }
+  return value;
+};
+
+// Hard coded fileTree generated for testing the compoent
 export const getSampleFileTree = (title:string="root"):FileNode => {
   // Create root folder
   const rootInfo:FileInfo = {type:"folder", name:`${title}`, parentNode:null};
@@ -47,4 +62,8 @@ export const getSampleFileTree = (title:string="root"):FileNode => {
   }
 
   return rootNode;
+}
+
+export const getFileTreeFromReduxFileList = (title:string, files: ReduxFile[]):FileNode => {
+  return getSampleFileTree(title);
 }

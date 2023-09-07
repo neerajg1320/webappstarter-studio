@@ -10,7 +10,7 @@ import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {FileInfo, FileNode, getSampleFileTree} from "./file-node";
+import {FileInfo, FileNode, getFileTreeFromReduxFileList, getSampleFileTree} from "./file-node";
 import ExpandableSpan from "../common/expandable-args/expandable-span";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 import {getFileInfo} from "prettier";
@@ -55,13 +55,19 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
   }, [projectFiles]);
 
   useEffect(() => {
-    for (const fp of projectFilePaths) {
-      console.log(fp);
+    if (debugComponent) {
+      for (const fp of projectFilePaths) {
+        console.log(fp);
+      }
     }
 
-    const rootNode:FileNode = getSampleFileTree(reduxProject.title)
-    console.log(`rootNode:`, rootNode);
-    setFileTree(rootNode);
+    if (projectFiles && projectFiles.length) {
+      const rootNode: FileNode = getFileTreeFromReduxFileList(reduxProject.title, projectFiles)
+      if (debugComponent) {
+        console.log(`rootNode:`, rootNode);
+      }
+      setFileTree(rootNode);
+    }
   }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
 
 
@@ -211,7 +217,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
 
   const fileRootNodeItemInfo:ItemInfo|null = useMemo(() => {
     if (fileTree) {
-      console.log(fileTree);
+      // console.log(fileTree);
       return getFileTreeItemInfo(fileTree);
     }
     return null;
