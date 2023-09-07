@@ -15,79 +15,82 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          onClick,
                                                                          component
                                                                        }) => {
-
+  console.log(`KeyValueHOComponent:`, value, keyName, parentType, component)
   return React.createElement(component, {value, keyName, parentType, expanded, onClick}, null);
 }
 
 
 
 interface ExpandableSpanProps {
-  // expandableValue: object;
   itemInfo: ItemInfo;
+  keyName: string|number;
   type: string;
-  traversalFunc: TraversalFunc;
+  traversalFunc: TraversalFunc|null;
   enclosingClass: string|null;
+  parentType: string|null;
   level: number;
-  expanded: boolean;
+  // expanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
 };
 
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         itemInfo,
+                                                        keyName,
                                                         type,
                                                         traversalFunc,
                                                         enclosingClass,
+                                                        parentType=null,
                                                         level:propLevel,
-                                                        expanded,
+                                                        // expanded,
                                                         getItemInfoFunc
                                                       }) => {
-  const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
-
-  const handleExpandClick = (k:string|number) => {
-    if (debugComponent) {
-      console.log(`ExpandableSpan:handleExpandClick() k:${k}`)
+  // const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const handleExpandClick = (itemInfo:ItemInfo) => {
+    if (debugComponent || true) {
+      console.log(`ExpandableSpan:handleExpandClick() itemInfo:${JSON.stringify(itemInfo)}`)
     }
-    setChildrenExpandedMap((prev) => {
-      return {...prev, [k]: !prev[k]};
-    });
+    setExpanded((prev) => !prev);
   }
 
 
   return (
     <div className="object-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
+      <KeyValueHOComponent
+          value={itemInfo.value}
+          keyName={keyName}
+          parentType={parentType}
+          expanded={expanded}
+          component={itemInfo.component}
+          onClick={(e) => handleExpandClick(itemInfo)}
+      />
       <div className={`${enclosingClass||''}`}>
-      {expanded &&
+      {(expanded && traversalFunc) &&
         traversalFunc(itemInfo.value).map(([k, v], index:number) => {
             const childItemInfo = getItemInfoFunc(v)
-            if (debugComponent) {
+            if (debugComponent || true) {
               console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, childItemInfo);
             }
 
             return (
                 <div key={index} >
-                  <KeyValueHOComponent
-                      value={v}
-                      keyName={k}
-                      parentType={type}
-                      expanded={childrenExpandedMap[k]}
-                      component={childItemInfo.component}
-                      onClick={(e) => handleExpandClick(k)}
-                  />
-                  {(childItemInfo.isRecursive && childItemInfo.traversalFunc) &&
-                      <>
-                      {/*<pre>{JSON.stringify(childItemInfo.traversalFunc(v))}</pre>*/}
-                        <ExpandableSpan itemInfo={childItemInfo}
-                                        type={childItemInfo.type}
-                                        traversalFunc={childItemInfo.traversalFunc}
-                                        enclosingClass={childItemInfo.enclosingClass}
-                                        level={propLevel + 1}
-                                        expanded={childrenExpandedMap[k]}
-                                        {...{getItemInfoFunc}}
-                        />
-                      </>
-                  }
+
+                    <>
+                    {/*<pre>{JSON.stringify(childItemInfo.traversalFunc(v))}</pre>*/}
+                      <ExpandableSpan itemInfo={childItemInfo}
+                                      keyName={k}
+                                      type={childItemInfo.type}
+                                      traversalFunc={childItemInfo.traversalFunc}
+                                      enclosingClass={childItemInfo.enclosingClass}
+                                      parentType={itemInfo.type}
+                                      level={propLevel + 1}
+                                      // expanded={childrenExpandedMap[k]}
+                                      {...{getItemInfoFunc}}
+                      />
+                    </>
+
                 </div>
             );
         })

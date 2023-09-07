@@ -13,8 +13,8 @@ import './file-tree-item.css';
 
 
 const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
-  if (fileNode && fileNode.children) {
-    return fileNode.children.map((node, index) => {
+  if (fileNode && fileNode.childFileNodes) {
+    return fileNode.childFileNodes.map((node, index) => {
       return [index, node];
     })
   }

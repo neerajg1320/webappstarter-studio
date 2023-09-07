@@ -70,11 +70,13 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           <>
           {listInfo.traversalFunc ?
                 <ExpandableSpan itemInfo={listInfo}
+                                keyName={'root-array'}
                                 type={listInfo.type}
                                 traversalFunc={listInfo.traversalFunc}
                                 enclosingClass={listInfo.enclosingClass}
+                                parentType={null}
                                 level={0}
-                                expanded={true}
+                                // expanded={true}
                                 getItemInfoFunc={getConsoleItemInfo}
                 />
                 :
