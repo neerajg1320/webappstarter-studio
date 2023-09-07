@@ -41,12 +41,22 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
   );
 };
 
-const SimpleFileItem:React.FC<KeyValueRepresentationComponentProps> = (
+const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
-  // console.log(`SimpleFileItem:`,value, keyName);
+  const handleFileClick = (e:React.MouseEvent) => {
+    if (keyName !== undefined && keyName !== null && propOnClick) {
+      propOnClick(keyName)
+      if (debugComponent) {
+        const fileNode:FileNode = itemInfo.value;
+        console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
+      }
+    }
+  }
+
   return (
-      <div className="file-item">
+      <div className="file-item" onClick={handleFileClick}>
+        <i className="fas fa-file" />
         <span>{itemInfo.value.info.name}</span>
       </div>
   );
@@ -60,6 +70,6 @@ export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileNode):ItemInfo 
     isRecursive: fileNode.info.type === "folder",
     traversalFunc: fileNodeTraversalFunc,
     enclosingClass: "file-tree",
-    component: fileNode.info.type === "folder" ? ClickableFolderItem : SimpleFileItem,
+    component: fileNode.info.type === "folder" ? ClickableFolderItem : ClickableFileItem,
   };
 }

@@ -46,12 +46,16 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         initialExpanded,
                                                         getItemInfoFunc
                                                       }) => {
-  // const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
   const handleExpandClick = (itemInfo:ItemInfo) => {
-
-    setExpanded((prev) => !prev);
+    if (itemInfo.type === "folder") {
+      setExpanded((prev) => !prev);
+    } else if (itemInfo.type === "file") {
+      if (itemInfo.value.info.reduxFile) {
+        console.log(`File ${itemInfo.value.info.reduxFile.path} has been clicked`);
+      }
+    }
   }
 
 
@@ -77,21 +81,16 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
 
             return (
                 <div key={index} >
-
-                    <>
-                    {/*<pre>{JSON.stringify(childItemInfo.traversalFunc(v))}</pre>*/}
-                      <ExpandableSpan itemInfo={childItemInfo}
-                                      keyName={k}
-                                      type={childItemInfo.type}
-                                      traversalFunc={childItemInfo.traversalFunc}
-                                      enclosingClass={childItemInfo.enclosingClass}
-                                      parentType={itemInfo.type}
-                                      level={propLevel + 1}
-                                      initialExpanded={false}
-                                      {...{getItemInfoFunc}}
-                      />
-                    </>
-
+                    <ExpandableSpan itemInfo={childItemInfo}
+                                    keyName={k}
+                                    type={childItemInfo.type}
+                                    traversalFunc={childItemInfo.traversalFunc}
+                                    enclosingClass={childItemInfo.enclosingClass}
+                                    parentType={itemInfo.type}
+                                    level={propLevel + 1}
+                                    initialExpanded={false}
+                                    {...{getItemInfoFunc}}
+                    />
                 </div>
             );
         })

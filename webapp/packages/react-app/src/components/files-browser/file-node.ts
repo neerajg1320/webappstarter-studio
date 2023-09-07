@@ -2,7 +2,7 @@ import {ReduxFile} from "../../state";
 import {debugFileTree} from "../../config/global";
 
 export type FileType = "folder" | "file";
-export type FileInfo = {type: FileType, name: string, parentNode: FileNode|null};
+export type FileInfo = {type: FileType, name: string, reduxFile?:ReduxFile, parentNode: FileNode|null};
 export type FileNode = {info: FileInfo, childrenFileNodeMap?: {[k:string]:FileNode}};
 
 
@@ -68,18 +68,13 @@ export const getSampleFileTree = (title:string="root"):FileNode => {
 
 // Create a fileTree out of ReduxFile[]. We use the file.path to construct the tree
 export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile[]):FileNode => {
-  const filePaths = reduxFiles.map(file => file.path)
-  if (debugFileTree) {
-    console.log(`filePaths:`, filePaths);
-  }
-
   const rootFileNode:FileNode = {info: {type:"folder", name:title, parentNode:null}, childrenFileNodeMap:{}};
   if (debugFileTree) {
     console.log(`Created rootFileNode:`, JSON.stringify(rootFileNode, safeFileNodeTraveral, 2));
   }
 
-  filePaths.forEach((filePath) => {
-    const pathParts = filePath.split("/");
+  reduxFiles.forEach((reduxFile) => {
+    const pathParts = reduxFile.path.split("/");
     let currentNode = rootFileNode;
 
     pathParts.forEach((part, index) => {
@@ -93,7 +88,7 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
         if (index < pathParts.length - 1) {
           partNode = {info:{type:"folder", name:part, parentNode:currentNode}, childrenFileNodeMap:{}}
         } else {
-          partNode = {info:{type:"file", name:part, parentNode:currentNode}}
+          partNode = {info:{type:"file", name:part, reduxFile, parentNode:currentNode}}
         }
         if (debugFileTree) {
           console.log(`Created partNode:`, JSON.stringify(partNode, safeFileNodeTraveral, 2));
