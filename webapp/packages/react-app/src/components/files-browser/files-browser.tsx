@@ -286,7 +286,6 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
         :
           <div style={{
                 height: "100%",
-                // border: "3px solid lightblue",
                 display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
               }}
             >

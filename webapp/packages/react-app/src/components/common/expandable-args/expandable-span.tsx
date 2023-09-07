@@ -32,6 +32,7 @@ interface ExpandableSpanProps {
   level: number;
   initialExpanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
+  onClick?: (itemInfo:ItemInfo) => void
 };
 
 
@@ -44,17 +45,16 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         parentType=null,
                                                         level:propLevel,
                                                         initialExpanded,
-                                                        getItemInfoFunc
+                                                        getItemInfoFunc,
+                                                        onClick:propOnClick,
                                                       }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
   const handleExpandClick = (itemInfo:ItemInfo) => {
-    if (itemInfo.type === "folder") {
-      setExpanded((prev) => !prev);
-    } else if (itemInfo.type === "file") {
-      if (itemInfo.value.info.reduxFile) {
-        console.log(`File ${itemInfo.value.info.reduxFile.path} has been clicked`);
-      }
+    setExpanded((prev) => !prev);
+
+    if (propOnClick) {
+      propOnClick(itemInfo)
     }
   }
 
