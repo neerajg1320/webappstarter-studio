@@ -59,9 +59,9 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
   const listInfo = getConsoleItemInfo(list);
 
   return (
-    <div className="args-wrapper">
+    <div>
       {/*<pre>{JSON.stringify(childrenExpandedMap, null, 2)}</pre>*/}
-      <div className="array-horizontal-box">
+      <div>
       {(list && list.length > 0) &&
           <>
           {listInfo.traversalFunc ?
