@@ -1,10 +1,10 @@
-import './files-list.css';
+import './files-browser.css';
 import {ReduxProject} from "../../state/project";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
-import FileTreeControlBar, {FileTreeEvent, FileTreeEventType} from "./file-tree-control-bar";
+import FileBrowserControlBar, {FileTreeEvent, FileTreeEventType} from "./file-browser-control-bar";
 import {debugComponent, debugLocalOnlyPendingSupport} from "../../config/global";
 import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
@@ -18,7 +18,7 @@ interface FilesTreeProps {
   onSelect: (fileLocalId:string) => void
 }
 
-const FilesList: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
+const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
   // const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
@@ -212,7 +212,7 @@ const FilesList: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
         // border: "3px solid red",
       }}
     >
-      <FileTreeControlBar
+      <FileBrowserControlBar
           reduxProject={reduxProject}
           selectedFileLocalId={selectedFileLocalId}
           onEvent={handleFileTreeControlEvent}
@@ -260,4 +260,4 @@ const FilesList: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
   )
 }
 
-export default FilesList;
+export default FilesBrowser;

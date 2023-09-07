@@ -1,4 +1,4 @@
-import './file-tree-control-bar.css';
+import './file-browser-control-bar.css';
 import React from "react";
 import {ReduxProject} from "../../state";
 
@@ -19,7 +19,7 @@ interface FileTreeControlBarProps {
   onEvent: (event:FileTreeEvent) => void;
 }
 
-const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
+const FileBrowserControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
                                                                 selectedFileLocalId,
                                                                 onEvent}) => {
 
@@ -60,4 +60,4 @@ const FileTreeControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
   );
 }
 
-export default FileTreeControlBar;
+export default FileBrowserControlBar;

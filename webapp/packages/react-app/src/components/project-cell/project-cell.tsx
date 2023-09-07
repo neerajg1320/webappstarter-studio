@@ -4,7 +4,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
-import FilesList from "../files-tree/files-list";
+import FilesList from "../files-tree/files-browser";
 import {ReduxFile, ReduxProject} from "../../state";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
