@@ -50,20 +50,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
   const handleExpandClick = (itemInfo:ItemInfo) => {
-    if (debugComponent) {
-      console.log(`ExpandableSpan:handleExpandClick() itemInfo:${
-        JSON.stringify(itemInfo, 
-            function (key, value) {
-            if (key === "parent") {
-              if (value != null) {
-                return value.info.name;
-              }
-            }
-            return value;
-          }, 
-            2)
-      }`)
-    }
+
     setExpanded((prev) => !prev);
   }
 
