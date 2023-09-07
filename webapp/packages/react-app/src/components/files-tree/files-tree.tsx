@@ -10,6 +10,8 @@ import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
+import {FileInfo, FileNode, getSampleFileTree} from "./file-node";
+
 
 interface FilesTreeProps {
   reduxProject: ReduxProject
@@ -23,6 +25,7 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
   const filesState = useTypedSelector((state) => state.files);
   const {createFile, updateFile, removeFile, saveFile} = useActions();
   const selectedFileLocalId = reduxProject.selectedFileLocalId || null;
+  const [filesTree, setFilesTree] = useState<FileNode>({} as FileNode)
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -42,15 +45,21 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
   }
 
   // Needed for selecting file
-  useEffect(() => {
-    if (!selectedFileLocalId) {
-      if (projectFiles && projectFiles.length > 0) {
-        const entryFileFilter = projectFiles.filter(file => file.isEntryPoint);
-        const displayFile =  (entryFileFilter.length  > 0) ? entryFileFilter[0] : projectFiles[0];
-        // setSelectedFileLocalId(displayFile.localId);
-      }
-    }
+  const projectFilePaths:string[] = useMemo(() => {
+    return projectFiles.map(file => file.path);
   }, [projectFiles]);
+
+
+  useEffect(() => {
+    for (const fp of projectFilePaths) {
+      console.log(fp);
+    }
+
+    const rootNode:FileNode = getSampleFileTree(reduxProject.title)
+    console.log(`rootNode:`, rootNode);
+    setFilesTree(rootNode);
+  }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
+
 
   // Needed for selecting file
   useEffect(() => {
