@@ -11,7 +11,7 @@ import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../uti
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {FileInfo, FileNode, getSampleFileTree} from "./file-node";
-import ExpandableSpan from "../common/expandable-args/espan";
+import ExpandableSpan from "../common/expandable-args/expandable-span";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 
 

@@ -1,33 +1,11 @@
 import React, {useState} from 'react';
-import './espan.css';
+import './expandable-span.css';
 import {debugComponent} from "../../../config/global";
+import {GetItemInfoFunc, KeyValueRepresentationComponentProps, TraversalFunc} from "./expandable-span-item";
 
-export interface KeyValueRepresentationComponentProps {
-  value: any;
-  keyName?: string|number;
-  parentType: string;
-  expanded?: boolean;
-  onClick?: (keyName:string|number) => void
-}
-
-interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
+export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
   component: React.FC<KeyValueRepresentationComponentProps>;
 }
-
-export type TraversalFunc = (value:any) => [string, any][];
-
-export type ItemInfo = {
-  type:string,
-  component:React.FC<KeyValueRepresentationComponentProps>
-  isRecursive:boolean,
-  traversalFunc: TraversalFunc|null,
-  enclosingClass: string|null,
-};
-
-export type GetItemInfoFunc = (value:any) => ItemInfo;
-
-
-
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          value,
@@ -42,15 +20,6 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
 }
 
 
-export const ObjectTraversalFunc:TraversalFunc= (value) => {
-  return Object.entries(value);
-}
-
-export const ArrayTraversalFunc:TraversalFunc= (value) => {
-  return value.map((item:any, index:number) => {
-    return [index, item];
-  });
-}
 
 interface ExpandableSpanProps {
   expandableValue: object;

@@ -1,5 +1,5 @@
 import React from "react";
-import {KeyValueRepresentationComponentProps} from "./espan";
+import {KeyValueRepresentationComponentProps} from "./expandable-span-item";
 import './default-item-components.css';
 
 

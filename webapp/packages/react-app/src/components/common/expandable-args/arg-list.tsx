@@ -6,11 +6,12 @@ import {
   DivItem,
   DoubleQuotedDivItem
 } from "./default-item-components";
-import ExpandableSpan, {
+import {
   KeyValueRepresentationComponentProps,
   ItemInfo,
   ObjectTraversalFunc, ArrayTraversalFunc
-} from "./espan";
+} from "./expandable-span-item";
+import ExpandableSpan from "./expandable-span";
 
 
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
