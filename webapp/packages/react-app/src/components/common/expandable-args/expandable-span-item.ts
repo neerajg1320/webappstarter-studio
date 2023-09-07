@@ -5,6 +5,7 @@ export interface KeyValueRepresentationComponentProps {
   keyName?: string|number|null;
   parentInfo: ItemInfo|null;
   expanded?: boolean;
+  level: number;
   onClick?: (keyName:string|number|null, itemInfo:ItemInfo) => void
 }
 
