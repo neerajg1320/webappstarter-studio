@@ -58,8 +58,6 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
       <div className={`${enclosingClass||''}`}>
       {expanded &&
-        // Object.entries(obj)
-        // arr.map((v, index) => [index,v])
         traversalFunc(expandableValue).map(([k, v], index:number) => {
             const itemInfo = getItemInfoFunc(v)
             if (debugComponent) {
