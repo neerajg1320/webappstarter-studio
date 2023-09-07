@@ -219,40 +219,42 @@ const FilesList: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
       />
 
       {(projectFiles && projectFiles.length>0)
-        ? <ul>
-          {
-            projectFiles.map(file => {
-              const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
-              return (
-                <li key={file.localId}
-                    className={"file-list-item " + extraFileClasses}
-                    onClick={() => handleSelectFileClick(file.localId)}
-                    onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
-                >
-                  {(selectedFileLocalId === file.localId && editPathEnabled && fileNameInputRef)
-                    ? <input
-                          autoFocus
-                          ref={fileNameInputRef}
-                          value={file.path}
-                          onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
-                          onKeyDownCapture={handleInputKeyPress}
-                          onBlur={handleInputBlur}
-                      />
-                    : <span>{file.path}</span>
-                  }
-                </li>
-              );
-            })
-          }
-        </ul>
-        : <div style={{
-              height: "100%",
-              // border: "3px solid lightblue",
-              display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
-            }}
-          >
-            <span>Create a File</span>
-        </div>
+        ?
+          <ul>
+            {
+              projectFiles.map(file => {
+                const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
+                return (
+                  <li key={file.localId}
+                      className={"file-list-item " + extraFileClasses}
+                      onClick={() => handleSelectFileClick(file.localId)}
+                      onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
+                  >
+                    {(selectedFileLocalId === file.localId && editPathEnabled && fileNameInputRef)
+                      ? <input
+                            autoFocus
+                            ref={fileNameInputRef}
+                            value={file.path}
+                            onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
+                            onKeyDownCapture={handleInputKeyPress}
+                            onBlur={handleInputBlur}
+                        />
+                      : <span>{file.path}</span>
+                    }
+                  </li>
+                );
+              })
+            }
+          </ul>
+        :
+          <div style={{
+                height: "100%",
+                // border: "3px solid lightblue",
+                display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
+              }}
+            >
+              <span>Create a File</span>
+          </div>
       }
     </div>
   )
