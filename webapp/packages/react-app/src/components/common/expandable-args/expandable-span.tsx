@@ -23,22 +23,8 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
   return React.createElement(component, {itemInfo, keyName, parentInfo, expanded, level, onClick}, null);
 }
 
-// KeyValueRepresentationComponentProps
-const temp = `
-  itemInfo: ItemInfo;
-  keyName?: string|number|null;
-  parentInfo: ItemInfo|null;
-  expanded?: boolean;
-  onClick?: (keyName:string|number|null, itemInfo:ItemInfo) => void
-`;
 
 interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
-  // itemInfo: ItemInfo;
-  // keyName: string|number|null;
-  // parentInfo: ItemInfo|null;
-  // expanded: boolean;
-  // onClick?: (keyName:string|number|null, itemInfo:ItemInfo) => void;
-
   getItemInfoFunc: GetItemInfoFunc;
 };
 
