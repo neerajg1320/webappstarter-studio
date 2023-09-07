@@ -1,8 +1,8 @@
-.file-tree-item {
+.file-list-item {
   padding:0 2px;
   /*border: 1px solid yellow;*/
 }
 
-.file-tree-item.selected-file {
+.file-list-item.selected-file {
   background-color: grey;
 }

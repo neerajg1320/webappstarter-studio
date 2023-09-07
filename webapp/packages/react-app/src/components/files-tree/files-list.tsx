@@ -1,4 +1,4 @@
-import './files-tree.css';
+import './files-list.css';
 import {ReduxProject} from "../../state/project";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -225,7 +225,7 @@ const FilesList: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
               const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
               return (
                 <li key={file.localId}
-                    className={"file-tree-item " + extraFileClasses}
+                    className={"file-list-item " + extraFileClasses}
                     onClick={() => handleSelectFileClick(file.localId)}
                     onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
                 >
