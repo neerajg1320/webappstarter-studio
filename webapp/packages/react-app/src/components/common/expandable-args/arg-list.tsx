@@ -76,7 +76,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                                 enclosingClass={listInfo.enclosingClass}
                                 parentType={null}
                                 level={0}
-                                // expanded={true}
+                                initialExpanded={true}
                                 getItemInfoFunc={getConsoleItemInfo}
                 />
                 :

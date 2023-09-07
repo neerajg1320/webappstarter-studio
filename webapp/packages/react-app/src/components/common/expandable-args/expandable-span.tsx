@@ -30,7 +30,7 @@ interface ExpandableSpanProps {
   enclosingClass: string|null;
   parentType: string|null;
   level: number;
-  // expanded: boolean;
+  initialExpanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
 };
 
@@ -43,11 +43,12 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         enclosingClass,
                                                         parentType=null,
                                                         level:propLevel,
-                                                        // expanded,
+                                                        initialExpanded,
                                                         getItemInfoFunc
                                                       }) => {
   // const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
-  const [expanded, setExpanded] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(initialExpanded);
+
   const handleExpandClick = (itemInfo:ItemInfo) => {
     if (debugComponent) {
       console.log(`ExpandableSpan:handleExpandClick() itemInfo:${
@@ -99,7 +100,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                       enclosingClass={childItemInfo.enclosingClass}
                                       parentType={itemInfo.type}
                                       level={propLevel + 1}
-                                      // expanded={childrenExpandedMap[k]}
+                                      initialExpanded={false}
                                       {...{getItemInfoFunc}}
                       />
                     </>
