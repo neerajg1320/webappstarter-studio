@@ -35,9 +35,9 @@ interface ExpandableSpanProps {
   keyName: string|number|null;
   parentInfo: ItemInfo|null;
   // The following three can be derived from itemInfo
-  type: string;
-  traversalFunc: TraversalFunc|null;
-  enclosingClass: string|null;
+  // type: string;
+  // traversalFunc: TraversalFunc|null;
+  // enclosingClass: string|null;
 
   level: number;
   initialExpanded: boolean;
@@ -49,9 +49,11 @@ interface ExpandableSpanProps {
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         itemInfo,
                                                         keyName,
-                                                        type,
-                                                        traversalFunc,
-                                                        enclosingClass,
+
+                                                        // type,
+                                                        // traversalFunc,
+                                                        // enclosingClass,
+
                                                         parentInfo,
                                                         level:propLevel,
                                                         initialExpanded,
@@ -80,12 +82,12 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
           component={itemInfo.component}
           onClick={(e) => handleHOComponentClick(itemInfo)}
       />
-      <div className={`${enclosingClass||''}`}>
-      {(expanded && traversalFunc) &&
-        traversalFunc(itemInfo.value).map(([k, v], index:number) => {
+      <div className={`${itemInfo.enclosingClass||''}`}>
+      {(expanded && itemInfo.traversalFunc) &&
+        itemInfo.traversalFunc(itemInfo.value).map(([k, v], index:number) => {
             const childItemInfo = getItemInfoFunc(v)
             if (debugComponent) {
-              console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, childItemInfo);
+              console.log(`k:${k} v:${v} type:${itemInfo.type} itemInfo(v)`, childItemInfo);
             }
 
             return (
@@ -93,9 +95,9 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                     <ExpandableSpan itemInfo={childItemInfo}
                                     keyName={k}
 
-                                    type={childItemInfo.type}
-                                    traversalFunc={childItemInfo.traversalFunc}
-                                    enclosingClass={childItemInfo.enclosingClass}
+                                    // type={childItemInfo.type}
+                                    // traversalFunc={childItemInfo.traversalFunc}
+                                    // enclosingClass={childItemInfo.enclosingClass}
 
                                     parentInfo={itemInfo}
                                     level={propLevel + 1}
