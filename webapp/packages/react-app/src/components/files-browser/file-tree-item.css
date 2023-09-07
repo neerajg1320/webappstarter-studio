@@ -1,0 +1,7 @@
+.folder-item {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  /*align-items: flex-end;*/
+}

@@ -5,6 +5,7 @@ import {
 } from "../common/expandable-args/expandable-span-item";
 import {FileNode} from "./file-node";
 import React from "react";
+import './file-tree-item.css';
 
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
@@ -25,13 +26,13 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
 ) => {
   // console.log(`ClickableFolderItem:`,value, keyName);
   return (
-      <div onClick={(e) => {
+      <div className="folder-item" onClick={(e) => {
         if (keyName !== undefined && propOnClick) {
           propOnClick(keyName)
         }
       }}>
+        <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
         <span>{fileNode.info.name}</span>
-        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
 };
@@ -41,9 +42,8 @@ const SimpleFileItem:React.FC<KeyValueRepresentationComponentProps> = (
 ) => {
   // console.log(`SimpleFileItem:`,value, keyName);
   return (
-      <div>
+      <div className="file-item">
         <span>{fileNode.info.name}</span>
-        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
       </div>
   );
 };
