@@ -15,7 +15,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          onClick,
                                                                          component
                                                                        }) => {
-  console.log(`KeyValueHOComponent:`, value, keyName, parentType, component)
+  // console.log(`KeyValueHOComponent:`, value, keyName, parentType, component)
   return React.createElement(component, {value, keyName, parentType, expanded, onClick}, null);
 }
 
@@ -49,7 +49,18 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   const [expanded, setExpanded] = useState<boolean>(false);
   const handleExpandClick = (itemInfo:ItemInfo) => {
     if (debugComponent || true) {
-      // console.log(`ExpandableSpan:handleExpandClick() itemInfo:${JSON.stringify(itemInfo, null, 2)}`)
+      console.log(`ExpandableSpan:handleExpandClick() itemInfo:${
+        JSON.stringify(itemInfo, 
+            function (key, value) {
+            if (key === "parent") {
+              if (value != null) {
+                return value.info.name;
+              }
+            }
+            return value;
+          }, 
+            2)
+      }`)
     }
     setExpanded((prev) => !prev);
   }
