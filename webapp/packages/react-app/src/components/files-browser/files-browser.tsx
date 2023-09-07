@@ -11,6 +11,8 @@ import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../uti
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {FileInfo, FileNode, getSampleFileTree} from "./file-node";
+import ExpandableSpan from "../common/expandable-args/espan";
+import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 
 
 interface FilesTreeProps {
@@ -220,6 +222,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
 
       {(projectFiles && projectFiles.length>0)
         ?
+          <>
           <ul>
             {
               projectFiles.map(file => {
@@ -246,6 +249,21 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
               })
             }
           </ul>
+          {/*<div>*/}
+          {/*  {listInfo.traversalFunc ?*/}
+          {/*      <ExpandableSpan expandableValue={list}*/}
+          {/*                      type={listInfo.type}*/}
+          {/*                      traversalFunc={listInfo.traversalFunc}*/}
+          {/*                      enclosingClass={listInfo.enclosingClass}*/}
+          {/*                      level={0}*/}
+          {/*                      expanded={true}*/}
+          {/*                      getItemInfoFunc={getConsoleItemInfo}*/}
+          {/*      />*/}
+          {/*      :*/}
+          {/*      <div>List can't be traversed</div>*/}
+          {/*  }*/}
+          {/*</div>*/}
+          </>
         :
           <div style={{
                 height: "100%",
