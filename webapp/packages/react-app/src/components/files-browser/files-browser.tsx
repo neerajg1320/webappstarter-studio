@@ -262,12 +262,12 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
           <div>
             {(fileTree &&fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
                 <ExpandableSpan itemInfo={fileRootNodeItemInfo}
-                                keyName={'root-key'}
+                                keyName={null}
                                 type={fileRootNodeItemInfo.type}
                                 traversalFunc={fileRootNodeItemInfo.traversalFunc}
                                 enclosingClass={fileRootNodeItemInfo.enclosingClass}
                                 level={0}
-                                parentType={"folder"}
+                                parentType={null}
                                 // expanded={true}
                                 getItemInfoFunc={getFileTreeItemInfo}
                 />

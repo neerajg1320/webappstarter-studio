@@ -9,7 +9,7 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
   // console.log(`ClickableKeyCurlyBracketsObjectItem:`,value, keyName);
   return (
       <div className="arg-object-title" onClick={(e) => {
-        if (keyName !== undefined && propOnClick) {
+        if (keyName !== undefined && keyName !== null && propOnClick) {
           propOnClick(keyName)
         }
       }}>
@@ -26,7 +26,7 @@ export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps
   // console.log(`ClickableKeyArrayItem:`,value, keyName);
   return (
       <div className="arg-object-title" onClick={(e) => {
-        if (keyName !== undefined && propOnClick) {
+        if (keyName !== undefined && keyName !== null && propOnClick) {
           propOnClick(keyName)
         }
       }}>
@@ -42,7 +42,7 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
   // console.log(`ClickableKeyArrayItem:`,value, keyName);
   return (
       <div className="arg-object-title" onClick={(e) => {
-        if (keyName !== undefined && propOnClick) {
+        if (keyName !== undefined && keyName !== null && propOnClick) {
           propOnClick(keyName)
         }
       }}>

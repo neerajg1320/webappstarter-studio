@@ -23,7 +23,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
 
 interface ExpandableSpanProps {
   itemInfo: ItemInfo;
-  keyName: string|number;
+  keyName: string|number|null;
   type: string;
   traversalFunc: TraversalFunc|null;
   enclosingClass: string|null;

@@ -27,7 +27,7 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
   // console.log(`ClickableFolderItem:`,value, keyName);
   return (
       <div className="folder-item" onClick={(e) => {
-        if (keyName !== undefined && propOnClick) {
+        if (keyName !== undefined && keyName !== null && propOnClick) {
           propOnClick(keyName)
         }
       }}>

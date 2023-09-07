@@ -1,8 +1,9 @@
 import React from "react";
 
 export interface KeyValueRepresentationComponentProps {
-  value: any;
-  keyName?: string|number;
+  // itemInfo: ItemInfo;
+  value:any;
+  keyName?: string|number|null;
   parentType: string|null;
   expanded?: boolean;
   onClick?: (keyName:string|number) => void
