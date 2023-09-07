@@ -72,8 +72,8 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                 <ExpandableSpan itemInfo={listInfo}
                                 keyName={'root-array'}
                                 parentInfo={null}
+                                expanded={true}
                                 level={0}
-                                initialExpanded={true}
                                 getItemInfoFunc={getConsoleItemInfo}
                 />
                 :

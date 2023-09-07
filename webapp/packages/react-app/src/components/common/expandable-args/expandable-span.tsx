@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './expandable-span.css';
 import {debugComponent} from "../../../config/global";
 import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps, TraversalFunc} from "./expandable-span-item";
+import {key} from "localforage";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
@@ -27,17 +28,17 @@ const temp = `
   keyName?: string|number|null;
   parentInfo: ItemInfo|null;
   expanded?: boolean;
-  onClick?: (keyName:string|number) => void
+  onClick?: (keyName:string|number|null, itemInfo:ItemInfo) => void
 `;
 
 interface ExpandableSpanProps {
   itemInfo: ItemInfo;
   keyName: string|number|null;
   parentInfo: ItemInfo|null;
+  expanded: boolean;
+  onClick?: (keyName:string|number|null, itemInfo:ItemInfo) => void;
   level: number;
-  initialExpanded: boolean;
   getItemInfoFunc: GetItemInfoFunc;
-  onClick?: (itemInfo:ItemInfo) => void
 };
 
 
@@ -46,7 +47,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         keyName,
                                                         parentInfo,
                                                         level:propLevel,
-                                                        initialExpanded,
+                                                        expanded: initialExpanded,
                                                         getItemInfoFunc,
                                                         onClick:propOnClick,
                                                       }) => {
@@ -56,7 +57,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
     setExpanded((prev) => !prev);
 
     if (propOnClick) {
-      propOnClick(itemInfo)
+      propOnClick(keyName, itemInfo)
     }
   }
 
@@ -85,7 +86,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                     keyName={k}
                                     parentInfo={itemInfo}
                                     level={propLevel + 1}
-                                    initialExpanded={false}
+                                    expanded={false}
                                     {...{getItemInfoFunc}}
                     />
                 </div>
