@@ -18,7 +18,7 @@ interface FilesTreeProps {
   onSelect: (fileLocalId:string) => void
 }
 
-const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
+const FilesList: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
   // const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
@@ -258,4 +258,4 @@ const FilesTree: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelec
   )
 }
 
-export default FilesTree;
+export default FilesList;
