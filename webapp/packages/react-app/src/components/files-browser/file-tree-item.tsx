@@ -25,7 +25,8 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
 ) => {
   const handleFolderClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
-      propOnClick(keyName)
+      propOnClick(keyName, itemInfo);
+      
       if (debugComponent) {
         const fileNode:FileNode = itemInfo.value;
         console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
@@ -46,7 +47,8 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
 ) => {
   const handleFileClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
-      propOnClick(keyName)
+      propOnClick(keyName, itemInfo);
+
       if (debugComponent) {
         const fileNode:FileNode = itemInfo.value;
         console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)

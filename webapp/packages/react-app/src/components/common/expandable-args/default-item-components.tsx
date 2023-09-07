@@ -8,7 +8,7 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
 ) => {
   const handleObjectClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
-      propOnClick(keyName)
+      propOnClick(keyName, itemInfo)
     }
   }
 
@@ -29,7 +29,7 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
 ) => {
   const handleArrayClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
-      propOnClick(keyName)
+      propOnClick(keyName, itemInfo)
     }
   }
 

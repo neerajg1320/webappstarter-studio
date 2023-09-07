@@ -270,13 +270,8 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
                 // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
                 <ExpandableSpan itemInfo={fileRootNodeItemInfo}
                                 keyName={"root"}
-
-                                // type={fileRootNodeItemInfo.type}
-                                // traversalFunc={fileRootNodeItemInfo.traversalFunc}
-                                // enclosingClass={fileRootNodeItemInfo.enclosingClass}
-
-                                level={0}
                                 parentInfo={null}
+                                level={0}
                                 initialExpanded={true}
                                 getItemInfoFunc={getFileTreeItemInfo}
                 />
