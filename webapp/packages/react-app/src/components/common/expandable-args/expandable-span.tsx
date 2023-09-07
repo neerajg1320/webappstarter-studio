@@ -48,7 +48,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   // const [childrenExpandedMap, setChildrenExpandedMap] = useState<{[k:string]:boolean}>({});
   const [expanded, setExpanded] = useState<boolean>(false);
   const handleExpandClick = (itemInfo:ItemInfo) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`ExpandableSpan:handleExpandClick() itemInfo:${
         JSON.stringify(itemInfo, 
             function (key, value) {
@@ -81,7 +81,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
       {(expanded && traversalFunc) &&
         traversalFunc(itemInfo.value).map(([k, v], index:number) => {
             const childItemInfo = getItemInfoFunc(v)
-            if (debugComponent || true) {
+            if (debugComponent) {
               console.log(`k:${k} v:${v} type:${type} itemInfo(v)`, childItemInfo);
             }
 
