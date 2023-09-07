@@ -6,3 +6,7 @@
   gap: 2px;
   align-items: center;
 }
+
+.arg-object-title-none {
+  display: none;
+}

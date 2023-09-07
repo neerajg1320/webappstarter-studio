@@ -6,13 +6,14 @@ import './default-item-components.css';
 export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
-  // console.log(`ClickableKeyCurlyBracketsObjectItem:`,value, keyName);
+  const handleObjectClick = (e:React.MouseEvent) => {
+    if (keyName !== undefined && keyName !== null && propOnClick) {
+      propOnClick(keyName)
+    }
+  }
+
   return (
-      <div className="arg-object-title" onClick={(e) => {
-        if (keyName !== undefined && keyName !== null && propOnClick) {
-          propOnClick(keyName)
-        }
-      }}>
+      <div className="arg-object-title" onClick={handleObjectClick}>
         {parentType !== "array" && <span>{keyName}</span>}
         <span>{"{}"}</span>
         <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
@@ -20,35 +21,23 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
   );
 };
 
-export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
-) => {
-  // console.log(`ClickableKeyArrayItem:`,value, keyName);
-  return (
-      <div className="arg-object-title" onClick={(e) => {
-        if (keyName !== undefined && keyName !== null && propOnClick) {
-          propOnClick(keyName)
-        }
-      }}>
-        {parentType !== "array"&& <span>{keyName}</span>}
-        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
-      </div>
-  );
-};
 
+// Show only non-root components. For root component parentType is null
+// For root component the class becomes 'arg-object-title-none' otherwise it is 'arg-object-title'
 export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
-  // console.log(`ClickableKeyArrayItem:`,value, keyName);
+  const handleArrayClick = (e:React.MouseEvent) => {
+    if (keyName !== undefined && keyName !== null && propOnClick) {
+      propOnClick(keyName)
+    }
+  }
+
   return (
-      <div className="arg-object-title" onClick={(e) => {
-        if (keyName !== undefined && keyName !== null && propOnClick) {
-          propOnClick(keyName)
-        }
-      }}>
+      <div className={`arg-object-title${parentType === null ? "-none" : ""}`} onClick={handleArrayClick}>
         {parentType !== "array" && <span>{keyName}</span>}
         <span>[]</span>
-        <i className={"fas" +  (expanded ? " fa-caret-down" : " fa-caret-right")} />
+        <i className={"fas" + (expanded ? " fa-caret-down" : " fa-caret-right")}/>
       </div>
   );
 };

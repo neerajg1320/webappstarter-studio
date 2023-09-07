@@ -50,14 +50,13 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                       }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
-  const handleExpandClick = (itemInfo:ItemInfo) => {
+  const handleHOComponentClick = (itemInfo:ItemInfo) => {
     setExpanded((prev) => !prev);
 
     if (propOnClick) {
       propOnClick(itemInfo)
     }
   }
-
 
   return (
     <div className="object-wrapper">
@@ -69,7 +68,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
           parentType={parentType}
           expanded={expanded}
           component={itemInfo.component}
-          onClick={(e) => handleExpandClick(itemInfo)}
+          onClick={(e) => handleHOComponentClick(itemInfo)}
       />
       <div className={`${enclosingClass||''}`}>
       {(expanded && traversalFunc) &&
