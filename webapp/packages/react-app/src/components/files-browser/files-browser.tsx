@@ -13,6 +13,9 @@ import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {FileInfo, FileNode, getSampleFileTree} from "./file-node";
 import ExpandableSpan from "../common/expandable-args/expandable-span";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
+import {getFileInfo} from "prettier";
+import {getFileTreeItemInfo} from "./file-tree-item";
+import {ItemInfo} from "../common/expandable-args/expandable-span-item";
 
 
 interface FilesTreeProps {
@@ -27,7 +30,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
   const filesState = useTypedSelector((state) => state.files);
   const {createFile, updateFile, removeFile, saveFile} = useActions();
   const selectedFileLocalId = reduxProject.selectedFileLocalId || null;
-  const [filesTree, setFilesTree] = useState<FileNode>({} as FileNode)
+  const [fileTree, setFileTree] = useState<FileNode|null>(null)
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -51,7 +54,6 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
     return projectFiles.map(file => file.path);
   }, [projectFiles]);
 
-
   useEffect(() => {
     for (const fp of projectFilePaths) {
       console.log(fp);
@@ -59,7 +61,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
 
     const rootNode:FileNode = getSampleFileTree(reduxProject.title)
     console.log(`rootNode:`, rootNode);
-    setFilesTree(rootNode);
+    setFileTree(rootNode);
   }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
 
 
@@ -207,6 +209,14 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
     }
   }
 
+  const fileRootNodeItemInfo:ItemInfo|null = useMemo(() => {
+    if (fileTree) {
+      console.log(fileTree);
+      return getFileTreeItemInfo(fileTree);
+    }
+    return null;
+  }, [fileTree])
+
   return (
     <div style={{
         height:"100%",
@@ -249,20 +259,20 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
               })
             }
           </ul>
-          {/*<div>*/}
-          {/*  {listInfo.traversalFunc ?*/}
-          {/*      <ExpandableSpan expandableValue={list}*/}
-          {/*                      type={listInfo.type}*/}
-          {/*                      traversalFunc={listInfo.traversalFunc}*/}
-          {/*                      enclosingClass={listInfo.enclosingClass}*/}
-          {/*                      level={0}*/}
-          {/*                      expanded={true}*/}
-          {/*                      getItemInfoFunc={getConsoleItemInfo}*/}
-          {/*      />*/}
-          {/*      :*/}
-          {/*      <div>List can't be traversed</div>*/}
-          {/*  }*/}
-          {/*</div>*/}
+          <div>
+            {(fileTree &&fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
+                <ExpandableSpan expandableValue={fileTree}
+                                type={fileRootNodeItemInfo.type}
+                                traversalFunc={fileRootNodeItemInfo.traversalFunc}
+                                enclosingClass={fileRootNodeItemInfo.enclosingClass}
+                                level={0}
+                                expanded={true}
+                                getItemInfoFunc={getFileTreeItemInfo}
+                />
+                :
+                <div>List can't be traversed</div>
+            }
+          </div>
           </>
         :
           <div style={{
