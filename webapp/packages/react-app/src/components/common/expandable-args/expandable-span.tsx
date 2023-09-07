@@ -8,7 +8,8 @@ export interface KeyValueHOComponentProps extends KeyValueRepresentationComponen
 }
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
-                                                                         value,
+                                                                         // value,
+                                                                         itemInfo,
                                                                          keyName,
                                                                          parentType,
                                                                          expanded=false,
@@ -16,7 +17,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          component
                                                                        }) => {
   // console.log(`KeyValueHOComponent:`, value, keyName, parentType, component)
-  return React.createElement(component, {value, keyName, parentType, expanded, onClick}, null);
+  return React.createElement(component, {itemInfo, keyName, parentType, expanded, onClick}, null);
 }
 
 
@@ -70,7 +71,8 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
     <div className="object-wrapper">
       {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
       <KeyValueHOComponent
-          value={itemInfo.value}
+          // value={itemInfo.value}
+          itemInfo={itemInfo}
           keyName={keyName}
           parentType={parentType}
           expanded={expanded}

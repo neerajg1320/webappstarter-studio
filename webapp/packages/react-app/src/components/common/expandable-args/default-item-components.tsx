@@ -4,7 +4,7 @@ import './default-item-components.css';
 
 
 export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableKeyCurlyBracketsObjectItem:`,value, keyName);
   return (
@@ -21,7 +21,7 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
 };
 
 export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableKeyArrayItem:`,value, keyName);
   return (
@@ -37,7 +37,7 @@ export const ClickableKeyArrayItem:React.FC<KeyValueRepresentationComponentProps
 };
 
 export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableKeyArrayItem:`,value, keyName);
   return (
@@ -54,23 +54,23 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
 };
 
 export const DoubleQuotedDivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value, keyName, parentType}
+    {itemInfo, keyName, parentType}
 ) => {
   return (
       <div>
         {parentType !== "array" && <span>{keyName}:</span>}
-        "{value}"
+        "{itemInfo.value}"
       </div>
   );
 }
 
 export const DivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value,keyName, parentType}
+    {itemInfo,keyName, parentType}
 ) => {
   return (
       <div>
         {parentType !== "array" && <span>{keyName}:</span>}
-        {value}
+        {itemInfo.value}
       </div>
   );
 }

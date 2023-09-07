@@ -1,8 +1,7 @@
 import React from "react";
 
 export interface KeyValueRepresentationComponentProps {
-  // itemInfo: ItemInfo;
-  value:any;
+  itemInfo: ItemInfo;
   keyName?: string|number|null;
   parentType: string|null;
   expanded?: boolean;

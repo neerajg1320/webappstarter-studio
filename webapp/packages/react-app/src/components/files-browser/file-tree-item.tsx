@@ -22,7 +22,7 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
 }
 
 const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value:fileNode, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`ClickableFolderItem:`,value, keyName);
   return (
@@ -32,18 +32,18 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
         }
       }}>
         <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
-        <span>{fileNode.info.name}</span>
+        <span>{itemInfo.value.info.name}</span>
       </div>
   );
 };
 
 const SimpleFileItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {value:fileNode, keyName, parentType, expanded, onClick:propOnClick}
+    {itemInfo, keyName, parentType, expanded, onClick:propOnClick}
 ) => {
   // console.log(`SimpleFileItem:`,value, keyName);
   return (
       <div className="file-item">
-        <span>{fileNode.info.name}</span>
+        <span>{itemInfo.value.info.name}</span>
       </div>
   );
 };
