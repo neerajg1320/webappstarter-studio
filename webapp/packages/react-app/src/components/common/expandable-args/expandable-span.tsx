@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import './expandable-span.css';
 import {debugComponent} from "../../../config/global";
-import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps, TraversalFunc} from "./expandable-span-item";
-import {key} from "localforage";
+import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps} from "./expandable-span-item";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
@@ -10,7 +9,6 @@ export interface KeyValueHOComponentProps extends KeyValueRepresentationComponen
 }
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
-                                                                         // value,
                                                                          itemInfo,
                                                                          keyName,
                                                                          parentInfo,
@@ -19,7 +17,6 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          onClick,
                                                                          component
                                                                        }) => {
-  // console.log(`KeyValueHOComponent:`, value, keyName, parentInfo, component)
   return React.createElement(component, {itemInfo, keyName, parentInfo, expanded, level, onClick}, null);
 }
 
@@ -33,10 +30,11 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                                         itemInfo,
                                                         keyName=null,
                                                         parentInfo,
-                                                        level:propLevel,
                                                         expanded: initialExpanded=false,
-                                                        getItemInfoFunc,
+                                                        level:propLevel,
                                                         onClick:propOnClick,
+                                                        getItemInfoFunc,
+
                                                       }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
@@ -50,7 +48,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
 
   return (
     <div className="object-wrapper">
-      {/*<pre>{JSON.stringify(childrenExpandedMap)}</pre>*/}
+      {/* The Representation of the Compoenent */}
       <KeyValueHOComponent
           itemInfo={itemInfo}
           keyName={keyName}
@@ -60,6 +58,8 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
           onClick={(e) => handleHOComponentClick(itemInfo)}
           component={itemInfo.component}
       />
+
+      {/* We traverse the item if it has a traversalFunc and the state is expanded */}
       <div className={`${itemInfo.enclosingClass||''}`}>
       {(expanded && itemInfo.traversalFunc) &&
         itemInfo.traversalFunc(itemInfo.value).map(([k, v], index:number) => {
@@ -75,6 +75,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                                     parentInfo={itemInfo}
                                     expanded={false}
                                     level={propLevel + 1}
+                                    onClick={propOnClick}
                                     {...{getItemInfoFunc}}
                     />
                 </div>
