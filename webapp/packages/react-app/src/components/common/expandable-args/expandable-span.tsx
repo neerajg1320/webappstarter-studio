@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './expandable-span.css';
 import {debugComponent} from "../../../config/global";
-import {GetItemInfoFunc, KeyValueRepresentationComponentProps, TraversalFunc} from "./expandable-span-item";
+import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps, TraversalFunc} from "./expandable-span-item";
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
   component: React.FC<KeyValueRepresentationComponentProps>;
@@ -23,6 +23,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
 
 interface ExpandableSpanProps {
   expandableValue: object;
+  itemInfo: ItemInfo;
   type: string;
   traversalFunc: TraversalFunc;
   enclosingClass: string|null;
@@ -77,7 +78,8 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
                   {(childItemInfo.isRecursive && childItemInfo.traversalFunc) &&
                       <>
                       {/*<pre>{JSON.stringify(childItemInfo.traversalFunc(v))}</pre>*/}
-                        <ExpandableSpan expandableValue={v}
+                        <ExpandableSpan expandableValue={childItemInfo.value}
+                                        itemInfo={childItemInfo}
                                         type={childItemInfo.type}
                                         traversalFunc={childItemInfo.traversalFunc}
                                         enclosingClass={childItemInfo.enclosingClass}

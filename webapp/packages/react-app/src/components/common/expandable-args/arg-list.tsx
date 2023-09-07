@@ -42,6 +42,7 @@ export const getConsoleItemInfo = (value:any):ItemInfo => {
   }
 
   return {
+    value,
     type: _itemType,
     isRecursive: _isRecursive,
     traversalFunc: _traversalFunc,
@@ -69,6 +70,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           <>
           {listInfo.traversalFunc ?
                 <ExpandableSpan expandableValue={list}
+                                itemInfo={listInfo}
                                 type={listInfo.type}
                                 traversalFunc={listInfo.traversalFunc}
                                 enclosingClass={listInfo.enclosingClass}

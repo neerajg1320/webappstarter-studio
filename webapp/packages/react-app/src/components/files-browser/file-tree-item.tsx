@@ -51,6 +51,7 @@ const SimpleFileItem:React.FC<KeyValueRepresentationComponentProps> = (
 export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileNode):ItemInfo => {
 
   return {
+    value:fileNode,
     type: fileNode.info.type,
     isRecursive: fileNode.info.type === "folder",
     traversalFunc: fileNodeTraversalFunc,

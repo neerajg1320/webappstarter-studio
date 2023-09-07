@@ -12,6 +12,7 @@ export interface KeyValueRepresentationComponentProps {
 export type TraversalFunc = (value:any) => [string|number, any][];
 
 export type ItemInfo = {
+  value:any;
   type:string,
   component:React.FC<KeyValueRepresentationComponentProps>
   isRecursive:boolean,
