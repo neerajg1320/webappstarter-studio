@@ -49,13 +49,13 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
         <TabsBulma choices={previewChoices} onChange={onTabChange} />
       </div>
       <div className="preview-tabs-panel" >
-        <div style={{visibility: selectedTab === 'Preview' ? "visible" : "hidden"}}>
+        <div style={{display: selectedTab !== 'Preview' ? "none" : undefined}}>
           <PreviewIframe html={html} code={code} err={err} />
         </div>
-        <div style={{visibility: selectedTab === 'Console' ? "visible" : "hidden"}}>
+        <div style={{display: selectedTab !== 'Console' ? "none" : undefined}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
         </div>
-        <div style={{visibility: selectedTab === 'Bundle' ? "visible" : "hidden"}}>
+        <div style={{display: selectedTab !== 'Bundle' ? "none" : undefined}}>
           <PreviewBundle bundle={code}/>
         </div>
       </div>
