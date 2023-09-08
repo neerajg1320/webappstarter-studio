@@ -386,13 +386,15 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     setProjectSelectedFile(fileLocalId);
   }
 
+
+  // The code below has been kept for reference
   const handleEditorWidthChange = (ew:number) => {
-    console.log(`ProjectCell: editor-width:${ew}  project-width:${width}`);
+    // console.log(`ProjectCell: editor-width:${ew}  project-width:${width}`);
 
   }
 
   const handleEditorHeightChange = (eh:number) => {
-    console.log(`ProjectCell: editor-height:${eh} project-height:${height}`);
+    // console.log(`ProjectCell: editor-height:${eh} project-height:${height}`);
   }
 
   if (debugComponent && false) {
