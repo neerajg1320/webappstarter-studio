@@ -422,7 +422,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
             </Resizable>
 
             <div style={{overflow:"scroll", flexGrow: 1, marginLeft: "10px"}}>
-              <div style={{display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between"}} >
+              <div style={{height: "100%", display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between"}} >
                 <FilesBrowser reduxProject={reduxProject} onSelect={handleFileBrowserOnSelect}/>
 
                 <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
