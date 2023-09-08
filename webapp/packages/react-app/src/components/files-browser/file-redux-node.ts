@@ -8,7 +8,7 @@ export type FileType = "folder" | "file";
 // projectNode = {info: {type: "folder", name: "project", parentNode:null}, childrenFileNodeMap:{'src': srcNode}}
 // srcNode = {info: {type: "folder", name: "src", parentNode:projectNode}, childrenFileNodeMap:{'index.html': indexHtmlNode}}
 // indexHtmlNode = {info: {type: "file", name: "index.html", reduxFile: <reduxFile{path:src/index.html}>, parentNode:srcNode}}}
-export type FileInfo = {type: FileType, name: string, reduxFile?:ReduxFile, parentNode: FileReduxNode|null};
+export type FileInfo = {type: FileType, name: string, reduxFile?:ReduxFile, parentNode: FileReduxNode|null, rootNamePath?:string[]};
 
 // Note: FileReduxNode is a cyclical structure. To use it with console.log we have to use safeFileNodeTravesral as
 // e.g. JSON.stringify(fileNode, safeFileNodeTraveral, 2)
@@ -77,7 +77,8 @@ export const getSampleFileTree = (title:string="root"):FileReduxNode => {
 
 // Create a fileTree out of ReduxFile[]. We use the file.path to construct the tree
 export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile[]):FileReduxNode => {
-  const rootFileNode:FileReduxNode = {info: {type:"folder", name:title, parentNode:null}, childrenFileNodeMap:{}};
+  const rootFileNode:FileReduxNode = {info: {type:"folder", name:title, parentNode:null, rootNamePath:[title]}, childrenFileNodeMap:{}};
+
   if (debugFileTree) {
     console.log(`Created rootFileNode:`, JSON.stringify(rootFileNode, safeFileNodeTraveral, 2));
   }
@@ -94,11 +95,14 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
 
       if (!currentNode.childrenFileNodeMap[part]) {
         let partNode:FileReduxNode;
+        const commonInfo = {name:part, parentNode:currentNode, rootNamePath:[...(currentNode.info.rootNamePath || []), part]};
+
         if (index < pathParts.length - 1) {
-          partNode = {info:{type:"folder", name:part, parentNode:currentNode}, childrenFileNodeMap:{}}
+          partNode = {info:{type:"folder", ...commonInfo}, childrenFileNodeMap:{}}
         } else {
-          partNode = {info:{type:"file", name:part, reduxFile, parentNode:currentNode}}
+          partNode = {info:{type:"file", ...commonInfo}}
         }
+
         if (debugFileTree) {
           console.log(`Created partNode:`, JSON.stringify(partNode, safeFileNodeTraveral, 2));
         }
@@ -107,6 +111,7 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
       }
 
       currentNode = currentNode.childrenFileNodeMap[part];
+
     });
   });
 

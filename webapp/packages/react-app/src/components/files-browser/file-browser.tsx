@@ -91,8 +91,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
   // Needed for selecting file
   const handleSelectFileClick = (fileLocalId:string) => {
-    if (debugComponent) {
-      console.log(fileLocalId);
+    if (debugComponent || true) {
+      console.log(`fileLocalId:`, fileLocalId);
     }
 
     propOnSelect(fileLocalId);
@@ -224,9 +224,11 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [fileTree])
 
   const handleFileClick:ItemClickFunc = (keyName, itemInfo) => {
+    if (debugComponent || true) {
+      console.log(`keyName:${keyName} itemInfo:`, itemInfo);
+    }
     const reduxFile = itemInfo.value.info.reduxFile;
     if (reduxFile) {
-      // console.log(`reduxFile:`, reduxFile);
       propOnSelect(reduxFile.localId);
     }
   }
