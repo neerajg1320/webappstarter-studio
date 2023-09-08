@@ -1,6 +1,6 @@
 .preview-tabs-wrapper {
   flex-grow: 1;
-  border: 2px solid lightcoral;
+  border: 2px solid lightblue;
 
   display: flex;
   flex-direction: column;
