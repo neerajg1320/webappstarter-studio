@@ -1,9 +1,6 @@
 .preview-wrapper {
   position: relative;
   width: 100%;
-  /*height: 100%;*/
-  /*height: 250px;*/
-  /*flex-grow: 1;*/
 }
 
 .preview-wrapper iframe {

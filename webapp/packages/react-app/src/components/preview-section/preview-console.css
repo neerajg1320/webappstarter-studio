@@ -6,6 +6,9 @@
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 .console-control-bar {

@@ -1,4 +1,4 @@
-import './preview-tabs.css';
+import './preview-tabs-panel.css';
 import TabsBulma from "../common/tabs-bulma";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import PreviewIframe from "./preview-iframe/preview-iframe";
@@ -14,7 +14,7 @@ interface PreviewTabsProps {
 }
 
 // We have to pass the height here
-const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
+const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Preview');
   const [count, setCount] = useState(0);
 
@@ -48,16 +48,14 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
       <div className="preview-tabs-bar">
         <TabsBulma choices={previewChoices} onChange={onTabChange} />
       </div>
-      <div className="preview-tabs-panel" style={{height: "100%"}}>
-        {/*{selectedTab === 'Preview' && <PreviewIframe code={code} err={err} />}*/}
-        {/*{selectedTab === 'Console' && <PreviewConsole />}*/}
-        <div style={{display: selectedTab === 'Preview' ? "flex" : "none", height: "100%"}}>
+      <div className="preview-tabs-panel" >
+        <div style={{visibility: selectedTab === 'Preview' ? "visible" : "hidden"}}>
           <PreviewIframe html={html} code={code} err={err} />
         </div>
-        <div style={{display: selectedTab === 'Console' ? "flex" : "none", height: "100%"}}>
+        <div style={{visibility: selectedTab === 'Console' ? "visible" : "hidden"}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
         </div>
-        <div style={{display: selectedTab === 'Bundle' ? "flex" : "none", height: "100%"}}>
+        <div style={{visibility: selectedTab === 'Bundle' ? "visible" : "hidden"}}>
           <PreviewBundle bundle={code}/>
         </div>
       </div>
@@ -65,4 +63,4 @@ const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   );
 }
 
-export default PreviewTabs;
+export default PreviewTabsPanel;

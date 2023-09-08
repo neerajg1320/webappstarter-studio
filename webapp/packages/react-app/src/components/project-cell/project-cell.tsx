@@ -10,7 +10,7 @@ import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config
 
 import FileCellControlBar, {FileCellEventType} from "../file-cell/file-cell-control-bar";
 import FileList from "../cell-list/file-list";
-import PreviewTabs from "../preview-section/preview-tabs";
+import PreviewTabsPanel from "../preview-section/preview-tabs-panel";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
 import {CodeLanguage} from "../../state/language";
@@ -64,7 +64,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const autoSaveRef = useRef<boolean>(hotReload);
   const downloadClickedRef = useRef<boolean>(false);
 
-  const [remainingHeight, setRemainingHeight] = useState("400px");
+  const [remainingHeight, setRemainingHeight] = useState();
 
   useEffect(() => {
     hotReloadRef.current = hotReload;
@@ -474,16 +474,16 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       </div>
 
       {/* TBD: The height below has to be calculated*/}
-      <div style={{height:remainingHeight}}>
-        {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
-            <PreviewTabs
-                html={htmlContent}
-                code={bundlesState[reduxProject.bundleLocalId]!.code}
-                err={bundlesState[reduxProject.bundleLocalId]!.err}
-                // height={"400px"}
-            />
-        }
-      </div>
+
+      {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+          <PreviewTabsPanel
+              html={htmlContent}
+              code={bundlesState[reduxProject.bundleLocalId]!.code}
+              err={bundlesState[reduxProject.bundleLocalId]!.err}
+              // height={"400px"}
+          />
+      }
+
 
       {(debugComponent) &&
         <div style={{height: "100px"}}>

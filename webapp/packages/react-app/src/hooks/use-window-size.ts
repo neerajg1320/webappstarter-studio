@@ -38,16 +38,16 @@ const useWindowSize = (debounceTimeoutMs:number=200) => {
   // Setup listener on mount
   useEffect(() => {
     window.addEventListener("resize", handleDebouncedResizeEvent);
-    document.addEventListener("mousedown", handleMouseDown);
+    // document.addEventListener("mousedown", handleMouseDown);
     // window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    // window.addEventListener("mouseup", handleMouseUp);
 
     // Destroy listener on unmount
     return () => {
       window.removeEventListener("resize", handleResizeEvent)
-      document.removeEventListener("mousedown", handleMouseDown);
+      // document.removeEventListener("mousedown", handleMouseDown);
       // window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      // window.removeEventListener("mouseup", handleMouseUp);
     }
   }, []);
 
