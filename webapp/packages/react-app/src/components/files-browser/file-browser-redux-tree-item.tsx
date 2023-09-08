@@ -51,7 +51,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
     if (keyName !== undefined && keyName !== null && propOnClick) {
       propOnClick(keyName, itemInfo);
 
-      if (debugComponent) {
+      if (debugComponent || true) {
         const fileNode:FileReduxNode = itemInfo.value;
         console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
       }
@@ -59,8 +59,8 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
   }
 
   return (
-      <div className="file-item" onClick={handleFileClick}>
-        {(reduxFile && reduxFile.isSelected) && <i className="fas fa-file-archive" />}
+      <div className={"file-item" + ((reduxFile && reduxFile.isSelected) ? " selected" : "")} onClick={handleFileClick}>
+        {/*{(reduxFile && reduxFile.isSelected) && <i className="fas fa-file-archive" />}*/}
         <i className="fas fa-file" />
         <span>{itemInfo.value.info.name}</span>
       </div>

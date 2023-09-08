@@ -2,45 +2,45 @@ import './file-browser-control-bar.css';
 import React from "react";
 import {ReduxProject} from "../../state";
 
-export enum FileTreeEventType {
+export enum FileBrowserEventType {
   NEW_FILE = 'new_file',
   COPY_FILE = 'copy_file',
   DELETE_FILE = 'delete_file',
 }
 
-export interface FileTreeEvent {
-  name: FileTreeEventType;
+export interface FileBrowserEvent {
+  name: FileBrowserEventType;
   localId?: string;
 }
 
-interface FileTreeControlBarProps {
+interface FileBrowserControlBarProps {
   reduxProject: ReduxProject;
   selectedFileLocalId: string|null;
-  onEvent: (event:FileTreeEvent) => void;
+  onEvent: (event:FileBrowserEvent) => void;
 }
 
-const FileBrowserControlBar:React.FC<FileTreeControlBarProps> = ({reduxProject,
+const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProject,
                                                                 selectedFileLocalId,
                                                                 onEvent}) => {
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    onEvent({name: FileTreeEventType.NEW_FILE});
+    onEvent({name: FileBrowserEventType.NEW_FILE});
   }
 
   const handleCopyFile: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (selectedFileLocalId) {
-      onEvent({name: FileTreeEventType.COPY_FILE, localId: selectedFileLocalId});
+      onEvent({name: FileBrowserEventType.COPY_FILE, localId: selectedFileLocalId});
     }
   }
 
   const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (selectedFileLocalId) {
-      onEvent({name: FileTreeEventType.DELETE_FILE, localId: selectedFileLocalId});
+      onEvent({name: FileBrowserEventType.DELETE_FILE, localId: selectedFileLocalId});
     }
   }
 
   return (
-      <div className="file-tree-control-bar">
+      <div className="file-browser-control-bar">
         <button className="button is-family-secondary is-small" onClick={handleCreateFile}>
           <span className="icon">
               <i className="fas fa-plus" />

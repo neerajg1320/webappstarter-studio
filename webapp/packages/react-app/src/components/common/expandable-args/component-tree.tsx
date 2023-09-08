@@ -43,7 +43,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
   if (level === 0) {
     if (debugComponent || true) {
       if (treeName === "FileBrowser") {
-        console.log(`ExpandableSpan: itemInfo:`, itemInfo);
+        console.log(`ComponentTree[${treeName}]:render itemInfo:`, itemInfo);
       }
     }
   }

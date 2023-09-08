@@ -4,7 +4,7 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
-import FileBrowserControlBar, {FileTreeEvent, FileTreeEventType} from "./file-browser-control-bar";
+import FileBrowserControlBar, {FileBrowserEvent, FileBrowserEventType} from "./file-browser-control-bar";
 import {debugComponent, debugLocalOnlyPendingSupport} from "../../config/global";
 import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
@@ -45,7 +45,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [reduxProject, filesState.data]);
 
   if (debugComponent || true) {
-    console.log(`FileTree:render reduxProject:`, reduxProject);
+    console.log(`FileBrowser:render reduxProject:`, reduxProject);
   }
 
   // Needed for selecting file
@@ -67,7 +67,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       }
       setFileTree(rootNode);
     }
-  }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
+  }, [reduxProject.title, projectFiles]);
+  // }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
 
 
   // Needed for selecting file
@@ -147,7 +148,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     setEditPathEnabled(false);
   }
 
-  const handleFileBrowserControlEvent = (event: FileTreeEvent) => {
+  const handleFileBrowserControlEvent = (event: FileBrowserEvent) => {
     let newFilePath = 'src';
     if (selectedFileLocalId) {
       const reduxFile:ReduxFile = filesState.data[selectedFileLocalId];
@@ -161,7 +162,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
 
     switch(event.name) {
-      case FileTreeEventType.NEW_FILE:
+      case FileBrowserEventType.NEW_FILE:
         const fileLocalId = generateLocalId();
         createFile({
           localId: fileLocalId,
@@ -178,7 +179,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         setEditPathEnabled(true);
         break;
 
-      case FileTreeEventType.COPY_FILE:
+      case FileBrowserEventType.COPY_FILE:
         if (event.localId) {
           const origFile = filesState.data[event.localId];
           if (!origFile) {
@@ -206,7 +207,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         }
         break;
 
-      case FileTreeEventType.DELETE_FILE:
+      case FileBrowserEventType.DELETE_FILE:
         if (event.localId) {
           removeFile(event.localId);
         }

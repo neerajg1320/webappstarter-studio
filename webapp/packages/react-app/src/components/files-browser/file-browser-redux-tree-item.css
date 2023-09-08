@@ -11,3 +11,7 @@
   gap: 5px;
   align-items: center;
 }
+
+.file-item.selected {
+  background-color: rgba(128,128,128,60%);
+}
