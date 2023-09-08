@@ -51,6 +51,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
   const [htmlContent, setHtmlContent] = useState<string|null>(null);
 
+  // TBD: 2023-09-08 This is same as reduxProject.selectFileLocalId
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
@@ -361,12 +362,18 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, [reduxProject.zipBlob]);
 
   const handleFileBrowserOnSelect = (fileLocalId: string) => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
     }
 
     // TBD: see if this can be combined
+    if (reduxProject.selectedFileLocalId) {
+      updateFile({localId: reduxProject.selectedFileLocalId, isSelected: false});
+    }
     updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
+    if (fileLocalId) {
+      updateFile({localId: fileLocalId, isSelected: true});
+    }
     setEditedFileLocalId(fileLocalId);
   }
 

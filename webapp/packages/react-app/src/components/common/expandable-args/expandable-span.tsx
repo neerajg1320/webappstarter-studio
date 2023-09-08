@@ -9,6 +9,7 @@ export interface KeyValueHOComponentProps extends KeyValueRepresentationComponen
 }
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
+                                                                         treeName,
                                                                          itemInfo,
                                                                          keyName,
                                                                          parentInfo,
@@ -17,7 +18,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          onClick,
                                                                          component
                                                                        }) => {
-  return React.createElement(component, {itemInfo, keyName, parentInfo, expanded, level, onClick}, null);
+  return React.createElement(component, {treeName, itemInfo, keyName, parentInfo, expanded, level, onClick}, null);
 }
 
 
@@ -27,16 +28,25 @@ interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
 
 
 const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
+                                                        treeName,
                                                         itemInfo,
                                                         keyName=null,
                                                         parentInfo,
                                                         expanded: initialExpanded=false,
-                                                        level:propLevel,
+                                                        level,
                                                         onClick:propOnClick,
                                                         getItemInfoFunc,
 
                                                       }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
+
+  if (level === 0) {
+    if (debugComponent || true) {
+      if (treeName === "FileBrowser") {
+        console.log(`ExpandableSpan: itemInfo:`, itemInfo);
+      }
+    }
+  }
 
   const handleHOComponentClick = (itemInfo:ItemInfo) => {
     setExpanded((prev) => !prev);
@@ -50,11 +60,12 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
     <div className="object-wrapper">
       {/* The Representation of the Compoenent */}
       <KeyValueHOComponent
+          treeName={treeName}
           itemInfo={itemInfo}
           keyName={keyName}
           parentInfo={parentInfo}
           expanded={expanded}
-          level={propLevel}
+          level={level}
           onClick={(e) => handleHOComponentClick(itemInfo)}
           component={itemInfo.component}
       />
@@ -70,14 +81,16 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
 
             return (
                 <div key={index} >
-                    <ExpandableSpan itemInfo={childItemInfo}
-                                    keyName={k}
-                                    parentInfo={itemInfo}
-                                    expanded={false}
-                                    level={propLevel + 1}
-                                    onClick={propOnClick}
-                                    {...{getItemInfoFunc}}
-                    />
+                  <ExpandableSpan
+                      treeName={treeName}
+                      itemInfo={childItemInfo}
+                      keyName={k}
+                      parentInfo={itemInfo}
+                      expanded={false}
+                      level={level + 1}
+                      onClick={propOnClick}
+                      {...{getItemInfoFunc}}
+                  />
                 </div>
             );
         })

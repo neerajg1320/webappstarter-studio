@@ -45,6 +45,8 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
 const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentInfo, expanded,level, onClick:propOnClick}
 ) => {
+  const reduxFile = itemInfo.value.info.reduxFile;
+
   const handleFileClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
       propOnClick(keyName, itemInfo);
@@ -58,6 +60,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
 
   return (
       <div className="file-item" onClick={handleFileClick}>
+        {(reduxFile && reduxFile.isSelected) && <i className="fas fa-file-archive" />}
         <i className="fas fa-file" />
         <span>{itemInfo.value.info.name}</span>
       </div>

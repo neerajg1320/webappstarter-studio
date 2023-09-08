@@ -69,13 +69,15 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       {(list && list.length > 0) &&
           <>
           {listInfo.traversalFunc ?
-                <ExpandableSpan itemInfo={listInfo}
-                                keyName={'root-array'}
-                                parentInfo={null}
-                                expanded={true}
-                                level={0}
-                                getItemInfoFunc={getConsoleItemInfo}
-                />
+              <ExpandableSpan
+                  treeName="ConsoleLog"
+                  itemInfo={listInfo}
+                  keyName={'root-array'}
+                  parentInfo={null}
+                  expanded={true}
+                  level={0}
+                  getItemInfoFunc={getConsoleItemInfo}
+              />
                 :
                 <div>List can't be traversed</div>
           }

@@ -2,6 +2,7 @@ import React from "react";
 
 export type ItemClickFunc = (keyName:string|number|null, itemInfo:ItemInfo) => void;
 export interface KeyValueRepresentationComponentProps {
+  treeName: string;
   itemInfo: ItemInfo;
   keyName?: string|number|null;
   parentInfo: ItemInfo|null;

@@ -44,7 +44,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     return [];
   }, [reduxProject, filesState.data]);
 
-  if (debugComponent) {
+  if (debugComponent || true) {
     console.log(`FileTree:render reduxProject:`, reduxProject);
   }
 
@@ -276,13 +276,15 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           <div>
             {(fileTree &&fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
                 // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
-                <ExpandableSpan itemInfo={fileRootNodeItemInfo}
-                                keyName={"root"}
-                                parentInfo={null}
-                                expanded={true}
-                                level={0}
-                                onClick={handleFileClick}
-                                getItemInfoFunc={getFileTreeItemInfo}
+                <ExpandableSpan
+                    treeName="FileBrowser"
+                    itemInfo={fileRootNodeItemInfo}
+                    keyName={"root"}
+                    parentInfo={null}
+                    expanded={true}
+                    level={0}
+                    onClick={handleFileClick}
+                    getItemInfoFunc={getFileTreeItemInfo}
                 />
                 :
                 <div>List can't be traversed</div>
