@@ -4,9 +4,9 @@ import {
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
 import {FileReduxNode, safeFileNodeTraveral} from "./file-redux-node";
-import React from "react";
+import React, {useState} from "react";
 import './file-browser-redux-tree-item.css';
-import {debugComponent} from "../../config/global";
+import EditableSpan from "../common/editable-span";
 
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
@@ -20,27 +20,11 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileReduxNode) => {
 }
 
 
-const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentInfo, expanded, level, onClick:propOnClick}
-) => {
-  const handleFolderClick = (e:React.MouseEvent) => {
-    if (propOnClick) {
-      propOnClick(keyName, itemInfo);
-    }
-  }
-
-  return (
-      <div className="file-item" onClick={handleFolderClick}>
-        <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
-        <span>{itemInfo.value.info.name}</span>
-      </div>
-  );
-};
-
 const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentInfo, expanded,level, onClick:propOnClick}
 ) => {
   const reduxFile = itemInfo.value.info.reduxFile;
+  const isFolder = itemInfo.value.info.type === "folder";
 
   const handleFileClick = (e:React.MouseEvent) => {
     if (propOnClick) {
@@ -48,11 +32,23 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
     }
   }
 
+  const handleOnChange = (value:string) => {
+    console.log(`handleOnChange():folder value=${value}`);
+  }
+  
+  let extraClasses = "";
+  if (!isFolder) {
+    extraClasses += (reduxFile && reduxFile.isSelected) ? " selected" : "";
+  }
+
   return (
-      <div className={"file-item" + ((reduxFile && reduxFile.isSelected) ? " selected" : "")} onClick={handleFileClick}>
-        {/*{(reduxFile && reduxFile.isSelected) && <i className="fas fa-file-archive" />}*/}
-        <i className="fas fa-file" />
-        <span>{itemInfo.value.info.name}</span>
+      <div className={"file-item " + extraClasses} onClick={handleFileClick}>
+        {isFolder ?
+            <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
+            :
+            <i className="fas fa-file" />
+        }
+        <EditableSpan value={itemInfo.value.info.name} onChange={handleOnChange}/>
       </div>
   );
 };
@@ -65,6 +61,6 @@ export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileReduxNode):Item
     isRecursive: fileNode.info.type === "folder",
     traversalFunc: fileNodeTraversalFunc,
     enclosingClass: "file-tree",
-    component: fileNode.info.type === "folder" ? ClickableFolderItem : ClickableFileItem,
+    component: ClickableFileItem,
   };
 }
