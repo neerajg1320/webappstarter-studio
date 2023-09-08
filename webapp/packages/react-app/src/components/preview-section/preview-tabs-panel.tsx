@@ -16,7 +16,7 @@ interface PreviewTabsProps {
 
 // We have to pass the height here
 const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
-  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
+  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(1);
   const [count, setCount] = useState(0);
   const bundleSuccess = useMemo<boolean>(() => {
     return err === '';
