@@ -29,12 +29,11 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({html, code, err}) => {
   }, [code]);
 
   return (
-    <div className="preview-wrapper">
+    <div className="preview-iframe">
       <iframe 
         ref={iframeRef} 
         title="preview" 
         sandbox="allow-scripts allow-modals allow-same-origin" />
-
     </div>
   );
 }

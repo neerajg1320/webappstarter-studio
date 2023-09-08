@@ -20,7 +20,13 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   const [count, setCount] = useState(0);
   const bundleSuccess = useMemo<boolean>(() => {
     return err === '';
-  }, [err])
+  }, [err]);
+
+  useEffect(() => {
+    if (!bundleSuccess) {
+      setSelectedTabIndex(0);
+    }
+  }, [bundleSuccess]);
 
   if (debugComponent) {
     console.log(`PreviewTabs:render selectedTab=${selectedTabIndex} err:'${err}' bundleSuccess:${bundleSuccess}`);
@@ -55,16 +61,16 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
         <TabsBulma choices={previewChoices} value={selectedTabIndex} onChange={onTabChange} />
       </div>
       <div className="preview-tabs-panel" >
-        <div style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? undefined : "none"}}>
+        <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
           <PreviewIframe html={html} code={code} err={err} />
         </div>
-        <div style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? undefined : "none"}}>
+        <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? "flex" : "none"}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
         </div>
-        <div style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Bundle') ? undefined : "none" }}>
+        <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Bundle') ? "flex" : "none" }}>
           <PreviewBundle bundle={code}/>
         </div>
-        <div style={{display: (!bundleSuccess || previewChoices[selectedTabIndex] === 'Build' ? undefined : "none")}}>
+        <div className="preview-tab" style={{display: (!bundleSuccess || previewChoices[selectedTabIndex] === 'Build' ? "flex" : "none")}}>
           <PreviewBuild err={err}/>
         </div>
       </div>

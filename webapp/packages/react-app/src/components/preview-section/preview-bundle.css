@@ -1,6 +1,11 @@
-.preview-bundle-wrapper {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  /*flex-grow: 1;*/
+.preview-bundle {
+  flex-grow: 1;
+  display: flex;
+}
+
+.preview-bundle pre {
+  flex-grow: 1;
+  font-family: "Courier New";
+  font-size: 1em;
+  overflow: scroll;
 }

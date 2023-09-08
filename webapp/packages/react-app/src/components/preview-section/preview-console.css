@@ -1,14 +1,7 @@
 .console-wrapper {
   flex-grow: 1;
-  background-color: white;
-  color: black;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
+
   overflow: scroll;
-  position: absolute;
-  top: 0px;
-  left: 0px;
 }
 
 .console-control-bar {
@@ -16,7 +9,7 @@
 
   position: absolute;
   bottom: 10px;
-  right: 20px;
+  right: 30px;
 
   display: flex;
   flex-direction: row;
@@ -34,11 +27,3 @@
   border-radius: 8px;
 }
 
-.console-wrapper .console-log {
-  font-family: "Courier New";
-}
-
-.console-wrapper .console-error {
-  font-family: "Courier New";
-  color: red;
-}

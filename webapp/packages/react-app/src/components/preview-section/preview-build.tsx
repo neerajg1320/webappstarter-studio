@@ -1,11 +1,15 @@
+import './preview-build.css';
+
 interface PreviewErrorProps {
   err: string;
 }
 
 const PreviewBuild:React.FC<PreviewErrorProps> = ({err}) => {
   return (
-      <div className={err !== '' ? "preview-error" : "preview-success"}>
-        {err !== '' ? err : 'Code Bundled Successfully!'}
+      <div className="preview-build">
+        <span className={(err !== '' ? "error" : "success")}>
+          {err !== '' ? err : 'Code Bundled Successfully!'}
+        </span>
       </div>
   );
 }

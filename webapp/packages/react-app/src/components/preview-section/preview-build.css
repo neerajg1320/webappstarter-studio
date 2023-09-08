@@ -1,13 +1,12 @@
-.preview-error {
-  position: absolute;
-  top: 0px;
-  left: 0px;
+.preview-build {
+  flex-grow: 1;
+  padding: 5px;
+}
+
+.preview-build .error {
   color: red;
 }
 
-.preview-success {
-  position: absolute;
-  top: 0px;
-  left: 0px;
+.preview-build .success {
   color: black;
 }
