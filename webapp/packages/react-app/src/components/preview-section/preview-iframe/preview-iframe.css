@@ -1,6 +1,7 @@
 .preview-iframe {
   flex-grow: 1;
-  display: flex;
+  padding: 5px;
+  overflow: scroll;
 }
 
 .preview-iframe iframe {

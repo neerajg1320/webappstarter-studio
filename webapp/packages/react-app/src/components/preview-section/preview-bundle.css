@@ -1,6 +1,7 @@
 .preview-bundle {
   flex-grow: 1;
-  display: flex;
+  padding: 5px;
+  overflow: scroll;
 }
 
 .preview-bundle pre {
