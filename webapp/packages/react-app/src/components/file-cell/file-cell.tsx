@@ -68,7 +68,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
   };
 
   return (
-    <div>
+    <>
       <Resizable direction="vertical">
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
@@ -101,7 +101,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
         <h4>ModifiedKeys:</h4>
         <pre>{JSON.stringify(reduxFile.modifiedKeys, null, 2)}</pre>
       </div>
-    </div>
+    </>
   );
 };
 

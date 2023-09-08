@@ -423,8 +423,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
   return (
     <div ref={projectRef} className="project-cell-wrapper">
-      <div style={{width: "100%"}}>
-        <Resizable direction="vertical" onHeightChange={handleEditorHeightChange}>
+      <Resizable direction="vertical" onHeightChange={handleEditorHeightChange}>
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal" onWidthChange={handleEditorWidthChange}>
               <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
@@ -473,39 +472,15 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
             </div>
           </div>
         </Resizable>
-      </div>
-
-      {/* TBD: The height below has to be calculated*/}
 
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
-          <PreviewTabsPanel
-              html={htmlContent}
-              code={bundlesState[reduxProject.bundleLocalId]!.code}
-              err={bundlesState[reduxProject.bundleLocalId]!.err}
-              // height={"400px"}
-          />
-      }
-
-
-      {(debugComponent) &&
-        <div style={{height: "100px"}}>
-          {editedFile &&
-              <div style={{height: "100%"}}>
-                <h4>file.content</h4>
-                <pre>{editedFile.content}</pre>
-
-                <h4>modifiedKeys</h4>
-                <pre>{editedFile.modifiedKeys}</pre>
-              </div>
-          }
-        </div>
-      }
-
-      {showCellsList &&
-        <div style={{width: "100%", height: "100%"}}>
-          {projectFiles && <FileList project={reduxProject} files={projectFiles} />}
-        </div>
-      }
+        <PreviewTabsPanel
+            html={htmlContent}
+            code={bundlesState[reduxProject.bundleLocalId]!.code}
+            err={bundlesState[reduxProject.bundleLocalId]!.err}
+            // height={"400px"}
+        />
+    }
     </div>
   );
 }
