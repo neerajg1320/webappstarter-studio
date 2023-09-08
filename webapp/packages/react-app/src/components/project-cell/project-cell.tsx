@@ -1,5 +1,5 @@
 import "./project-cell.css";
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
@@ -16,6 +16,7 @@ import {getFileTypeFromPath} from "../../utils/path";
 import {CodeLanguage} from "../../state/language";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 import useDebouncedCallback from "../../hooks/use-debounced-callback";
+import useWindowSize from "../../hooks/use-window-size";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -78,7 +79,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);
 
-  if (debugComponent && false) {
+  if (debugComponent || false) {
     console.log(`ProjectCell:render reduxProject`, reduxProject);
   }
 
@@ -105,9 +106,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     return null;
   }, [editedFileLocalId, filesState]);
 
-  if (debugComponent && false) {
-    console.log(`ProjectCell: editedFile:`, editedFile);
-  }
+
 
   // Temporary till we fix layout
   // const [editorContent, setEditorContent] = useState<string>('');
@@ -127,11 +126,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         updateFile({localId: _editedFile.localId, content: value});
 
         if (hotReloadRef.current) {
-          bundleProjectDebounced();
+          bundleProjectDebounced(null);
         }
 
         if (autoSaveRef.current) {
-          saveFileDebounced();
+          saveFileDebounced(null);
         }
       } else {
         // This happens when we select a file in the file-tree component. Its just the editor content that changes, but
@@ -387,24 +386,45 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     setProjectSelectedFile(fileLocalId);
   }
 
-  const handleWidthChange = (width:number) => {
-    console.log(`ProjectCell: height:${width}`);
+  const handleEditorWidthChange = (ew:number) => {
+    console.log(`ProjectCell: editor-width:${ew}  project-width:${width}`);
+
   }
 
-  const handleHeightChange = (height:number) => {
-    console.log(`ProjectCell: height:${height}`);
+  const handleEditorHeightChange = (eh:number) => {
+    console.log(`ProjectCell: editor-height:${eh} project-height:${height}`);
   }
+
+  if (debugComponent && false) {
+    console.log(`ProjectCell: editedFile:`, editedFile);
+  }
+
+  const projectRef = useRef<HTMLDivElement|null>(null);
+  const [width, setWidth] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
+
+  const windowSize = useWindowSize();
+
+  // We calculate the ProjectCell size whenever window size changes
+  useLayoutEffect(() => {
+    if (projectRef.current) {
+      setWidth(projectRef.current.offsetWidth);
+      setHeight(projectRef.current.offsetHeight)
+    }
+  }, [windowSize]);
+
+
+  // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>
   }
-
   return (
-    <div className="project-cell-wrapper">
+    <div ref={projectRef} className="project-cell-wrapper">
       <div style={{width: "100%"}}>
-        <Resizable direction="vertical" onHeightChange={handleHeightChange}>
+        <Resizable direction="vertical" onHeightChange={handleEditorHeightChange}>
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
-            <Resizable direction="horizontal" onWidthChange={handleWidthChange}>
+            <Resizable direction="horizontal" onWidthChange={handleEditorWidthChange}>
               <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
                 <div className="file-cell-control-bar-wrapper">
                   {editedFile && <FileCellControlBar reduxFile={editedFile} />}

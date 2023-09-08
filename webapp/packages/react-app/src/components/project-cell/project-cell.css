@@ -1,8 +1,11 @@
 .project-cell-wrapper {
+  border: 1px solid gray;
+
   height: 85vh;
   width: 100%;
-  border: 1px solid gray;
+
   padding: 10px;
+
   display: flex;
   flex-direction: column;
 }

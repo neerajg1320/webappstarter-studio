@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 
 // Ref: https://www.telerik.com/blogs/how-to-create-custom-debounce-hook-react
 // The solution in the reference is javascript based.
-const useDebouncedCallback = <CB extends () => any> (callback:CB, delay:number) => {
+const useDebouncedCallback = <CB extends (e:any) => any> (callback:CB, delay:number) => {
    const debugComponentLifecycle = false;
    const debugComponent = false;
 
@@ -21,7 +21,7 @@ const useDebouncedCallback = <CB extends () => any> (callback:CB, delay:number) 
   }, []);
 
 
-  const debouncedCallback = useCallback(() => {
+  const debouncedCallback = useCallback((e:any) => {
     if (debugComponent) {
       console.log(`useDebounce:useCallback[callback,delay] delay=${delay}`);
     }
@@ -34,7 +34,7 @@ const useDebouncedCallback = <CB extends () => any> (callback:CB, delay:number) 
     }
 
     timerRef.current = setTimeout(() => {
-      callback();
+      callback(e);
     }, delay);
   }, [callback, delay]);
 
