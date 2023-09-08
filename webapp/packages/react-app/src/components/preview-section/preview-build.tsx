@@ -4,8 +4,8 @@ interface PreviewErrorProps {
 
 const PreviewBuild:React.FC<PreviewErrorProps> = ({err}) => {
   return (
-      <div className="preview-error">
-        {err ? err : 'Build Sucessful'}
+      <div className={err !== '' ? "preview-error" : "preview-success"}>
+        {err !== '' ? err : 'Code Bundled Successfully!'}
       </div>
   );
 }

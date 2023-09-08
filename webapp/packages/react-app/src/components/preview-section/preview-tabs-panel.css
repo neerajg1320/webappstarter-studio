@@ -20,7 +20,6 @@
 
 .preview-tabs-panel {
   flex-grow: 1;
-  background-color: white;
   overflow: scroll;
   position: relative;
 }
