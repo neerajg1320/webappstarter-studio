@@ -18,13 +18,19 @@ class CalmResizeObserver extends ResizeObserver {
 }
 
 const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
+    const widthProportion:number = 0.75;
+    const heightProportion:number = 0.5;
+
     let resizableBoxProps: ResizableBoxProps;
     const [innerHeight, setInnerHeight] = useState(window.innerHeight);
     const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-    const [width, setWidth] = useState(window.innerWidth * 0.75);
+    const [width, setWidth] = useState(window.innerWidth * widthProportion);
+
+    // Added later for trial
+    const [height, setHeight] = useState(window.innerHeight * heightProportion);
+
     // TBD: We should be saving the proportion if the horizontal is moved
     // We need to preserve this when window is resized
-
     useEffect(() => {
         let timer: any;
 
@@ -37,9 +43,13 @@ const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
             timer = setTimeout(() => {
                 setInnerHeight(window.innerHeight);
                 setInnerWidth(window.innerWidth);
-                if (window.innerWidth * 0.75 < width) {
-                    setWidth(window.innerWidth * 0.75);
+                if (window.innerWidth * widthProportion < width) {
+                    setWidth(window.innerWidth * widthProportion);
                 }
+
+              if (window.innerHeight * heightProportion < height) {
+                setHeight(window.innerHeight * heightProportion);
+              }
             }, 100);
         }
 
@@ -72,7 +82,7 @@ const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
         resizableBoxProps = {
             minConstraints: [Infinity, 150],
             maxConstraints: [Infinity, innerHeight * 0.9],
-            height: 300,
+            height: height,
             width: Infinity,
             resizeHandles: ['s']
         };
