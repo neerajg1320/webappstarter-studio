@@ -10,12 +10,12 @@ import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {FileInfo, FileNode, getFileTreeFromReduxFileList, getSampleFileTree} from "./file-node";
+import {FileInfo, FileNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-node";
 import ExpandableSpan from "../common/expandable-args/expandable-span";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 import {getFileInfo} from "prettier";
 import {getFileTreeItemInfo} from "./file-tree-item";
-import {ItemInfo} from "../common/expandable-args/expandable-span-item";
+import {ItemClickFunc, ItemInfo} from "../common/expandable-args/expandable-span-item";
 
 
 interface FilesTreeProps {
@@ -223,6 +223,14 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
     return null;
   }, [fileTree])
 
+  const handleFileClick:ItemClickFunc = (keyName, itemInfo) => {
+    // console.log(`handleFileClick: itemInfo:${JSON.stringify(itemInfo, safeFileNodeTraveral, 2)}`)
+    const reduxFile = itemInfo.value.info.reduxFile;
+    if (reduxFile) {
+      console.log(`reduxFile:`, reduxFile);
+    }
+  }
+
   return (
     <div style={{
         height:"100%",
@@ -273,6 +281,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
                                 parentInfo={null}
                                 expanded={true}
                                 level={0}
+                                onClick={handleFileClick}
                                 getItemInfoFunc={getFileTreeItemInfo}
                 />
                 :

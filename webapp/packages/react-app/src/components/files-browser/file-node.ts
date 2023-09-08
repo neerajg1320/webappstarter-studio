@@ -3,6 +3,8 @@ import {debugFileTree} from "../../config/global";
 
 export type FileType = "folder" | "file";
 export type FileInfo = {type: FileType, name: string, reduxFile?:ReduxFile, parentNode: FileNode|null};
+// Note: FileNode is a cyclical structure. To use it with console.log we have to use safeFileNodeTravesral as
+// e.g. JSON.stringify(fileNode, safeFileNodeTraveral, 2)
 export type FileNode = {info: FileInfo, childrenFileNodeMap?: {[k:string]:FileNode}};
 
 
