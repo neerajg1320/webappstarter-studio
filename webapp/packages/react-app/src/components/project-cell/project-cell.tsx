@@ -478,12 +478,15 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {/* TBD: The height below has to be calculated*/}
 
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+          <>
+          <div>{bundlesState[reduxProject.bundleLocalId]!.err}</div>
           <PreviewTabsPanel
               html={htmlContent}
               code={bundlesState[reduxProject.bundleLocalId]!.code}
               err={bundlesState[reduxProject.bundleLocalId]!.err}
               // height={"400px"}
           />
+          </>
       }
 
 

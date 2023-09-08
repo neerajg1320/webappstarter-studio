@@ -5,6 +5,7 @@ import PreviewIframe from "./preview-iframe/preview-iframe";
 import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
+import PreviewBuild from "./preview-build";
 
 interface PreviewTabsProps {
   html: string;
@@ -15,26 +16,31 @@ interface PreviewTabsProps {
 
 // We have to pass the height here
 const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
-  const [selectedTab, setSelectedTab] = useState<string>('Preview');
+  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0);
   const [count, setCount] = useState(0);
+  const bundleSuccess = useMemo<boolean>(() => {
+    return err === '';
+  }, [err])
 
   if (debugComponent) {
-    console.log(`PreviewTabs:render selectedTab=${selectedTab}`);
+    console.log(`PreviewTabs:render selectedTab=${selectedTabIndex} err:'${err}' bundleSuccess:${bundleSuccess}`);
   }
 
   useEffect(() => {
     setCount((prev) => prev + 1);
-  }, [code]);
+  }, [code, err]);
 
-  const previewChoices = useMemo(() => {
-    return ['Preview', 'Console', 'Bundle'];
+  const previewChoices:string[] = useMemo(() => {
+    return ['Build', 'Preview', 'Console', 'Bundle'];
   }, []);
 
   const onTabChange = ([value, index]:[string, number]) => {
     if (debugComponent) {
       console.log(`PreviewTabs: value=${value} index=${index}`);
     }
-    setSelectedTab(value);
+    if (bundleSuccess) {
+      setSelectedTabIndex(index);
+    }
   };
 
   const handleConsoleTextChange = (value:string) => {
@@ -46,17 +52,20 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   return (
     <div className="preview-tabs-wrapper">
       <div className="preview-tabs-bar">
-        <TabsBulma choices={previewChoices} onChange={onTabChange} />
+        <TabsBulma choices={previewChoices} value={selectedTabIndex} onChange={onTabChange} />
       </div>
       <div className="preview-tabs-panel" >
-        <div style={{display: selectedTab !== 'Preview' ? "none" : undefined}}>
+        <div style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? undefined : "none"}}>
           <PreviewIframe html={html} code={code} err={err} />
         </div>
-        <div style={{display: selectedTab !== 'Console' ? "none" : undefined}}>
+        <div style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? undefined : "none"}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
         </div>
-        <div style={{display: selectedTab !== 'Bundle' ? "none" : undefined}}>
+        <div style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Bundle') ? undefined : "none" }}>
           <PreviewBundle bundle={code}/>
+        </div>
+        <div style={{display: (!bundleSuccess || previewChoices[selectedTabIndex] === 'Build' ? undefined : "none")}}>
+          <PreviewBuild err={err}/>
         </div>
       </div>
     </div>

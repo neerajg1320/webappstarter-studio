@@ -115,7 +115,10 @@ const bundleCode = async (
             err: ''
         };
     } catch (err) {
+        console.error(`Got bundler error:`, err);
+
         if (err instanceof Error) {
+            console.error(`Got bundler error message:`, err.message);
             return {
                 code: '',
                 err: err.message

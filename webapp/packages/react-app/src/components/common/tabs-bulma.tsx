@@ -4,16 +4,16 @@ export type Alignment = 'left' | 'right' | 'center';
 
 interface TabsBulmaProps {
   choices: string[],
-  defaultChoice?: number;
+  value: number;
   alignment?: Alignment,
   onChange?: ([value, index]:[string, number]) => void
 }
 
-const TabsBulma:React.FC<TabsBulmaProps> = ({choices, defaultChoice=0, alignment, onChange}) => {
-  const [activeIndex, setActiveIndex] = useState<number>(defaultChoice);
+const TabsBulma:React.FC<TabsBulmaProps> = ({choices, value, alignment, onChange}) => {
+  // const [activeIndex, setActiveIndex] = useState<number>(defaultChoice);
 
   const handleTabClick = (index: number) => {
-    setActiveIndex(index);
+    // setActiveIndex(index);
 
     if (onChange) {
       onChange([choices[index], index]);
@@ -25,7 +25,7 @@ const TabsBulma:React.FC<TabsBulmaProps> = ({choices, defaultChoice=0, alignment
       <ul>
         {(choices && choices.length > 0) &&
             choices.map((choice, index) => {
-              return <li key={index} className={index === activeIndex ? "is-active" : ""}>
+              return <li key={index} className={index === value ? "is-active" : ""}>
                 <a id={choice} onClick={e => handleTabClick(index)}>
                   {choice}
                 </a>

@@ -12,7 +12,7 @@ const useWindowSize = (debounceTimeoutMs:number=200) => {
   // The horizontal resize event occur a lot more than vertical.
   // In any case we should use the debounceß
   const handleResizeEvent = (event:UIEvent) => {
-    console.log(`event.type:${event.type}`);
+    // console.log(`event.type:${event.type}`);
 
     // This set here causes re-render in the calling component
     setWindowSize({
