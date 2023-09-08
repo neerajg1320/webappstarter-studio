@@ -420,46 +420,18 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 }
               </div>
             </Resizable>
-            {/* <pre>{code}</pre> */}
-            {/* The file-tree wrapper component */}
-            <div style={{
-                overflow:"scroll",
-                // border: "1px solid lightblue",
-                flexGrow: 1,
-                marginLeft: "10px",
-              }}
-            >
-              <div style={{
-                width: "100%", height: "100%",
-                display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between",
-              }}
-              >
-                <div style={{
-                    // border: "1px solid lightcyan",
-                    // flexGrow: 1
-                  }}
-                >
-                  <FilesBrowser
-                      reduxProject={reduxProject}
-                      onSelect={handleFileBrowserOnSelect}
-                  />
-                </div>
+
+            <div style={{overflow:"scroll", flexGrow: 1, marginLeft: "10px"}}>
+              <div style={{display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between"}} >
+                <FilesBrowser reduxProject={reduxProject} onSelect={handleFileBrowserOnSelect}/>
+
                 <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
-                  <button
-                      className="button is-family-secondary is-small"
-                      onClick={handleProjectBundleClick}
-                      // disabled={!reduxProject.synced}
-                  >
+                  <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
                     Run
                   </button>
 
                   <div style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
-                    <button
-                        className="button is-family-secondary is-small"
-                        // style={{width: "80px"}}
-                        onClick={handleProjectDownloadClick}
-                        disabled={reduxProject.downloadingZip}
-                    >
+                    <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
                       Download
                     </button>
                     <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
