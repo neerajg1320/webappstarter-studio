@@ -3,7 +3,6 @@
   background-color: white;
   color: black;
   padding: 5px;
-  height: 250px;
   display: flex;
   flex-direction: column;
   overflow: scroll;

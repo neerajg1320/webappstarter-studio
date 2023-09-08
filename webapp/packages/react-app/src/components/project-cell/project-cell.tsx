@@ -63,6 +63,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const autoSaveRef = useRef<boolean>(hotReload);
   const downloadClickedRef = useRef<boolean>(false);
 
+  const [remainingHeight, setRemainingHeight] = useState("400px");
+
   useEffect(() => {
     hotReloadRef.current = hotReload;
   }, [hotReload])
@@ -385,6 +387,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     setProjectSelectedFile(fileLocalId);
   }
 
+  const handleWidthChange = (width:number) => {
+    console.log(`ProjectCell: height:${width}`);
+  }
+
+  const handleHeightChange = (height:number) => {
+    console.log(`ProjectCell: height:${height}`);
+  }
 
   if (!reduxProject) {
     return <h1>reduxProject:{reduxProject} is not defined</h1>
@@ -393,9 +402,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   return (
     <div className="project-cell-wrapper">
       <div style={{width: "100%"}}>
-        <Resizable direction="vertical">
+        <Resizable direction="vertical" onHeightChange={handleHeightChange}>
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
-            <Resizable direction="horizontal">
+            <Resizable direction="horizontal" onWidthChange={handleWidthChange}>
               <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
                 <div className="file-cell-control-bar-wrapper">
                   {editedFile && <FileCellControlBar reduxFile={editedFile} />}
@@ -444,22 +453,16 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         </Resizable>
       </div>
 
-      {/* TBD: We can try to make this resizable as well */}
-      {/*<div style={{height:"200px"}}>*/}
-      <div style={{}}>
-        {/* We have to put Tab component here*/}
-        {
-            (htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
-            <div style={{height: "100%"}}>
-              {/* We can pass iframe id in case we are using multiple preview windows. */}
-              <PreviewTabs
-                  html={htmlContent}
-                  code={bundlesState[reduxProject.bundleLocalId]!.code}
-                  err={bundlesState[reduxProject.bundleLocalId]!.err}
-              />
-            </div>
+      {/* TBD: The height below has to be calculated*/}
+      <div style={{height:remainingHeight}}>
+        {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+            <PreviewTabs
+                html={htmlContent}
+                code={bundlesState[reduxProject.bundleLocalId]!.code}
+                err={bundlesState[reduxProject.bundleLocalId]!.err}
+                // height={"400px"}
+            />
         }
-        
       </div>
 
       {(debugComponent) &&

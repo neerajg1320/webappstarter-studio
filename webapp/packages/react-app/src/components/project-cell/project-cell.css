@@ -1,7 +1,10 @@
 .project-cell-wrapper {
-    width: 100%;
-    border: 1px solid gray;
-    padding: 10px;
+  height: 85vh;
+  width: 100%;
+  border: 1px solid gray;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .file-cell-control-bar-wrapper {

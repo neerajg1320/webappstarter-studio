@@ -5,6 +5,8 @@ import {ResizableBox, ResizableBoxProps} from "react-resizable";
 interface ResizableProps {
     children?: React.ReactNode;
     direction: "horizontal" | "vertical";
+    onHeightChange?: (h:number) => void;
+    onWidthChange?: (w:number) => void;
 }
 
 class CalmResizeObserver extends ResizeObserver {
@@ -17,9 +19,9 @@ class CalmResizeObserver extends ResizeObserver {
   }
 }
 
-const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
+const Resizable: React.FC<ResizableProps> = ({children, direction, onWidthChange, onHeightChange}) => {
     const widthProportion:number = 0.75;
-    const heightProportion:number = 0.5;
+    const heightProportion:number = 0.3;
 
     let resizableBoxProps: ResizableBoxProps;
     const [innerHeight, setInnerHeight] = useState(window.innerHeight);
@@ -75,16 +77,26 @@ const Resizable: React.FC<ResizableProps> = ({children, direction}) => {
             onResizeStop: (event, data) => {
                 // console.log(data.size);
                 setWidth(data.size.width);
+                if (onWidthChange) {
+                  onWidthChange(data.size.width);
+                }
             }
         };
     } else {
         // Vertical
         resizableBoxProps = {
             minConstraints: [Infinity, 150],
-            maxConstraints: [Infinity, innerHeight * 0.9],
+            maxConstraints: [Infinity, innerHeight * 0.6],
             height: height,
             width: Infinity,
-            resizeHandles: ['s']
+            resizeHandles: ['s'],
+            onResizeStop: (event, data) => {
+              // console.log(data.size);
+              setHeight(data.size.height);
+              if (onHeightChange) {
+                onHeightChange(data.size.height);
+              }
+            }
         };
     }
 

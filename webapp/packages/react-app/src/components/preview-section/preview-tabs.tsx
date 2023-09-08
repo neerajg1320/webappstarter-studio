@@ -9,9 +9,11 @@ import PreviewBundle from "./preview-bundle";
 interface PreviewTabsProps {
   html: string;
   code: string;
-  err: string
+  err: string;
+  // height: string;
 }
 
+// We have to pass the height here
 const PreviewTabs:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   const [selectedTab, setSelectedTab] = useState<string>('Preview');
   const [count, setCount] = useState(0);
