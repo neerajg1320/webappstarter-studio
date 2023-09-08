@@ -3,16 +3,16 @@ import {
   ItemInfo, KeyValueRepresentationComponentProps,
   TraversalFunc
 } from "../common/expandable-args/expandable-span-item";
-import {FileNode, safeFileNodeTraveral} from "./file-node";
+import {FileReduxNode, safeFileNodeTraveral} from "./file-redux-node";
 import React from "react";
-import './file-tree-item.css';
+import './file-browser-redux-tree-item.css';
 import {debugComponent} from "../../config/global";
 
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
 //
 
-const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileNode) => {
+const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileReduxNode) => {
   if (fileNode && fileNode.childrenFileNodeMap) {
     return Object.entries(fileNode.childrenFileNodeMap)
   }
@@ -28,7 +28,7 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
       propOnClick(keyName, itemInfo);
 
       if (debugComponent) {
-        const fileNode:FileNode = itemInfo.value;
+        const fileNode:FileReduxNode = itemInfo.value;
         console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
       }
     }
@@ -50,7 +50,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
       propOnClick(keyName, itemInfo);
 
       if (debugComponent) {
-        const fileNode:FileNode = itemInfo.value;
+        const fileNode:FileReduxNode = itemInfo.value;
         console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
       }
     }
@@ -64,7 +64,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
   );
 };
 
-export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileNode):ItemInfo => {
+export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileReduxNode):ItemInfo => {
 
   return {
     value:fileNode,

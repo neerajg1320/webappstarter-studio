@@ -4,7 +4,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
-import FilesList from "../files-browser/files-browser";
+import FilesBrowser from "../files-browser/file-browser";
 import {ReduxFile, ReduxProject} from "../../state";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
@@ -360,7 +360,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }, [reduxProject.zipBlob]);
 
-  const handleFilesTreeOnSelect = (fileLocalId: string) => {
+  const handleFileBrowserOnSelect = (fileLocalId: string) => {
     if (debugComponent) {
       console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
     }
@@ -424,9 +424,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                     // flexGrow: 1
                   }}
                 >
-                  <FilesList
+                  <FilesBrowser
                       reduxProject={reduxProject}
-                      onSelect={handleFilesTreeOnSelect}
+                      onSelect={handleFileBrowserOnSelect}
                   />
                 </div>
                 <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>

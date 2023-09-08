@@ -1,4 +1,4 @@
-import './files-browser.css';
+import './file-browser.css';
 import {ReduxProject} from "../../state/project";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -10,11 +10,11 @@ import {generateLocalId} from "../../state/id";
 import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {FileInfo, FileNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-node";
+import {FileInfo, FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
 import ExpandableSpan from "../common/expandable-args/expandable-span";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 import {getFileInfo} from "prettier";
-import {getFileTreeItemInfo} from "./file-tree-item";
+import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
 import {ItemClickFunc, ItemInfo} from "../common/expandable-args/expandable-span-item";
 
 
@@ -23,14 +23,13 @@ interface FilesTreeProps {
   onSelect: (fileLocalId:string) => void
 }
 
-const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
-  // const [selectedFileLocalId, setSelectedFileLocalId] = useState<string|null>(null);
+const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect}) => {
   const [editPathEnabled, setEditPathEnabled] = useState<boolean>(false);
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
   const {createFile, updateFile, removeFile, saveFile} = useActions();
   const selectedFileLocalId = reduxProject.selectedFileLocalId || null;
-  const [fileTree, setFileTree] = useState<FileNode|null>(null)
+  const [fileTree, setFileTree] = useState<FileReduxNode|null>(null)
 
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
@@ -62,7 +61,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
     }
 
     if (projectFiles && projectFiles.length) {
-      const rootNode: FileNode = getFileTreeFromReduxFileList(reduxProject.title, projectFiles)
+      const rootNode: FileReduxNode = getFileTreeFromReduxFileList(reduxProject.title, projectFiles)
       if (debugComponent) {
         console.log(`rootNode:`, rootNode);
       }
@@ -148,7 +147,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
     setEditPathEnabled(false);
   }
 
-  const handleFileTreeControlEvent = (event: FileTreeEvent) => {
+  const handleFileBrowserControlEvent = (event: FileTreeEvent) => {
     let newFilePath = 'src';
     if (selectedFileLocalId) {
       const reduxFile:ReduxFile = filesState.data[selectedFileLocalId];
@@ -228,6 +227,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
     const reduxFile = itemInfo.value.info.reduxFile;
     if (reduxFile) {
       console.log(`reduxFile:`, reduxFile);
+      propOnSelect(reduxFile.localId);
     }
   }
 
@@ -241,7 +241,7 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
       <FileBrowserControlBar
           reduxProject={reduxProject}
           selectedFileLocalId={selectedFileLocalId}
-          onEvent={handleFileTreeControlEvent}
+          onEvent={handleFileBrowserControlEvent}
       />
 
       {(projectFiles && projectFiles.length>0)
@@ -302,4 +302,4 @@ const FilesBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSe
   )
 }
 
-export default FilesBrowser;
+export default FileBrowser;
