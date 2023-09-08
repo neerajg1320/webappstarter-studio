@@ -1,6 +1,7 @@
 import React from "react";
 
-export type ItemClickFunc = (keyName:string|number|null, itemInfo:ItemInfo) => void;
+export type ItemClickFunc = (keyName:string|number|null|undefined, itemInfo:ItemInfo) => void;
+
 export interface KeyValueRepresentationComponentProps {
   treeName: string;
   itemInfo: ItemInfo;

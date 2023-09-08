@@ -24,18 +24,13 @@ const ClickableFolderItem:React.FC<KeyValueRepresentationComponentProps> = (
     {itemInfo, keyName, parentInfo, expanded, level, onClick:propOnClick}
 ) => {
   const handleFolderClick = (e:React.MouseEvent) => {
-    if (keyName !== undefined && keyName !== null && propOnClick) {
+    if (propOnClick) {
       propOnClick(keyName, itemInfo);
-
-      if (debugComponent) {
-        const fileNode:FileReduxNode = itemInfo.value;
-        console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
-      }
     }
   }
 
   return (
-      <div className="folder-item" onClick={handleFolderClick}>
+      <div className="file-item" onClick={handleFolderClick}>
         <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
         <span>{itemInfo.value.info.name}</span>
       </div>
@@ -48,13 +43,8 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
   const reduxFile = itemInfo.value.info.reduxFile;
 
   const handleFileClick = (e:React.MouseEvent) => {
-    if (keyName !== undefined && keyName !== null && propOnClick) {
+    if (propOnClick) {
       propOnClick(keyName, itemInfo);
-
-      if (debugComponent) {
-        const fileNode:FileReduxNode = itemInfo.value;
-        console.log(`ClickableFolderItem:handleFolderClick() itemInfo:${JSON.stringify(fileNode, safeFileNodeTraveral, 2)}`)
-      }
     }
   }
 
