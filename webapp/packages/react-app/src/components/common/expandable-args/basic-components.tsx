@@ -1,6 +1,6 @@
 import React from "react";
-import {KeyValueRepresentationComponentProps} from "./expandable-span-item";
-import './default-item-components.css';
+import {KeyValueRepresentationComponentProps} from "./component-tree-item";
+import './basic-components.css';
 
 
 export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (

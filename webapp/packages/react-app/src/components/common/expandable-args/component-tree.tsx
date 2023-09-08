@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import './expandable-span.css';
+import './component-tree.css';
 import {debugComponent} from "../../../config/global";
-import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps} from "./expandable-span-item";
+import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps} from "./component-tree-item";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
@@ -27,7 +27,7 @@ interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
 };
 
 
-const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
+const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                         treeName,
                                                         itemInfo,
                                                         keyName=null,
@@ -81,7 +81,7 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
 
             return (
                 <div key={index} >
-                  <ExpandableSpan
+                  <ComponentTree
                       treeName={treeName}
                       itemInfo={childItemInfo}
                       keyName={k}
@@ -100,4 +100,4 @@ const ExpandableSpan:React.FC<ExpandableSpanProps> = ({
   );
 };
 
-export default ExpandableSpan;
+export default ComponentTree;

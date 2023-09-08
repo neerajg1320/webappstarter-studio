@@ -2,7 +2,7 @@ import {
   GetItemInfoFunc,
   ItemInfo, KeyValueRepresentationComponentProps,
   TraversalFunc
-} from "../common/expandable-args/expandable-span-item";
+} from "../common/expandable-args/component-tree-item";
 import {FileReduxNode, safeFileNodeTraveral} from "./file-redux-node";
 import React from "react";
 import './file-browser-redux-tree-item.css';

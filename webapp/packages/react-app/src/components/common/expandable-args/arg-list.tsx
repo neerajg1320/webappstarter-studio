@@ -5,13 +5,13 @@ import {
   ClickableKeySquareBracketsArrayItem,
   DivItem,
   DoubleQuotedDivItem
-} from "./default-item-components";
+} from "./basic-components";
 import {
   KeyValueRepresentationComponentProps,
   ItemInfo,
   ObjectTraversalFunc, ArrayTraversalFunc
-} from "./expandable-span-item";
-import ExpandableSpan from "./expandable-span";
+} from "./component-tree-item";
+import ComponentTree from "./component-tree";
 
 
 export type StringComponentMap = {[k:string]:React.FC<KeyValueRepresentationComponentProps>};
@@ -69,7 +69,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
       {(list && list.length > 0) &&
           <>
           {listInfo.traversalFunc ?
-              <ExpandableSpan
+              <ComponentTree
                   treeName="ConsoleLog"
                   itemInfo={listInfo}
                   keyName={'root-array'}

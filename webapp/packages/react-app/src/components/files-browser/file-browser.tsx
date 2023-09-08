@@ -11,11 +11,11 @@ import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../uti
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {FileInfo, FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
-import ExpandableSpan from "../common/expandable-args/expandable-span";
+import ComponentTree from "../common/expandable-args/component-tree";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 import {getFileInfo} from "prettier";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
-import {ItemClickFunc, ItemInfo} from "../common/expandable-args/expandable-span-item";
+import {ItemClickFunc, ItemInfo} from "../common/expandable-args/component-tree-item";
 
 
 interface FilesTreeProps {
@@ -276,7 +276,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           <div>
             {(fileTree &&fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
                 // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
-                <ExpandableSpan
+                <ComponentTree
                     treeName="FileBrowser"
                     itemInfo={fileRootNodeItemInfo}
                     keyName={"root"}
