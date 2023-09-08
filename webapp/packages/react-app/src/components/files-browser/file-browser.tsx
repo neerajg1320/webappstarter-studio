@@ -224,7 +224,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [fileTree])
 
   const handleFileClick:ItemClickFunc = (keyName, itemInfo) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`keyName:${keyName} itemInfo:`, itemInfo);
     }
     const reduxFile = itemInfo.value.info.reduxFile;

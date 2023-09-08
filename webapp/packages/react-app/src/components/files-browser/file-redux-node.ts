@@ -100,7 +100,7 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
         if (index < pathParts.length - 1) {
           partNode = {info:{type:"folder", ...commonInfo}, childrenFileNodeMap:{}}
         } else {
-          partNode = {info:{type:"file", ...commonInfo}}
+          partNode = {info:{type:"file", ...commonInfo, reduxFile}}
         }
 
         if (debugFileTree) {

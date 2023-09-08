@@ -27,21 +27,20 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
   const isFolder = itemInfo.value.info.type === "folder";
 
   const handleFileClick = (e:React.MouseEvent) => {
-    console.log(`handleFileClick`);
+    // console.log(`handleFileClick`);
     if (propOnClick) {
       propOnClick(keyName, itemInfo);
     }
   }
 
   const handleOnChange = (value:string) => {
-    console.log(`handleOnChange():folder value=${value}`);
+    console.log(`handleOnChange(): value=${value}`);
   }
 
-  const extraClasses = (reduxFile && reduxFile.isSelected) ? " selected" : "";
-  console.log(extraClasses);
-
   return (
-      <div className={"file-item " + extraClasses} onClick={handleFileClick}>
+      <div className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")}
+           onClick={handleFileClick}
+      >
         {isFolder ?
             <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
             :
