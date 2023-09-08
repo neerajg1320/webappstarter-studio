@@ -1,11 +1,14 @@
 .object-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.object-wrapper.intermediate {
   padding-left: 10px;
 }
 
-.object-wrapper .root-object {
-  border: 1px solid gray;
+.object-wrapper.root {
+  /*border: 1px solid gray;*/
 }
 
 .entry-object {

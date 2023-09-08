@@ -44,7 +44,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     return [];
   }, [reduxProject, filesState.data]);
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`FileBrowser:render reduxProject:`, reduxProject);
   }
 
@@ -224,10 +224,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [fileTree])
 
   const handleFileClick:ItemClickFunc = (keyName, itemInfo) => {
-    // console.log(`handleFileClick: itemInfo:${JSON.stringify(itemInfo, safeFileNodeTraveral, 2)}`)
     const reduxFile = itemInfo.value.info.reduxFile;
     if (reduxFile) {
-      console.log(`reduxFile:`, reduxFile);
+      // console.log(`reduxFile:`, reduxFile);
       propOnSelect(reduxFile.localId);
     }
   }
@@ -248,7 +247,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       {(projectFiles && projectFiles.length>0)
         ?
           <>
-          <ul>
+          {/* We have disabled the list view */}
+          <ul style={{display: "none"}}>
             {
               projectFiles.map(file => {
                 const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");

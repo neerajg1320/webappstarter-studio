@@ -209,8 +209,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (!reduxProject.selectedFileLocalId) {
       updateProject({localId: reduxProject.localId, selectedFileLocalId:_selectedFileId});
     }
-    if (!editedFileLocalId) {
-      setEditedFileLocalId(_selectedFileId);
+
+    if (!reduxProject.selectedFileLocalId) {
+      setProjectSelectedFile(_selectedFileId);
     }
   }, [filesState.data]);
 
@@ -220,7 +221,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`ProjectCell: useEffect([reduxProject])`)
     }
 
-    setEditedFileLocalId(reduxProject.selectedFileLocalId);
+    setProjectSelectedFile(reduxProject.selectedFileLocalId);
   }, [reduxProject.localId]);
 
   useEffect(() => {
@@ -361,20 +362,27 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }, [reduxProject.zipBlob]);
 
-  const handleFileBrowserOnSelect = (fileLocalId: string) => {
-    if (debugComponent || true) {
-      console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
-    }
-
-    // TBD: see if this can be combined
+  const setProjectSelectedFile = useCallback((fileLocalId:string|null) => {
     if (reduxProject.selectedFileLocalId) {
       updateFile({localId: reduxProject.selectedFileLocalId, isSelected: false});
     }
+
     updateProject({localId:reduxProject.localId, selectedFileLocalId: fileLocalId});
+
     if (fileLocalId) {
       updateFile({localId: fileLocalId, isSelected: true});
     }
+
+    // TBD: see if this can be combined
     setEditedFileLocalId(fileLocalId);
+  }, [reduxProject]);
+
+  const handleFileBrowserOnSelect = (fileLocalId: string) => {
+    if (debugComponent) {
+      console.log(`handleFileTreeSelectedFileChange: ${fileLocalId}`);
+    }
+
+    setProjectSelectedFile(fileLocalId);
   }
 
 

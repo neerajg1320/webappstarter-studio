@@ -36,12 +36,11 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                         level,
                                                         onClick:propOnClick,
                                                         getItemInfoFunc,
-
                                                       }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
   if (level === 0) {
-    if (debugComponent || true) {
+    if (debugComponent) {
       if (treeName === "FileBrowser") {
         console.log(`ComponentTree[${treeName}]:render itemInfo:`, itemInfo);
       }
@@ -57,7 +56,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
   }
 
   return (
-    <div className="object-wrapper">
+    <div className={"object-wrapper" + ((level === 0) ? " root" : " intermediate")}>
       {/* The Representation of the Compoenent */}
       <KeyValueHOComponent
           treeName={treeName}
