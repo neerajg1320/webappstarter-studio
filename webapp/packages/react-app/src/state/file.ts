@@ -21,6 +21,7 @@ export interface ReduxFile extends ServerObject {
   isEntryPoint?: boolean;
   isEditAllowed?:boolean;
   isSelected?: boolean;
+  isPathEditing?:boolean;
 
   file?: string;
   project?:number; // This is project.pkid
@@ -47,6 +48,7 @@ export interface ReduxCreateFilePartial extends ServerObjectPartial {
   isEntryPoint?: boolean;
   isEditAllowed?: boolean;
   isSelected?: boolean;
+  isPathEditing?:boolean;
 
   // Following are received from server
   file?: string;
@@ -70,6 +72,7 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   isEntryPoint?: boolean;
   isEditAllowed?: boolean;
   isSelected?: boolean;
+  isPathEditing?:boolean;
 
   // Following are received from server
   file?: string;

@@ -24,12 +24,17 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
           const {localId, content} = action.payload;
           const fileState = getState().files.data[localId];
 
-          if (content === fileState.content) {
-            if (debugOptimizationMarker) {
-              console.log(`The content is not changed. This should be handled in view`);
+          if (fileState) {
+            if (content === fileState.content) {
+              if (debugOptimizationMarker) {
+                console.log(`The content is not changed. This should be handled in view`);
+              }
+              // delete the content for action.payload
+              delete (action as UpdateFileAction).payload['content'];
             }
-            // delete the content for action.payload
-            delete (action as UpdateFileAction).payload['content'];
+          } else {
+            console.error(`The file is already deleted`);
+            return;
           }
         }
       }

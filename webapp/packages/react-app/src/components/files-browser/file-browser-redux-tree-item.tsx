@@ -50,6 +50,9 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
     }
   }
 
+  const name = itemInfo.value.info.name; //+ "_file";
+  const mode = false;
+
   return (
       <div className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")}
            onClick={handleFileClick}
@@ -59,7 +62,10 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
             :
             <i className="fas fa-file" />
         }
-        <EditableSpan value={itemInfo.value.info.name} onChange={handleOnChange} opts={{blurOnEnterPressOnly:true}} />
+        <span>{`'${itemInfo.value.info.name}'`}</span>
+        <EditableSpan value={name} onChange={handleOnChange} mode={mode}
+                      opts={{blurOnEnterPressOnly:true}}
+        />
       </div>
   );
 };
