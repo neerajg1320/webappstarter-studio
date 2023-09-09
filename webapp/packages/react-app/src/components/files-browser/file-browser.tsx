@@ -294,7 +294,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       {(projectFiles && projectFiles.length>0) ?
           <>
           {/* We can disable the list view */}
-          <ul style={{display: undefined}}>
+          <ul style={{display: (debugComponent ? undefined : "none")}}>
             {
               projectFiles.map(file => {
                 const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
