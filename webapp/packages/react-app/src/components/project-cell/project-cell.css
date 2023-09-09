@@ -15,4 +15,10 @@
   padding: 0 10px;
   display: flex;
   overflow: hidden;
+  margin: 5px 0;
+}
+
+.project-download-async-button-group progress {
+  /*border: 1px solid lightsalmon;*/
+  font-size: .6em;
 }

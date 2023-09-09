@@ -477,12 +477,12 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               />
 
               {/* These  are here becaused they are project level operations */}
-              <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
+              <div className="project-control-panel" style={{display:"flex", flexDirection:"row", padding: "5px", justifyContent: "space-between"}}>
                 <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
                   Run
                 </button>
 
-                <div style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
+                <div className="project-download-async-button-group" style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
                   <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
                     Download
                   </button>

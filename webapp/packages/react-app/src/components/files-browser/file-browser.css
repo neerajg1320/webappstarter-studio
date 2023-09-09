@@ -1,3 +1,11 @@
+.file-browser-panel {
+  border: 1px solid lightblue;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
 .file-list-item {
   padding:0 2px;
   /*border: 1px solid yellow;*/

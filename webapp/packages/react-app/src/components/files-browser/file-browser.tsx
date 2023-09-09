@@ -306,10 +306,10 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
   return (
     <div style={{flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
-      <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent}
-      />
+      <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent} />
+
       {(projectFiles && projectFiles.length>0) ?
-      <div  style={{border: "1px solid lightblue", flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
+      <div  className="file-browser-panel">
 
         {/*  Be aware of this as even though display is none it is causing and handling events*/}
         <ul style={{display: (debugComponent ? undefined : "none")}}>
@@ -338,30 +338,24 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
             })
           }
         </ul>
-        <div style={{flexGrow: 1, display: "flex", flexDirection: "column"}}>
-          {/* TBD: We need to create a FileTree component which encapsulates ComponentTree tree related props */}
-          {/* Passing fileRootNodeItemInfo instead of fileTree causes a rendering problem */}
-          {/* This can be solved in two ways:
-             i) fileRootNodeItemInfo should be different every time even when content are same
-             ii) We pass fileTree instead of fileRootNodeItemInfo. Since ComponentTree has getItemInfoFunc it can get
-           */}
-          {(fileTree) ?
-              // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
-              <ComponentTree
-                  treeName="FileBrowser"
-                  itemNode={fileTree}
-                  keyName={"root"}
-                  parentInfo={null}
-                  expanded={true}
-                  level={0}
-                  onClick={handleFileComponentTreeClick}
-                  onEvent={handleFileComponentTreeEvent}
-                  getItemInfoFunc={getFileTreeItemInfo}
-              />
-              :
-              <div>List can't be traversed</div>
-          }
-        </div>
+
+        {(fileTree) ?
+            // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
+            <ComponentTree
+                treeName="FileBrowser"
+                itemNode={fileTree}
+                keyName={"root"}
+                parentInfo={null}
+                expanded={true}
+                level={0}
+                onClick={handleFileComponentTreeClick}
+                onEvent={handleFileComponentTreeEvent}
+                getItemInfoFunc={getFileTreeItemInfo}
+            />
+            :
+            <div>List can't be traversed</div>
+        }
+
       </div>
     :
       <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
