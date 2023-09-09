@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './component-tree.css';
 import {debugComponent} from "../../../config/global";
-import {GetItemInfoFunc, ItemInfo, KeyValueRepresentationComponentProps} from "./component-tree-item";
+import {GetItemInfoFunc, ItemInfoType, KeyValueRepresentationComponentProps} from "./component-tree-item";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
@@ -47,7 +47,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
     }
   }
 
-  const handleHOComponentClick = (itemInfo:ItemInfo) => {
+  const handleHOComponentClick = (itemInfo:ItemInfoType) => {
     setExpanded((prev) => !prev);
 
     if (propOnClick) {

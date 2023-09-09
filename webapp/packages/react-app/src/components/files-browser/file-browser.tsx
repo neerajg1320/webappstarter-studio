@@ -15,7 +15,7 @@ import ComponentTree from "../common/expandable-args/component-tree";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 import {getFileInfo} from "prettier";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
-import {ItemClickFunc, ItemInfo} from "../common/expandable-args/component-tree-item";
+import {ItemClickFunc, ItemInfoType} from "../common/expandable-args/component-tree-item";
 
 
 interface FilesTreeProps {
@@ -215,7 +215,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
-  const fileRootNodeItemInfo:ItemInfo|null = useMemo(() => {
+  const fileRootNodeItemInfo:ItemInfoType|null = useMemo(() => {
     if (fileTree) {
       // console.log(fileTree);
       return getFileTreeItemInfo(fileTree);

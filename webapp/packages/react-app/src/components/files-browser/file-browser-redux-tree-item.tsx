@@ -1,6 +1,6 @@
 import {
   GetItemInfoFunc,
-  ItemInfo, KeyValueRepresentationComponentProps,
+  ItemInfoType, KeyValueRepresentationComponentProps,
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
 import {FileReduxNode, safeFileNodeTraveral} from "./file-redux-node";
@@ -51,7 +51,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
   );
 };
 
-export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileReduxNode):ItemInfo => {
+export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileReduxNode):ItemInfoType => {
 
   return {
     value:fileNode,

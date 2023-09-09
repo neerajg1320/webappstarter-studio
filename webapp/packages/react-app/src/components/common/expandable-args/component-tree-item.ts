@@ -1,12 +1,14 @@
 import React from "react";
 
-export type ItemClickFunc = (keyName:string|number|null|undefined, itemInfo:ItemInfo) => void;
+export type ItemKeyType = string|number|null|undefined;
+export type ItemClickFunc = (keyName:ItemKeyType, itemInfo:ItemInfoType) => void;
+export type ItemEventFunc = () => void;
 
 export interface KeyValueRepresentationComponentProps {
   treeName: string;
-  itemInfo: ItemInfo;
+  itemInfo: ItemInfoType;
   keyName?: string|number|null;
-  parentInfo: ItemInfo|null;
+  parentInfo: ItemInfoType|null;
   expanded?: boolean;
   level: number;
   onClick?: ItemClickFunc;
@@ -15,7 +17,7 @@ export interface KeyValueRepresentationComponentProps {
 
 export type TraversalFunc = (value:any) => [string|number, any][];
 
-export type ItemInfo = {
+export type ItemInfoType = {
   value:any;
   type:string,
   component:React.FC<KeyValueRepresentationComponentProps>
@@ -24,7 +26,7 @@ export type ItemInfo = {
   enclosingClass: string|null,
 };
 
-export type GetItemInfoFunc = (value:any) => ItemInfo;
+export type GetItemInfoFunc = (value:any) => ItemInfoType;
 
 
 export const ObjectTraversalFunc:TraversalFunc = (value) => {

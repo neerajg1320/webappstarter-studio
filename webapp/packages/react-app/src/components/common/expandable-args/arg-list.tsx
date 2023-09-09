@@ -8,7 +8,7 @@ import {
 } from "./basic-components";
 import {
   KeyValueRepresentationComponentProps,
-  ItemInfo,
+  ItemInfoType,
   ObjectTraversalFunc, ArrayTraversalFunc
 } from "./component-tree-item";
 import ComponentTree from "./component-tree";
@@ -24,7 +24,7 @@ export const consoleComponentMap:StringComponentMap = {
 }
 
 
-export const getConsoleItemInfo = (value:any):ItemInfo => {
+export const getConsoleItemInfo = (value:any):ItemInfoType => {
   let _itemType:string = typeof (value);
   let _isRecursive = _itemType === "object";
   let _traversalFunc = null;
