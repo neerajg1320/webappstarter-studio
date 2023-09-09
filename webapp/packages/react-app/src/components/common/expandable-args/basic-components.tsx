@@ -4,8 +4,10 @@ import './basic-components.css';
 
 
 export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentInfo, expanded, onClick:propOnClick}
+    {itemNode, keyName, parentInfo, expanded, onClick:propOnClick, getItemInfoFunc}
 ) => {
+  const itemInfo = getItemInfoFunc(itemNode);
+
   const handleObjectClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
       propOnClick(keyName, itemInfo)
@@ -25,8 +27,10 @@ export const ClickableKeyCurlyBracketsObjectItem:React.FC<KeyValueRepresentation
 // Show only non-root components. For root component parentInfo is null
 // For root component the class becomes 'arg-object-title-none' otherwise it is 'arg-object-title'
 export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentInfo, expanded, onClick:propOnClick}
+    {itemNode, keyName, parentInfo, expanded, onClick:propOnClick, getItemInfoFunc}
 ) => {
+  const itemInfo = getItemInfoFunc(itemNode);
+
   const handleArrayClick = (e:React.MouseEvent) => {
     if (keyName !== undefined && keyName !== null && propOnClick) {
       propOnClick(keyName, itemInfo)
@@ -43,8 +47,10 @@ export const ClickableKeySquareBracketsArrayItem:React.FC<KeyValueRepresentation
 };
 
 export const DoubleQuotedDivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentInfo}
+    {itemNode, keyName, parentInfo, getItemInfoFunc}
 ) => {
+  const itemInfo = getItemInfoFunc(itemNode);
+
   return (
       <div>
         {parentInfo && parentInfo.type !== "array"  && <span>{keyName}:</span>}
@@ -54,8 +60,10 @@ export const DoubleQuotedDivItem:React.FC<KeyValueRepresentationComponentProps> 
 }
 
 export const DivItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo,keyName, parentInfo}
+    {itemNode,keyName, parentInfo, getItemInfoFunc}
 ) => {
+  const itemInfo = getItemInfoFunc(itemNode);
+
   return (
       <div>
         {parentInfo && parentInfo.type !== "array"  && <span>{keyName}:</span>}

@@ -71,7 +71,8 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           {listInfo.traversalFunc ?
               <ComponentTree
                   treeName="ConsoleLog"
-                  itemInfo={listInfo}
+                  // itemInfo={listInfo}
+                  itemNode={list}
                   keyName={'root-array'}
                   parentInfo={null}
                   expanded={true}

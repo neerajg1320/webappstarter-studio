@@ -29,7 +29,8 @@ export type ItemEventFunc = (type:ItemEventType, data:ItemEventDataType) => void
 
 export interface KeyValueRepresentationComponentProps {
   treeName: string;
-  itemInfo: ItemInfoType;
+  // itemInfo: ItemInfoType;
+  itemNode: any;
   keyName?: string|number|null;
   parentInfo: ItemInfoType|null;
   expanded?: boolean;

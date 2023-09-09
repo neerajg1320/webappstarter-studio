@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './component-tree.css';
 import {debugComponent} from "../../../config/global";
 import {
-  GetItemInfoFunc, ItemDataType, ItemEventDataType,
+  ItemEventDataType,
   ItemEventType,
   ItemInfoType,
   ItemKeyType,
@@ -16,7 +16,8 @@ export interface KeyValueHOComponentProps extends KeyValueRepresentationComponen
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          treeName,
-                                                                         itemInfo,
+                                                                         // itemInfo,
+                                                                         itemNode,
                                                                          keyName,
                                                                          parentInfo,
                                                                          expanded=false,
@@ -28,7 +29,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                        }) => {
   return React.createElement(
       component,
-      {treeName, itemInfo, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc},
+      {treeName, itemNode, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc},
       null
   );
 }
@@ -40,7 +41,8 @@ interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
 
 const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        treeName,
-                                                       itemInfo,
+                                                       // itemInfo,
+                                                       itemNode,
                                                        keyName=null,
                                                        parentInfo,
                                                        expanded: initialExpanded=false,
@@ -50,6 +52,9 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        getItemInfoFunc,
                                                      }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
+
+  // TBD: check if we can use useMemo here
+  const itemInfo = getItemInfoFunc(itemNode);
 
   if (level < 5) {
     if (debugComponent) {
@@ -80,7 +85,8 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
       {/* The Representation of the Compoenent */}
       <KeyValueHOComponent
           treeName={treeName}
-          itemInfo={itemInfo}
+          // itemInfo={itemInfo}
+          itemNode={itemNode}
           keyName={keyName}
           parentInfo={parentInfo}
           expanded={expanded}
@@ -104,7 +110,8 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                 <div key={index} >
                   <ComponentTree
                       treeName={treeName}
-                      itemInfo={childItemInfo}
+                      // itemInfo={childItemInfo}
+                      itemNode={v}
                       keyName={k}
                       parentInfo={itemInfo}
                       expanded={false}
