@@ -452,9 +452,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
             </Resizable>
 
             <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
-              {/*<div style={{overflow:"scroll", flexGrow: 1, display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between"}} >*/}
-                <FilesBrowser reduxProject={reduxProject} onSelect={handleFileBrowserOnSelect}/>
-              {/*</div>*/}
+              <FilesBrowser reduxProject={reduxProject} onSelect={handleFileBrowserOnSelect}/>
+
+              {/* These  are here becaused they are project level operations */}
               <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
                 <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
                   Run
@@ -476,7 +476,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
             html={htmlContent}
             code={bundlesState[reduxProject.bundleLocalId]!.code}
             err={bundlesState[reduxProject.bundleLocalId]!.err}
-            // height={"400px"}
         />
     }
     </div>

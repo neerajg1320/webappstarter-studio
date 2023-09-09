@@ -277,23 +277,13 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }
 
   return (
-    <div style={{
-        // height:"100%",
-        flexGrow: 1,
-        display: "flex", flexDirection: "column", overflow: "scroll"
-        // border: "3px solid red",
-      }}
-    >
-      <FileBrowserControlBar
-          reduxProject={reduxProject}
-          selectedFileLocalId={selectedFileLocalId}
-          onEvent={handleFileBrowserControlEvent}
+    <div style={{flexGrow: 1, display: "flex", flexDirection: "column", overflow: "scroll"}}>
+      <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId}
+                             onEvent={handleFileBrowserControlEvent}
       />
-
-      {(projectFiles && projectFiles.length>0)
-        ?
+      {(projectFiles && projectFiles.length>0) ?
           <>
-          {/* We have disabled the list view */}
+          {/* We can disable the list view */}
           <ul style={{display: undefined}}>
             {
               projectFiles.map(file => {
@@ -321,6 +311,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
             }
           </ul>
           <div>
+            {/* TBD: We need to create a FileTree component which encapsulates ComponentTree tree related props */}
             {(fileTree &&fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
                 // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
                 <ComponentTree
@@ -340,11 +331,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           </div>
           </>
         :
-          <div style={{
-                // height: "100%",
-                display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
-              }}
-            >
+          <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
               <span>Create a File</span>
           </div>
       }
