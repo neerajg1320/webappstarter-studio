@@ -305,71 +305,68 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }
 
   return (
-    <div style={{flexGrow: 1, display: "flex", flexDirection: "column", overflow: "scroll"}}>
-      <FileBrowserControlBar
-          reduxProject={reduxProject}
-          selectedFileLocalId={selectedFileLocalId}
-          onEvent={handleFileBrowserControlBarEvent}
+    <div style={{flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
+      <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent}
       />
       {(projectFiles && projectFiles.length>0) ?
-          <>
+      <div  style={{border: "2px solid yellow", flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
 
-          {/*  Be aware of this as even though display is none it is causing and handling events*/}
-          <ul style={{display: (debugComponent ? undefined : "none")}}>
-            {
-              projectFiles.map(file => {
-                const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
-                return (
-                  <li key={file.localId}
-                      className={"file-list-item " + extraFileClasses}
-                      onClick={() => handleSelectFileClick(file.localId)}
-                      // onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
-                  >
-                    {(selectedFileLocalId === file.localId && fileNameInputRef && file.isPathEditing)
-                      ? <input
-                            // autoFocus
-                            ref={fileNameInputRef}
-                            value={file.path}
-                            onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
-                            // onKeyDownCapture={handleInputKeyPress}
-                            onBlur={handleInputBlur}
-                        />
-                      : <span>{file.path}</span>
-                    }
-                  </li>
-                );
-              })
-            }
-          </ul>
-          <div>
-            {/* TBD: We need to create a FileTree component which encapsulates ComponentTree tree related props */}
-            {/* Passing fileRootNodeItemInfo instead of fileTree causes a rendering problem */}
-            {/* This can be solved in two ways:
-               i) fileRootNodeItemInfo should be different every time even when content are same
-               ii) We pass fileTree instead of fileRootNodeItemInfo. Since ComponentTree has getItemInfoFunc it can get
-             */}
-            {(fileTree) ?
-                // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
-                <ComponentTree
-                    treeName="FileBrowser"
-                    itemNode={fileTree}
-                    keyName={"root"}
-                    parentInfo={null}
-                    expanded={true}
-                    level={0}
-                    onClick={handleFileComponentTreeClick}
-                    onEvent={handleFileComponentTreeEvent}
-                    getItemInfoFunc={getFileTreeItemInfo}
-                />
-                :
-                <div>List can't be traversed</div>
-            }
-          </div>
-          </>
-        :
-          <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-              <span>Create a File</span>
-          </div>
+        {/*  Be aware of this as even though display is none it is causing and handling events*/}
+        <ul style={{display: (debugComponent ? undefined : "none")}}>
+          {
+            projectFiles.map(file => {
+              const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
+              return (
+                <li key={file.localId}
+                    className={"file-list-item " + extraFileClasses}
+                    onClick={() => handleSelectFileClick(file.localId)}
+                    // onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
+                >
+                  {(selectedFileLocalId === file.localId && fileNameInputRef && file.isPathEditing)
+                    ? <input
+                          // autoFocus
+                          ref={fileNameInputRef}
+                          value={file.path}
+                          onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
+                          // onKeyDownCapture={handleInputKeyPress}
+                          onBlur={handleInputBlur}
+                      />
+                    : <span>{file.path}</span>
+                  }
+                </li>
+              );
+            })
+          }
+        </ul>
+        <div style={{margin:"5px", border: "2px solid lightblue", flexGrow: 1, display: "flex", flexDirection: "column"}}>
+          {/* TBD: We need to create a FileTree component which encapsulates ComponentTree tree related props */}
+          {/* Passing fileRootNodeItemInfo instead of fileTree causes a rendering problem */}
+          {/* This can be solved in two ways:
+             i) fileRootNodeItemInfo should be different every time even when content are same
+             ii) We pass fileTree instead of fileRootNodeItemInfo. Since ComponentTree has getItemInfoFunc it can get
+           */}
+          {(fileTree) ?
+              // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
+              <ComponentTree
+                  treeName="FileBrowser"
+                  itemNode={fileTree}
+                  keyName={"root"}
+                  parentInfo={null}
+                  expanded={true}
+                  level={0}
+                  onClick={handleFileComponentTreeClick}
+                  onEvent={handleFileComponentTreeEvent}
+                  getItemInfoFunc={getFileTreeItemInfo}
+              />
+              :
+              <div>List can't be traversed</div>
+          }
+        </div>
+      </div>
+    :
+      <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+          <span>Create a File</span>
+      </div>
       }
     </div>
   )
