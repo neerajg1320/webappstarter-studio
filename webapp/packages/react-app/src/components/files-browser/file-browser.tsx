@@ -53,7 +53,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     return [];
   }, [reduxProject, filesState.data]);
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`FileBrowser:render reduxProject:`, reduxProject);
   }
 
@@ -63,16 +63,16 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [projectFiles]);
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       for (const fp of projectFilePaths) {
         console.log(fp);
       }
     }
 
     if (projectFiles && projectFiles.length) {
-      console.log(`calculating file tree`);
-      const rootNode: FileReduxNode = getFileTreeFromReduxFileList(reduxProject.title, projectFiles)
-      if (debugComponent || true) {
+      // console.log(`calculating file tree`);
+      const rootNode: FileReduxNode = {...getFileTreeFromReduxFileList(reduxProject.title, projectFiles)};
+      if (debugComponent) {
         console.log(`rootNode:`, rootNode);
       }
       setFileTree(rootNode);
@@ -109,10 +109,18 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     propOnSelect(fileLocalId);
   }
 
+  const pathEditingFileRef = useRef<ReduxFile|null>(null);
+
   const handleSelectFileDoubleClick = (fileLocalId:string) => {
     if (debugComponent) {
       console.log(`handleSelectFileDoubleClick()`, fileLocalId);
     }
+
+    // This should not be removed as we might disable handleInputBlur
+    if (pathEditingFileRef.current) {
+      updateFile({localId:fileLocalId, isPathEditing: false});
+    }
+
     // setSelectedFileLocalId(fileLocalId);
     propOnSelect(fileLocalId);
     updateFile({localId:fileLocalId, isPathEditing: true});
@@ -123,10 +131,11 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     const bundleLanguage = pathToBundleLanguage(value);
     const language = pathToCodeLanguage(value);
 
-    if (debugComponent) {
-      console.log(`${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
+    if (debugComponent||true) {
+      console.log(`handleFilePathChange: ${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
-    updateFile({localId, path:value, bundleLanguage, language});
+    // isPathEditing has to be set false when called from FileTreeEventHandler
+    updateFile({localId, path:value, bundleLanguage, language, isPathEditing: false});
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -138,6 +147,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       e.currentTarget.blur();
     }
   }
+
+
 
   const handleInputBlur = () => {
     if (selectedFileLocalId) {
@@ -156,6 +167,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         // We save instantaneously as this is not done very often
         saveFile(reduxFile.localId);
         updateFile({localId:reduxFile.localId, isPathEditing: false});
+        pathEditingFileRef.current = null;
       }
     }
 
@@ -168,7 +180,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     if (selectedFileLocalId) {
       const reduxFile:ReduxFile = filesState.data[selectedFileLocalId];
       if (reduxFile) {
-        newFilePath = getFileDir(reduxFile.path);
+        const {dirname, basename} = getFilePathParts(reduxFile.path);
+        // This becomes important for fileTree, we have to give extension as well
+        newFilePath = joinFileParts(dirname, "untitled.js");
       }
     }
 
@@ -181,7 +195,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         const fileLocalId = generateLocalId();
         createFile({
           localId: fileLocalId,
-          path: validatePath(newFilePath),
+          // path: validatePath(newFilePath),
+          path: newFilePath,
           bundleLanguage: BundleLanguage.UNKNOWN,
           language: CodeLanguage.UNKNOWN,
           content: '',
@@ -265,10 +280,13 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           // Need to fix the Type below
           const newBasenameOrPath = (data as ItemEventNameChangeType).value;
 
+          console.log(`newPath: '${newBasenameOrPath}'`);
+
           let newPath;
           if (newBasenameOrPath[0] === "/") {
             newPath = newBasenameOrPath.substring(1);
           } else {
+            // This would work only for file name change. The redux path should have been copied
             const {dirname, basename} = getFilePathParts(reduxFile.path);
             newPath = joinFileParts(dirname, newBasenameOrPath);
           }
@@ -307,15 +325,15 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                   <li key={file.localId}
                       className={"file-list-item " + extraFileClasses}
                       onClick={() => handleSelectFileClick(file.localId)}
-                      onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
+                      // onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
                   >
                     {(selectedFileLocalId === file.localId && fileNameInputRef && file.isPathEditing)
                       ? <input
-                            autoFocus
+                            // autoFocus
                             ref={fileNameInputRef}
                             value={file.path}
                             onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
-                            onKeyDownCapture={handleInputKeyPress}
+                            // onKeyDownCapture={handleInputKeyPress}
                             onBlur={handleInputBlur}
                         />
                       : <span>{file.path}</span>

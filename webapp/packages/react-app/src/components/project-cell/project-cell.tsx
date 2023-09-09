@@ -398,7 +398,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // console.log(`ProjectCell: editor-height:${eh} project-height:${height}`);
   }
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`ProjectCell:render editedFile:`, editedFile);
   }
 

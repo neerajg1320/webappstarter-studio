@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
 
 interface EditableSpanPropsOptions {
@@ -8,6 +8,8 @@ interface EditableSpanPropsOptions {
 interface EditableSpanProps {
   value: string;
   onChange?: (v:string) => void;
+  mode?: boolean;
+  onModeChange?: (isEditing:boolean) => void;
   opts?: EditableSpanPropsOptions;
 }
 
@@ -18,19 +20,20 @@ const defaultOpts:EditableSpanPropsOptions = {
 const EditableSpan:React.FC<EditableSpanProps> = ({
                                                     value:initialValue,
                                                     onChange:propOnChange,
+                                                    mode=false,
+                                                    onModeChange,
                                                     opts=defaultOpts,
 }) => {
-  const [editEnabled, setEditEnabled] = useState(false);
+  const [editEnabled, setEditEnabled] = useState(mode);
   const [editedValue, setEditedValue] = useState<string>(initialValue);
   const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
-  const targetRef = useRef<any>();
+  const targetRef = useRef<EventTarget & HTMLInputElement>();
 
   const handleDoubleClick = () => {
     setEditEnabled(true);
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-
     if (debugComponent) {
       console.log(e.key);
     }
@@ -40,16 +43,22 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
         setBlurCauseKeyDown(true);
         targetRef.current = e.currentTarget;
 
+        // Here we blur after a timeout
         setTimeout(() => {
-          targetRef.current.blur();
+          if (targetRef.current) {
+            targetRef.current.blur();
+          }
         }, 0);
       } else {
+        // Here we directly blur
         e.currentTarget.blur();
       }
     }
   }
 
   const handleInputBlur = () => {
+    console.log(`EditableSpanProps:handleInputBlur() editedValue:${editedValue}`);
+
     if (propOnChange) {
       propOnChange(editedValue);
     }
@@ -63,6 +72,12 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
       setEditEnabled(false);
     }
   }
+
+  useEffect(() => {
+    if (onModeChange) {
+      onModeChange(editEnabled);
+    }
+  }, [editEnabled]);
 
   return (
       <div onDoubleClick={handleDoubleClick} >
