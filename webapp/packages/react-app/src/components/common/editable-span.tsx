@@ -1,26 +1,51 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
+
+interface EditableSpanPropsOptions {
+  blurOnEnterPressOnly?: boolean;
+}
 
 interface EditableSpanProps {
   value: string;
   onChange?: (v:string) => void;
+  opts?: EditableSpanPropsOptions;
 }
 
-const EditableSpan:React.FC<EditableSpanProps> = ({value:initialValue, onChange:propOnChange}) => {
+const defaultOpts:EditableSpanPropsOptions = {
+  blurOnEnterPressOnly: false,
+}
+
+const EditableSpan:React.FC<EditableSpanProps> = ({
+                                                    value:initialValue,
+                                                    onChange:propOnChange,
+                                                    opts=defaultOpts,
+}) => {
   const [editEnabled, setEditEnabled] = useState(false);
   const [editedValue, setEditedValue] = useState<string>(initialValue);
+  const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
+  const targetRef = useRef<any>();
 
   const handleDoubleClick = () => {
     setEditEnabled(true);
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+
     if (debugComponent) {
       console.log(e.key);
     }
 
     if (e.key === "Enter") {
-      e.currentTarget.blur();
+      if (opts?.blurOnEnterPressOnly) {
+        setBlurCauseKeyDown(true);
+        targetRef.current = e.currentTarget;
+
+        setTimeout(() => {
+          targetRef.current.blur();
+        }, 0);
+      } else {
+        e.currentTarget.blur();
+      }
     }
   }
 
@@ -29,7 +54,14 @@ const EditableSpan:React.FC<EditableSpanProps> = ({value:initialValue, onChange:
       propOnChange(editedValue);
     }
 
-    setEditEnabled(false);
+    if(opts?.blurOnEnterPressOnly) {
+      if (blurCauseKeyDown) {
+        setEditEnabled(false);
+        setBlurCauseKeyDown(false);
+      }
+    } else {
+      setEditEnabled(false);
+    }
   }
 
   return (

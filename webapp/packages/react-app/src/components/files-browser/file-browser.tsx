@@ -28,6 +28,7 @@ import {
   ItemInfoType,
   ItemNameChangeEventFunc
 } from "../common/expandable-args/component-tree-item";
+import useForceUpdate from "../../hooks/use-force-update";
 
 
 interface FilesTreeProps {
@@ -56,7 +57,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     return [];
   }, [reduxProject, filesState.data]);
 
-  if (debugComponent) {
+  if (debugComponent || true) {
     console.log(`FileBrowser:render reduxProject:`, reduxProject);
   }
 
@@ -66,20 +67,22 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [projectFiles]);
 
   useEffect(() => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       for (const fp of projectFilePaths) {
         console.log(fp);
       }
     }
 
     if (projectFiles && projectFiles.length) {
+      console.log(`calculating file tree`);
       const rootNode: FileReduxNode = getFileTreeFromReduxFileList(reduxProject.title, projectFiles)
-      if (debugComponent) {
+      if (debugComponent || true) {
         console.log(`rootNode:`, rootNode);
       }
       setFileTree(rootNode);
     }
   }, [reduxProject.title, projectFiles]);
+
   // }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
 
 
@@ -228,6 +231,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }
 
   const fileRootNodeItemInfo:ItemInfoType|null = useMemo(() => {
+    console.log(`fileRootNodeItemInfo: fileTree changed!`)
     if (fileTree) {
       // console.log(fileTree);
       return getFileTreeItemInfo(fileTree);
@@ -245,6 +249,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
+  const forceUpdateComponent = useForceUpdate();
+
   const handleFileComponentTreeEvent:ItemEventFunc = (type, data) => {
     if (debugComponent || true) {
       console.log(`FileBrowser:handleFileComponentTreeEvent()  type:${type} data:`, data);
@@ -254,12 +260,19 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       case "change":
         const reduxFile = data.itemInfo.value.info.reduxFile;
         if (reduxFile) {
-
-          const {dirname, basename} = getFilePathParts(reduxFile.path);
           // Need to fix the Type below
-          const newBasename = (data as ItemEventNameChangeType).value;
-          const newPath = joinFileParts(dirname, newBasename);
+          const newBasenameOrPath = (data as ItemEventNameChangeType).value;
+
+          let newPath;
+          if (newBasenameOrPath[0] === "/") {
+            newPath = newBasenameOrPath.substring(1);
+          } else {
+            const {dirname, basename} = getFilePathParts(reduxFile.path);
+            newPath = joinFileParts(dirname, newBasenameOrPath);
+          }
+
           handleFilePathChange(reduxFile.localId, newPath);
+          forceUpdateComponent();
         } else {
           console.log(`Name change for folder not supported yet`);
         }
@@ -312,7 +325,12 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           </ul>
           <div>
             {/* TBD: We need to create a FileTree component which encapsulates ComponentTree tree related props */}
-            {(fileTree &&fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
+            {/* Passing fileRootNodeItemInfo instead of fileTree causes a rendering problem */}
+            {/* This can be solved in two ways:
+               i) fileRootNodeItemInfo should be different every time even when content are same
+               ii) We pass fileTree instead of fileRootNodeItemInfo. Since ComponentTree has getItemInfoFunc it can get
+             */}
+            {(fileTree && fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
                 // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
                 <ComponentTree
                     treeName="FileBrowser"
@@ -321,7 +339,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                     parentInfo={null}
                     expanded={true}
                     level={0}
-                    onClick={handleFileComponentTreeClick}
+                    // temp disabled
+                    // onClick={handleFileComponentTreeClick}
                     onEvent={handleFileComponentTreeEvent}
                     getItemInfoFunc={getFileTreeItemInfo}
                 />

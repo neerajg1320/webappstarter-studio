@@ -56,7 +56,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
             :
             <i className="fas fa-file" />
         }
-        <EditableSpan value={itemInfo.value.info.name} onChange={handleOnChange}/>
+        <EditableSpan value={itemInfo.value.info.name} onChange={handleOnChange} opts={{blurOnEnterPressOnly:true}} />
       </div>
   );
 };

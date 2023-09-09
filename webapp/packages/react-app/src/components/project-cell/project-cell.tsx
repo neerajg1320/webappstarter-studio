@@ -388,6 +388,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
   // The code below has been kept for reference
+  //
   const handleEditorWidthChange = (ew:number) => {
     // console.log(`ProjectCell: editor-width:${ew}  project-width:${width}`);
 
@@ -397,8 +398,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // console.log(`ProjectCell: editor-height:${eh} project-height:${height}`);
   }
 
-  if (debugComponent && false) {
-    console.log(`ProjectCell: editedFile:`, editedFile);
+  if (debugComponent || true) {
+    console.log(`ProjectCell:render editedFile:`, editedFile);
   }
 
   const projectRef = useRef<HTMLDivElement|null>(null);
