@@ -309,7 +309,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent}
       />
       {(projectFiles && projectFiles.length>0) ?
-      <div  style={{border: "2px solid yellow", flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
+      <div  style={{border: "1px solid lightblue", flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
 
         {/*  Be aware of this as even though display is none it is causing and handling events*/}
         <ul style={{display: (debugComponent ? undefined : "none")}}>
@@ -338,7 +338,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
             })
           }
         </ul>
-        <div style={{margin:"5px", border: "2px solid lightblue", flexGrow: 1, display: "flex", flexDirection: "column"}}>
+        <div style={{flexGrow: 1, display: "flex", flexDirection: "column"}}>
           {/* TBD: We need to create a FileTree component which encapsulates ComponentTree tree related props */}
           {/* Passing fileRootNodeItemInfo instead of fileTree causes a rendering problem */}
           {/* This can be solved in two ways:
