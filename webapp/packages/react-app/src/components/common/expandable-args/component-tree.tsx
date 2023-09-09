@@ -19,7 +19,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          itemNode,
                                                                          keyName,
                                                                          parentInfo,
-                                                                         expanded=false,
+                                                                         expanded,
                                                                          level,
                                                                          onClick,
                                                                          onEvent,
@@ -43,7 +43,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        itemNode,
                                                        keyName=null,
                                                        parentInfo,
-                                                       expanded: initialExpanded=true,
+                                                       expanded: initialExpanded,
                                                        level,
                                                        onClick:propOnClick,
                                                        onEvent:propOnEvent,
@@ -110,7 +110,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       itemNode={v}
                       keyName={k}
                       parentInfo={itemInfo}
-                      expanded={true}
+                      expanded={false}
                       level={level + 1}
                       onClick={propOnClick}
                       onEvent={propOnEvent}
