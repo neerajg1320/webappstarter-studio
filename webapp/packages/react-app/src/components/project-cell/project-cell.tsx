@@ -451,23 +451,21 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               </div>
             </Resizable>
 
-            <div style={{overflow:"scroll", flexGrow: 1, marginLeft: "10px"}}>
-              <div style={{height: "100%", display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between"}} >
+            <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
+              {/*<div style={{overflow:"scroll", flexGrow: 1, display:"flex", flexDirection:"column", gap:"2px", justifyContent: "space-between"}} >*/}
                 <FilesBrowser reduxProject={reduxProject} onSelect={handleFileBrowserOnSelect}/>
+              {/*</div>*/}
+              <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
+                <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
+                  Run
+                </button>
 
-                <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>
-                  <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
-                    Run
+                <div style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
+                  <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
+                    Download
                   </button>
-
-                  <div style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
-                    <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
-                      Download
-                    </button>
-                    <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
-                  </div>
+                  <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
                 </div>
-
               </div>
             </div>
           </div>
