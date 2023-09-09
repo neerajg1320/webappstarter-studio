@@ -8,9 +8,7 @@ import FileBrowserControlBar, {FileBrowserEvent, FileBrowserEventType} from "./f
 import {debugComponent, debugLocalOnlyPendingSupport} from "../../config/global";
 import {generateLocalId} from "../../state/id";
 import {
-  validatePath,
   getCopyPath,
-  getFileDir,
   hasTrailingSlash,
   getFilePathParts,
   joinFileParts
@@ -25,7 +23,6 @@ import {
   ItemEventFunc, ItemEventNameChangeType,
   ItemInfoType,
 } from "../common/expandable-args/component-tree-item";
-import useForceUpdate from "../../hooks/use-force-update";
 
 
 interface FilesTreeProps {
@@ -121,10 +118,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       updateFile({localId:fileLocalId, isPathEditing: false});
     }
 
-    // setSelectedFileLocalId(fileLocalId);
     propOnSelect(fileLocalId);
     updateFile({localId:fileLocalId, isPathEditing: true});
-    // setEditPathEnabled(true);
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
@@ -135,7 +130,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       console.log(`handleFilePathChange: ${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
     // isPathEditing has to be set false when called from FileTreeEventHandler
-    updateFile({localId, path:value, bundleLanguage, language, isPathEditing: false});
+    updateFile({localId, path:value, bundleLanguage, language});
   }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
@@ -147,7 +142,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       e.currentTarget.blur();
     }
   }
-
 
 
   const handleInputBlur = () => {
@@ -170,12 +164,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         pathEditingFileRef.current = null;
       }
     }
-
-    // setEditPathEnabled(false);
-
   }
 
-  const handleFileBrowserControlEvent = (event: FileBrowserEvent) => {
+  const handleFileBrowserControlBarEvent = (event: FileBrowserEvent) => {
     let newFilePath = 'src';
     if (selectedFileLocalId) {
       const reduxFile:ReduxFile = filesState.data[selectedFileLocalId];
@@ -207,7 +198,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         });
 
         propOnSelect(fileLocalId);
-        // setEditPathEnabled(true);
+
         break;
 
       case FileBrowserEventType.COPY_FILE:
@@ -233,9 +224,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
             isPathEditing: true,
           });
 
-          // setSelectedFileLocalId(newFileLocalId);
           propOnSelect(newFileLocalId);
-          // setEditPathEnabled(true);
         }
         break;
 
@@ -247,14 +236,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
-  const fileRootNodeItemInfo:ItemInfoType|null = useMemo(() => {
-    console.log(`fileRootNodeItemInfo: fileTree changed!`)
-    if (fileTree) {
-      // console.log(fileTree);
-      return getFileTreeItemInfo(fileTree);
-    }
-    return null;
-  }, [fileTree])
 
   const handleFileComponentTreeClick:ItemClickFunc = (keyName, itemInfo) => {
     if (debugComponent) {
@@ -265,8 +246,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       propOnSelect(reduxFile.localId);
     }
   }
-
-  const forceUpdateComponent = useForceUpdate();
 
   const handleFileComponentTreeEvent:ItemEventFunc = (type, data) => {
     if (debugComponent || true) {
@@ -292,7 +271,11 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           }
 
           handleFilePathChange(reduxFile.localId, newPath);
-          forceUpdateComponent();
+
+          // TBD: Combine this with above when we are not depended on filesList component anymore
+          updateFile({localId:reduxFile.localId, isPathEditing:false});
+          saveFile(reduxFile.localId);
+          // forceUpdateComponent();
         } else {
           console.log(`Name change for folder not supported yet`);
         }
@@ -311,13 +294,15 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
   return (
     <div style={{flexGrow: 1, display: "flex", flexDirection: "column", overflow: "scroll"}}>
-      <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId}
-                             onEvent={handleFileBrowserControlEvent}
+      <FileBrowserControlBar
+          reduxProject={reduxProject}
+          selectedFileLocalId={selectedFileLocalId}
+          onEvent={handleFileBrowserControlBarEvent}
       />
       {(projectFiles && projectFiles.length>0) ?
           <>
           {/* We can disable the list view */}
-          <ul style={{display: (debugComponent || true ? undefined : "none")}}>
+          <ul style={{display: (debugComponent ? undefined : "none")}}>
             {
               projectFiles.map(file => {
                 const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
