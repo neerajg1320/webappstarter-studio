@@ -43,7 +43,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        itemNode,
                                                        keyName=null,
                                                        parentInfo,
-                                                       expanded: initialExpanded=false,
+                                                       expanded: initialExpanded=true,
                                                        level,
                                                        onClick:propOnClick,
                                                        onEvent:propOnEvent,
@@ -110,7 +110,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       itemNode={v}
                       keyName={k}
                       parentInfo={itemInfo}
-                      expanded={false}
+                      expanded={true}
                       level={level + 1}
                       onClick={propOnClick}
                       onEvent={propOnEvent}
