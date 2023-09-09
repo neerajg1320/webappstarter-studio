@@ -18,7 +18,7 @@ import {
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
-import ComponentTree from "../common/expandable-args/component-tree";;
+import ComponentTree from "../common/expandable-args/component-tree";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
 import {
   ItemClickFunc,
