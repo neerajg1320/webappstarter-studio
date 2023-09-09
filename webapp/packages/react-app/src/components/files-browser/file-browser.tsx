@@ -305,7 +305,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }
 
   return (
-    <div style={{flexGrow: 1, display: "flex", flexDirection: "column", overflow:"scroll"}}>
+    <div className="file-browser">
       <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent} />
 
       {(projectFiles && projectFiles.length>0) ?
