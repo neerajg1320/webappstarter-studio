@@ -23,18 +23,18 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          level,
                                                                          onClick,
                                                                          onEvent,
+                                                                         getItemInfoFunc,
                                                                          component
                                                                        }) => {
   return React.createElement(
       component,
-      {treeName, itemInfo, keyName, parentInfo, expanded, level, onClick, onEvent},
+      {treeName, itemInfo, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc},
       null
   );
 }
 
 
 interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
-  getItemInfoFunc: GetItemInfoFunc;
 };
 
 
@@ -51,7 +51,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                      }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
-  if (level === 0) {
+  if (level < 5) {
     if (debugComponent) {
       if (treeName === "FileBrowser") {
         console.log(`ComponentTree[${treeName}]:render itemInfo:`, itemInfo);
@@ -87,6 +87,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           level={level}
           onClick={(k, i) => handleHOComponentClick(k, i)}
           onEvent={(type, data) => handleHOComponentEvent(type, data)}
+          getItemInfoFunc={getItemInfoFunc}
           component={itemInfo.component}
       />
 

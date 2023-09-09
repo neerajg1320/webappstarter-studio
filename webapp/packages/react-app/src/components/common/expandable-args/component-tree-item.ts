@@ -36,6 +36,7 @@ export interface KeyValueRepresentationComponentProps {
   level: number;
   onClick?: ItemClickFunc;
   onEvent?: ItemEventFunc;
+  getItemInfoFunc: GetItemInfoFunc;
 }
 
 
