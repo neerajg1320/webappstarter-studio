@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import './component-tree.css';
 import {debugComponent} from "../../../config/global";
-import {GetItemInfoFunc, ItemInfoType, KeyValueRepresentationComponentProps} from "./component-tree-item";
+import {
+  GetItemInfoFunc, ItemDataType, ItemEventDataType,
+  ItemEventType,
+  ItemInfoType,
+  ItemKeyType,
+  KeyValueRepresentationComponentProps
+} from "./component-tree-item";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
@@ -16,9 +22,14 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          expanded=false,
                                                                          level,
                                                                          onClick,
+                                                                         onEvent,
                                                                          component
                                                                        }) => {
-  return React.createElement(component, {treeName, itemInfo, keyName, parentInfo, expanded, level, onClick}, null);
+  return React.createElement(
+      component,
+      {treeName, itemInfo, keyName, parentInfo, expanded, level, onClick, onEvent},
+      null
+  );
 }
 
 
@@ -28,15 +39,16 @@ interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
 
 
 const ComponentTree:React.FC<ExpandableSpanProps> = ({
-                                                        treeName,
-                                                        itemInfo,
-                                                        keyName=null,
-                                                        parentInfo,
-                                                        expanded: initialExpanded=false,
-                                                        level,
-                                                        onClick:propOnClick,
-                                                        getItemInfoFunc,
-                                                      }) => {
+                                                       treeName,
+                                                       itemInfo,
+                                                       keyName=null,
+                                                       parentInfo,
+                                                       expanded: initialExpanded=false,
+                                                       level,
+                                                       onClick:propOnClick,
+                                                       onEvent:propOnEvent,
+                                                       getItemInfoFunc,
+                                                     }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
   if (level === 0) {
@@ -47,11 +59,19 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
     }
   }
 
-  const handleHOComponentClick = (itemInfo:ItemInfoType) => {
+  const handleHOComponentClick = (k: ItemKeyType, i:ItemInfoType) => {
     setExpanded((prev) => !prev);
 
     if (propOnClick) {
-      propOnClick(keyName, itemInfo)
+      // propOnClick(keyName, itemInfo)
+      propOnClick(k, i)
+    }
+  }
+
+  const handleHOComponentEvent = (type:ItemEventType, data:ItemEventDataType) => {
+    console.log(`ComponentTree:onEvent() type:${type} data:`, data);
+    if (propOnEvent) {
+      propOnEvent(type, data);
     }
   }
 
@@ -65,7 +85,8 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           parentInfo={parentInfo}
           expanded={expanded}
           level={level}
-          onClick={(e) => handleHOComponentClick(itemInfo)}
+          onClick={(k, i) => handleHOComponentClick(k, i)}
+          onEvent={(type, data) => handleHOComponentEvent(type, data)}
           component={itemInfo.component}
       />
 
@@ -88,6 +109,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       expanded={false}
                       level={level + 1}
                       onClick={propOnClick}
+                      onEvent={propOnEvent}
                       {...{getItemInfoFunc}}
                   />
                 </div>

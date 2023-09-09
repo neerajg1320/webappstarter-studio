@@ -7,7 +7,14 @@ import {useActions} from "../../hooks/use-actions";
 import FileBrowserControlBar, {FileBrowserEvent, FileBrowserEventType} from "./file-browser-control-bar";
 import {debugComponent, debugLocalOnlyPendingSupport} from "../../config/global";
 import {generateLocalId} from "../../state/id";
-import {validatePath, getCopyPath, getFileDir, hasTrailingSlash} from "../../utils/path";
+import {
+  validatePath,
+  getCopyPath,
+  getFileDir,
+  hasTrailingSlash,
+  getFilePathParts,
+  joinFileParts
+} from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {FileInfo, FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
@@ -15,7 +22,12 @@ import ComponentTree from "../common/expandable-args/component-tree";
 import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
 import {getFileInfo} from "prettier";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
-import {ItemClickFunc, ItemInfoType} from "../common/expandable-args/component-tree-item";
+import {
+  ItemClickFunc,
+  ItemEventFunc, ItemEventNameChangeType,
+  ItemInfoType,
+  ItemNameChangeEventFunc
+} from "../common/expandable-args/component-tree-item";
 
 
 interface FilesTreeProps {
@@ -223,13 +235,44 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     return null;
   }, [fileTree])
 
-  const handleFileClick:ItemClickFunc = (keyName, itemInfo) => {
+  const handleFileComponentTreeClick:ItemClickFunc = (keyName, itemInfo) => {
     if (debugComponent) {
-      console.log(`keyName:${keyName} itemInfo:`, itemInfo);
+      console.log(`FileBrowser:handleFileComponentTreeClick()  keyName:${keyName} itemInfo:`, itemInfo);
     }
     const reduxFile = itemInfo.value.info.reduxFile;
     if (reduxFile) {
       propOnSelect(reduxFile.localId);
+    }
+  }
+
+  const handleFileComponentTreeEvent:ItemEventFunc = (type, data) => {
+    if (debugComponent || true) {
+      console.log(`FileBrowser:handleFileComponentTreeEvent()  type:${type} data:`, data);
+    }
+
+    switch (type) {
+      case "change":
+        const reduxFile = data.itemInfo.value.info.reduxFile;
+        if (reduxFile) {
+
+          const {dirname, basename} = getFilePathParts(reduxFile.path);
+          // Need to fix the Type below
+          const newBasename = (data as ItemEventNameChangeType).value;
+          const newPath = joinFileParts(dirname, newBasename);
+          handleFilePathChange(reduxFile.localId, newPath);
+        } else {
+          console.log(`Name change for folder not supported yet`);
+        }
+        break;
+
+      case "click":
+        break;
+
+      case "double-click":
+        break;
+
+      default:
+        console.error(`FileBrowser:handleFileComponentTreeEvent()  event type '${type}' not supported`);
     }
   }
 
@@ -250,7 +293,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         ?
           <>
           {/* We have disabled the list view */}
-          <ul style={{display: "none"}}>
+          <ul style={{display: undefined}}>
             {
               projectFiles.map(file => {
                 const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
@@ -286,7 +329,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                     parentInfo={null}
                     expanded={true}
                     level={0}
-                    onClick={handleFileClick}
+                    onClick={handleFileComponentTreeClick}
+                    onEvent={handleFileComponentTreeEvent}
                     getItemInfoFunc={getFileTreeItemInfo}
                 />
                 :

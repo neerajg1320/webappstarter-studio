@@ -20,9 +20,15 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileReduxNode) => {
 }
 
 
-const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
-    {itemInfo, keyName, parentInfo, expanded,level, onClick:propOnClick}
-) => {
+const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
+                                                                            itemInfo,
+                                                                            keyName,
+                                                                            parentInfo,
+                                                                            expanded,
+                                                                            level,
+                                                                            onClick:propOnClick,
+                                                                            onEvent:propOnEvent
+}) => {
   const reduxFile = itemInfo.value.info.reduxFile;
   const isFolder = itemInfo.value.info.type === "folder";
 
@@ -35,6 +41,10 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = (
 
   const handleOnChange = (value:string) => {
     console.log(`handleOnChange(): value=${value}`);
+    if (propOnEvent) {
+      console.log(`handleOnChange(): value=${value} and event`);
+      propOnEvent("change", {keyName, itemInfo, value});
+    }
   }
 
   return (

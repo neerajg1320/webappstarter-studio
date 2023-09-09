@@ -1,8 +1,31 @@
 import React from "react";
 
 export type ItemKeyType = string|number|null|undefined;
+
+export type ItemEventType = "change" | "click" | "double-click";
+
+export type ItemDataType = {
+  keyName:ItemKeyType,
+  itemInfo:ItemInfoType
+}
+
+// The ItemEventNameChangeType extends in type is achieved by intersection.
+// It has all the members in  ItemDataType
+export type ItemEventNameChangeType  = {
+  value: string;
+} & ItemDataType;
+
+export type ItemEventClickType = ItemDataType;
+
+export type ItemEventDataType = ItemEventNameChangeType | ItemEventClickType;
+
+
 export type ItemClickFunc = (keyName:ItemKeyType, itemInfo:ItemInfoType) => void;
-export type ItemEventFunc = () => void;
+
+export type ItemNameChangeEventFunc = (type:ItemEventType, data:ItemEventNameChangeType) => void;
+
+export type ItemEventFunc = (type:ItemEventType, data:ItemEventDataType) => void;
+
 
 export interface KeyValueRepresentationComponentProps {
   treeName: string;
@@ -12,6 +35,7 @@ export interface KeyValueRepresentationComponentProps {
   expanded?: boolean;
   level: number;
   onClick?: ItemClickFunc;
+  onEvent?: ItemEventFunc;
 }
 
 
