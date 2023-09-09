@@ -394,10 +394,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     switch (type) {
       case "select":
         break;
+
       case "path-change":
         bundleProject();
         break;
-        
+
       default:
         console.error(`ProjectCell:handleFileBrowerEvent() event type '${type}' not supported`);
     }
