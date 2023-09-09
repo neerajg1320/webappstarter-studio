@@ -3,8 +3,8 @@ import {
   ItemInfoType, KeyValueRepresentationComponentProps,
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
-import {FileReduxNode, safeFileNodeTraveral} from "./file-redux-node";
-import React, {useState} from "react";
+import {FileReduxNode} from "./file-redux-node";
+import React from "react";
 import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
 
@@ -36,7 +36,6 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
   const isFolder = itemInfo.value.info.type === "folder";
 
   const handleFileClick = (e:React.MouseEvent) => {
-    // console.log(`handleFileClick`);
     if (propOnClick) {
       propOnClick(keyName, itemInfo);
     }
@@ -54,18 +53,15 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
 
   }
 
-  const name = itemInfo.value.info.name; //+ "_file";
+  const name = itemInfo.value.info.name;
 
   return (
-      <div className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")}
-           onClick={handleFileClick}
-      >
+      <div className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")} onClick={handleFileClick} >
         {isFolder ?
             <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
             :
             <i className="fas fa-file" />
         }
-        {/*<span>{`'${itemInfo.value.info.name}'`}</span>*/}
         <EditableSpan value={name} onChange={handleOnChange} opts={{blurOnEnterPressOnly:false}}
                       mode={reduxFile && reduxFile.isPathEditing} onModeChange={handleModeChange}
         />
@@ -74,7 +70,6 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
 };
 
 export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileReduxNode):ItemInfoType => {
-
   return {
     value:fileNode,
     type: fileNode.info.type,
