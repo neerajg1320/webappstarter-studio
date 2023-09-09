@@ -44,7 +44,6 @@ export const getConsoleItemInfo = (value:any):ItemInfoType => {
   return {
     value,
     type: _itemType,
-    isRecursive: _isRecursive,
     traversalFunc: _traversalFunc,
     enclosingClass: _enclosingClass,
     component: consoleComponentMap[_itemType] || consoleComponentMap["default"],
@@ -71,7 +70,6 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
           {listInfo.traversalFunc ?
               <ComponentTree
                   treeName="ConsoleLog"
-                  // itemInfo={listInfo}
                   itemNode={list}
                   keyName={'root-array'}
                   parentInfo={null}

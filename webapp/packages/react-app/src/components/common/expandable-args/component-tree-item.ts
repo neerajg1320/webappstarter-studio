@@ -46,7 +46,6 @@ export type ItemInfoType = {
   value:any;
   type:string,
   component:React.FC<KeyValueRepresentationComponentProps>
-  isRecursive:boolean,
   traversalFunc: TraversalFunc|null,
   enclosingClass: string|null,
 };

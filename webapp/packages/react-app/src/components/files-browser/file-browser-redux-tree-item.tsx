@@ -69,7 +69,6 @@ export const getFileTreeItemInfo:GetItemInfoFunc = (fileNode:FileReduxNode):Item
   return {
     value:fileNode,
     type: fileNode.info.type,
-    isRecursive: fileNode.info.type === "folder",
     traversalFunc: fileNodeTraversalFunc,
     enclosingClass: "file-tree",
     component: ClickableFileItem,

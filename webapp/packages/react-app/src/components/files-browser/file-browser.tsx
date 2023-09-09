@@ -17,16 +17,13 @@ import {
 } from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {FileInfo, FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
-import ComponentTree from "../common/expandable-args/component-tree";
-import {getConsoleItemInfo} from "../common/expandable-args/arg-list";
-import {getFileInfo} from "prettier";
+import {FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
+import ComponentTree from "../common/expandable-args/component-tree";;
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
 import {
   ItemClickFunc,
   ItemEventFunc, ItemEventNameChangeType,
   ItemInfoType,
-  ItemNameChangeEventFunc
 } from "../common/expandable-args/component-tree-item";
 import useForceUpdate from "../../hooks/use-force-update";
 
