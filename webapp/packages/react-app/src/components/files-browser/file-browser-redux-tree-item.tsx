@@ -21,7 +21,6 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileReduxNode) => {
 
 
 const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
-                                                                            // itemInfo,
                                                                             itemNode,
                                                                             keyName,
                                                                             parentInfo,

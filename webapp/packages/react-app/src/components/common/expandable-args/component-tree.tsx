@@ -16,7 +16,6 @@ export interface KeyValueHOComponentProps extends KeyValueRepresentationComponen
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          treeName,
-                                                                         // itemInfo,
                                                                          itemNode,
                                                                          keyName,
                                                                          parentInfo,
@@ -41,7 +40,6 @@ interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
 
 const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        treeName,
-                                                       // itemInfo,
                                                        itemNode,
                                                        keyName=null,
                                                        parentInfo,
@@ -85,7 +83,6 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
       {/* The Representation of the Compoenent */}
       <KeyValueHOComponent
           treeName={treeName}
-          // itemInfo={itemInfo}
           itemNode={itemNode}
           keyName={keyName}
           parentInfo={parentInfo}
@@ -93,7 +90,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           level={level}
           onClick={(k, i) => handleHOComponentClick(k, i)}
           onEvent={(type, data) => handleHOComponentEvent(type, data)}
-          getItemInfoFunc={getItemInfoFunc}
+          {...{getItemInfoFunc}}
           component={itemInfo.component}
       />
 
@@ -110,7 +107,6 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                 <div key={index} >
                   <ComponentTree
                       treeName={treeName}
-                      // itemInfo={childItemInfo}
                       itemNode={v}
                       keyName={k}
                       parentInfo={itemInfo}

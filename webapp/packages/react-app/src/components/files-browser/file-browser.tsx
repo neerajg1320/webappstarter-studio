@@ -330,17 +330,16 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                i) fileRootNodeItemInfo should be different every time even when content are same
                ii) We pass fileTree instead of fileRootNodeItemInfo. Since ComponentTree has getItemInfoFunc it can get
              */}
-            {(fileTree && fileRootNodeItemInfo && fileRootNodeItemInfo.traversalFunc) ?
+            {(fileTree) ?
                 // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
                 <ComponentTree
                     treeName="FileBrowser"
-                    // itemInfo={fileRootNodeItemInfo}
                     itemNode={fileTree}
                     keyName={"root"}
                     parentInfo={null}
                     expanded={true}
                     level={0}
-                    // temp disabled
+                    // temp disabled for debug tree rerendering
                     // onClick={handleFileComponentTreeClick}
                     onEvent={handleFileComponentTreeEvent}
                     getItemInfoFunc={getFileTreeItemInfo}
