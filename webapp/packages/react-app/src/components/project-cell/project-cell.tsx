@@ -4,7 +4,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import Resizable from "../file-cell/resizable";
 import CodeEditor from "../file-cell/code-editor";
-import FilesBrowser from "../files-browser/file-browser";
+import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser";
 import {ReduxFile, ReduxProject} from "../../state";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
@@ -386,6 +386,22 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     setProjectSelectedFile(fileLocalId);
   }
 
+  const handleFileBrowerEvent:FileBrowserEventFunc = (type, data) => {
+    if (debugComponent || true) {
+      console.log(`ProjectCell:handleFileBrowerEvent()  type:${type} data:`, data);
+    }
+
+    switch (type) {
+      case "select":
+        break;
+      case "path-change":
+        bundleProject();
+        break;
+        
+      default:
+        console.error(`ProjectCell:handleFileBrowerEvent() event type '${type}' not supported`);
+    }
+  }
 
   // The code below has been kept for reference
   //
@@ -453,7 +469,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
             </Resizable>
 
             <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
-              <FilesBrowser reduxProject={reduxProject} onSelect={handleFileBrowserOnSelect}/>
+              <FilesBrowser
+                  reduxProject={reduxProject}
+                  onSelect={handleFileBrowserOnSelect}
+                  onEvent={handleFileBrowerEvent}
+              />
 
               {/* These  are here becaused they are project level operations */}
               <div style={{display:"flex", flexDirection:"row", padding: "10px", justifyContent: "space-between"}}>

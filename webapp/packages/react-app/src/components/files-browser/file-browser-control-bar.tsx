@@ -2,21 +2,21 @@ import './file-browser-control-bar.css';
 import React from "react";
 import {ReduxProject} from "../../state";
 
-export enum FileBrowserEventType {
+export enum FileBrowserControlBarEventType {
   NEW_FILE = 'new_file',
   COPY_FILE = 'copy_file',
   DELETE_FILE = 'delete_file',
 }
 
-export interface FileBrowserEvent {
-  name: FileBrowserEventType;
+export interface FileBrowserControlBarEvent {
+  name: FileBrowserControlBarEventType;
   localId?: string;
 }
 
 interface FileBrowserControlBarProps {
   reduxProject: ReduxProject;
   selectedFileLocalId: string|null;
-  onEvent: (event:FileBrowserEvent) => void;
+  onEvent: (event:FileBrowserControlBarEvent) => void;
 }
 
 const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProject,
@@ -24,18 +24,18 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
                                                                 onEvent}) => {
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    onEvent({name: FileBrowserEventType.NEW_FILE});
+    onEvent({name: FileBrowserControlBarEventType.NEW_FILE});
   }
 
   const handleCopyFile: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (selectedFileLocalId) {
-      onEvent({name: FileBrowserEventType.COPY_FILE, localId: selectedFileLocalId});
+      onEvent({name: FileBrowserControlBarEventType.COPY_FILE, localId: selectedFileLocalId});
     }
   }
 
   const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (selectedFileLocalId) {
-      onEvent({name: FileBrowserEventType.DELETE_FILE, localId: selectedFileLocalId});
+      onEvent({name: FileBrowserControlBarEventType.DELETE_FILE, localId: selectedFileLocalId});
     }
   }
 
