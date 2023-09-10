@@ -21,6 +21,7 @@
     "fflate": "^0.8.0",
     "immer": "9.0.21",
     "localforage": "^1.10.0",
+    "monaco-editor": "^0.41.0",
     "monaco-jsx-highlighter": "^2.0.4",
     "prettier": "^3.0.3",
     "react": "^18.2.0",
