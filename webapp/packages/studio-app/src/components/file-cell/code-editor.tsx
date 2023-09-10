@@ -125,16 +125,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     configTypescript(monaco);
   };
 
-  const handleFormatClick = () => {
+  const handleFormatClick = async () => {
     const unformattedCode = editorRef.current.getModel().getValue();
 
-    const formattedCode = prettier.format(unformattedCode, {
+    let formattedCode = await prettier.format(unformattedCode, {
       parser: 'babel',
       plugins: [parserBabel],
       useTabs: false,
       semi: true,
       singleQuote: true
-    }).replace(/\n$/,'');
+    }) //.replace(/\n$/,'');
 
     editorRef.current.setValue(formattedCode);
   };

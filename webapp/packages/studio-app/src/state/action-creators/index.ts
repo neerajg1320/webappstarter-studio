@@ -72,7 +72,6 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
-import {file} from "jscodeshift";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;

@@ -437,7 +437,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
 
   if (!reduxProject) {
-    return <h1>reduxProject:{reduxProject} is not defined</h1>
+    return <h1>reduxProject is not defined</h1>
   }
   return (
     <div ref={projectRef} className="project-cell-wrapper">
