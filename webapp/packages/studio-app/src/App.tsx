@@ -1,18 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import React, {useEffect} from "react";
+import {useActions} from "./hooks/use-actions";
+import {authOnAppStart, debugComponent} from "./config/global";
 
-function App() {
-  const [count, setCount] = useState(0)
+import AppRouterWrapper from "./components/app-main/app-router-wrapper";
+
+
+const App = () => {
+  if (debugComponent) {
+    console.log(`App: render`);
+  }
+
+  const {authenticateUserFromLocalStorage} = useActions();
+
+  useEffect(() => {
+    if (debugComponent) {
+      console.log('App: first render');
+    }
+
+    if (authOnAppStart) {
+      authenticateUserFromLocalStorage();
+    }
+
+    return () => {
+      if (debugComponent) {
+        console.log('App: destroyed');
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <>
-      <h1 className="text-xl font-bold text-red-500">
-        Hello Tailwind how are you doing with React
-      </h1>
-    </>
-  )
+      <AppRouterWrapper />
+  );
 }
 
-export default App
+export default App;

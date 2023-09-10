@@ -1,0 +1,33 @@
+.user-value-list {
+  width: 50%;
+  min-width: 500px;
+  max-width: 700px;
+  border: 1px solid lightblue;
+  border-radius: 10px;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items:center;
+  gap: 20px;
+}
+.user-value-list label {
+  width: 30%;
+  margin-left: 20%;
+}
+
+.user-value {
+  width: 100%;
+}
+
+.user-value-list .value {
+  width: 40%;
+  font-size: 1em;
+  padding: 4px;
+}
+
+.inverse-action {
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 10px;
+}

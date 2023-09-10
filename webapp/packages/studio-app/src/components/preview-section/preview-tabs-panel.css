@@ -1,0 +1,45 @@
+.preview-tabs-wrapper {
+  flex-grow: 1;
+  border: 2px solid lightblue;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  padding: 5px;
+}
+
+
+/* The following is inside bulma */
+/*.preview-tabs-wrapper .tabs {*/
+/*  margin: 0;*/
+/*}*/
+
+.preview-tabs-panel {
+  flex-grow: 1;
+  overflow: scroll;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-tab {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  /* flex-grow doesn't work here: could be due to position absolute */
+  /*flex-grow: 1;*/
+  width: 100%;
+  height: 100%;
+
+  background-color: white;
+  font-family: "Courier New";
+  color: black;
+
+  /* padding here causes a gradient while horizontal scroll when scroll bar is present*/
+  /*padding: 5px;*/
+
+  display: flex;
+}

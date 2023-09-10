@@ -1,0 +1,12 @@
+.arg-object-title {
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  align-items: center;
+}
+
+.arg-object-title-none {
+  display: none;
+}

@@ -1,0 +1,10 @@
+.preview-iframe {
+  flex-grow: 1;
+  padding: 5px;
+  overflow: scroll;
+  display: flex;
+}
+
+.preview-iframe iframe {
+  flex-grow: 1;
+}

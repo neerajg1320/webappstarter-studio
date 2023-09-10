@@ -5,13 +5,30 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev-local": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.5.2",
+    "@redux-devtools/extension": "^3.2.5",
+    "axios": "^1.5.0",
+    "diff-match-patch": "^1.0.5",
+    "esbuild-wasm": "0.8.27",
+    "fflate": "^0.8.0",
+    "immer": "9.0.21",
+    "localforage": "^1.10.0",
+    "monaco-jsx-highlighter": "^2.0.4",
+    "prettier": "^3.0.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.2",
+    "react-resizable": "^3.0.5",
+    "react-router-dom": "^6.15.0",
+    "react-select": "^5.7.4",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
