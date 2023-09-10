@@ -8,7 +8,10 @@
     "dev-local": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "rsync -r dist/* neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/studio/",
+    "deploy_assets": "rsync -r assets/nginx/conf.d neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/studio/nginx/"
+
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.2",
