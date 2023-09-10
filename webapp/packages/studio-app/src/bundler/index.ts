@@ -86,6 +86,8 @@ const bundleCode = async (
       esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
     }
 
+    const envVar = "NODE_ENV";
+
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
             // The following will be replaced by pluginLoadFromServer to code for a cell
@@ -98,7 +100,8 @@ const bundleCode = async (
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: esbuildPlugins,
             define: {
-                // 'process.env.NODE_ENV': '"production"',
+                // Do not change this. We have done this to prevent vite from replacing this to mode
+                [import.meta.env.VITE_MODE_ENVIRONMENT_VAR]: '"production"',
                 global: 'window'
             },
         };
