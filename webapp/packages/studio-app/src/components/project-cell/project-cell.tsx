@@ -451,7 +451,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
                 {(editedFile && editedFile.contentSynced) ?
                   <CodeEditor
-                      path={editedFile?.path}
+                      modelKey={editedFile?.localId}
                       value={editedFile?.content || ""}
                       language={editedFile?.language || CodeLanguage.UNKNOWN}
                       onChange={handleEditorChange}

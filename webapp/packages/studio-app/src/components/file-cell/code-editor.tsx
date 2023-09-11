@@ -51,7 +51,7 @@ const activateMonacoJSXHighlighter = async (editor:IStandaloneCodeEditor, monaco
 
 
 interface CodeEditorProps {
-  path: string;
+  modelKey: string;
   value: string;
   language: CodeLanguage;
   onChange?: (value:string) => void | null;
@@ -59,7 +59,7 @@ interface CodeEditorProps {
 }
 
 const CodeEditor: React.FC<CodeEditorProps> = ({
-                                                 path,
+                                                 modelKey,
                                                  value:propValue,
                                                  language,
                                                  onChange:propOnChange,
@@ -95,7 +95,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   }, []);
 
   if (debugComponent) {
-    console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled} path=${path} propValue=`, propValue);
+    console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled} modelKey=${modelKey} propValue=`, propValue);
   }
 
   const handleEditorMount: OnMount = (editor, monaco) => {
@@ -160,7 +160,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
             </button>
             <div className="editor-main">
               <MonacoEditorReact
-                  path={path}
+                  path={modelKey}
                   value={propValue}
                   language={editorLanguage}
                   onMount={handleEditorMount}
