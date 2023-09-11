@@ -97,8 +97,8 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         }
       </div>
       <div className="card-footer" style={{
+        border: "none", backgroundColor: "rgba(255,255,255, 5%)",
         display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "center",
-        backgroundColor: "transparent",
       }}>
         <button className="button is-family-secondary is-small"
                 onClick={(e) => handleEditProjectClick(e, reduxProject.localId)}
