@@ -1,6 +1,6 @@
 import path from 'path';
 import {getRegexMatches, isRegexMatch} from "./regex";
-import {CSS_REGEX, JAVASCRIPT_REGEX, SCSS_REGEX, TYPESCRIPT_REGEX} from "./patterns";
+import {CSS_REGEX, JAVASCRIPT_REGEX, SCSS_REGEX, TYPESCRIPT_REGEX, HTML_REGEX, HTM_REGEX} from "./patterns";
 
 export const replaceFilePart = (inputPath:string, fileName:string): string => {
   const dir = path.dirname(inputPath);
@@ -106,10 +106,18 @@ export const isPathCss = (path: string): boolean => {
   return isRegexMatch(CSS_REGEX, path);
 }
 
+export const isPathHtml = (path: string): boolean => {
+  return isRegexMatch(HTML_REGEX, path);
+}
+
+export const isPathHtm = (path: string): boolean => {
+  return isRegexMatch(HTM_REGEX, path);
+}
+
+
 export const isPathScss = (path: string): boolean => {
   return isRegexMatch(SCSS_REGEX, path);
 }
-
 export const getFileType = (path:string): string|null => {
   if (isPathScss(path)) {
     return "scss";

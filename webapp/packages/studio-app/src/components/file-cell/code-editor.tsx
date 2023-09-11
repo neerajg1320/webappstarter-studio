@@ -77,6 +77,8 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       return 'css';
     } else if (language === CodeLanguage.SCSS) {
       return 'scss';
+    } else if (language === CodeLanguage.HTML) {
+      return 'html';
     }
 
     return 'javascript';
@@ -170,7 +172,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                     wordWrap: "on",
                     minimap: {enabled: false},
                     showUnused: false,
-                    folding: false,
+                    folding: true,
                     lineNumbersMinChars: 3,
                     fontSize: 16,
                     scrollBeyondLastLine: false,

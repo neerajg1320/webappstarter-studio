@@ -2,6 +2,8 @@ export const JAVASCRIPT_REGEX = /\.jsx?$/;
 export const TYPESCRIPT_REGEX = /\.tsx?$/;
 export const CSS_REGEX = /\.css$/;
 export const SCSS_REGEX = /\.scss$/;
+export const HTML_REGEX = /\.html$/;
+export const HTM_REGEX = /\.htm$/;
 
 
 export const JSTS_REGEX = /\.[jt]sx?$/;
