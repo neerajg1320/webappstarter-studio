@@ -26,6 +26,12 @@ export type ItemNameChangeEventFunc = (type:ItemEventType, data:ItemEventNameCha
 
 export type ItemEventFunc = (type:ItemEventType, data:ItemEventDataType) => void;
 
+export interface DraggableComponent {
+  draggable?: boolean;
+  onDragStart?: (index:number) => void;
+  onDragOver?: (index:number) => void;
+  onDrop?: (index:number) => void;
+}
 
 export interface KeyValueRepresentationComponentProps {
   treeName: string;

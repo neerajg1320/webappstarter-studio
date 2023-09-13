@@ -28,7 +28,11 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
                                                                             level,
                                                                             onClick:propOnClick,
                                                                             onEvent:propOnEvent,
-                                                                            getItemInfoFunc
+                                                                            getItemInfoFunc,
+                                                                            draggable,
+                                                                            onDragStart,
+                                                                            onDragOver,
+                                                                            onDrop,
 }) => {
   const itemInfo = getItemInfoFunc(itemNode);
 
@@ -56,7 +60,14 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
   const name = itemInfo.value.info.name;
 
   return (
-      <div className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")} onClick={handleFileClick} >
+      <div
+          className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")}
+          onClick={handleFileClick}
+          draggable={draggable}
+          onDragStart={onDragStart}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+      >
         {isFolder ?
             <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
             :

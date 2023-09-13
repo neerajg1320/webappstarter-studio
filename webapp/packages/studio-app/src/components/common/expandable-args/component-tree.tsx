@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './component-tree.css';
 import {debugComponent} from "../../../config/global";
 import {
+  DraggableComponent,
   ItemEventDataType,
   ItemEventType,
   ItemInfoType,
@@ -10,7 +11,7 @@ import {
 } from "./component-tree-item";
 
 
-export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps {
+export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps, DraggableComponent {
   component: React.FC<KeyValueRepresentationComponentProps>;
 }
 
@@ -24,11 +25,16 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          onClick,
                                                                          onEvent,
                                                                          getItemInfoFunc,
-                                                                         component
+                                                                         component,
+                                                                         draggable,
+                                                                         onDragStart,
+                                                                         onDragOver,
+                                                                         onDrop,
                                                                        }) => {
   return React.createElement(
       component,
-      {treeName, itemNode, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc},
+      {treeName, itemNode, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc,
+        draggable, onDragStart, onDragOver, onDrop},
       null
   );
 }
@@ -48,6 +54,10 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        onClick:propOnClick,
                                                        onEvent:propOnEvent,
                                                        getItemInfoFunc,
+                                                       draggable,
+                                                       onDragStart,
+                                                       onDragOver,
+                                                       onDrop,
                                                      }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
@@ -92,6 +102,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           onEvent={(type, data) => handleHOComponentEvent(type, data)}
           {...{getItemInfoFunc}}
           component={itemInfo.component}
+          {...{draggable, onDragStart, onDragOver, onDrop}}
       />
 
       {/* We traverse the item if it has a traversalFunc and the state is expanded */}
@@ -115,6 +126,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       onClick={propOnClick}
                       onEvent={propOnEvent}
                       {...{getItemInfoFunc}}
+                      {...{draggable, onDragStart, onDragOver, onDrop}}
                   />
                 </div>
             );

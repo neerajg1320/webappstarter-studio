@@ -367,6 +367,10 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                 onClick={handleFileComponentTreeClick}
                 onEvent={handleFileComponentTreeEvent}
                 getItemInfoFunc={getFileTreeItemInfo}
+                draggable={true}
+                onDragStart={handleDragStart}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
             />
             :
             <div>List can't be traversed</div>
