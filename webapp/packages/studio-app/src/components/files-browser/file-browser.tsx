@@ -304,6 +304,18 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
+  const handleDragStart = (index) => {
+    console.log(`onDragStart(): index:${index}`);
+  }
+
+  const handleDragOver = (index) => {
+    console.log(`onDragOver(): index:${index}`);
+  }
+
+  const handleDrop = (index) => {
+    console.log(`onDrop(): index:${index}`);
+  }
+
   return (
     <div className="file-browser">
       <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent} />
@@ -312,15 +324,19 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       <div  className="file-browser-panel">
 
         {/*  Be aware of this as even though display is none it is causing and handling events*/}
-        <ul style={{display: (debugComponent ? undefined : "none")}}>
+        <ul style={{display: (debugComponent || true ? undefined : "none")}}>
           {
-            projectFiles.map(file => {
+            projectFiles.map((file, index) => {
               const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
               return (
                 <li key={file.localId}
                     className={"file-list-item " + extraFileClasses}
                     onClick={() => handleSelectFileClick(file.localId)}
                     // onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
+                    draggable={true}
+                    onDragStart={(e) => {handleDragStart(index)} }
+                    onDragOver={(e) => {handleDragOver(index)} }
+                    onDrop={(e) => {handleDrop(index)} }
                 >
                   {(selectedFileLocalId === file.localId && fileNameInputRef && file.isPathEditing)
                     ? <input
