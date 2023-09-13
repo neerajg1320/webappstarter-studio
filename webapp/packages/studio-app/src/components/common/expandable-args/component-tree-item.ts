@@ -1,4 +1,5 @@
 import React from "react";
+import {ReduxFile} from "../../../state";
 
 export type ItemKeyType = string|number|null|undefined;
 
@@ -28,9 +29,9 @@ export type ItemEventFunc = (type:ItemEventType, data:ItemEventDataType) => void
 
 export interface DraggableComponent {
   draggable?: boolean;
-  onDragStart?: (index:number) => void;
-  onDragOver?: (index:number) => void;
-  onDrop?: (index:number) => void;
+  onDragStart?: (itemInfo:ItemInfoType) => void;
+  onDragOver?: (itemInfo:ItemInfoType) => void;
+  onDrop?: (itemInfo:ItemInfoType) => void;
 }
 
 export interface KeyValueRepresentationComponentProps {

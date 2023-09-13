@@ -64,9 +64,9 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
           className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")}
           onClick={handleFileClick}
           draggable={draggable}
-          onDragStart={onDragStart}
-          onDragOver={onDragOver}
-          onDrop={onDrop}
+          onDragStart={(e) => onDragStart(itemInfo)}
+          onDragOver={(e) => onDragOver(itemInfo)}
+          onDrop={(e) => onDrop(itemInfo)}
       >
         {isFolder ?
             <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />

@@ -20,8 +20,10 @@ import ComponentTree from "../common/expandable-args/component-tree";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
 import {
   ItemClickFunc,
-  ItemEventFunc, ItemEventNameChangeType,
+  ItemEventFunc, ItemEventNameChangeType, ItemInfoType,
 } from "../common/expandable-args/component-tree-item";
+import useDebouncedCallback from "../../hooks/use-debounced-callback";
+import useDifferentialCallback from "../../hooks/use-differential-callback";
 
 export type FileBrowserEventType = "select" | "path-change";
 export type FileBrowserEventData = {
@@ -304,16 +306,16 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
-  const handleDragStart = (index) => {
-    console.log(`onDragStart(): index:${index}`);
+  const handleDragStart = (itemInfo:ItemInfoType) => {
+    console.log(`onDragStart(): `, itemInfo);
   }
 
-  const handleDragOver = (index) => {
-    console.log(`onDragOver(): index:${index}`);
-  }
+  const handleDragOver = useDifferentialCallback((itemInfo:ItemInfoType) => {
+    console.log(`onDragOver(): `, itemInfo);
+  });
 
-  const handleDrop = (index) => {
-    console.log(`onDrop(): index:${index}`);
+  const handleDrop = (itemInfo:ItemInfoType) => {
+    console.log(`onDrop(): `, itemInfo);
   }
 
   return (
@@ -324,7 +326,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       <div  className="file-browser-panel">
 
         {/*  Be aware of this as even though display is none it is causing and handling events*/}
-        <ul style={{display: (debugComponent || true ? undefined : "none")}}>
+        <ul style={{display: (debugComponent || false ? undefined : "none")}}>
           {
             projectFiles.map((file, index) => {
               const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
