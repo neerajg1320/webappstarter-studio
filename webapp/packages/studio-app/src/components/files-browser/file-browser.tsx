@@ -67,13 +67,10 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     console.log(`FileBrowser:render reduxProject:`, reduxProject);
   }
 
-  // Needed for selecting file
-  const projectFilePaths:string[] = useMemo(() => {
-    return projectFiles.map(file => file.path);
-  }, [projectFiles]);
 
   useEffect(() => {
     if (debugComponent || true) {
+      console.log(`FileBrowser:useEffect[projectFiles] projectFiles`)
       projectFiles.forEach((file, index) => {
         console.log(`${index}: ${file.path}`);
       })
@@ -85,12 +82,16 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       if (debugComponent) {
         console.log(`rootNode:`, rootNode);
       }
-      setFileTree(rootNode);
+
+      setTimeout(() => {
+        setFileTree(rootNode);
+      }, 5)
     }
   }, [reduxProject.title, projectFiles]);
 
-  // }, [reduxProject.title, JSON.stringify(projectFilePaths)]);
-
+  useEffect(() => {
+    console.log(`FileBrowser:useEffect[fileTree] fileTree:`, fileTree)
+  }, [fileTree]);
 
   // Needed for selecting file
   useEffect(() => {
@@ -202,6 +203,11 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
     switch (type) {
       case "change":
+        if (data.itemInfo.value.info.type === "folder") {
+          console.log(`Folder '${data.itemInfo.value.info.name}' name change not supported`);
+          break;
+        }
+
         const reduxFile = data.itemInfo.value.info.reduxFile;
         const reduxFileDir = getFilePathParts(reduxFile.path)["dirname"];
 
@@ -350,7 +356,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         }
 
       </div>
-      {debugComponent  &&
+      {(debugComponent || true) &&
       <div style={{display:"flex", flexDirection:"column", alignItems: "flex-start"}}>
         {
           projectFiles.map((file, index) => {

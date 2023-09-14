@@ -51,11 +51,11 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
               <i className="fas fa-file-circle-plus" />
           </span>
         </button>
-        <button className="button is-family-secondary is-small" onClick={handleCreateFolder}>
-          <span className="icon">
-              <i className="fas fa-folder-plus" />
-          </span>
-        </button>
+        {/*<button className="button is-family-secondary is-small" onClick={handleCreateFolder}>*/}
+        {/*  <span className="icon">*/}
+        {/*      <i className="fas fa-folder-plus" />*/}
+        {/*  </span>*/}
+        {/*</button>*/}
         <button className="button is-family-secondary is-small" onClick={handleCopyFile}>
           <span className="icon">
               <i className="fas fa-copy" />
