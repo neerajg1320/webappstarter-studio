@@ -71,7 +71,9 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       return state;
 
     case ActionType.DELETE_FILE:
-      delete state.data[action.payload];
+      var {localId} = action.payload;
+      // console.log(`filesReducer: delete file:`, action.payload)
+      delete state.data[localId];
       return state;
 
     case ActionType.FETCH_FILES_COMPLETE:

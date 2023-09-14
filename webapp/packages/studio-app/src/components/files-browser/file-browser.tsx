@@ -11,7 +11,7 @@ import {
   getCopyPath,
   hasTrailingSlash,
   getFilePathParts,
-  joinFileParts
+  joinFileParts, getFileBasenameParts
 } from "../../utils/path";
 import {BundleLanguage} from "../../state/bundle";
 import {CodeLanguage} from "../../state/language";
@@ -46,7 +46,7 @@ interface FilesTreeProps {
 const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect, onEvent:propOnEvent}) => {
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {createFile, updateFile, removeFile, saveFile} = useActions();
+  const {createFile, updateFile, removeFile, deleteFile} = useActions();
   const selectedFileLocalId = reduxProject.selectedFileLocalId || null;
   const [fileTree, setFileTree] = useState<FileReduxNode|null>(null)
 
@@ -73,10 +73,10 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [projectFiles]);
 
   useEffect(() => {
-    if (debugComponent) {
-      for (const fp of projectFilePaths) {
-        console.log(fp);
-      }
+    if (debugComponent || true) {
+      projectFiles.forEach((file, index) => {
+        console.log(`${index}: ${file.path}`);
+      })
     }
 
     if (projectFiles && projectFiles.length) {
@@ -116,8 +116,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       const reduxFile:ReduxFile = filesState.data[selectedFileLocalId];
       if (reduxFile) {
         const {dirname, basename} = getFilePathParts(reduxFile.path);
+        const {namepart, ext} = getFileBasenameParts(basename);
         // This becomes important for fileTree, we have to give extension as well
-        newFilePath = joinFileParts(dirname, ".js");
+        newFilePath = joinFileParts(dirname, `.${ext}`);
       }
     }
 
@@ -205,17 +206,24 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
           console.log(`newPath: '${newBasenameOrPath}'`);
 
-          let newPath;
+          let newPath:string|null = null;
+
           if (newBasenameOrPath[0] === "/") {
             newPath = newBasenameOrPath.substring(1);
           } else {
             // This would work only for file name change. The redux path should have been copied
             const {dirname, basename} = getFilePathParts(reduxFile.path);
-            newPath = joinFileParts(dirname, newBasenameOrPath);
+            const {name, ext} = getFileBasenameParts(basename);
+            console.log(`name:${name} ext:${ext}`)
+            if (!name) {
+              deleteFile({localId: reduxFile.localId});
+            } else {
+              newPath = joinFileParts(dirname, newBasenameOrPath);
+            }
           }
 
           // Add event
-          if (propOnEvent) {
+          if (newPath && propOnEvent) {
             propOnEvent("path-change", {localId: reduxFile.localId, newPath});
           }
         } else {
@@ -292,6 +300,12 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       const dstFilePath = joinFileParts(dstFolder, srcFileBaseName);
 
       console.log(`srcFilePath:'${srcFilePath}' dstFilePath:'${dstFilePath}'`);
+
+      if (srcFilePath === dstFilePath) {
+        console.log(`The srcFilePath:${srcFilePath} is same as dstFilePath:${dstFilePath}`);
+        return;
+      }
+
       if (propOnEvent) {
         propOnEvent("path-change", {localId: dragStartFileInfo.reduxFile.localId, newPath:dstFilePath});
       }
@@ -304,6 +318,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent} />
 
       {(projectFiles && projectFiles.length>0) ?
+      <>
       <div  className="file-browser-panel">
         {(fileTree) ?
             // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
@@ -327,6 +342,14 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         }
 
       </div>
+      <div style={{display:"flex", flexDirection:"column", alignItems: "flex-start"}}>
+        {
+          projectFiles.map((file, index) => {
+            return <span>{index}{":  "}{file.path}</span>;
+          })
+        }
+      </div>
+      </>
     :
       <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
           <span>Create a File</span>
