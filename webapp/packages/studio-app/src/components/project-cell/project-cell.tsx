@@ -13,7 +13,7 @@ import FileList from "../cell-list/file-list";
 import PreviewTabsPanel from "../preview-section/preview-tabs-panel";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {getFileTypeFromPath} from "../../utils/path";
-import {CodeLanguage} from "../../state/language";
+import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
@@ -386,6 +386,22 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     setProjectSelectedFile(fileLocalId);
   }
 
+  const handleFilePathChange = (localId:string, value:string) => {
+    const bundleLanguage = pathToBundleLanguage(value);
+    const language = pathToCodeLanguage(value);
+
+    if (debugComponent||true) {
+      console.log(`handleFilePathChange: ${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
+    }
+
+    updateFile({localId, path:value, bundleLanguage, language});
+
+    // TBD: Combine this with above when we are not depended on filesList component anymore
+    updateFile({localId, isPathEditing:false});
+    saveFile(localId);
+  }
+
+
   const handleFileBrowerEvent:FileBrowserEventFunc = (type, data) => {
     if (debugComponent || true) {
       console.log(`ProjectCell:handleFileBrowerEvent()  type:${type} data:`, data);
@@ -396,6 +412,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         break;
 
       case "path-change":
+        const {localId, newPath} = data;
+        handleFilePathChange(localId, newPath);
         bundleProject();
         break;
 

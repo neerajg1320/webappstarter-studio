@@ -15,7 +15,13 @@ import {
 } from "../../utils/path";
 import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {FileReduxNode, getFileTreeFromReduxFileList, getSampleFileTree, safeFileNodeTraveral} from "./file-redux-node";
+import {
+  FileInfo,
+  FileReduxNode,
+  getFileTreeFromReduxFileList,
+  getSampleFileTree,
+  safeFileNodeTraveral
+} from "./file-redux-node";
 import ComponentTree from "../common/expandable-args/component-tree";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
 import {
@@ -129,16 +135,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     updateFile({localId:fileLocalId, isPathEditing: true});
   }
 
-  const handleFilePathChange = (localId:string, value:string) => {
-    const bundleLanguage = pathToBundleLanguage(value);
-    const language = pathToCodeLanguage(value);
-
-    if (debugComponent||true) {
-      console.log(`handleFilePathChange: ${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
-    }
-
-    updateFile({localId, path:value, bundleLanguage, language});
-  }
 
   const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (debugComponent) {
@@ -277,18 +273,10 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
             newPath = joinFileParts(dirname, newBasenameOrPath);
           }
 
-          handleFilePathChange(reduxFile.localId, newPath);
-
-          // TBD: Combine this with above when we are not depended on filesList component anymore
-          updateFile({localId:reduxFile.localId, isPathEditing:false});
-          saveFile(reduxFile.localId);
-
           // Add event
           if (propOnEvent) {
-            propOnEvent("path-change", {localId: reduxFile.localId});
+            propOnEvent("path-change", {localId: reduxFile.localId, newPath});
           }
-
-          // forceUpdateComponent();
         } else {
           console.log(`Name change for folder not supported yet`);
         }
@@ -314,7 +302,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }, []);
 
-  const [dragStartPath, setDragStartPath] = useState<string|null>(null);
+  const [dragStartFileInfo, setDragStartFileInfo] = useState<FileInfo|null>(null);
 
   const handleDragStart = (itemInfo:ItemInfoType) => {
     if (debugComponent || true) {
@@ -322,13 +310,13 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
 
     if (itemInfo.value.info.type === "file") {
-      setDragStartPath(itemInfo.value.info.reduxFile.path);
+      setDragStartFileInfo(itemInfo.value.info);
     }
   }
 
   // This is necessary for the onDrop to trigger
   const handleDragOver = useDifferentialCallback((itemInfo:ItemInfoType) => {
-    if (debugComponent || true) {
+    if (debugComponent || false) {
       showDraggableNode(itemInfo, "onDragOver(): ")
     }
 
@@ -336,21 +324,31 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
   const handleDrop = (itemInfo:ItemInfoType) => {
     if (debugComponent || true) {
-      showDraggableNode(itemInfo, "onDrop(): ")
+      showDraggableNode(itemInfo, "handleDrop(): ")
     }
 
     let dstFolder;
+
     if (itemInfo.value.info.type === "folder") {
-      dstFolder = itemInfo.value.info.rootNamePath.join("/");
+      dstFolder = itemInfo.value.info.rootNamePath.slice(1).join("/");
     } else {
       // console.log(itemInfo.value.info.path)
       dstFolder = getFilePathParts(itemInfo.value.info.reduxFile.path)["dirname"]
     }
 
-    const startFileBaseName = getFilePathParts(dragStartPath)["basename"];
-    const dstFilePath = joinFileParts(dstFolder, startFileBaseName);
 
-    console.log(`srcFilePath:'${dragStartPath}' dstFilePath:'${dstFilePath}'`);
+    if (dragStartFileInfo) {
+      const srcFilePath = dragStartFileInfo.reduxFile.path;
+
+      const srcFileBaseName = getFilePathParts(srcFilePath)["basename"];
+      const dstFilePath = joinFileParts(dstFolder, srcFileBaseName);
+
+      console.log(`srcFilePath:'${srcFilePath}' dstFilePath:'${dstFilePath}'`);
+      if (propOnEvent) {
+        propOnEvent("path-change", {localId: dragStartFileInfo.reduxFile.localId, newPath:dstFilePath});
+      }
+    }
+
   }
 
   return (
