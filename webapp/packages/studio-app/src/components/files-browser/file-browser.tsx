@@ -307,15 +307,30 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }
 
   const handleDragStart = (itemInfo:ItemInfoType) => {
-    console.log(`onDragStart(): `, itemInfo);
+    if (itemInfo.value.info.reduxFile) {
+      console.log(`onDragStart(): `, itemInfo.value.info.reduxFile.path);
+    } else {
+      // For a folder the redux file does not exist yet
+      console.log(`onDragStart(): `, itemInfo.value.info.name);
+    }
   }
 
   const handleDragOver = useDifferentialCallback((itemInfo:ItemInfoType) => {
-    console.log(`onDragOver(): `, itemInfo);
+    if (itemInfo.value.info.reduxFile) {
+      console.log(`onDragOver(): `, itemInfo.value.info.reduxFile.path);
+    } else {
+      // For a folder the redux file does not exist yet
+      console.log(`onDragOver(): `, itemInfo.value.info.name);
+    }
   });
 
   const handleDrop = (itemInfo:ItemInfoType) => {
-    console.log(`onDrop(): `, itemInfo);
+    if (itemInfo.value.info.reduxFile) {
+      console.log(`onDrop(): `, itemInfo.value.info.reduxFile.path);
+    } else {
+      // For a folder the redux file does not exist yet
+      console.log(`onDrop(): `, itemInfo.value.info.name);
+    }
   }
 
   return (
