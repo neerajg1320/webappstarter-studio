@@ -131,7 +131,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         const fileLocalId = generateLocalId();
         createFile({
           localId: fileLocalId,
-          // path: validatePath(newFilePath),
           path: newFilePath,
           bundleLanguage: BundleLanguage.UNKNOWN,
           language: CodeLanguage.UNKNOWN,
@@ -146,6 +145,10 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
         break;
 
+      case FileBrowserControlBarEventType.NEW_FOLDER:
+        // This meta approach won't work till the time we add support for folders in reduxFile
+
+        break;
       case FileBrowserControlBarEventType.COPY_FILE:
         if (event.localId) {
           const origFile = filesState.data[event.localId];

@@ -4,6 +4,7 @@ import {ReduxProject} from "../../state";
 
 export enum FileBrowserControlBarEventType {
   NEW_FILE = 'new_file',
+  NEW_FOLDER = 'new_folder',
   COPY_FILE = 'copy_file',
   DELETE_FILE = 'delete_file',
 }
@@ -27,6 +28,10 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
     onEvent({name: FileBrowserControlBarEventType.NEW_FILE});
   }
 
+  const handleCreateFolder: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    onEvent({name: FileBrowserControlBarEventType.NEW_FOLDER});
+  }
+
   const handleCopyFile: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (selectedFileLocalId) {
       onEvent({name: FileBrowserControlBarEventType.COPY_FILE, localId: selectedFileLocalId});
@@ -43,7 +48,12 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
       <div className="file-browser-control-bar">
         <button className="button is-family-secondary is-small" onClick={handleCreateFile}>
           <span className="icon">
-              <i className="fas fa-plus" />
+              <i className="fas fa-file-circle-plus" />
+          </span>
+        </button>
+        <button className="button is-family-secondary is-small" onClick={handleCreateFolder}>
+          <span className="icon">
+              <i className="fas fa-folder-plus" />
           </span>
         </button>
         <button className="button is-family-secondary is-small" onClick={handleCopyFile}>

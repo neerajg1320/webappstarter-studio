@@ -140,7 +140,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           {...{getItemInfoFunc}}
           component={itemInfo.component}
           onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
+          // onDragLeave={handleDragLeave}
           {...{draggable, onDragStart, onDrop}}
       />
 
@@ -166,7 +166,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       onEvent={propOnEvent}
                       {...{getItemInfoFunc}}
                       onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
+                      // onDragLeave={handleDragLeave}
                       {...{draggable, onDragStart, onDrop}}
                   />
                 </div>
