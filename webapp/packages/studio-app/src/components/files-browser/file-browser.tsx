@@ -347,6 +347,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         }
 
       </div>
+      {debugComponent  &&
       <div style={{display:"flex", flexDirection:"column", alignItems: "flex-start"}}>
         {
           projectFiles.map((file, index) => {
@@ -354,6 +355,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           })
         }
       </div>
+      }
       </>
     :
       <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
