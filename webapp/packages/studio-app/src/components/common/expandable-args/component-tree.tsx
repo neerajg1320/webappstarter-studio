@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './component-tree.css';
 import {debugComponent} from "../../../config/global";
 import {
@@ -9,6 +9,7 @@ import {
   ItemKeyType,
   KeyValueRepresentationComponentProps
 } from "./component-tree-item";
+import useDifferentialCallback from "../../../hooks/use-differential-callback";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps, DraggableComponent {
@@ -29,12 +30,13 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          draggable,
                                                                          onDragStart,
                                                                          onDragOver,
+                                                                         onDragLeave,
                                                                          onDrop,
                                                                        }) => {
   return React.createElement(
       component,
       {treeName, itemNode, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc,
-        draggable, onDragStart, onDragOver, onDrop},
+        draggable, onDragStart, onDragOver, onDragLeave, onDrop},
       null
   );
 }
@@ -88,9 +90,38 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
     }
   }
 
+  const [isDraggedOver, setDraggedOver] = useState<boolean>(false);
+
+  const showItemPath = useCallback((paramItemInfo:ItemInfoType, title) => {
+    if (paramItemInfo.value.info.type === "file") {
+      console.log(`${title}: filePath: '${paramItemInfo.value.info.reduxFile.path}'`);
+    } else if (paramItemInfo.value.info.type === "folder") {
+      const folderPath = paramItemInfo.value.info.rootNamePath.join("/");
+      console.log(`${title}: folderPath: '${folderPath}'`);
+    }
+  }, []);
+  
+  const handleDragOver = useDifferentialCallback((paramItemInfo:ItemInfoType) => {
+    showItemPath(paramItemInfo, "handleDragOver()");
+
+    // The paramItemInfo is going to be same as itemInfo and it is going to be one level up only since we are not propagating
+    // showItemPath(itemInfo);
+
+    // We do not need to propagate this
+    // if (onDragOver) {
+    //   onDragOver(itemInfo);
+    // }
+  });
+
+  const handleDragLeave = useDifferentialCallback((paramItemInfo:ItemInfoType) => {
+    // showItemPath(paramItemInfo, "handleDragLeave()");
+  });
+
   return (
-    <div className={"object-wrapper" + ((level === 0) ? " root" : " intermediate")}>
-      {/* The Representation of the Compoenent */}
+    <div
+        className={"object-wrapper" + ((level === 0) ? " root" : " intermediate") + ((isDraggedOver ? " dragged-over" : ""))}
+    >
+      {/* The Representation of the Component */}
       <KeyValueHOComponent
           treeName={treeName}
           itemNode={itemNode}
@@ -102,7 +133,9 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           onEvent={(type, data) => handleHOComponentEvent(type, data)}
           {...{getItemInfoFunc}}
           component={itemInfo.component}
-          {...{draggable, onDragStart, onDragOver, onDrop}}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          {...{draggable, onDragStart, onDrop}}
       />
 
       {/* We traverse the item if it has a traversalFunc and the state is expanded */}
@@ -115,7 +148,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
             }
 
             return (
-                <div key={index} >
+                <div key={index}>
                   <ComponentTree
                       treeName={treeName}
                       itemNode={v}
@@ -126,7 +159,9 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       onClick={propOnClick}
                       onEvent={propOnEvent}
                       {...{getItemInfoFunc}}
-                      {...{draggable, onDragStart, onDragOver, onDrop}}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      {...{draggable, onDragStart, onDrop}}
                   />
                 </div>
             );

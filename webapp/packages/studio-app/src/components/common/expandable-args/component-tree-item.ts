@@ -31,6 +31,7 @@ export interface DraggableComponent {
   draggable?: boolean;
   onDragStart?: (itemInfo:ItemInfoType) => void;
   onDragOver?: (itemInfo:ItemInfoType) => void;
+  onDragLeave?: (itemInfo:ItemInfoType) => void;
   onDrop?: (itemInfo:ItemInfoType) => void;
 }
 

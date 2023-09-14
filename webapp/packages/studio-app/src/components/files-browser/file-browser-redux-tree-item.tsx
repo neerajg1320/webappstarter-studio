@@ -32,6 +32,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
                                                                             draggable,
                                                                             onDragStart,
                                                                             onDragOver,
+                                                                            onDragLeave,
                                                                             onDrop,
 }) => {
   const itemInfo = getItemInfoFunc(itemNode);
@@ -74,6 +75,13 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
     }
   }
 
+  const handleDragLeave = (e:React.MouseEvent) => {
+    // console.log(`ClickableFileItem: handleDragLeave()`);
+    if (onDragLeave) {
+      onDragLeave(itemInfo);
+    }
+  }
+
   const handleDrop = (e:React.MouseEvent) => {
     // console.log(`onDrop(): `, itemInfo);
     if (onDrop) {
@@ -88,6 +96,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
           draggable={draggable}
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
           onDrop={handleDrop}
       >
         {isFolder ?

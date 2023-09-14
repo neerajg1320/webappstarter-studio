@@ -305,35 +305,52 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
-  const debugDraggableNode = useCallback((itemInfo:ItemInfoType, title:string) => {
-    if (itemInfo.value.info.reduxFile) {
+  const showDraggableNode = useCallback((itemInfo:ItemInfoType, title:string) => {
+    if (itemInfo.value.info.type === "file") {
       console.log(`${title}`, itemInfo.value.info.reduxFile.path);
     } else {
       // For a folder the redux file does not exist yet
-      console.log(`${title}`, itemInfo.value.info.name);
+      console.log(`${title}`, itemInfo.value.info.rootNamePath.join("/"));
     }
   }, []);
 
+  const [dragStartPath, setDragStartPath] = useState<string|null>(null);
+
   const handleDragStart = (itemInfo:ItemInfoType) => {
     if (debugComponent || true) {
-      debugDraggableNode(itemInfo, "onDragStart(): ")
+      showDraggableNode(itemInfo, "onDragStart(): ")
+    }
+
+    if (itemInfo.value.info.type === "file") {
+      setDragStartPath(itemInfo.value.info.reduxFile.path);
     }
   }
 
+  // This is necessary for the onDrop to trigger
   const handleDragOver = useDifferentialCallback((itemInfo:ItemInfoType) => {
-
-    const nodeInfo:FileReduxNode = itemInfo.value.info;
-
     if (debugComponent || true) {
-      debugDraggableNode(itemInfo, "onDragOver(): ")
+      showDraggableNode(itemInfo, "onDragOver(): ")
     }
 
   });
 
   const handleDrop = (itemInfo:ItemInfoType) => {
     if (debugComponent || true) {
-      debugDraggableNode(itemInfo, "onDrop(): ")
+      showDraggableNode(itemInfo, "onDrop(): ")
     }
+
+    let dstFolder;
+    if (itemInfo.value.info.type === "folder") {
+      dstFolder = itemInfo.value.info.rootNamePath.join("/");
+    } else {
+      // console.log(itemInfo.value.info.path)
+      dstFolder = getFilePathParts(itemInfo.value.info.reduxFile.path)["dirname"]
+    }
+
+    const startFileBaseName = getFilePathParts(dragStartPath)["basename"];
+    const dstFilePath = joinFileParts(dstFolder, startFileBaseName);
+
+    console.log(`srcFilePath:'${dragStartPath}' dstFilePath:'${dstFilePath}'`);
   }
 
   return (

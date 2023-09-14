@@ -24,7 +24,7 @@ const useDifferentialCallback = <CB extends (e:any) => any> (callback:CB) => {
 
   const diffCallback = useCallback((e:any) => {
     if (debugComponent) {
-      console.log(`useDebounce:useCallback[callback,delay] delay=${delay}`);
+      console.log(`useDebounce:useCallback[callback]`);
     }
 
     if (prevArg.current !== e) {
