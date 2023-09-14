@@ -200,6 +200,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     switch (type) {
       case "change":
         const reduxFile = data.itemInfo.value.info.reduxFile;
+        const reduxFileDir = getFilePathParts(reduxFile.path)["dirname"];
+
         if (reduxFile) {
           // Need to fix the Type below
           const newBasenameOrPath = (data as ItemEventNameChangeType).value;
@@ -208,17 +210,20 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
           let newPath:string|null = null;
 
+          // Here we check if it is an absolute path and remove leading slash in case it is.
           if (newBasenameOrPath[0] === "/") {
             newPath = newBasenameOrPath.substring(1);
           } else {
             // This would work only for file name change. The redux path should have been copied
-            const {dirname, basename} = getFilePathParts(reduxFile.path);
+            const {dirname, basename} = getFilePathParts(newBasenameOrPath);
+            console.log(`dirname:${dirname} basename:${basename}`)
             const {name, ext} = getFileBasenameParts(basename);
             console.log(`name:${name} ext:${ext}`)
+
             if (!name) {
-              deleteFile({localId: reduxFile.localId});
+              deleteFile(reduxFile.localId);
             } else {
-              newPath = joinFileParts(dirname, newBasenameOrPath);
+              newPath = joinFileParts(reduxFileDir, newBasenameOrPath);
             }
           }
 
