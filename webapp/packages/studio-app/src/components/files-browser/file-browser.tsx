@@ -1,6 +1,6 @@
 import './file-browser.css';
 import {ReduxProject} from "../../state/project";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
@@ -22,7 +22,6 @@ import {
   ItemClickFunc,
   ItemEventFunc, ItemEventNameChangeType, ItemInfoType,
 } from "../common/expandable-args/component-tree-item";
-import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useDifferentialCallback from "../../hooks/use-differential-callback";
 
 export type FileBrowserEventType = "select" | "path-change";
@@ -306,30 +305,34 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
-  const handleDragStart = (itemInfo:ItemInfoType) => {
+  const debugDraggableNode = useCallback((itemInfo:ItemInfoType, title:string) => {
     if (itemInfo.value.info.reduxFile) {
-      console.log(`onDragStart(): `, itemInfo.value.info.reduxFile.path);
+      console.log(`${title}`, itemInfo.value.info.reduxFile.path);
     } else {
       // For a folder the redux file does not exist yet
-      console.log(`onDragStart(): `, itemInfo.value.info.name);
+      console.log(`${title}`, itemInfo.value.info.name);
+    }
+  }, []);
+
+  const handleDragStart = (itemInfo:ItemInfoType) => {
+    if (debugComponent || true) {
+      debugDraggableNode(itemInfo, "onDragStart(): ")
     }
   }
 
   const handleDragOver = useDifferentialCallback((itemInfo:ItemInfoType) => {
-    if (itemInfo.value.info.reduxFile) {
-      console.log(`onDragOver(): `, itemInfo.value.info.reduxFile.path);
-    } else {
-      // For a folder the redux file does not exist yet
-      console.log(`onDragOver(): `, itemInfo.value.info.name);
+
+    const nodeInfo:FileReduxNode = itemInfo.value.info;
+
+    if (debugComponent || true) {
+      debugDraggableNode(itemInfo, "onDragOver(): ")
     }
+
   });
 
   const handleDrop = (itemInfo:ItemInfoType) => {
-    if (itemInfo.value.info.reduxFile) {
-      console.log(`onDrop(): `, itemInfo.value.info.reduxFile.path);
-    } else {
-      // For a folder the redux file does not exist yet
-      console.log(`onDrop(): `, itemInfo.value.info.name);
+    if (debugComponent || true) {
+      debugDraggableNode(itemInfo, "onDrop(): ")
     }
   }
 
