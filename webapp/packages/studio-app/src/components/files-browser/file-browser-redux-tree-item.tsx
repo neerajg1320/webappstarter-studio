@@ -4,7 +4,7 @@ import {
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
 import {FileReduxNode} from "./file-redux-node";
-import React from "react";
+import React, {useMemo} from "react";
 import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
 
@@ -29,7 +29,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
                                                                             onClick:propOnClick,
                                                                             onEvent:propOnEvent,
                                                                             getItemInfoFunc,
-                                                                            draggable,
+                                                                            draggable:propDraggable,
                                                                             onDragStart,
                                                                             onDragOver,
                                                                             onDragLeave,
@@ -39,6 +39,13 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
 
   const reduxFile = itemInfo.value.info.reduxFile;
   const isFolder = itemInfo.value.info.type === "folder";
+
+  const draggable = useMemo(() => {
+    if (propDraggable) {
+      return itemInfo.value.info.type === "file";
+    }
+    return false;
+  }, [itemInfo]);
 
   const handleFileClick = (e:React.MouseEvent) => {
     if (propOnClick) {

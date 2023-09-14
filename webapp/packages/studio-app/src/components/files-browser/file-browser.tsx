@@ -13,8 +13,8 @@ import {
   getFilePathParts,
   joinFileParts
 } from "../../utils/path";
-import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
-import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
+import {BundleLanguage} from "../../state/bundle";
+import {CodeLanguage} from "../../state/language";
 import {
   FileInfo,
   FileReduxNode,
@@ -109,65 +109,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduxProject.localId]);
 
-
-  // Needed for selecting file
-  const handleSelectFileClick = (fileLocalId:string) => {
-    if (debugComponent || true) {
-      console.log(`fileLocalId:`, fileLocalId);
-    }
-
-    propOnSelect(fileLocalId);
-  }
-
-  const pathEditingFileRef = useRef<ReduxFile|null>(null);
-
-  const handleSelectFileDoubleClick = (fileLocalId:string) => {
-    if (debugComponent) {
-      console.log(`handleSelectFileDoubleClick()`, fileLocalId);
-    }
-
-    // This should not be removed as we might disable handleInputBlur
-    if (pathEditingFileRef.current) {
-      updateFile({localId:fileLocalId, isPathEditing: false});
-    }
-
-    propOnSelect(fileLocalId);
-    updateFile({localId:fileLocalId, isPathEditing: true});
-  }
-
-
-  const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (debugComponent) {
-      console.log(e.key);
-    }
-
-    if (e.key === "Enter") {
-      e.currentTarget.blur();
-    }
-  }
-
-
-  const handleInputBlur = () => {
-    if (selectedFileLocalId) {
-      const reduxFile = filesState.data[selectedFileLocalId];
-      if (debugComponent) {
-        console.log(`onBlur: file.path:${reduxFile.path}`);
-      }
-
-      // Check if folder: The name should not have a slash at the end
-      // If the path is a folder path we do not allow it as yet i.e folders have to be created by creating file in them
-      // Check if blank
-      if (reduxFile.path === "" || hasTrailingSlash(reduxFile.path)) {
-        console.log('Error! No file name specified');
-        removeFile(selectedFileLocalId);
-      } else {
-        // We save instantaneously as this is not done very often
-        saveFile(reduxFile.localId);
-        updateFile({localId:reduxFile.localId, isPathEditing: false});
-        pathEditingFileRef.current = null;
-      }
-    }
-  }
 
   const handleFileBrowserControlBarEvent = (event: FileBrowserControlBarEvent) => {
     let newFilePath = 'src';
@@ -293,20 +234,17 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }
 
-  const showDraggableNode = useCallback((itemInfo:ItemInfoType, title:string) => {
-    if (itemInfo.value.info.type === "file") {
-      console.log(`${title}`, itemInfo.value.info.reduxFile.path);
-    } else {
-      // For a folder the redux file does not exist yet
-      console.log(`${title}`, itemInfo.value.info.rootNamePath.join("/"));
-    }
-  }, []);
 
   const [dragStartFileInfo, setDragStartFileInfo] = useState<FileInfo|null>(null);
 
   const handleDragStart = (itemInfo:ItemInfoType) => {
-    if (debugComponent || true) {
-      showDraggableNode(itemInfo, "onDragStart(): ")
+    if (debugComponent || false) {
+      if (itemInfo.value.info.type === "file") {
+        console.log(`handleDragStart():`, itemInfo.value.info.reduxFile.path);
+      } else {
+        // For a folder the redux file does not exist yet
+        console.log(`handleDragStart():`, itemInfo.value.info.rootNamePath.join("/"));
+      }
     }
 
     if (itemInfo.value.info.type === "file") {
@@ -317,14 +255,24 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   // This is necessary for the onDrop to trigger
   const handleDragOver = useDifferentialCallback((itemInfo:ItemInfoType) => {
     if (debugComponent || false) {
-      showDraggableNode(itemInfo, "onDragOver(): ")
+      if (itemInfo.value.info.type === "file") {
+        console.log(`handleDragOver():`, itemInfo.value.info.reduxFile.path);
+      } else {
+        // For a folder the redux file does not exist yet
+        console.log(`handleDragOver():`, itemInfo.value.info.rootNamePath.join("/"));
+      }
     }
 
   });
 
   const handleDrop = (itemInfo:ItemInfoType) => {
-    if (debugComponent || true) {
-      showDraggableNode(itemInfo, "handleDrop(): ")
+    if (debugComponent || false) {
+      if (itemInfo.value.info.type === "file") {
+        console.log(`handleDrop():`, itemInfo.value.info.reduxFile.path);
+      } else {
+        // For a folder the redux file does not exist yet
+        console.log(`handleDrop():`, itemInfo.value.info.rootNamePath.join("/"));
+      }
     }
 
     let dstFolder;
@@ -357,39 +305,6 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
       {(projectFiles && projectFiles.length>0) ?
       <div  className="file-browser-panel">
-
-        {/*  Be aware of this as even though display is none it is causing and handling events*/}
-        <ul style={{display: (debugComponent || false ? undefined : "none")}}>
-          {
-            projectFiles.map((file, index) => {
-              const extraFileClasses = ((file.localId === reduxProject.selectedFileLocalId) ? "selected-file" : "");
-              return (
-                <li key={file.localId}
-                    className={"file-list-item " + extraFileClasses}
-                    onClick={() => handleSelectFileClick(file.localId)}
-                    // onDoubleClick={() => handleSelectFileDoubleClick(file.localId)}
-                    draggable={true}
-                    onDragStart={(e) => {handleDragStart(index)} }
-                    onDragOver={(e) => {handleDragOver(index)} }
-                    onDrop={(e) => {handleDrop(index)} }
-                >
-                  {(selectedFileLocalId === file.localId && fileNameInputRef && file.isPathEditing)
-                    ? <input
-                          // autoFocus
-                          ref={fileNameInputRef}
-                          value={file.path}
-                          onChange={(e:any) => handleFilePathChange(file.localId, e.target.value)}
-                          // onKeyDownCapture={handleInputKeyPress}
-                          onBlur={handleInputBlur}
-                      />
-                    : <span>{file.path}</span>
-                  }
-                </li>
-              );
-            })
-          }
-        </ul>
-
         {(fileTree) ?
             // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
             <ComponentTree

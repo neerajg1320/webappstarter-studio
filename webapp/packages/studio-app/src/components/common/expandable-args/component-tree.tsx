@@ -84,7 +84,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
   }
 
   const handleHOComponentEvent = (type:ItemEventType, data:ItemEventDataType) => {
-    console.log(`ComponentTree:onEvent() type:${type} data:`, data);
+    // console.log(`ComponentTree:onEvent() type:${type} data:`, data);
     if (propOnEvent) {
       propOnEvent(type, data);
     }
@@ -93,19 +93,18 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
   const [isDraggedOver, setDraggedOver] = useState<boolean>(false);
 
   const showItemPath = useCallback((paramItemInfo:ItemInfoType, title) => {
-    if (paramItemInfo.value.info.type === "file") {
-      console.log(`${title}: filePath: '${paramItemInfo.value.info.reduxFile.path}'`);
-    } else if (paramItemInfo.value.info.type === "folder") {
-      const folderPath = paramItemInfo.value.info.rootNamePath.join("/");
-      console.log(`${title}: folderPath: '${folderPath}'`);
-    }
+
   }, []);
   
   const handleDragOver = useDifferentialCallback((paramItemInfo:ItemInfoType) => {
-    showItemPath(paramItemInfo, "handleDragOver()");
-
-    // The paramItemInfo is going to be same as itemInfo and it is going to be one level up only since we are not propagating
-    // showItemPath(itemInfo);
+    if (debugComponent) {
+      if (paramItemInfo.value.info.type === "file") {
+        console.log(`handleDragOver(): filePath: '${paramItemInfo.value.info.reduxFile.path}'`);
+      } else if (paramItemInfo.value.info.type === "folder") {
+        const folderPath = paramItemInfo.value.info.rootNamePath.join("/");
+        console.log(`handleDragOver(): folderPath: '${folderPath}'`);
+      }
+    }
 
     // We do not need to propagate this
     // if (onDragOver) {
@@ -114,7 +113,14 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
   });
 
   const handleDragLeave = useDifferentialCallback((paramItemInfo:ItemInfoType) => {
-    // showItemPath(paramItemInfo, "handleDragLeave()");
+    if (debugComponent) {
+      if (paramItemInfo.value.info.type === "file") {
+        console.log(`handleDragLeave(): filePath: '${paramItemInfo.value.info.reduxFile.path}'`);
+      } else if (paramItemInfo.value.info.type === "folder") {
+        const folderPath = paramItemInfo.value.info.rootNamePath.join("/");
+        console.log(`handleDragLeave(): folderPath: '${folderPath}'`);
+      }
+    }
   });
 
   return (
