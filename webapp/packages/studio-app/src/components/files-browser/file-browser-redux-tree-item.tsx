@@ -111,8 +111,12 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
             :
             <i className="fas fa-file" />
         }
-        <EditableSpan value={name} onChange={handleOnChange} opts={{blurOnEnterPressOnly:false}}
-                      mode={reduxFile && reduxFile.isPathEditing} onModeChange={handleModeChange}
+        <EditableSpan
+            value={name}
+            onChange={handleOnChange}
+            opts={{blurOnEnterPressOnly:false}}
+            mode={reduxFile && reduxFile.isPathEditing}
+            onModeChange={handleModeChange}
         />
       </div>
   );

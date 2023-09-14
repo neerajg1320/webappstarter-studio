@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {KeyboardEventHandler, useEffect, useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
 
 interface EditableSpanPropsOptions {
@@ -33,7 +33,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
     setEditEnabled(true);
   }
 
-  const handleInputKeyPress:React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+  const handleInputKeyPress:KeyboardEventHandler<HTMLInputElement> = (e) => {
     if (debugComponent) {
       console.log(e.key);
     }
@@ -79,6 +79,15 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
     }
   }, [editEnabled]);
 
+  const handleInputFocus = (e) => {
+    const value = e.target.value;
+    const dotPosition = value.indexOf('.');
+    console.log(`handleInputFocus: value=${value} dotPosition:${dotPosition}`);
+
+    e.target.selectionStart = 0;
+    e.target.selectionEnd= dotPosition;
+  }
+
   return (
       <div onDoubleClick={handleDoubleClick} >
         {editEnabled ?
@@ -88,6 +97,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
                 onChange={(e:any) => setEditedValue(e.target.value)}
                 onKeyDownCapture={handleInputKeyPress}
                 onBlur={handleInputBlur}
+                onFocus={handleInputFocus}
             />
             :
             <span>{editedValue}</span>

@@ -117,7 +117,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       if (reduxFile) {
         const {dirname, basename} = getFilePathParts(reduxFile.path);
         // This becomes important for fileTree, we have to give extension as well
-        newFilePath = joinFileParts(dirname, "untitled.js");
+        newFilePath = joinFileParts(dirname, ".js");
       }
     }
 
