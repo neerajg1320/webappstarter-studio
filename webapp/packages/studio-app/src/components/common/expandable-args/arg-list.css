@@ -2,6 +2,7 @@
   /* border: 1px solid blueviolet; */
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   font-weight: normal;
 }
 
