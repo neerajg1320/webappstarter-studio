@@ -336,7 +336,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
       {(projectFiles && projectFiles.length>0) ?
       <>
-      <div  className="file-browser-panel">
+      <div className="file-browser-panel">
         {(fileTree) ?
             // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
             <ComponentTree
@@ -364,7 +364,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       <div style={{display:"flex", flexDirection:"column", alignItems: "flex-start"}}>
         {
           projectFiles.map((file, index) => {
-            return <span>{index}{":  "}{file.path}</span>;
+            return <span key={index}>{index}{":  "}{file.path}</span>;
           })
         }
       </div>

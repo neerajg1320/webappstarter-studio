@@ -7,6 +7,7 @@ import {FileReduxNode} from "./file-redux-node";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
+import {debugComponent} from "../../config/global";
 
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
@@ -123,8 +124,12 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
             :
             <i className="fas fa-file" />
         }
-        {renderCount !== undefined && <span>{`[${renderCount}]`}</span>}
-        <span>{itemNode.info.name}</span>
+        {debugComponent &&
+          <>
+          {renderCount !== undefined && <span>{`[${renderCount}]`}</span>}
+          <span>{itemNode.info.name}</span>
+          </>
+        }
         <EditableSpan
             value={fileName}
             onChange={handleOnChange}
