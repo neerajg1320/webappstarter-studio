@@ -66,6 +66,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                                                  disabled
 }) => {
   // const debugComponent = true;
+  const enableFormatButton = false;
 
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
@@ -154,12 +155,14 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           </div>
           :
           <>
-            <button
-                className="button button-format is-primary is-small"
-                onClick={handleFormatClick}
-            >
-              Format {editorLanguage}
-            </button>
+            {enableFormatButton &&
+              <button
+                  className="button button-format is-primary is-small"
+                  onClick={handleFormatClick}
+              >
+                Format {editorLanguage}
+              </button>
+            }
             <div className="editor-main">
               <MonacoEditorReact
                   path={modelKey}
