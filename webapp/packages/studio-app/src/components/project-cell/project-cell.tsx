@@ -390,7 +390,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     const bundleLanguage = pathToBundleLanguage(value);
     const language = pathToCodeLanguage(value);
 
-    if (debugComponent||true) {
+    if (debugComponent) {
       console.log(`handleFilePathChange: ${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
 
@@ -403,7 +403,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
   const handleFileBrowerEvent:FileBrowserEventFunc = (type, data) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`ProjectCell:handleFileBrowerEvent()  type:${type} data:`, data);
     }
 

@@ -69,7 +69,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent || false) {
       console.log(`FileBrowser:useEffect[projectFiles] projectFiles`)
       projectFiles.forEach((file, index) => {
         console.log(`${index}: ${file.path}`);
@@ -90,7 +90,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }, [reduxProject.title, projectFiles]);
 
   useEffect(() => {
-    console.log(`FileBrowser:useEffect[fileTree] fileTree:`, fileTree)
+    if (debugComponent) {
+      console.log(`FileBrowser:useEffect[fileTree] fileTree:`, fileTree);
+    }
   }, [fileTree]);
 
   // Needed for selecting file
@@ -313,7 +315,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       const srcFileBaseName = getFilePathParts(srcFilePath)["basename"];
       const dstFilePath = joinFileParts(dstFolder, srcFileBaseName);
 
-      console.log(`srcFilePath:'${srcFilePath}' dstFilePath:'${dstFilePath}'`);
+      if (debugComponent) {
+        console.log(`srcFilePath:'${srcFilePath}' dstFilePath:'${dstFilePath}'`);
+      }
 
       if (srcFilePath === dstFilePath) {
         console.log(`The srcFilePath:${srcFilePath} is same as dstFilePath:${dstFilePath}`);
@@ -360,7 +364,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         }
 
       </div>
-      {(debugComponent || true) &&
+      {(debugComponent || false) &&
       <div style={{display:"flex", flexDirection:"column", alignItems: "flex-start"}}>
         {
           projectFiles.map((file, index) => {
