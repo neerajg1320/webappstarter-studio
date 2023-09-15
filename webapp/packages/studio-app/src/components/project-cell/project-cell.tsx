@@ -462,52 +462,51 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       <Resizable direction="vertical" onHeightChange={handleEditorHeightChange}>
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
             <Resizable direction="horizontal" onWidthChange={handleEditorWidthChange}>
-              <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
-                <FilesBrowser
-                    reduxProject={reduxProject}
-                    onSelect={handleFileBrowserOnSelect}
-                    onEvent={handleFileBrowserEvent}
-                />
-
-                {/* These  are here becaused they are project level operations */}
-                <div className="project-control-panel" style={{display:"flex", flexDirection:"row", padding: "5px", justifyContent: "space-between"}}>
-                  <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
-                    Run
-                  </button>
-
-                  <div className="project-download-async-button-group" style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
-                    <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
-                      Download
-                    </button>
-                    <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
-                  </div>
+              <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
+                <div className="file-cell-control-bar-wrapper">
+                  {editedFile && <FileCellControlBar reduxFile={editedFile} />}
                 </div>
+
+                {(editedFile && editedFile.contentSynced) ?
+                    <CodeEditor
+                        modelKey={editedFile?.localId}
+                        value={editedFile?.content || ""}
+                        language={editedFile?.language || CodeLanguage.UNKNOWN}
+                        onChange={handleEditorChange}
+                        disabled={!editedFile}
+                    />
+                    :
+                    <div style={{
+                      height: "100%", width:"100%",
+                      display:"flex", flexDirection: "column", justifyContent:"center", alignItems: "center",
+                    }}
+                    >
+                      <h3>Select a File</h3>
+                    </div>
+                }
               </div>
             </Resizable>
-            <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
-              <div className="file-cell-control-bar-wrapper">
-                {editedFile && <FileCellControlBar reduxFile={editedFile} />}
+            <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
+              <FilesBrowser
+                  reduxProject={reduxProject}
+                  onSelect={handleFileBrowserOnSelect}
+                  onEvent={handleFileBrowserEvent}
+              />
+
+              {/* These  are here becaused they are project level operations */}
+              <div className="project-control-panel" style={{display:"flex", flexDirection:"row", padding: "5px", justifyContent: "space-between"}}>
+                <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
+                  Run
+                </button>
+
+                <div className="project-download-async-button-group" style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
+                  <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
+                    Download
+                  </button>
+                  <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
+                </div>
               </div>
-
-              {(editedFile && editedFile.contentSynced) ?
-                  <CodeEditor
-                      modelKey={editedFile?.localId}
-                      value={editedFile?.content || ""}
-                      language={editedFile?.language || CodeLanguage.UNKNOWN}
-                      onChange={handleEditorChange}
-                      disabled={!editedFile}
-                  />
-                  :
-                  <div style={{
-                    height: "100%", width:"100%",
-                    display:"flex", flexDirection: "column", justifyContent:"center", alignItems: "center",
-                  }}
-                  >
-                    <h3>Select a File</h3>
-                  </div>
-              }
             </div>
-
           </div>
         </Resizable>
 
