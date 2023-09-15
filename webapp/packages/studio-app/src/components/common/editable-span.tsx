@@ -1,4 +1,4 @@
-import React, {KeyboardEventHandler, useEffect, useRef, useState} from "react";
+import React, {KeyboardEventHandler, useEffect, useRef, useState, FocusEvent} from "react";
 import {debugComponent} from "../../config/global";
 
 interface EditableSpanPropsOptions {
@@ -12,6 +12,7 @@ interface EditableSpanProps {
   onModeChange?: (isEditing:boolean) => void;
   opts?: EditableSpanPropsOptions;
   renderCount ?: number;
+  onBlur ?: (event:  FocusEvent) => void;
 }
 
 const defaultOpts:EditableSpanPropsOptions = {
@@ -25,6 +26,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
                                                     onModeChange,
                                                     opts=defaultOpts,
                                                     renderCount,
+                                                    onBlur: propOnBlur,
 
 }) => {
   const [editEnabled, setEditEnabled] = useState(mode);
@@ -62,9 +64,9 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
   const handleInputBlur = () => {
     console.log(`EditableSpanProps:handleInputBlur() editedValue:${editedValue}`);
 
-    if (propOnChange) {
-      propOnChange(editedValue);
-    }
+    // if (propOnChange) {
+    //   propOnChange(editedValue);
+    // }
 
     if(opts?.blurOnEnterPressOnly) {
       if (blurCauseKeyDown) {
@@ -73,6 +75,10 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
       }
     } else {
       setEditEnabled(false);
+    }
+
+    if (propOnBlur) {
+      propOnBlur();
     }
   }
 

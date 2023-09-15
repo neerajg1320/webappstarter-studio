@@ -4,7 +4,7 @@ import {
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
 import {FileReduxNode} from "./file-redux-node";
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
 
@@ -41,6 +41,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
   const reduxFile = itemInfo.value.info.reduxFile;
   const isFolder = itemInfo.value.info.type === "folder";
 
+
   const draggable = useMemo(() => {
     if (propDraggable) {
       return itemInfo.value.info.type === "file";
@@ -54,11 +55,24 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
     }
   }
 
+  const [fileName, setFileName] = useState(itemNode.info.name);
+  // const name = itemInfo.value.info.name;
+  // const name = itemNode.info.name;
+  // const fileNameRef = useRef<string>(name);
+
+  useEffect(() => {
+    setFileName(itemNode.info.name);
+  }, [itemNode.info.name]);
+
   const handleOnChange = (value:string) => {
     console.log(`handleOnChange(): value=${value}`);
+    setFileName(value);
+  }
+
+  const handleFileNameBlur = () => {
     if (propOnEvent) {
-      console.log(`handleOnChange(): value=${value} and event`);
-      propOnEvent("change", {keyName, itemInfo, value});
+      console.log(`handleOnChange(): value=${fileName} and event`);
+      propOnEvent("change", {keyName, itemInfo, value:fileName});
     }
   }
 
@@ -66,9 +80,6 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
 
   }
 
-  // itemNode.info.name is not same as itemInfo.value.info.name ?
-  const name = itemInfo.value.info.name;
-  // const name = itemNode.info.name;
 
   const handleDragStart = (e:React.MouseEvent) => {
     if (onDragStart) {
@@ -117,11 +128,12 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
         {renderCount !== undefined && <span>{`[${renderCount}]`}</span>}
         <span>{itemNode.info.name}</span>
         <EditableSpan
-            value={name}
+            value={fileName}
             onChange={handleOnChange}
             opts={{blurOnEnterPressOnly:false}}
             mode={reduxFile && reduxFile.isPathEditing}
             onModeChange={handleModeChange}
+            onBlur={handleFileNameBlur}
         />
       </div>
   );
