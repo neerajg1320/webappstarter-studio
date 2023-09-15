@@ -11,7 +11,6 @@
     "preview": "vite preview",
     "deploy": "rsync -r dist/* neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/studio/",
     "deploy_assets": "rsync -r assets/nginx/conf.d neeraj@server.webappstarter.com:/mnt/docker/data/webappstarter/studio/nginx/"
-
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.2",
@@ -38,6 +37,7 @@
     "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
+    "@types/node": "^20.6.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",

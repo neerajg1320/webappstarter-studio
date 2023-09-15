@@ -33,6 +33,7 @@ import useDifferentialCallback from "../../hooks/use-differential-callback";
 export type FileBrowserEventType = "select" | "path-change";
 export type FileBrowserEventData = {
   localId: string;
+  newPath: string;
 }
 export type FileBrowserEventFunc = (type: FileBrowserEventType, data:FileBrowserEventData) => void;
 
@@ -119,7 +120,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       const reduxFile:ReduxFile = filesState.data[selectedFileLocalId];
       if (reduxFile) {
         const {dirname, basename} = getFilePathParts(reduxFile.path);
-        const {namepart, ext} = getFileBasenameParts(basename);
+        const {ext} = getFileBasenameParts(basename);
         // This becomes important for fileTree, we have to give extension as well
         newFilePath = joinFileParts(dirname, `.${ext}`);
       }

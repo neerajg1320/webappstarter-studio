@@ -4,10 +4,11 @@ import {
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
 import {FileReduxNode} from "./file-redux-node";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {FocusEventHandler, useEffect, useMemo, useRef, useState} from "react";
 import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
 import {debugComponent} from "../../config/global";
+import {KeyValueHOComponentProps} from "../common/expandable-args/component-tree";
 
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
@@ -21,7 +22,7 @@ const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileReduxNode) => {
 }
 
 
-const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
+const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
                                                                             itemNode,
                                                                             keyName,
                                                                             parentInfo,
@@ -68,7 +69,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
     setFileName(value);
   }
 
-  const handleFileNameBlur = () => {
+  const handleFileNameBlur:FocusEventHandler<HTMLInputElement>  = (e) => {
     if (propOnEvent) {
       console.log(`handleOnChange(): value=${fileName} and event`);
       propOnEvent("change", {keyName, itemInfo, value:fileName});

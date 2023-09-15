@@ -13,7 +13,7 @@ import useDifferentialCallback from "../../../hooks/use-differential-callback";
 
 
 export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps, DraggableComponent, ReactProps {
-  component: React.FC<KeyValueRepresentationComponentProps>;
+  component?: React.FC<KeyValueHOComponentProps>;
 }
 
 export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
@@ -43,11 +43,11 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
 }
 
 
-interface ExpandableSpanProps extends KeyValueRepresentationComponentProps {
+interface ComponentTreeProps extends KeyValueHOComponentProps {
 };
 
 
-const ComponentTree:React.FC<ExpandableSpanProps> = ({
+const ComponentTree:React.FC<ComponentTreeProps> = ({
                                                        treeName,
                                                        itemNode,
                                                        keyName=null,
@@ -57,6 +57,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        onClick:propOnClick,
                                                        onEvent:propOnEvent,
                                                        getItemInfoFunc,
+                                                       component,
                                                        draggable,
                                                        onDragStart,
                                                        onDragOver,
