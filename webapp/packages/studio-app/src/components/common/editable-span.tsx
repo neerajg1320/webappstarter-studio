@@ -11,6 +11,7 @@ interface EditableSpanProps {
   mode?: boolean;
   onModeChange?: (isEditing:boolean) => void;
   opts?: EditableSpanPropsOptions;
+  renderCount ?: number;
 }
 
 const defaultOpts:EditableSpanPropsOptions = {
@@ -18,14 +19,16 @@ const defaultOpts:EditableSpanPropsOptions = {
 }
 
 const EditableSpan:React.FC<EditableSpanProps> = ({
-                                                    value:initialValue,
+                                                    value:editedValue,
                                                     onChange:propOnChange,
                                                     mode=false,
                                                     onModeChange,
                                                     opts=defaultOpts,
+                                                    renderCount,
+
 }) => {
   const [editEnabled, setEditEnabled] = useState(mode);
-  const [editedValue, setEditedValue] = useState<string>(initialValue);
+  // const [editedValue, setEditedValue] = useState<string>(initialValue);
   const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
   const targetRef = useRef<EventTarget & HTMLInputElement>();
 
@@ -94,7 +97,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
             <input
                 autoFocus
                 value={editedValue}
-                onChange={(e:any) => setEditedValue(e.target.value)}
+                onChange={(e:any) => propOnChange(e.target.value)}
                 onKeyDownCapture={handleInputKeyPress}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}

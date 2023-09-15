@@ -67,8 +67,8 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
   }
 
   // itemNode.info.name is not same as itemInfo.value.info.name ?
-  // const name = itemInfo.value.info.name;
-  const name = itemNode.info.name;
+  const name = itemInfo.value.info.name;
+  // const name = itemNode.info.name;
 
   const handleDragStart = (e:React.MouseEvent) => {
     if (onDragStart) {
@@ -117,7 +117,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
         {renderCount !== undefined && <span>{`[${renderCount}]`}</span>}
         <span>{itemNode.info.name}</span>
         <EditableSpan
-            value={itemNode.info.name}
+            value={name}
             onChange={handleOnChange}
             opts={{blurOnEnterPressOnly:false}}
             mode={reduxFile && reduxFile.isPathEditing}
