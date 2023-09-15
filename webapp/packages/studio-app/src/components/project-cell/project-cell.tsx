@@ -402,9 +402,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
 
-  const handleFileBrowerEvent:FileBrowserEventFunc = (type, data) => {
+  const handleFileBrowserEvent:FileBrowserEventFunc = (type, data) => {
     if (debugComponent) {
-      console.log(`ProjectCell:handleFileBrowerEvent()  type:${type} data:`, data);
+      console.log(`ProjectCell:handleFileBrowserEvent()  type:${type} data:`, data);
     }
 
     switch (type) {
@@ -418,7 +418,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         break;
 
       default:
-        console.error(`ProjectCell:handleFileBrowerEvent() event type '${type}' not supported`);
+        console.error(`ProjectCell:handleFileBrowserEvent() event type '${type}' not supported`);
     }
   }
 
@@ -491,7 +491,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               <FilesBrowser
                   reduxProject={reduxProject}
                   onSelect={handleFileBrowserOnSelect}
-                  onEvent={handleFileBrowerEvent}
+                  onEvent={handleFileBrowserEvent}
               />
 
               {/* These  are here becaused they are project level operations */}
