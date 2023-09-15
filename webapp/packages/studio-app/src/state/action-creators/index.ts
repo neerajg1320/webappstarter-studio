@@ -536,27 +536,27 @@ export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => 
         await delayTimer(0);
 
         // Create filepathContentPath where key in file.path and value is file.content
-        const projecatFilepathContentMap = Object.fromEntries(
+        const projectFilepathContentMap = Object.fromEntries(
             // Get files that belong to project and then provide [file.path, file.content] item
             Object.entries(getState().files.data).filter(([k,v]) =>
                 v.projectLocalId === localId
             ).map(([k,v]) => {
-              if (!v.content) {
-                console.error(`file ${k} contents are`, v);
-              }
+              // if (!v.content) {
+              //   console.log(`file ${k} contents are`, v);
+              // }
               return [v.path, convertStrToUint8(v.content || '')];
             })
         );
 
         if (debugRedux) {
-          Object.entries(projecatFilepathContentMap).map(([k, v]) => console.log(k, v));
+          Object.entries(projectFilepathContentMap).map(([k, v]) => console.log(k, v));
         }
 
         // const bytes = fflate.strToU8("I can be a huge file");
         // const compressed = fflate.gzipSync(bytes, {level:6});
         // const compressed = getSampleZipBlobSync();
 
-        const compressed = getZipBlobSync(projecatFilepathContentMap);
+        const compressed = getZipBlobSync(projectFilepathContentMap);
         zipBlob = new Blob([compressed.buffer], { type: 'application/octet-stream' });
       }
 
