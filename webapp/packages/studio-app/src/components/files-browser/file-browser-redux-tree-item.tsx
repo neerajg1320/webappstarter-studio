@@ -34,6 +34,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
                                                                             onDragOver,
                                                                             onDragLeave,
                                                                             onDrop,
+                                                                            renderCount,
 }) => {
   const itemInfo = getItemInfoFunc(itemNode);
 
@@ -65,7 +66,9 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
 
   }
 
-  const name = itemInfo.value.info.name;
+  // itemNode.info.name is not same as itemInfo.value.info.name ?
+  // const name = itemInfo.value.info.name;
+  const name = itemNode.info.name;
 
   const handleDragStart = (e:React.MouseEvent) => {
     if (onDragStart) {
@@ -111,8 +114,10 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
             :
             <i className="fas fa-file" />
         }
+        {renderCount !== undefined && <span>{`[${renderCount}]`}</span>}
+        <span>{itemNode.info.name}</span>
         <EditableSpan
-            value={name}
+            value={itemNode.info.name}
             onChange={handleOnChange}
             opts={{blurOnEnterPressOnly:false}}
             mode={reduxFile && reduxFile.isPathEditing}

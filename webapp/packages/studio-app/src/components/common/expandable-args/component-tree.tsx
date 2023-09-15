@@ -7,12 +7,12 @@ import {
   ItemEventType,
   ItemInfoType,
   ItemKeyType,
-  KeyValueRepresentationComponentProps
+  KeyValueRepresentationComponentProps, ReactProps
 } from "./component-tree-item";
 import useDifferentialCallback from "../../../hooks/use-differential-callback";
 
 
-export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps, DraggableComponent {
+export interface KeyValueHOComponentProps extends KeyValueRepresentationComponentProps, DraggableComponent, ReactProps {
   component: React.FC<KeyValueRepresentationComponentProps>;
 }
 
@@ -32,11 +32,12 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
                                                                          onDragOver,
                                                                          onDragLeave,
                                                                          onDrop,
+                                                                         renderCount,
                                                                        }) => {
   return React.createElement(
       component,
       {treeName, itemNode, keyName, parentInfo, expanded, level, onClick, onEvent, getItemInfoFunc,
-        draggable, onDragStart, onDragOver, onDragLeave, onDrop},
+        draggable, onDragStart, onDragOver, onDragLeave, onDrop, renderCount},
       null
   );
 }
@@ -60,6 +61,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                                                        onDragStart,
                                                        onDragOver,
                                                        onDrop,
+                                                       renderCount,
                                                      }) => {
   const [expanded, setExpanded] = useState<boolean>(initialExpanded);
 
@@ -142,6 +144,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
           onDragOver={handleDragOver}
           // onDragLeave={handleDragLeave}
           {...{draggable, onDragStart, onDrop}}
+          {...{renderCount}}
       />
 
       {/* We traverse the item if it has a traversalFunc and the state is expanded */}
@@ -168,6 +171,7 @@ const ComponentTree:React.FC<ExpandableSpanProps> = ({
                       onDragOver={handleDragOver}
                       // onDragLeave={handleDragLeave}
                       {...{draggable, onDragStart, onDrop}}
+                      {...{renderCount}}
                   />
                 </div>
             );

@@ -27,6 +27,10 @@ export type ItemNameChangeEventFunc = (type:ItemEventType, data:ItemEventNameCha
 
 export type ItemEventFunc = (type:ItemEventType, data:ItemEventDataType) => void;
 
+export interface ReactProps {
+  renderCount?: number;
+}
+
 export interface DraggableComponent {
   draggable?: boolean;
   onDragStart?: (itemInfo:ItemInfoType) => void;

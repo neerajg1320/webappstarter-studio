@@ -327,6 +327,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
 
   }
 
+  const renderCountRef = useRef<number>(0);
+  renderCountRef.current += 1;
+
   return (
     <div className="file-browser">
       <FileBrowserControlBar reduxProject={reduxProject} selectedFileLocalId={selectedFileLocalId} onEvent={handleFileBrowserControlBarEvent} />
@@ -350,6 +353,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                 onDragStart={handleDragStart}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
+                renderCount={renderCountRef.current}
             />
             :
             <div>List can't be traversed</div>
