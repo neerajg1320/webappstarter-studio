@@ -56,9 +56,7 @@ const ClickableFileItem:React.FC<KeyValueRepresentationComponentProps> = ({
   }
 
   const [fileName, setFileName] = useState(itemNode.info.name);
-  // const name = itemInfo.value.info.name;
-  // const name = itemNode.info.name;
-  // const fileNameRef = useRef<string>(name);
+
 
   useEffect(() => {
     setFileName(itemNode.info.name);

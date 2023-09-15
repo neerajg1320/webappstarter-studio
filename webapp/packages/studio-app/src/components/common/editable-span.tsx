@@ -30,7 +30,6 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
 
 }) => {
   const [editEnabled, setEditEnabled] = useState(mode);
-  // const [editedValue, setEditedValue] = useState<string>(initialValue);
   const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
   const targetRef = useRef<EventTarget & HTMLInputElement>();
 
