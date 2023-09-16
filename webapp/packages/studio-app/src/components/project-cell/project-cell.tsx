@@ -438,6 +438,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // Also, we should be storing the ratios  along with the ElementSize for FilesSection and Editor.
   // The ratio shall be used in case we change the windowSize. The new sizes should be aligning to the
   // existing ratios.
+
+  const [editorRatio, setEditorRatio] = useState<number>(0.8);
+  const [fileSectionRatio, setFileSectionRatio] = useState<number>(0.6);
+
   const projectRef = useRef<HTMLDivElement|null>(null);
 
   const windowSize = useWindowSize();
@@ -452,18 +456,18 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           setFilesSectionSize((prevSize) => {
             console.log(`Previous Size:`, prevSize);
             const _newSize = {
-              height: projectRef.current.offsetHeight * .6,
+              height: projectRef.current.offsetHeight * fileSectionRatio,
               // 10 for handle, 10 for padding, 2 for border
               width: projectRef.current.offsetWidth - 22
             }
             console.log(`Setting the FilesSectionSize:`, _newSize);
-            // We reduce 10 for padding and 10 for the resize handle
+
             return _newSize;
           });
         }
       } else {
         setFilesSectionSize({
-          height: projectRef.current.offsetHeight * .6,
+          height: projectRef.current.offsetHeight * fileSectionRatio,
           // 10 for handle, 10 for padding, 2 for border
           width: projectRef.current.offsetWidth - 22
         })
@@ -488,7 +492,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (debugComponent) {
       console.log(`handleFilesSectionResize():`, size);
     }
-
     setFilesSectionSize(size);
   }
 
