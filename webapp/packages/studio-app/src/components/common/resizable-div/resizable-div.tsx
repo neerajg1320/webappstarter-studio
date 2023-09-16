@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Resizable, ResizeHandleAxis} from 'react-resizable';
 import './resizable-div.css';
 
-export type ElementSize = {width?:number, height?:number}
+export type ElementSize = {width:number, height:number}
 
 interface ResizableDivProps {
   width:number;

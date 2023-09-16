@@ -446,10 +446,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       if (projectRef.current.offsetWidth !== filesSectionSize.width) {
         setFilesSectionSize((prevSize) => {
           console.log(`Previous Size:`, prevSize);
-          // const _newSize = {...prevSize, width:projectRef.current.offsetWidth - 20}
           const _newSize = {
               height: projectRef.current.offsetHeight * .6,
-              width: projectRef.current.offsetWidth - 20
+              // 10 for handle, 10 for padding, 2 for border
+              width: projectRef.current.offsetWidth - 22
           }
           console.log(`Setting the FilesSectionSize:`, _newSize);
           // We reduce 10 for padding and 10 for the resize handle
