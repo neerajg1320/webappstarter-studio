@@ -448,6 +448,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // We calculate the ProjectCell size whenever window size changes
   useLayoutEffect(() => {
     if (projectRef.current) {
+      console.log(`ProjectCell:useLayoutEffect[windowSize] width:${projectRef.current.offsetWidth} height:${projectRef.current.offsetHeight}`)
       setWidth(projectRef.current.offsetWidth);
       setHeight(projectRef.current.offsetHeight)
     }
@@ -466,6 +467,14 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const handleFilesSectionResize = (size:ElementSize) => {
     console.log(`handleFilesSectionResize():`, size);
     setFilesSectionSize(size);
+
+    // Change the editor height if the height of the fileSectionSize changes
+    if (size.height != editorSize.height) {
+      setEditorSize((prev) => {
+        return {...prev, height: size.height};
+      })
+    }
+
   }
 
 
@@ -475,8 +484,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   return (
     <div ref={projectRef} className="project-cell-wrapper">
 
-      <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height} onResize={handleFilesSectionResize} resizeHandles={['s', 'se']}>
-      <div style={{ display: "flex", flexDirection: "row"}}>
+      <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height} onResize={handleFilesSectionResize} resizeHandles={['s']}>
+        <div style={{ display: "flex", flexDirection: "row"}}>
         <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
           <FilesBrowser
               reduxProject={reduxProject}
@@ -499,7 +508,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           </div>
         </div>
         {/* resizeHandles={['se', 'sw', 's', 'w']} */}
-        <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize} resizeHandles={['sw', 'w', 's']}>
+        <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize} resizeHandles={['sw', 'w']}>
           <div style={{
               width:"calc(100% - 10px)", height:"calc(100% - 10px)", marginLeft:"10px", overflow:"hidden",
               display: "flex", flexDirection: "column", border: "3px solid lightblue"
