@@ -447,18 +447,25 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (projectRef.current) {
       console.log(`ProjectCell:useLayoutEffect[windowSize] width:${projectRef.current.offsetWidth} height:${projectRef.current.offsetHeight}`)
 
-
-      if (projectRef.current.offsetWidth !== filesSectionSize.width) {
-        setFilesSectionSize((prevSize) => {
-          console.log(`Previous Size:`, prevSize);
-          const _newSize = {
+      if (filesSectionSize) {
+        if (projectRef.current.offsetWidth !== filesSectionSize.width) {
+          setFilesSectionSize((prevSize) => {
+            console.log(`Previous Size:`, prevSize);
+            const _newSize = {
               height: projectRef.current.offsetHeight * .6,
               // 10 for handle, 10 for padding, 2 for border
               width: projectRef.current.offsetWidth - 22
-          }
-          console.log(`Setting the FilesSectionSize:`, _newSize);
-          // We reduce 10 for padding and 10 for the resize handle
-          return _newSize;
+            }
+            console.log(`Setting the FilesSectionSize:`, _newSize);
+            // We reduce 10 for padding and 10 for the resize handle
+            return _newSize;
+          });
+        }
+      } else {
+        setFilesSectionSize({
+          height: projectRef.current.offsetHeight * .6,
+          // 10 for handle, 10 for padding, 2 for border
+          width: projectRef.current.offsetWidth - 22
         })
       }
     }
@@ -473,10 +480,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (debugComponent) {
       console.log(`handleEditorResize():`, size);
     }
-    // setEditorSize(size);
+    setEditorSize(size);
   }
 
-  const [filesSectionSize, setFilesSectionSize] = useState<ElementSize>({width: 600, height: 600});
+  const [filesSectionSize, setFilesSectionSize] = useState<ElementSize|undefined>();
   const handleFilesSectionResize = (size:ElementSize) => {
     if (debugComponent) {
       console.log(`handleFilesSectionResize():`, size);
@@ -487,10 +494,18 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   useEffect(() => {
     // Change the editor height if the height of the fileSectionSize changes
-    if (filesSectionSize && editorSize && filesSectionSize.height !== editorSize.height) {
-      // setEditorSize((prev) => {
-      //   return {...prev, height: filesSectionSize.height};
-      // })
+    if (filesSectionSize) {
+      if (editorSize) {
+        if (filesSectionSize.height !== editorSize.height) {
+          setEditorSize((prev) => {
+            return {...prev, height: filesSectionSize.height};
+          });
+        }
+      } else {
+        setEditorSize((prev) => {
+          return {width: projectRef.current.offsetWidth * .75, height: filesSectionSize.height};
+        });
+      }
     }
   }, [filesSectionSize]);
 
@@ -500,7 +515,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   return (
     <div ref={projectRef} className="project-cell-wrapper">
 
-      {editorSize &&
+      {(filesSectionSize &&editorSize) &&
           <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height}
                         onResize={handleFilesSectionResize} resizeHandles={['s']}>
             <div style={{display: "flex", flexDirection: "row", overflow: "hidden"}}>
