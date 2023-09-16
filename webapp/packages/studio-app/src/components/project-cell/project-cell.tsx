@@ -1,5 +1,14 @@
 import "./project-cell.css";
-import React, {ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import React, {
+  ReactNode,
+  SyntheticEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 // import Resizable from "../file-cell/resizable";
@@ -19,6 +28,7 @@ import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
+import {ResizeCallbackData} from 'react-resizable';
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -494,22 +504,24 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
   // We need to provide the editorSize from here as the height will be affected by the outer ResizableDiv
   const [editorSize, setEditorSize] = useState<ElementSize|undefined>();
-  const handleEditorResize = (size:ElementSize) => {
-    if (debugComponent) {
-      console.log(`handleEditorResize():`, size);
-    }
-    setEditorSize(size);
-    setEditorWidthRatio(size.width/projectRef.current.offsetWidth);
-  }
+  const handleEditorResize:(e: SyntheticEvent, data: ResizeCallbackData) => void =
+      (event, {node, size, handle}) => {
+        if (debugComponent) {
+          console.log(`handleEditorResize():`, size);
+        }
+        setEditorSize(size);
+        setEditorWidthRatio(size.width/projectRef.current.offsetWidth);
+      }
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize|undefined>();
-  const handleFilesSectionResize = (size:ElementSize) => {
-    if (debugComponent) {
-      console.log(`handleFilesSectionResize():`, size);
-    }
-    setFilesSectionSize(size);
-    setFileSectionHeightRatio(size.height/projectRef.current.offsetHeight);
-  }
+  const handleFilesSectionResize:(e: SyntheticEvent, data: ResizeCallbackData) => void =
+      (event, {node, size, handle}) => {
+        if (debugComponent) {
+          console.log(`handleFilesSectionResize():`, size);
+        }
+        setFilesSectionSize(size);
+        setFileSectionHeightRatio(size.height/projectRef.current.offsetHeight);
+      }
 
   useEffect(() => {
     // Change the editor height if the height of the fileSectionSize changes
