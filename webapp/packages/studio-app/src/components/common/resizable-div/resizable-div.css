@@ -3,12 +3,10 @@ h2 {
 }
 
 .resizable-div {
-  /*border: 1px solid green;*/
   position: relative;
   display: flex;
   flex-direction: column;
 }
-
 
 
 .react-resizable-handle-se {
