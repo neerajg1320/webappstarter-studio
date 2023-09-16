@@ -468,12 +468,12 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
   // We need to provide the editorSize from here as the height will be affected by the outer ResizableDiv
-  const [editorSize, setEditorSize] = useState<ElementSize>({width: 400, height: 400});
+  const [editorSize, setEditorSize] = useState<ElementSize|undefined>();
   const handleEditorResize = (size:ElementSize) => {
     if (debugComponent) {
       console.log(`handleEditorResize():`, size);
     }
-    setEditorSize(size);
+    // setEditorSize(size);
   }
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize>({width: 600, height: 600});
@@ -487,10 +487,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   useEffect(() => {
     // Change the editor height if the height of the fileSectionSize changes
-    if (filesSectionSize.height !== editorSize.height) {
-      setEditorSize((prev) => {
-        return {...prev, height: filesSectionSize.height};
-      })
+    if (filesSectionSize && editorSize && filesSectionSize.height !== editorSize.height) {
+      // setEditorSize((prev) => {
+      //   return {...prev, height: filesSectionSize.height};
+      // })
     }
   }, [filesSectionSize]);
 
@@ -500,62 +500,69 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   return (
     <div ref={projectRef} className="project-cell-wrapper">
 
-      <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height} onResize={handleFilesSectionResize} resizeHandles={['s']}>
-        <div style={{ display: "flex", flexDirection: "row", overflow: "hidden"}}>
-        {/*  We need to fix here*/}
-        <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
-          <FilesBrowser
-              reduxProject={reduxProject}
-              onSelect={handleFileBrowserOnSelect}
-              onEvent={handleFileBrowserEvent}
-          />
-
-          {/* These  are here becaused they are project level operations */}
-          <div className="project-control-panel" style={{display:"flex", flexDirection:"row", padding: "5px", justifyContent: "space-between"}}>
-            <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
-              Run
-            </button>
-
-            <div className="project-download-async-button-group" style={{width:"80px", display: "flex", flexDirection:"column", alignItems:"center"}}>
-              <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick} disabled={reduxProject.downloadingZip}>
-                Download
-              </button>
-              <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
-            </div>
-          </div>
-        </div>
-        {/* enabling sw will require some changes */}
-        <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize} resizeHandles={[/*'sw',*/ 'w']}>
-          <div style={{
-              width:"calc(100% - 10px)", height:"calc(100% - 10px)", marginLeft:"10px", overflow:"hidden",
-              display: "flex", flexDirection: "column", border: "3px solid lightblue"
-            }}
-          >
-            <div className="file-cell-control-bar-wrapper">
-              {editedFile && <FileCellControlBar reduxFile={editedFile}/>}
-            </div>
-
-            {(editedFile && editedFile.contentSynced) ?
-                <CodeEditor
-                    modelKey={editedFile?.localId}
-                    value={editedFile?.content || ""}
-                    language={editedFile?.language || CodeLanguage.UNKNOWN}
-                    onChange={handleEditorChange}
-                    disabled={!editedFile}
+      {editorSize &&
+          <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height}
+                        onResize={handleFilesSectionResize} resizeHandles={['s']}>
+            <div style={{display: "flex", flexDirection: "row", overflow: "hidden"}}>
+              {/*  We need to fix here*/}
+              <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
+                <FilesBrowser
+                    reduxProject={reduxProject}
+                    onSelect={handleFileBrowserOnSelect}
+                    onEvent={handleFileBrowserEvent}
                 />
-                :
+
+                {/* These  are here becaused they are project level operations */}
+                <div className="project-control-panel"
+                     style={{display: "flex", flexDirection: "row", padding: "5px", justifyContent: "space-between"}}>
+                  <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
+                    Run
+                  </button>
+
+                  <div className="project-download-async-button-group"
+                       style={{width: "80px", display: "flex", flexDirection: "column", alignItems: "center"}}>
+                    <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick}
+                            disabled={reduxProject.downloadingZip}>
+                      Download
+                    </button>
+                    <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
+                  </div>
+                </div>
+              </div>
+              {/* enabling sw will require some changes */}
+              <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize}
+                            resizeHandles={[/*'sw',*/ 'w']}>
                 <div style={{
-                  height: "100%", width: "100%",
-                  display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+                  width: "calc(100% - 10px)", height: "calc(100% - 10px)", marginLeft: "10px", overflow: "hidden",
+                  display: "flex", flexDirection: "column", border: "3px solid lightblue"
                 }}
                 >
-                  <h3>Select a File</h3>
+                  <div className="file-cell-control-bar-wrapper">
+                    {editedFile && <FileCellControlBar reduxFile={editedFile}/>}
+                  </div>
+
+                  {(editedFile && editedFile.contentSynced) ?
+                      <CodeEditor
+                          modelKey={editedFile?.localId}
+                          value={editedFile?.content || ""}
+                          language={editedFile?.language || CodeLanguage.UNKNOWN}
+                          onChange={handleEditorChange}
+                          disabled={!editedFile}
+                      />
+                      :
+                      <div style={{
+                        height: "100%", width: "100%",
+                        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+                      }}
+                      >
+                        <h3>Select a File</h3>
+                      </div>
+                  }
                 </div>
-            }
-          </div>
-        </ResizableDiv>
-      </div>
-      </ResizableDiv>
+              </ResizableDiv>
+            </div>
+          </ResizableDiv>
+      }
 
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
         <PreviewTabsPanel
