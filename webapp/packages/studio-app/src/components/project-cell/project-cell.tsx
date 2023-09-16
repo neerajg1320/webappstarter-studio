@@ -438,6 +438,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // Also, we should be storing the ratios  along with the ElementSize for FilesSection and Editor.
   // The ratio shall be used in case we change the windowSize. The new sizes should be aligning to the
   // existing ratios.
+  // Browser window size change:
+  // The window size change logic is working. Currently when we change window size, the height of the preview
+  // window changes to height defined by default ratio. The height of editor adjusts accordingly and the width
+  // of editor stays same
 
   const [editorRatio, setEditorRatio] = useState<number>(0.8);
   const [fileSectionRatio, setFileSectionRatio] = useState<number>(0.6);
@@ -449,18 +453,20 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // We calculate the ProjectCell size whenever window size changes
   useLayoutEffect(() => {
     if (projectRef.current) {
-      console.log(`ProjectCell:useLayoutEffect[windowSize] width:${projectRef.current.offsetWidth} height:${projectRef.current.offsetHeight}`)
+      if (debugComponent) {
+        console.log(`ProjectCell:useLayoutEffect[windowSize] width:${projectRef.current.offsetWidth} height:${projectRef.current.offsetHeight}`)
+      }
 
       if (filesSectionSize) {
         if (projectRef.current.offsetWidth !== filesSectionSize.width) {
           setFilesSectionSize((prevSize) => {
-            console.log(`Previous Size:`, prevSize);
+            // console.log(`Previous Size:`, prevSize);
             const _newSize = {
               height: projectRef.current.offsetHeight * fileSectionRatio,
               // 10 for handle, 10 for padding, 2 for border
               width: projectRef.current.offsetWidth - 22
             }
-            console.log(`Setting the FilesSectionSize:`, _newSize);
+            // console.log(`Setting the FilesSectionSize:`, _newSize);
 
             return _newSize;
           });
