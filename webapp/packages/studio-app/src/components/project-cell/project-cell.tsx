@@ -451,6 +451,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`ProjectCell:useLayoutEffect[windowSize] width:${projectRef.current.offsetWidth} height:${projectRef.current.offsetHeight}`)
       setWidth(projectRef.current.offsetWidth);
       setHeight(projectRef.current.offsetHeight)
+
+      if (projectRef.current.offsetWidth !== filesSectionSize.width) {
+        setFilesSectionSize((prev) => {
+          // We reduce 10 for padding and 10 for the resize handle
+          return {...prev, width:projectRef.current.offsetWidth - 20};
+        })
+      }
     }
   }, [windowSize]);
 
@@ -468,13 +475,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     console.log(`handleFilesSectionResize():`, size);
     setFilesSectionSize(size);
 
+
     // Change the editor height if the height of the fileSectionSize changes
-    if (size.height != editorSize.height) {
+    if (size.height !== editorSize.height) {
       setEditorSize((prev) => {
         return {...prev, height: size.height};
       })
     }
-
   }
 
 
@@ -507,8 +514,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
             </div>
           </div>
         </div>
-        {/* resizeHandles={['se', 'sw', 's', 'w']} */}
-        <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize} resizeHandles={['sw', 'w']}>
+        {/* enabling sw will require some changes */}
+        <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize} resizeHandles={[/*'sw',*/ 'w']}>
           <div style={{
               width:"calc(100% - 10px)", height:"calc(100% - 10px)", marginLeft:"10px", overflow:"hidden",
               display: "flex", flexDirection: "column", border: "3px solid lightblue"

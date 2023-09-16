@@ -13,14 +13,7 @@ interface ResizableDivProps {
 }
 
 const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children, onResize:propOnResize, resizeHandles}) => {
-  // const [state, setState] = useState<ElementSize>({
-  //   width: initialWidth,
-  //   height: initialHeight,
-  // });
-
   const handleResize = (event, {node, size, handle}) => {
-    // console.log(`handleResize`);
-    // setState({width: size.width, height: size.height})
     if (propOnResize) {
       propOnResize(size);
     }
