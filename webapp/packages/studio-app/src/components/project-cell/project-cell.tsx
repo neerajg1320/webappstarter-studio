@@ -462,13 +462,20 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     setEditorSize(size);
   }
 
+  const [filesSectionSize, setFilesSectionSize] = useState<ElementSize>({width: 600, height: 600});
+  const handleFilesSectionResize = (size:ElementSize) => {
+    console.log(`handleFilesSectionResize():`, size);
+    setFilesSectionSize(size);
+  }
+
+
   if (!reduxProject) {
     return <h1>reduxProject is not defined</h1>
   }
   return (
     <div ref={projectRef} className="project-cell-wrapper">
 
-      <ResizableDiv width="100%" height="100%" resizeHandles={['s']}>
+      <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height} onResize={handleFilesSectionResize} resizeHandles={['s', 'se']}>
       <div style={{ display: "flex", flexDirection: "row"}}>
         <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
           <FilesBrowser
