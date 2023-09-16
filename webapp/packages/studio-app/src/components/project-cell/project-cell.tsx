@@ -18,7 +18,7 @@ import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
-import ResizableDiv from "../common/resizable-div/resizable-div";
+import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -455,6 +455,12 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
   // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
+  // We need to provide the editorSize from here as the height will be affected by the outer ResizableDiv
+  const [editorSize, setEditorSize] = useState<ElementSize>({width: 400, height: 400});
+  const handleEditorResize = (size:ElementSize) => {
+    console.log(`handleEditorResize():`, size);
+    setEditorSize(size);
+  }
 
   if (!reduxProject) {
     return <h1>reduxProject is not defined</h1>
@@ -462,6 +468,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   return (
     <div ref={projectRef} className="project-cell-wrapper">
 
+      <ResizableDiv width="100%" height="100%" resizeHandles={['s']}>
       <div style={{ display: "flex", flexDirection: "row"}}>
         <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
           <FilesBrowser
@@ -485,7 +492,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           </div>
         </div>
         {/* resizeHandles={['se', 'sw', 's', 'w']} */}
-        <ResizableDiv width={400} height={400} resizeHandles={['sw', 'w']}>
+        <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize} resizeHandles={['sw', 'w', 's']}>
           <div style={{
               width:"calc(100% - 10px)", height:"calc(100% - 10px)", marginLeft:"10px", overflow:"hidden",
               display: "flex", flexDirection: "column", border: "3px solid lightblue"
@@ -515,7 +522,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           </div>
         </ResizableDiv>
       </div>
-
+      </ResizableDiv>
 
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
         <PreviewTabsPanel
