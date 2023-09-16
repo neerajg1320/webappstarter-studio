@@ -424,24 +424,16 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }
 
-  // The code below has been kept for reference
-  //
-  const handleEditorWidthChange = (ew:number) => {
-    // console.log(`ProjectCell: editor-width:${ew}  project-width:${width}`);
-
-  }
-
-  const handleEditorHeightChange = (eh:number) => {
-    // console.log(`ProjectCell: editor-height:${eh} project-height:${height}`);
-  }
 
   if (debugComponent) {
     console.log(`ProjectCell:render editedFile:`, editedFile);
   }
 
+  // Resizing Logic:
+  // When the windowSize changes the ProjectCell size changes
+  // When ProjectCell size changes the useLayoutEffect
+
   const projectRef = useRef<HTMLDivElement|null>(null);
-  const [width, setWidth] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
 
   const windowSize = useWindowSize();
 
@@ -449,41 +441,53 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   useLayoutEffect(() => {
     if (projectRef.current) {
       console.log(`ProjectCell:useLayoutEffect[windowSize] width:${projectRef.current.offsetWidth} height:${projectRef.current.offsetHeight}`)
-      setWidth(projectRef.current.offsetWidth);
-      setHeight(projectRef.current.offsetHeight)
+
 
       if (projectRef.current.offsetWidth !== filesSectionSize.width) {
-        setFilesSectionSize((prev) => {
+        setFilesSectionSize((prevSize) => {
+          console.log(`Previous Size:`, prevSize);
+          // const _newSize = {...prevSize, width:projectRef.current.offsetWidth - 20}
+          const _newSize = {
+              height: projectRef.current.offsetHeight * .6,
+              width: projectRef.current.offsetWidth - 20
+          }
+          console.log(`Setting the FilesSectionSize:`, _newSize);
           // We reduce 10 for padding and 10 for the resize handle
-          return {...prev, width:projectRef.current.offsetWidth - 20};
+          return _newSize;
         })
       }
     }
   }, [windowSize]);
 
 
+
   // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
   // We need to provide the editorSize from here as the height will be affected by the outer ResizableDiv
   const [editorSize, setEditorSize] = useState<ElementSize>({width: 400, height: 400});
   const handleEditorResize = (size:ElementSize) => {
-    console.log(`handleEditorResize():`, size);
+    if (debugComponent) {
+      console.log(`handleEditorResize():`, size);
+    }
     setEditorSize(size);
   }
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize>({width: 600, height: 600});
   const handleFilesSectionResize = (size:ElementSize) => {
-    console.log(`handleFilesSectionResize():`, size);
-    setFilesSectionSize(size);
-
-
-    // Change the editor height if the height of the fileSectionSize changes
-    if (size.height !== editorSize.height) {
-      setEditorSize((prev) => {
-        return {...prev, height: size.height};
-      })
+    if (debugComponent) {
+      console.log(`handleFilesSectionResize():`, size);
     }
+
+    setFilesSectionSize(size);
   }
 
+  useEffect(() => {
+    // Change the editor height if the height of the fileSectionSize changes
+    if (filesSectionSize.height !== editorSize.height) {
+      setEditorSize((prev) => {
+        return {...prev, height: filesSectionSize.height};
+      })
+    }
+  }, [filesSectionSize]);
 
   if (!reduxProject) {
     return <h1>reduxProject is not defined</h1>
@@ -492,7 +496,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     <div ref={projectRef} className="project-cell-wrapper">
 
       <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height} onResize={handleFilesSectionResize} resizeHandles={['s']}>
-        <div style={{ display: "flex", flexDirection: "row"}}>
+        <div style={{ display: "flex", flexDirection: "row", overflow: "hidden"}}>
+        {/*  We need to fix here*/}
         <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
           <FilesBrowser
               reduxProject={reduxProject}

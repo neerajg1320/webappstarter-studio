@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Resizable, ResizeHandleAxis} from 'react-resizable';
 import './resizable-div.css';
 
-export type ElementSize = {width:number, height:number}
+export type ElementSize = {width?:number, height?:number}
 
 interface ResizableDivProps {
   width:number;
@@ -20,11 +20,11 @@ const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children, onRe
   };
 
   const handleResizeStart = (event, {node, size, handle}) => {
-    console.log(`handleResizeStart`);
+    // console.log(`handleResizeStart`);
   }
 
   const handleResizeStop = (event, {node, size, handle}) => {
-    console.log(`handleResizeStop`);
+    // console.log(`handleResizeStop`);
   }
 
   return (
