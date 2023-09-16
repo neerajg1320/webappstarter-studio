@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Resizable} from 'react-resizable';
+import {Resizable, ResizeHandleAxis} from 'react-resizable';
 import './resizable-div.css';
 
 type Size = {width:number, height:number}
@@ -9,12 +9,13 @@ interface ResizableDivProps {
   height: number;
   children?: JSX.Element;
   onChange?: (size:Size) => void;
+  resizeHandles?: ResizeHandleAxis[];
 }
 
-const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children}) => {
+const ResizableDiv:React.FC<ResizableDivProps> = ({width:initialWidth, height:initialHeight, children, resizeHandles}) => {
   const [state, setState] = useState<Size>({
-    width: 200,
-    height: 200,
+    width: initialWidth,
+    height: initialHeight,
   });
 
   const handleResize = (event, {node, size, handle}) => {
@@ -34,9 +35,8 @@ const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children}) => 
       <Resizable
           height={state.height} width={state.width}
           onResize={handleResize} onResizeStart={handleResizeStart} onResizeStop={handleResizeStop}
-          resizeHandles={['se', 'sw', 's', 'w']}
+          resizeHandles={resizeHandles}
       >
-        {/* class react-resizable will be added to following div"*/}
         <div className="resizable-div" style={{width: state.width + 'px', height: state.height + 'px'}}>
           {children}
         </div>
