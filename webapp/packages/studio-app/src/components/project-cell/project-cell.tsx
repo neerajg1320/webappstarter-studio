@@ -2,7 +2,8 @@ import "./project-cell.css";
 import React, {ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import Resizable from "../file-cell/resizable";
+// import Resizable from "../file-cell/resizable";
+import {Resizable} from 'react-resizable';
 import CodeEditor from "../file-cell/code-editor";
 import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser";
 import {ReduxFile, ReduxProject} from "../../state";
@@ -17,6 +18,7 @@ import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
+import ResizableDiv from "../common/resizable-div/resizable-div";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -461,31 +463,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     <div ref={projectRef} className="project-cell-wrapper">
       <Resizable direction="vertical" onHeightChange={handleEditorHeightChange}>
           <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
-            <Resizable direction="horizontal" onWidthChange={handleEditorWidthChange}>
-              <div style={{width:"100%", display:"flex", flexDirection:"column", border: "3px solid lightblue"}}>
-                <div className="file-cell-control-bar-wrapper">
-                  {editedFile && <FileCellControlBar reduxFile={editedFile} />}
-                </div>
-
-                {(editedFile && editedFile.contentSynced) ?
-                    <CodeEditor
-                        modelKey={editedFile?.localId}
-                        value={editedFile?.content || ""}
-                        language={editedFile?.language || CodeLanguage.UNKNOWN}
-                        onChange={handleEditorChange}
-                        disabled={!editedFile}
-                    />
-                    :
-                    <div style={{
-                      height: "100%", width:"100%",
-                      display:"flex", flexDirection: "column", justifyContent:"center", alignItems: "center",
-                    }}
-                    >
-                      <h3>Select a File</h3>
-                    </div>
-                }
-              </div>
-            </Resizable>
             <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
               <FilesBrowser
                   reduxProject={reduxProject}
@@ -507,6 +484,35 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 </div>
               </div>
             </div>
+            <ResizableDiv width={400} height={400}>
+              <div style={{
+                  width:"calc(100% - 10px)", height:"calc(100% - 10px)", marginLeft:"10px", overflow:"hidden",
+                  display: "flex", flexDirection: "column", border: "3px solid lightblue"
+                }}
+              >
+                <div className="file-cell-control-bar-wrapper">
+                  {editedFile && <FileCellControlBar reduxFile={editedFile}/>}
+                </div>
+
+                {(editedFile && editedFile.contentSynced) ?
+                    <CodeEditor
+                        modelKey={editedFile?.localId}
+                        value={editedFile?.content || ""}
+                        language={editedFile?.language || CodeLanguage.UNKNOWN}
+                        onChange={handleEditorChange}
+                        disabled={!editedFile}
+                    />
+                    :
+                    <div style={{
+                      height: "100%", width: "100%",
+                      display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+                    }}
+                    >
+                      <h3>Select a File</h3>
+                    </div>
+                }
+              </div>
+            </ResizableDiv>
           </div>
         </Resizable>
 
