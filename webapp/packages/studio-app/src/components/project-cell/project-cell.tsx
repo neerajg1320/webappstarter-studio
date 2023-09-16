@@ -432,7 +432,12 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // Resizing Logic:
   // When the windowSize changes the ProjectCell size changes
   // When ProjectCell size changes the useLayoutEffect
-
+  // When ProjectCell size changes the useLayoutEffect[windowSize] will cause the FileSectionHeight to change
+  // When the FileSectionHeight changes due to windowsSize or Resize handle then this will cause the height
+  // of the Editor to change as well.
+  // Also, we should be storing the ratios  along with the ElementSize for FilesSection and Editor.
+  // The ratio shall be used in case we change the windowSize. The new sizes should be aligning to the
+  // existing ratios.
   const projectRef = useRef<HTMLDivElement|null>(null);
 
   const windowSize = useWindowSize();
