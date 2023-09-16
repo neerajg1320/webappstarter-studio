@@ -440,8 +440,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // existing ratios.
   // Browser window size change:
   // The window size change logic is working. Currently when we change window size, the height of the preview
-  // window changes to height defined by default ratio. The height of editor adjusts accordingly and the width
-  // of editor stays same
+  // window changes to height defined by default ratio. The height of editor adjusts accordingly.
+  // We are currently resizing the windows to starting ratio when we resize the browser window.
+  // TBD: 1. Next we have to store ratio on each resize and then conserver the ratio on window resize
+  // TBD: 2. After that we shall deal with constraints
 
   const [editorRatio, setEditorRatio] = useState<number>(0.8);
   const [fileSectionRatio, setFileSectionRatio] = useState<number>(0.6);
