@@ -512,7 +512,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         }
       } else {
         setEditorSize((prev) => {
-          return {width: projectRef.current.offsetWidth * .75, height: filesSectionSize.height};
+          return {width: projectRef.current.offsetWidth * editorRatio, height: filesSectionSize.height};
         });
       }
     }
