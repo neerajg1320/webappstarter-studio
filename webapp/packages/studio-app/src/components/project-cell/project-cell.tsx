@@ -465,7 +465,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
   const defaultEditorProportions:ElementProportions = {
-    width: {min:0.4, current:0.8, max:0.9}
+    width: {min:0.3, current:0.8, max:0.9}
   }
   const defaultFileSectionProportions:ElementProportions = {
     height: {min:0.2, current:0.6, max:0.8}
@@ -526,10 +526,14 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           console.log(`handleEditorResize():`, size);
         }
         const newWidthProportion = size.width / projectRef.current.offsetWidth;
-        setEditorSize(size);
-        setEditorProportions((prev) => {
-          return {...prev, width:{...prev.width, current: newWidthProportion}};
-        });
+
+        // If newWidthProportion is within constraints then update the size and current proportion
+        if ((editorProportions.width.min < newWidthProportion) && (newWidthProportion < editorProportions.width.max)) {
+          setEditorSize(size);
+          setEditorProportions((prev) => {
+            return {...prev, width: {...prev.width, current: newWidthProportion}};
+          });
+        }
       }
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize|undefined>();
