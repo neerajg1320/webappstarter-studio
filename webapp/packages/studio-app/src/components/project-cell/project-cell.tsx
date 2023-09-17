@@ -525,9 +525,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         if (debugComponent) {
           console.log(`handleEditorResize():`, size);
         }
+        const newWidthProportion = size.width / projectRef.current.offsetWidth;
         setEditorSize(size);
         setEditorProportions((prev) => {
-          return {...prev, width:{...prev.width, current: size.width/projectRef.current.offsetWidth}};
+          return {...prev, width:{...prev.width, current: newWidthProportion}};
         });
       }
 
@@ -537,9 +538,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         if (debugComponent) {
           console.log(`handleFilesSectionResize():`, size);
         }
+        const newHeightProportion = size.height / projectRef.current.offsetHeight;
         setFilesSectionSize(size);
         setFileSectionProportions((prev) => {
-          return {...prev, height: {...prev.height, current: size.height/projectRef.current.offsetHeight}}
+          return {...prev, height: {...prev.height, current: newHeightProportion}}
         });
       }
 
