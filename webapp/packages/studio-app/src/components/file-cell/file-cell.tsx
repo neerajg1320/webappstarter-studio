@@ -1,6 +1,6 @@
 import './file-cell.css';
-import React, {useEffect, useMemo, useState} from "react";
-import CodeEditor from "./code-editor";
+import React, {useEffect, useMemo, useState, Suspense, lazy} from "react";
+// import CodeEditor from "./code-editor";
 import Resizable from "./resizable";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
@@ -10,6 +10,8 @@ import {ReduxFile, ReduxProject} from "../../state";
 import FileCellControlBar, {FileCellEvent} from "./file-cell-control-bar";
 import {BundleLanguage} from "../../state/bundle";
 import {htmlNoScript} from "../preview-section/preview-iframe/markup";
+
+const CodeEditor = lazy(() => import("../file-cell/code-editor"));
 
 interface FileCellProps {
   reduxFile: ReduxFile;
@@ -72,12 +74,15 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
       <Resizable direction="vertical">
         <div style={{height: 'calc(100% - 10px)', display: "flex", flexDirection: "row"}}>
           <Resizable direction="horizontal">
-            <CodeEditor
-                modelKey={reduxFile.localId}
-                value={reduxFile.content || ''}
-                language={reduxFile.language}
-                onChange={handleEditorChange}
-            />
+            <Suspense fallback={<textarea value={reduxFile.content || ''} onChange={(e) => handleEditorChange(e.target.value)}  style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
+              <CodeEditor
+                  modelKey={reduxFile.localId}
+                  value={reduxFile.content || ''}
+                  language={reduxFile.language}
+                  onChange={handleEditorChange}
+              />
+            </Suspense>
+
           </Resizable>
           <div className="progress-wrapper">
             {

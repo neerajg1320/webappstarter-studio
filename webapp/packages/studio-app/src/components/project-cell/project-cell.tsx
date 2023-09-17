@@ -7,13 +7,14 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState
+  useState,
+  Suspense,
+  lazy
 } from 'react';
 import {useActions} from "../../hooks/use-actions";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-// import Resizable from "../file-cell/resizable";
-import {Resizable} from 'react-resizable';
-import CodeEditor from "../file-cell/code-editor";
+
+// import CodeEditor from "../file-cell/code-editor";
 import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser";
 import {ReduxFile, ReduxProject} from "../../state";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
@@ -35,6 +36,7 @@ interface ProjectCellProps {
   // reduxProject: ReduxProject;
   // projectLocalId: string;
 }
+const CodeEditor = lazy(() => import("../file-cell/code-editor"));
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
@@ -647,13 +649,16 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               </div>
 
               {(editedFile && editedFile.contentSynced) ?
-                  <CodeEditor
-                      modelKey={editedFile?.localId}
-                      value={editedFile?.content || ""}
-                      language={editedFile?.language || CodeLanguage.UNKNOWN}
-                      onChange={handleEditorChange}
-                      disabled={!editedFile}
-                  />
+                  <Suspense fallback={<textarea value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
+                    <CodeEditor
+                        modelKey={editedFile?.localId}
+                        value={editedFile?.content || ""}
+                        language={editedFile?.language || CodeLanguage.UNKNOWN}
+                        onChange={handleEditorChange}
+                        disabled={!editedFile}
+                    />
+                  </Suspense>
+
                   :
                   <div style={{
                     height: "100%", width: "100%",
