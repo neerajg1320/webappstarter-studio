@@ -582,7 +582,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {(filesSectionSize && editorSize) &&
       <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height}
                     onResize={handleFilesSectionResize} resizeHandles={['s']}>
-        <div style={{display: "flex", flexDirection: "row", overflow: "hidden"}}>
+        <div style={{display: "flex", flexDirection: "row"}}>
 
           <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
             <FilesBrowser
