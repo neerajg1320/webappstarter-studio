@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {Resizable, ResizeHandleAxis, ResizeCallbackData} from 'react-resizable';
+import {Resizable, ResizableBox, ResizeHandleAxis, ResizeCallbackData} from 'react-resizable';
 import './resizable-div.css';
 
 export type ElementSize = {width:number, height:number}

@@ -2,10 +2,10 @@ h2 {
   color: fuchsia;
 }
 
-.resizable-div {
+.react-resizable {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  /*display: flex;*/
+  /*flex-direction: column;*/
 }
 
 
