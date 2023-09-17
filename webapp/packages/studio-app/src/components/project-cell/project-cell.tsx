@@ -455,8 +455,21 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // TBD: 1. Next we have to store ratio on each resize and then conserver the ratio on window resize
   // TBD: 2. After that we shall deal with constraints
 
-  const [editorWidthRatio, setEditorWidthRatio] = useState<number>(0.8);
-  const [fileSectionHeightRatio, setFileSectionHeightRatio] = useState<number>(0.6);
+  type Proportion = {
+    min:number, current:number, max:number
+  }
+
+  type ElementProportions = {
+    width?: Proportion,
+    height?: Proportion
+  }
+
+  const defaultEditorProportions:ElementProportions = {
+    width: {min:0.4, current:0.8, max:0.9}
+  }
+
+  const [editorProportions, setEditorProportions] = useState<ElementProportions>(defaultEditorProportions);
+  const [fileSectionProportions, setFileSectionProportions] = useState<number>(0.6);
 
   const projectRef = useRef<HTMLDivElement|null>(null);
 
@@ -474,7 +487,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           setFilesSectionSize((prevSize) => {
             // console.log(`Previous Size:`, prevSize);
             const _newSize = {
-              height: projectRef.current.offsetHeight * fileSectionHeightRatio,
+              height: projectRef.current.offsetHeight * fileSectionProportions,
               // 10 for handle, 10 for padding, 2 for border
               width: projectRef.current.offsetWidth - 22
             }
@@ -485,13 +498,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           setEditorSize((preSize) => {
             return {
               ...preSize,
-              width: projectRef.current.offsetWidth * editorWidthRatio
+              width: projectRef.current.offsetWidth * editorProportions.width.current
             }
           });
         }
       } else {
         setFilesSectionSize({
-          height: projectRef.current.offsetHeight * fileSectionHeightRatio,
+          height: projectRef.current.offsetHeight * fileSectionProportions,
           // 10 for handle, 10 for padding, 2 for border
           width: projectRef.current.offsetWidth - 22
         })
@@ -510,7 +523,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           console.log(`handleEditorResize():`, size);
         }
         setEditorSize(size);
-        setEditorWidthRatio(size.width/projectRef.current.offsetWidth);
+        setEditorProportions((prev) => {
+          return {...prev, width:{...prev.width, current: size.width/projectRef.current.offsetWidth}};
+        });
       }
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize|undefined>();
@@ -520,7 +535,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           console.log(`handleFilesSectionResize():`, size);
         }
         setFilesSectionSize(size);
-        setFileSectionHeightRatio(size.height/projectRef.current.offsetHeight);
+        setFileSectionProportions(size.height/projectRef.current.offsetHeight);
       }
 
   useEffect(() => {
@@ -534,7 +549,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         }
       } else {
         setEditorSize((prev) => {
-          return {width: projectRef.current.offsetWidth * editorWidthRatio, height: filesSectionSize.height};
+          return {
+            width: projectRef.current.offsetWidth * editorProportions.width.current,
+            height: filesSectionSize.height
+          };
         });
       }
     }
