@@ -523,8 +523,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const handleEditorResize:(e: SyntheticEvent, data: ResizeCallbackData) => void =
       (event, {node, size, handle}) => {
         if (debugComponent) {
-          console.log(`handleEditorResize():`, size);
+          console.log(`handleEditorResize():`, size, handle);
         }
+
+        if (handle === 'sw') {
+          console.log(`update the height of filesSection`);
+        }
+
         const newWidthProportion = size.width / projectRef.current.offsetWidth;
 
         // If newWidthProportion is within constraints then update the size and current proportion
@@ -613,7 +618,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
           {/* enabling sw will require some changes */}
           <ResizableDiv width={editorSize.width} height={editorSize.height} onResize={handleEditorResize}
-                        resizeHandles={[/*'sw',*/ 'w']}>
+                        resizeHandles={['sw', 'w']}>
             <div style={{
               width: "calc(100% - 10px)", height: "calc(100% - 10px)", marginLeft: "10px", overflow: "hidden",
               display: "flex", flexDirection: "column", border: "3px solid lightblue"
