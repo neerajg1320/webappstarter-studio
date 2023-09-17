@@ -10,8 +10,8 @@ h2 {
 
 
 .react-resizable-handle-se {
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
   background-color: rgba(103, 39, 105, 50%);
   position: absolute;
   bottom: 0;
@@ -20,8 +20,8 @@ h2 {
 }
 
 .react-resizable-handle-sw {
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
   background-color: rgba(103, 39, 105, 50%);
   position: absolute;
   bottom: 0;
