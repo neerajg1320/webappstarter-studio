@@ -467,9 +467,12 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const defaultEditorProportions:ElementProportions = {
     width: {min:0.4, current:0.8, max:0.9}
   }
+  const defaultFileSectionProportions:ElementProportions = {
+    height: {min:0.2, current:0.6, max:0.8}
+  }
 
   const [editorProportions, setEditorProportions] = useState<ElementProportions>(defaultEditorProportions);
-  const [fileSectionProportions, setFileSectionProportions] = useState<number>(0.6);
+  const [fileSectionProportions, setFileSectionProportions] = useState<ElementProportions>(defaultFileSectionProportions);
 
   const projectRef = useRef<HTMLDivElement|null>(null);
 
@@ -487,7 +490,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           setFilesSectionSize((prevSize) => {
             // console.log(`Previous Size:`, prevSize);
             const _newSize = {
-              height: projectRef.current.offsetHeight * fileSectionProportions,
+              height: projectRef.current.offsetHeight * fileSectionProportions.height.current,
               // 10 for handle, 10 for padding, 2 for border
               width: projectRef.current.offsetWidth - 22
             }
@@ -504,7 +507,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         }
       } else {
         setFilesSectionSize({
-          height: projectRef.current.offsetHeight * fileSectionProportions,
+          height: projectRef.current.offsetHeight * fileSectionProportions.height.current,
           // 10 for handle, 10 for padding, 2 for border
           width: projectRef.current.offsetWidth - 22
         })
@@ -535,7 +538,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           console.log(`handleFilesSectionResize():`, size);
         }
         setFilesSectionSize(size);
-        setFileSectionProportions(size.height/projectRef.current.offsetHeight);
+        setFileSectionProportions((prev) => {
+          return {...prev, height: {...prev.height, current: size.height/projectRef.current.offsetHeight}}
+        });
       }
 
   useEffect(() => {
