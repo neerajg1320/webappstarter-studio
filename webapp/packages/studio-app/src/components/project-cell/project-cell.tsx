@@ -526,13 +526,17 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
 
     if (handle === 'sw') {
-      console.log(`update the height of filesSection`);
+      const editorHeightDelta = size.height - editorSize.height;
 
+      // We just update the fileSectionHeight which automatically adjusts the editor height as well.
+      // Our logic stays consistent with this. Editor height changes only when fileSection height changes.
+      updateFileSectionHeight(filesSectionSize.height + editorHeightDelta)
     }
 
     updateEditorWidth(size.width);
   }
 
+  
   const updateEditorWidth = useCallback((width:number) => {
     const newWidthProportion = width / projectRef.current.offsetWidth;
 
@@ -547,6 +551,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       });
     }
   }, [editorProportions]);
+
+  
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize|undefined>();
   const handleFilesSectionResize:(e: SyntheticEvent, data: ResizeCallbackData) => void = (event, {node, size, handle}) => {
