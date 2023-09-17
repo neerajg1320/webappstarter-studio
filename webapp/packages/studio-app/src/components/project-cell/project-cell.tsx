@@ -530,16 +530,18 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     }
 
-    updateEditorWidth(size);
+    updateEditorWidth(size.width);
   }
 
-  const updateEditorWidth = useCallback((size) => {
-    const newWidthProportion = size.width / projectRef.current.offsetWidth;
+  const updateEditorWidth = useCallback((width:number) => {
+    const newWidthProportion = width / projectRef.current.offsetWidth;
 
     // If newWidthProportion is within constraints then update the size and current proportion
     if ((editorProportions.width.min < newWidthProportion) &&
         (newWidthProportion < editorProportions.width.max)) {
-      setEditorSize(size);
+      setEditorSize((prev) => {
+        return {...prev, width};
+      });
       setEditorProportions((prev) => {
         return {...prev, width: {...prev.width, current: newWidthProportion}};
       });
@@ -552,14 +554,16 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`handleFilesSectionResize():`, size);
     }
 
-    updateFileSectionHeight(size);
+    updateFileSectionHeight(size.height);
   }
 
-  const updateFileSectionHeight = useCallback((size:ElementSize) => {
-    const newHeightProportion = size.height / projectRef.current.offsetHeight;
+  const updateFileSectionHeight = useCallback((height:number) => {
+    const newHeightProportion = height / projectRef.current.offsetHeight;
     if ((fileSectionProportions.height.min < newHeightProportion) &&
         (newHeightProportion < fileSectionProportions.height.max)) {
-      setFilesSectionSize(size);
+      setFilesSectionSize((prev) => {
+        return {...prev, height};
+      });
       setFileSectionProportions((prev) => {
         return {...prev, height: {...prev.height, current: newHeightProportion}}
       });
