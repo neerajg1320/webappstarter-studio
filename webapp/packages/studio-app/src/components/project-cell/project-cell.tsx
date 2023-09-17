@@ -520,43 +520,51 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
   // We need to provide the editorSize from here as the height will be affected by the outer ResizableDiv
   const [editorSize, setEditorSize] = useState<ElementSize|undefined>();
-  const handleEditorResize:(e: SyntheticEvent, data: ResizeCallbackData) => void =
-      (event, {node, size, handle}) => {
-        if (debugComponent) {
-          console.log(`handleEditorResize():`, size, handle);
-        }
+  const handleEditorResize:(e: SyntheticEvent, data: ResizeCallbackData) => void = (event, {node, size, handle}) => {
+    if (debugComponent) {
+      console.log(`handleEditorResize():`, size, handle);
+    }
 
-        if (handle === 'sw') {
-          console.log(`update the height of filesSection`);
-        }
+    if (handle === 'sw') {
+      console.log(`update the height of filesSection`);
 
-        const newWidthProportion = size.width / projectRef.current.offsetWidth;
+    }
 
-        // If newWidthProportion is within constraints then update the size and current proportion
-        if ((editorProportions.width.min < newWidthProportion) &&
-            (newWidthProportion < editorProportions.width.max)) {
-          setEditorSize(size);
-          setEditorProportions((prev) => {
-            return {...prev, width: {...prev.width, current: newWidthProportion}};
-          });
-        }
-      }
+    updateEditorWidth(size);
+  }
+
+  const updateEditorWidth = useCallback((size) => {
+    const newWidthProportion = size.width / projectRef.current.offsetWidth;
+
+    // If newWidthProportion is within constraints then update the size and current proportion
+    if ((editorProportions.width.min < newWidthProportion) &&
+        (newWidthProportion < editorProportions.width.max)) {
+      setEditorSize(size);
+      setEditorProportions((prev) => {
+        return {...prev, width: {...prev.width, current: newWidthProportion}};
+      });
+    }
+  }, [editorProportions]);
 
   const [filesSectionSize, setFilesSectionSize] = useState<ElementSize|undefined>();
-  const handleFilesSectionResize:(e: SyntheticEvent, data: ResizeCallbackData) => void =
-      (event, {node, size, handle}) => {
-        if (debugComponent) {
-          console.log(`handleFilesSectionResize():`, size);
-        }
-        const newHeightProportion = size.height / projectRef.current.offsetHeight;
-        if ((fileSectionProportions.height.min < newHeightProportion) &&
-            (newHeightProportion < fileSectionProportions.height.max)) {
-          setFilesSectionSize(size);
-          setFileSectionProportions((prev) => {
-            return {...prev, height: {...prev.height, current: newHeightProportion}}
-          });
-        }
-      }
+  const handleFilesSectionResize:(e: SyntheticEvent, data: ResizeCallbackData) => void = (event, {node, size, handle}) => {
+    if (debugComponent) {
+      console.log(`handleFilesSectionResize():`, size);
+    }
+
+    updateFileSectionHeight(size);
+  }
+
+  const updateFileSectionHeight = useCallback((size:ElementSize) => {
+    const newHeightProportion = size.height / projectRef.current.offsetHeight;
+    if ((fileSectionProportions.height.min < newHeightProportion) &&
+        (newHeightProportion < fileSectionProportions.height.max)) {
+      setFilesSectionSize(size);
+      setFileSectionProportions((prev) => {
+        return {...prev, height: {...prev.height, current: newHeightProportion}}
+      });
+    }
+  }, [fileSectionProportions]);
 
   useEffect(() => {
     // Change the editor height if the height of the fileSectionSize changes
