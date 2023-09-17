@@ -28,7 +28,7 @@ const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children, onRe
   }
 
   return (
-      <Resizable
+      <ResizableBox
           height={height} width={width}
           onResize={handleResize} onResizeStart={handleResizeStart} onResizeStop={handleResizeStop}
           resizeHandles={resizeHandles}
@@ -36,7 +36,7 @@ const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children, onRe
         <div className="resizable-div" style={{width: width + 'px', height: height + 'px'}}>
           {children}
         </div>
-      </Resizable>
+      </ResizableBox>
   );
 }
 
