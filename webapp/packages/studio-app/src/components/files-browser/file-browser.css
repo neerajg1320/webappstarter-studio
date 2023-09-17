@@ -2,6 +2,8 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
+  overflow: hidden; /* This ensures our Run and Download bar doesn't overflow*/
 }
 
 .file-browser-panel {
@@ -11,6 +13,7 @@
   flex-direction: column;
   background-color: rgba(0, 0, 0, 20%);
   padding: 4px;
+  overflow: auto;
 }
 
 .file-list-item {

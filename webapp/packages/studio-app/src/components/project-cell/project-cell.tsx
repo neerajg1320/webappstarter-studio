@@ -582,9 +582,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {(filesSectionSize && editorSize) &&
       <ResizableDiv width={filesSectionSize.width} height={filesSectionSize.height}
                     onResize={handleFilesSectionResize} resizeHandles={['s']}>
-        <div style={{display: "flex", flexDirection: "row"}}>
+        {/* The maxHeight property is very important in the following divs. */}
+        {/* This ensures FileBrowser section will stay contained. */}
+        <div style={{display: "flex", flexDirection: "row", maxHeight:"100%"}}>
 
-          <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column"}}>
+          <div style={{flexGrow: 1, marginLeft: "10px", display: "flex", flexDirection: "column", maxHeight:"100%"}}>
             <FilesBrowser
                 reduxProject={reduxProject}
                 onSelect={handleFileBrowserOnSelect}

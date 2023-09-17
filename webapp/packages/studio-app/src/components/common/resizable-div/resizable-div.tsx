@@ -33,7 +33,7 @@ const ResizableDiv:React.FC<ResizableDivProps> = ({width, height, children, onRe
           onResize={handleResize} onResizeStart={handleResizeStart} onResizeStop={handleResizeStop}
           resizeHandles={resizeHandles}
       >
-        <div className="resizable-div" style={{width: width + 'px', height: height + 'px', overflow:"hidden"}}>
+        <div className="resizable-div" style={{width: width + 'px', height: height + 'px'}}>
           {children}
         </div>
       </Resizable>
