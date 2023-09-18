@@ -46,16 +46,6 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
     }
   }, []);
 
-  // const handleProjectCardClick = (localId:string) => {
-  //   if (debugProject) {
-  //     console.log(`handleProjectCardClick:`, localId);
-  //   }
-  //
-  //   if (propOnProjectChange) {
-  //     propOnProjectChange(localId);
-  //     navigate(RoutePath.PROJECT_CELL);
-  //   }
-  // }
 
   const handleNewProjectClick = () => {
     const localId = generateLocalId();
