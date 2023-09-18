@@ -58,9 +58,10 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
   // }
 
   const handleNewProjectClick = () => {
+    const localId = generateLocalId();
     createAndSetProject({
-      localId: generateLocalId(),
-      title: 'New Project',
+      localId,
+      title: `Project-${localId}`,
       description: 'This is a web application',
       template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
       framework: ProjectFrameworks.NONE,
