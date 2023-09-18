@@ -74,6 +74,7 @@ const ArgList:React.FC<ArgListProps> = ({list}) => {
                   keyName={'root-array'}
                   parentInfo={null}
                   expanded={true}
+                  intermediateExpanded={false}
                   level={0}
                   getItemInfoFunc={getConsoleItemInfo}
               />

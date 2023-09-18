@@ -44,6 +44,7 @@ export const KeyValueHOComponent:React.FC<KeyValueHOComponentProps> = ({
 
 
 interface ComponentTreeProps extends KeyValueHOComponentProps {
+  intermediateExpanded: boolean;
 };
 
 
@@ -53,6 +54,7 @@ const ComponentTree:React.FC<ComponentTreeProps> = ({
                                                        keyName=null,
                                                        parentInfo,
                                                        expanded: initialExpanded,
+                                                       intermediateExpanded,
                                                        level,
                                                        onClick:propOnClick,
                                                        onEvent:propOnEvent,
@@ -164,7 +166,7 @@ const ComponentTree:React.FC<ComponentTreeProps> = ({
                       itemNode={v}
                       keyName={k}
                       parentInfo={itemInfo}
-                      expanded={true}
+                      expanded={intermediateExpanded}
                       level={level + 1}
                       onClick={propOnClick}
                       onEvent={propOnEvent}
@@ -172,7 +174,7 @@ const ComponentTree:React.FC<ComponentTreeProps> = ({
                       onDragOver={handleDragOver}
                       // onDragLeave={handleDragLeave}
                       {...{draggable, onDragStart, onDrop}}
-                      {...{renderCount}}
+                      {...{renderCount, intermediateExpanded}}
                   />
                 </div>
             );

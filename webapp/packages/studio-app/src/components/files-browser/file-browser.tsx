@@ -350,6 +350,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
                 keyName={"root"}
                 parentInfo={null}
                 expanded={true}
+                intermediateExpanded={true}
                 level={0}
                 onClick={handleFileComponentTreeClick}
                 onEvent={handleFileComponentTreeEvent}
