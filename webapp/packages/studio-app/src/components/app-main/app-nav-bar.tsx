@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
-import {debugComponent} from "../../config/global";
+import {debugComponent, serverStaticBaseUrl} from "../../config/global";
 import {useState} from "react";
 
 const AppNavBar = () => {
@@ -51,7 +51,7 @@ const AppNavBar = () => {
         <div className="navbar-brand">
           <div className="navbar-item" onClick={handleLogoClick}>
             <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"10px"}}>
-              <img src="/logo192.png" alt="logo"/>
+              <img src={`${serverStaticBaseUrl}/landing/img/react-logo.png`} alt="logo"/>
               <span>WebappStarter</span>
             </div>
           </div>
