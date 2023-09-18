@@ -1,13 +1,14 @@
 import './code-editor.css';
 import './syntax.css';
 import React, {useEffect, useMemo, useRef} from 'react';
-import MonacoEditorReact, {Monaco, OnMount, useMonaco} from '@monaco-editor/react';
+import MonacoEditorReact, {Monaco, OnMount} from '@monaco-editor/react';
 import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import {CodeLanguage} from "../../state/language";
 import {debugComponent} from "../../config/global";
-import {editor} from "monaco-editor";
-import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+// Keeping this for reference: Uncommenting the following lines add 3MB of size to our bundle
+// import {editor} from "monaco-editor";
+// import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 
 const configTypescript = (monaco:Monaco) => {
@@ -29,7 +30,8 @@ const configTypescript = (monaco:Monaco) => {
 }
 
 // This function is used to active the JSX syntax highlighting
-const activateMonacoJSXHighlighter = async (editor:IStandaloneCodeEditor, monaco:Monaco) => {
+// We tried to use editor:IStandaloneCodeEditor but that caused size increase by 3MB as whole monaco library got included
+const activateMonacoJSXHighlighter = async (editor:any, monaco:Monaco) => {
   const { default: traverse } = await import('@babel/traverse');
   const { parse } = await import('@babel/parser');
   const { default: MonacoJSXHighlighter } = await import( 'monaco-jsx-highlighter' );
