@@ -42,7 +42,7 @@ const ProjectPlayground:React.FC = () => {
 
         createAndSetProject({
           localId,
-          title: 'Sample Project',
+          title: `my-project-${localId}`,
           description: 'A temporary project for trial purpose. This project will not be accessible after the session is closed.',
           template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
           framework: ProjectFrameworks.NONE,
