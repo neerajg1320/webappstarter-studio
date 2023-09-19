@@ -1,6 +1,6 @@
 .preview-iframe {
   flex-grow: 1;
-  padding: 5px;
+  /*padding: 5px;*/ /* We should give all available space to user */
   overflow: scroll;
   display: flex;
 }
