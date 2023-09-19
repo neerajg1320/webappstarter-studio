@@ -16,6 +16,7 @@ import ProtectedRoute from "../common/protected-route";
 import LoadingIndicator from "../common/loading-indicator";
 import ProjectPlayground from "../project-resource/project-playground";
 import UserPasswordResetConfirm from "../page-user/user-password-reset-confirm";
+import ProjectListScroller from "../project-resource/project-list-scroller";
 
 // import ProjectListGrid from "./components/project-resource/project-list-grid";
 // import ProjectCell from "./components/project-cell/project-cell";
@@ -45,6 +46,7 @@ const AppRouterWrapper = () => {
               <Route path={RoutePath.PROJECTS}
                      element={
                        <ProtectedRoute>
+                         <ProjectListScroller />
                          <ProjectListGrid />
                        </ProtectedRoute>
                      }

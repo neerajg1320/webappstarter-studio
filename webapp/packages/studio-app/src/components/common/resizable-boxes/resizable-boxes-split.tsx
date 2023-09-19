@@ -1,0 +1,119 @@
+import React, {useState, useEffect, useRef, useLayoutEffect, ReactNode} from 'react';
+import {Resizable} from 'react-resizable';
+import {ElementSize, ElementProportions, DimensionConstraints} from './resizable.ts';
+import './resizable-boxes-split.css';
+import './resizable.css';
+import useWindowSize from "../../../hooks/use-window-size";
+
+interface ResizableHorizontalSplitBoxProps {
+  contentComponent: ReactNode;
+  remainingComponent: ReactNode;
+  preserveProportion: boolean;
+  defaultHeight: number;
+  heightConstraints: DimensionConstraints;
+  data: any;
+}
+
+const defaultInnerProportions:ElementProportions = {
+  width: {min:0.1, current:0.5, max:0.9}
+}
+
+// ResizableSplitBox: Two Resizable boxes where the height of both remains equal but the width can change
+// We had to use inline-flex
+const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = ({
+                                                                                   contentComponent:PropContentComponent,
+                                                                                   remainingComponent:PropRemainingComponent,
+                                                                                   preserveProportion=true,
+                                                                                   defaultHeight=200,
+                                                                                   heightConstraints={min:100, max:Infinity},
+                                                                                   data:propData,
+                                                                                 }) => {
+  const [innerProportions, setInnerProportions] = useState<ElementProportions>(defaultInnerProportions);
+  /* We derive the width and height from outerSize innerWidth=(innerProportions.width.current * outerSize.width) innerHeight=(outerHeight)*/
+  const [innerSize, setInnerSize] = useState<ElementSize>({width: 0, height: 0});
+  /* The width doesn't matter in outerBox as we make it 100% */
+  const [outerSize, setOuterSize] = useState<ElementSize>({width: 0, height: defaultHeight});
+
+  /* We reset the width of the inner as per innerProportions.width.current when the size of the window changes */
+  const outerBoxRef = useRef<HTMLDivElement>();
+  const windowSize = useWindowSize();
+
+  useLayoutEffect(() => {
+    console.log(`useLayoutEffect[windowSize] width=${outerBoxRef.current.offsetWidth} height=${outerBoxRef.current.offsetHeight}`);
+
+    // We do not use updateInnerWidth as we do not want to update the innerProportions.width.current
+    setInnerSize((prev) => {
+      return {...prev, width: outerBoxRef.current.offsetWidth * innerProportions.width.current}
+    });
+  }, [windowSize]);
+
+  // This will update the outer height if within bounds
+  const updateOuterHeight = (height:number) => {
+    const {min, max} = heightConstraints;
+    if ((min < height) && (height < max)) {
+      setOuterSize((prev) => {
+        return {...prev, height};
+      });
+    }
+  };
+
+  const handleOuterResize = (event, {node, size, handle}) => {
+    // console.log(`handleOuterResize:`, size);
+    updateOuterHeight(size.height);
+  }
+
+  // This will update the inner width and recompute the inner width proportion if within bounds
+  const updateInnerWidth = (width:number) => {
+    const newInnerWidthProportion = width / outerBoxRef.current.offsetWidth;
+
+    if ((innerProportions.width.min < newInnerWidthProportion) && (newInnerWidthProportion < innerProportions.width.max)) {
+      setInnerSize((prev) => {
+        return {...prev, width};
+      });
+      if (preserveProportion) {
+        setInnerProportions((prev) => {
+          return {...prev, width: {...prev.width, current: newInnerWidthProportion}};
+        });
+      }
+    }
+  }
+
+  const handleInnerResize = (event, {node, size, handle}) => {
+    // console.log(`handleInnerResize:`, size.width, outerBoxRef.current.offsetWidth);
+    updateInnerWidth(size.width);
+
+    if (handle === 'se') {
+      const heightDelta = size.height - innerSize.height;
+      updateOuterHeight(outerSize.height + heightDelta);
+    }
+  }
+
+  // We adjust the height of the inner when the outer box height is changed
+  useEffect(() => {
+    if (innerSize.height !== outerSize.height) {
+      setInnerSize((prev) => {
+        return {...prev, height:outerSize.height};
+      });
+    }
+  }, [outerSize]);
+
+  return (
+      <>
+        {/*  All components must begin with Caps */}
+        <Resizable  height={outerSize.height} onResize={handleOuterResize}  resizeHandles={['s']}>
+          <div ref={outerBoxRef} className="outer-box" style={{width: "100%", height: (outerSize.height) + 'px'}}>
+
+            <Resizable width={innerSize.width} height={innerSize.height} onResize={handleInnerResize} resizeHandles={['e', 'se']}>
+              <div className="inner-box" style={{width: (innerSize.width) + 'px', height: (innerSize.height) + 'px', border:""}}>
+                <PropContentComponent title="Thor" data={propData} />
+              </div>
+            </Resizable>
+
+            <PropRemainingComponent name="Loki" data={propData} />
+          </div>
+        </Resizable>
+      </>
+  )
+}
+
+export default ResizableHorizontalSplitBox;

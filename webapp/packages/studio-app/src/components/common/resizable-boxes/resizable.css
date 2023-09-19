@@ -1,0 +1,44 @@
+.react-resizable {
+  position: relative; /* This is for the handles */
+}
+.react-resizable-handle {
+  position: absolute;
+
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-color: #2d89e5;
+}
+
+.react-resizable-handle-s {
+  height: 10px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+  cursor: row-resize;
+}
+
+.react-resizable-handle-e {
+  height: 100%;
+  width: 10px;
+  top: 0;
+  right: 0;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+}
+
+.react-resizable-handle-se {
+  background-color: blueviolet;
+  height: 20px;
+  width: 20px;
+  bottom: 0;
+  right: 0;
+}
+
+.react-resizable-handle-sw {
+  background-color: blueviolet;
+  height: 20px;
+  width: 20px;
+  bottom: 10;
+  left: 0;
+}

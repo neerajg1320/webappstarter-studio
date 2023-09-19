@@ -1,0 +1,18 @@
+.outer-box {
+  border: 1px solid #2d89e5;
+  border-radius: 5px;
+  display: flex;
+}
+
+.inner-box {
+  /* border: 1px dashed black; */
+}
+
+.outer-box-content {
+  display: inline-flex;
+}
+
+.outer-box-remaining {
+  max-width: 100%;
+  overflow: hidden;
+}
