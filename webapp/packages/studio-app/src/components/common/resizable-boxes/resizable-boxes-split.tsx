@@ -11,6 +11,7 @@ interface ResizableHorizontalSplitBoxProps {
   preserveProportion: boolean;
   defaultHeight: number;
   heightConstraints: DimensionConstraints;
+  innerBoxProportions: ElementProportions;
   data: any;
 }
 
@@ -26,9 +27,10 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
                                                                                    preserveProportion=true,
                                                                                    defaultHeight=200,
                                                                                    heightConstraints={min:100, max:Infinity},
+                                                                                   innerBoxProportions,
                                                                                    data:propData,
                                                                                  }) => {
-  const [innerProportions, setInnerProportions] = useState<ElementProportions>(defaultInnerProportions);
+  const [innerProportions, setInnerProportions] = useState<ElementProportions>(innerBoxProportions);
   /* We derive the width and height from outerSize innerWidth=(innerProportions.width.current * outerSize.width) innerHeight=(outerHeight)*/
   const [innerSize, setInnerSize] = useState<ElementSize>({width: 0, height: 0});
   /* The width doesn't matter in outerBox as we make it 100% */

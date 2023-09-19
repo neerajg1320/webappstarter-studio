@@ -8,12 +8,17 @@ const ProjectListScroller = () => {
   const projectList = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
+  const innerBoxProportions = useMemo(() => {
+    return {
+      width: {min:0.1, current:0.5, max:0.8}
+    }
+  }, [])
 
   const ContentBox = ({name, data:project}) => {
     return (
         <div className="content-box">
           <h2>{project.title}</h2>
-          <p>{project.description}</p>
+          <span>{project.description}</span>
         </div>
     );
   };
@@ -34,6 +39,7 @@ const ProjectListScroller = () => {
                   remainingComponent={RemainingBox}
                   defaultHeight={200}
                   heightConstraints={{min:50, max:400}}
+                  innerBoxProportions={innerBoxProportions}
                   data={project}
               />
           );
