@@ -174,7 +174,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                   theme='vs-dark'
                   height="calc(100% - 20px)"
                   options={{
-                    wordWrap: "on",
+                    wordWrap: "off",
                     minimap: {enabled: false},
                     showUnused: false,
                     folding: true,
