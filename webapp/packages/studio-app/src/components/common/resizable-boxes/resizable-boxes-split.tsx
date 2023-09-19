@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useLayoutEffect, ReactNode} from 'react';
+import React, {useState, useEffect, useRef, useLayoutEffect, ElementType} from 'react';
 import {Resizable} from 'react-resizable';
 import {ElementSize, ElementProportions, DimensionConstraints} from './resizable.ts';
 import './resizable-boxes-split.css';
@@ -6,9 +6,9 @@ import './resizable.css';
 import useWindowSize from "../../../hooks/use-window-size";
 
 interface ResizableHorizontalSplitBoxProps {
-  contentComponent: ReactNode;
-  remainingComponent: ReactNode;
-  preserveProportion: boolean;
+  contentComponent: ElementType;
+  remainingComponent: ElementType;
+  preserveProportion?: boolean;
   defaultHeight: number;
   heightConstraints: DimensionConstraints;
   innerBoxProportions: ElementProportions;

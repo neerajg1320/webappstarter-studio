@@ -10,7 +10,7 @@ const ProjectListScroller = () => {
   }, [projectsState.data]);
   const innerBoxProportions = useMemo(() => {
     return {
-      width: {min:0.1, current:0.5, max:0.8}
+      width: {min:0.1, current:0.2, max:0.8}
     }
   }, [])
 
