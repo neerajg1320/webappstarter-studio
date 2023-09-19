@@ -22,11 +22,10 @@ const ProjectListScroller = () => {
         </div>
     );
   };
-  const RemainingBox = ({title, data}) => {
+  const RemainingBox = ({title, data:project}) => {
     return (
         <div className="remaining-box" >
-          <h1>From Body of {title}</h1>
-          <h2>From Body of {title}</h2>
+          <pre>{project.bundle}</pre>
         </div>
     );
   };
