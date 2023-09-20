@@ -102,7 +102,7 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   return (
       <>
         {/*  All components must begin with Caps */}
-        <Resizable  height={outerSize.height} onResize={handleOuterResize}  resizeHandles={['s']}>
+        <Resizable width={Infinity} height={outerSize.height} onResize={handleOuterResize}  resizeHandles={['s']}>
           <div ref={outerBoxRef} className="outer-box" style={{width: "100%", height: (outerSize.height) + 'px'}}>
 
             <Resizable width={innerSize.width} height={innerSize.height} onResize={handleInnerResize} resizeHandles={['e', 'se']}>

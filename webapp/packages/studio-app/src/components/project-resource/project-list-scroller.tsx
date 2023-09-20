@@ -34,6 +34,7 @@ const ProjectListScroller = () => {
         {projectList.map((project, index) => {
           return (
               <ResizableHorizontalSplitBox
+                  key={index}
                   contentComponent={ContentBox}
                   remainingComponent={RemainingBox}
                   defaultHeight={200}
