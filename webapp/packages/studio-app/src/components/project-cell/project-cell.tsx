@@ -673,13 +673,14 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       </ResizableDiv>
       }
 
+
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
-        <PreviewTabsPanel
-            html={htmlContent}
-            code={bundlesState[reduxProject.bundleLocalId]!.code}
-            err={bundlesState[reduxProject.bundleLocalId]!.err}
-        />
-    }
+          <PreviewTabsPanel
+              html={htmlContent}
+              code={bundlesState[reduxProject.bundleLocalId]!.code}
+              err={bundlesState[reduxProject.bundleLocalId]!.err}
+          />
+      }
     </div>
   );
 }

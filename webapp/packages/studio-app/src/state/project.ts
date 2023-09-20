@@ -35,7 +35,7 @@ export interface ReduxProject extends ServerObject {
   selectedFileLocalId: string|null;
   entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
-  htmlFileLocalId?: string|null;
+  htmlContent?: string|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
   downloadingZip?: boolean;
@@ -60,7 +60,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   selectedFileLocalId?: string|null;
   entryHtmlFileLocalId?: string|null;
   entryFileLocalId?: string|null;
-  htmlFileLocalId?: string|null;
+  htmlContent?: string|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
   downloadingZip?: boolean;
