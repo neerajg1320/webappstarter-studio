@@ -64,7 +64,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
-  
+
   // TBD: 2023-09-08 This is same as reduxProject.selectFileLocalId
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
@@ -152,12 +152,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   };
 
   useEffect(() => {
-    if (debugComponent) {
-      console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady}`);
-    }
-
     if (reduxProject.ideReady) {
-      console.log(`bundleProject:ideReady`);
+      // console.log(`bundleProject:ideReady`);
       bundleProject();
     }
   }, [reduxProject.ideReady]);
