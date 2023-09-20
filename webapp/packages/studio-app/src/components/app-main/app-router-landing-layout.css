@@ -17,4 +17,5 @@
   height: 100%;
   padding: 10px;
   /*border: 1px solid lightcyan;*/
+  overflow: hidden;
 }

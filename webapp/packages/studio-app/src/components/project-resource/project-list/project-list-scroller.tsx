@@ -1,7 +1,10 @@
+import {useEffect, useMemo, useRef} from "react";
 import './project-list-scroller.css';
-import ResizableHorizontalSplitBox from "../common/resizable-boxes/resizable-boxes-split";
-import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {useMemo} from "react";
+import ResizableHorizontalSplitBox from "../../common/resizable-boxes/resizable-boxes-split";
+import {useTypedSelector} from "../../../hooks/use-typed-selector";
+import {ReduxProject} from "../../../state";
+import useVisibility from "../../../hooks/use-visibility";
+import useDebounceValue from "../../../hooks/use-debounce-value";
 
 const ProjectListScroller = () => {
   const projectsState = useTypedSelector((state) => state.projects);;
@@ -14,7 +17,7 @@ const ProjectListScroller = () => {
     }
   }, [])
 
-  const ContentBox = ({name, data:project}) => {
+  const ContentBox = ({data:project}:{data:ReduxProject}) => {
     return (
         <div className="content-box">
           <h2>{project.title}</h2>
@@ -22,15 +25,28 @@ const ProjectListScroller = () => {
         </div>
     );
   };
-  const RemainingBox = ({title, data:project}) => {
+  const RemainingBox = ({data:project}:{data:ReduxProject}) => {
     return (
         <div className="remaining-box" >
           <pre>{project.bundle}</pre>
         </div>
     );
   };
+
+  const scrollerRef = useRef<HTMLDivElement>();
+  const isScrollerVisible = useVisibility(scrollerRef);
+  console.log(`ProjectListScroller:render isScrollVisible:`, isScrollerVisible);
+
+  const handleProjectListScroll = () => {
+    // console.log(`handleProjectListScroll():`);
+  };
+
+  useEffect(() => {
+    console.log(`ProjectListScroller:useEffect[]`);
+  }, []);
+
   return (
-      <div className="project-scroll-list">
+      <div ref={scrollerRef} className="project-scroll-list" onScroll={handleProjectListScroll}>
         {projectList.map((project, index) => {
           return (
               <ResizableHorizontalSplitBox

@@ -4,6 +4,9 @@ import {ElementSize, ElementProportions, DimensionConstraints} from './resizable
 import './resizable-boxes-split.css';
 import './resizable.css';
 import useWindowSize from "../../../hooks/use-window-size";
+import useVisibility from "../../../hooks/use-visibility";
+import useDebounceValue from "../../../hooks/use-debounce-value";
+import {debugComponent} from "../../../config/global";
 
 interface ResizableHorizontalSplitBoxProps {
   contentComponent: ElementType;
@@ -39,6 +42,19 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   /* We reset the width of the inner as per innerProportions.width.current when the size of the window changes */
   const outerBoxRef = useRef<HTMLDivElement>();
   const windowSize = useWindowSize();
+
+  //  TBD: The visibility logic can be taken out to a function like withVisibility()
+  const isVisible = useVisibility(outerBoxRef);
+  // The useDebounceValue value here solves the initial visibility for all during the layout
+  const debouncedVisible = useDebounceValue(isVisible, 100);
+  if (debugComponent) {
+    console.log(`ResizableHorizontalSplitBox: ${propData.title.padEnd(20)} isVisible:${isVisible.toString().padEnd(5)} debouncedVisible:${debouncedVisible}`);
+  }
+
+  useEffect(() => {
+    console.log(`ResizableHorizontalSplitBox:useEffect[debouncedVisible] ${propData.title.padEnd(20)}: ${debouncedVisible}`)
+  }, [debouncedVisible]);
+  // visibility logic ends
 
   useLayoutEffect(() => {
     console.log(`useLayoutEffect[windowSize] width=${outerBoxRef.current.offsetWidth} height=${outerBoxRef.current.offsetHeight}`);
