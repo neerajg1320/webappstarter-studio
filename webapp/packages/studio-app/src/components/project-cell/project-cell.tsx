@@ -56,9 +56,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [showCellsList, setShowCellsList] = useState<boolean>(false);
-  const { createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile } = useActions();
+
+
+  const { createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -78,7 +78,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const autoSaveRef = useRef<boolean>(hotReload);
   const downloadClickedRef = useRef<boolean>(false);
 
-  const [remainingHeight, setRemainingHeight] = useState();
 
   useEffect(() => {
     hotReloadRef.current = hotReload;
@@ -121,10 +120,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, [editedFileLocalId, filesState]);
 
 
-
-  // Temporary till we fix layout
-  // const [editorContent, setEditorContent] = useState<string>('');
-  const { fetchFileContents } = useActions();
 
   // We are using refs because this function is stuck in time :) It gets embedded in editor with initial state
   const handleEditorChange = (value:string) => {

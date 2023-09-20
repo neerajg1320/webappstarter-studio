@@ -7,15 +7,16 @@ import {RoutePath} from "../../routes";
 import {generateLocalId} from "../../../state/id";
 import {useActions} from "../../../hooks/use-actions";
 import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../state";
+import './project-list-grid.css';
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
 
-interface ProjectsDashboardProps {
-  onProjectChange?: (localId:string) => void;
+interface ProjectListGridProps {
+  visibility:boolean;
 }
 
-const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propOnProjectChange}) => {
+const ProjectListGrid:React.FC<ProjectListGridProps> = ({visibility:propVisibility}) => {
   // const debugComponent = true;
   const navigate = useNavigate();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
@@ -61,10 +62,13 @@ const ProjectListGrid:React.FC<ProjectsDashboardProps> = ({onProjectChange:propO
   }
 
   return (
-      <div style={{
+      <div className="project-list-grid" style={{
+        width: "100%",
         height: "100%",
         padding: "0 40px",
-        display:"flex", flexDirection: "column", alignItems: "center", gap: "20px", justifyContent: "center"
+        display:"flex",
+        flexDirection: "column", alignItems: "center", gap: "20px", justifyContent: "center",
+        visibility: propVisibility ? 'visible' : 'hidden',
       }}
       >
         <div style={{

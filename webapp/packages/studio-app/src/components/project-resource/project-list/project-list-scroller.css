@@ -1,9 +1,13 @@
 .project-scroll-list {
+  position: absolute;
+  top: 0;
+  left:0;
   display: flex;
   flex-direction: column;
   gap: 40px;
   text-align: left;
   height: 100%;
+  width: 100%;
   overflow: auto;
 }
 

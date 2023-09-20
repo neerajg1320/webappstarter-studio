@@ -52,7 +52,9 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   }
 
   useEffect(() => {
-    console.log(`ResizableHorizontalSplitBox:useEffect[debouncedVisible] ${propData.title.padEnd(20)}: ${debouncedVisible}`)
+    if (debugComponent) {
+      console.log(`useEffect[debouncedVisible] ${propData.title.padEnd(20)}: ${debouncedVisible}`);
+    }
   }, [debouncedVisible]);
   // visibility logic ends
 
