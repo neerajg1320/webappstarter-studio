@@ -122,7 +122,9 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   }
 
   useEffect(() => {
-    console.log(`useEffect[currentProject?.synced] synced:`, currentProject?.synced)
+    if (debugComponent) {
+      console.log(`useEffect[currentProject?.synced] synced:`, currentProject?.synced)
+    }
 
     if (saveClickRef.current && currentProject && currentProject.synced) {
       if (isEdit) {

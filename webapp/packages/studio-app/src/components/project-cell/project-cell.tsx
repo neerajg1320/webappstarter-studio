@@ -156,7 +156,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady}`);
     }
 
-    bundleProject();
+    if (reduxProject.ideReady) {
+      bundleProject();
+    }
   }, [reduxProject.ideReady]);
 
   useEffect(() => {
