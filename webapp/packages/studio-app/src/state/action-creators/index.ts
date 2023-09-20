@@ -572,6 +572,35 @@ export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => 
   }
 }
 
+export const fetchProjectEntryFilesIfNeeded = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const reduxProject = getState().projects.data[localId];
+    if (!reduxProject) {
+      console.error(`Error! project id '${localId}' not found in store`)
+    }
+    const filesState = getState().files;
+
+    if (reduxProject.entryHtmlFileLocalId) {
+      const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
+      if (htmlFile) {
+        if (!htmlFile.contentSynced && !htmlFile.requestInitiated) {
+          fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+        }
+      }
+    }
+
+    if (reduxProject.entryFileLocalId) {
+      const entryFile = filesState.data[reduxProject.entryFileLocalId];
+      if (entryFile) {
+        if (!entryFile.contentSynced && !entryFile.requestInitiated) {
+          fetchFileContents([reduxProject.entryFileLocalId]);
+        }
+      }
+    }
+
+  }
+}
+
 // See if we can call this from fetchFiles
 export const createFile = (filePartial:ReduxCreateFilePartial): CreateFileAction => {
   return {

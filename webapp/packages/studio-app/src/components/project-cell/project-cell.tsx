@@ -30,6 +30,7 @@ import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
+import {fetchProjectEntryFilesIfNeeded} from "../../state/action-creators";
 // const debugComponent = true;
 
 interface ProjectCellProps {
@@ -58,7 +59,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  const { createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
+  const { createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents, fetchProjectEntryFilesIfNeeded } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -153,7 +154,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   useEffect(() => {
     if (reduxProject.ideReady) {
-      // console.log(`bundleProject:ideReady`);
+      console.log(`bundleProject:ideReady`);
       bundleProject();
     }
   }, [reduxProject.ideReady]);
@@ -165,42 +166,20 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     let _selectedFileId = reduxProject.selectedFileLocalId;
 
+    let _entryFile;
     if (reduxProject.entryFileLocalId) {
-      const entryFile = filesState.data[reduxProject.entryFileLocalId];
-      if (entryFile) {
-        if (!entryFile.contentSynced) {
-          if (!entryFile.requestInitiated) {
-            fetchFileContents([reduxProject.entryFileLocalId]);
-          }
-        }
-      } else {
-        // This could happen when we render the project and the files haven't been loaded
-        console.log("ProjectCell:useEffect entryFile not found");
-      }
-
-      if (!_selectedFileId) {
-        _selectedFileId = reduxProject.entryFileLocalId;
-      }
+      _entryFile = filesState.data[reduxProject.entryFileLocalId];
     }
 
     // This has been placed here so that we can download index.html even when we reach here after creating project,
     // because in that case the projectLocalId does not change but the project state changes.
+    let _htmlFile;
     if (reduxProject.entryHtmlFileLocalId) {
-      const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
-      if (htmlFile) {
-        if (htmlFile.contentSynced) {
-          updateProject({localId:projectLocalId, htmlContent:htmlFile.content, ideReady: true})
-        } else {
-          if (!htmlFile.requestInitiated) {
-            fetchFileContents([reduxProject.entryHtmlFileLocalId]);
-          }
-        }
-      } else {
-        console.log("The project html not found. Using default html file");
-      }
-      if (!_selectedFileId) {
-        _selectedFileId = reduxProject.entryHtmlFileLocalId;
-      }
+      _htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
+    }
+
+    if (_entryFile && _htmlFile) {
+      updateProject({localId:projectLocalId, htmlContent:_htmlFile.content, ideReady: true})
     }
 
     // This happens when we reach here after creating a project
@@ -216,6 +195,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
   useEffect(() => {
+
+
     if (debugComponent) {
       console.log(`ProjectCell: useEffect([reduxProject])`)
     }
