@@ -1,6 +1,6 @@
 import './preview-tabs-panel.css';
 import TabsBulma from "../common/tabs-bulma";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import PreviewIframe from "./preview-iframe/preview-iframe";
 import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
@@ -21,6 +21,15 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   const bundleSuccess = useMemo<boolean>(() => {
     return err === '';
   }, [err]);
+
+  useEffect(() => {
+    console.log(`PreviewTabsPanel:useEffect[]`) ;
+    return () => {
+      console.log(`PreviewTabsPanel:useEffect[] destroyed`)
+    }
+  }, []);
+
+  console.log(`PreviewTabsPanel:render [${html.length}, ${code.length}, ${err.length}]`);
 
   useEffect(() => {
     if (!bundleSuccess) {
@@ -49,11 +58,11 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
     }
   };
 
-  const handleConsoleTextChange = (value:string) => {
+  const handleConsoleTextChange = useCallback((value:string) => {
     if (debugComponent) {
       console.log(`PreviewTabs: console text changed`);
     }
-  }
+  }, []);
 
   return (
     <div className="preview-tabs-wrapper">

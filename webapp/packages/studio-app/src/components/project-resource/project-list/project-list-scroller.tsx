@@ -5,6 +5,7 @@ import {useTypedSelector} from "../../../hooks/use-typed-selector";
 import {ReduxProject} from "../../../state";
 import useVisibility from "../../../hooks/use-visibility";
 import {debugComponent} from "../../../config/global";
+import ProjectListScrollItem from "./project-list-scroll-item";
 
 interface ProjectListScrollerProps {
   visibility: boolean;
@@ -15,27 +16,8 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
   const projectList = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
-  const innerBoxProportions = useMemo(() => {
-    return {
-      width: {min:0.1, current:0.2, max:0.8}
-    }
-  }, [])
 
-  const ContentBox = ({data:project}:{data:ReduxProject}) => {
-    return (
-        <div className="content-box">
-          <h2>{project.title}</h2>
-          <span>{project.description}</span>
-        </div>
-    );
-  };
-  const RemainingBox = ({data:project}:{data:ReduxProject}) => {
-    return (
-        <div className="remaining-box" >
-          <pre>{project.bundle}</pre>
-        </div>
-    );
-  };
+
 
   const scrollerRef = useRef<HTMLDivElement>();
   const isScrollerVisible = useVisibility(scrollerRef);
@@ -57,15 +39,7 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
       <div ref={scrollerRef} className="project-scroll-list" onScroll={handleProjectListScroll} style={{visibility: propVisibility ? 'visible' : 'hidden'}}>
         {projectList.map((project, index) => {
           return (
-              <ResizableHorizontalSplitBox
-                  key={index}
-                  contentComponent={ContentBox}
-                  remainingComponent={RemainingBox}
-                  defaultHeight={200}
-                  heightConstraints={{min:50, max:400}}
-                  innerBoxProportions={innerBoxProportions}
-                  data={project}
-              />
+            <ProjectListScrollItem key={index} index={index} reduxProject={project} />
           );
         })}
 
