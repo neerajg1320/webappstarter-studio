@@ -5,8 +5,13 @@ import {ReduxProject} from "../../../state";
 import useVisibility from "../../../hooks/use-visibility";
 import useDebounceValue from "../../../hooks/use-debounce-value";
 import {debugComponent} from "../../../config/global";
+import {useActions} from "../../../hooks/use-actions";
+import {useTypedSelector} from "../../../hooks/use-typed-selector";
+
 
 const ProjectListScrollItem = ({index, reduxProject}) => {
+  const filesStateData = useTypedSelector(state => state.files.data);
+  const {fetchFileContents} = useActions();
   const scrollItemRef = useRef<HTMLDivElement>();
   const innerBoxProportions = useMemo(() => {
     return {
@@ -33,16 +38,24 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   //  TBD: The visibility logic can be taken out to a function like withVisibility()
   const isVisible = useVisibility(scrollItemRef);
   // The useDebounceValue value here solves the initial visibility for all during the layout
-  const debouncedVisible = useDebounceValue(isVisible, 100);
-  if (debugComponent || true) {
-    console.log(`ResizableHorizontalSplitBox: ${reduxProject.title.padEnd(20)} isVisible:${isVisible.toString().padEnd(5)} debouncedVisible:${debouncedVisible}`);
+  const isVisibleDebounced = useDebounceValue(isVisible, 100);
+  if (debugComponent) {
+    console.log(`ResizableHorizontalSplitBox: ${reduxProject.title.padEnd(20)} isVisible:${isVisible.toString().padEnd(5)} debouncedVisible:${isVisibleDebounced}`);
   }
 
   useEffect(() => {
     if (debugComponent || true) {
-      console.log(`useEffect[debouncedVisible] ${reduxProject.title.padEnd(20)}: ${debouncedVisible}`);
+      console.log(`debounced: ${reduxProject.title.padEnd(20)}: ${isVisibleDebounced}`);
     }
-  }, [debouncedVisible]);
+    if (reduxProject.entryHtmlFileLocalId) {
+      const htmlFile = filesStateData[reduxProject.entryHtmlFileLocalId];
+      if (!htmlFile.contentSynced) {
+        fetchFileContents([reduxProject.entryHtmlFileLocalId]);
+      } else {
+
+      }
+    }
+  }, [isVisibleDebounced]);
   // visibility logic ends
 
 

@@ -42,7 +42,7 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   /* We reset the width of the inner as per innerProportions.width.current when the size of the window changes */
   const outerBoxRef = useRef<HTMLDivElement>();
   const windowSize = useWindowSize();
-  
+
 
   useLayoutEffect(() => {
     if (debugComponent) {
