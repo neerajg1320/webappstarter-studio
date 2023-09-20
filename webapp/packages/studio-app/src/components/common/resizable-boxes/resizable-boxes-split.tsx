@@ -42,21 +42,7 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   /* We reset the width of the inner as per innerProportions.width.current when the size of the window changes */
   const outerBoxRef = useRef<HTMLDivElement>();
   const windowSize = useWindowSize();
-
-  //  TBD: The visibility logic can be taken out to a function like withVisibility()
-  const isVisible = useVisibility(outerBoxRef);
-  // The useDebounceValue value here solves the initial visibility for all during the layout
-  const debouncedVisible = useDebounceValue(isVisible, 100);
-  if (debugComponent) {
-    console.log(`ResizableHorizontalSplitBox: ${propData.title.padEnd(20)} isVisible:${isVisible.toString().padEnd(5)} debouncedVisible:${debouncedVisible}`);
-  }
-
-  useEffect(() => {
-    if (debugComponent) {
-      console.log(`useEffect[debouncedVisible] ${propData.title.padEnd(20)}: ${debouncedVisible}`);
-    }
-  }, [debouncedVisible]);
-  // visibility logic ends
+  
 
   useLayoutEffect(() => {
     if (debugComponent) {
@@ -120,22 +106,19 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   }, [outerSize]);
 
   return (
-      <>
-        {/*  All components must begin with Caps */}
-        <Resizable width={Infinity} height={outerSize.height} onResize={handleOuterResize}  resizeHandles={['s']}>
-          <div ref={outerBoxRef} className="outer-box" style={{width: "100%", height: (outerSize.height) + 'px'}}>
+    <Resizable width={Infinity} height={outerSize.height} onResize={handleOuterResize}  resizeHandles={['s']}>
+      <div ref={outerBoxRef} className="outer-box" style={{width: "100%", height: (outerSize.height) + 'px'}}>
 
-            <Resizable width={innerSize.width} height={innerSize.height} onResize={handleInnerResize} resizeHandles={['e', 'se']}>
-              <div className="inner-box" style={{width: (innerSize.width) + 'px', height: (innerSize.height) + 'px', border:""}}>
-                <PropContentComponent title="Thor" data={propData} />
-              </div>
-            </Resizable>
-
-            <PropRemainingComponent name="Loki" data={propData} />
+        <Resizable width={innerSize.width} height={innerSize.height} onResize={handleInnerResize} resizeHandles={['e', 'se']}>
+          <div className="inner-box" style={{width: (innerSize.width) + 'px', height: (innerSize.height) + 'px', border:""}}>
+            <PropContentComponent title="Thor" data={propData} />
           </div>
         </Resizable>
-      </>
-  )
+
+        <PropRemainingComponent name="Loki" data={propData} />
+      </div>
+    </Resizable>
+  );
 }
 
 export default ResizableHorizontalSplitBox;
