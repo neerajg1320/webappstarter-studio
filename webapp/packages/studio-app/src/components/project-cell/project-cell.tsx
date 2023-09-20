@@ -64,8 +64,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
-  const [htmlContent, setHtmlContent] = useState<string|null>(null);
-
+  
   // TBD: 2023-09-08 This is same as reduxProject.selectFileLocalId
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
@@ -177,10 +176,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           if (!entryFile.requestInitiated) {
             fetchFileContents([reduxProject.entryFileLocalId]);
           }
-        } else {
-          if (!reduxProject.ideReady) {
-            updateProject({localId:projectLocalId, ideReady: true})
-          }
         }
       } else {
         // This could happen when we render the project and the files haven't been loaded
@@ -194,12 +189,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     // This has been placed here so that we can download index.html even when we reach here after creating project,
     // because in that case the projectLocalId does not change but the project state changes.
-    let _htmlContent:string|null = null;
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
       if (htmlFile) {
         if (htmlFile.contentSynced) {
-          _htmlContent = htmlFile.content;
+          updateProject({localId:projectLocalId, htmlContent:htmlFile.content, ideReady: true})
         } else {
           if (!htmlFile.requestInitiated) {
             fetchFileContents([reduxProject.entryHtmlFileLocalId]);
@@ -212,11 +206,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         _selectedFileId = reduxProject.entryHtmlFileLocalId;
       }
     }
-    if (!_htmlContent) {
-      _htmlContent = htmlNoScript
-    }
-
-    setHtmlContent(_htmlContent);
 
     // This happens when we reach here after creating a project
     // Check if this can be optimized since selected and edited are supposed to be same
@@ -674,9 +663,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       }
 
 
-      {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+      {(reduxProject.htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
           <PreviewTabsPanel
-              html={htmlContent}
+              html={reduxProject.htmlContent}
               code={bundlesState[reduxProject.bundleLocalId]!.code}
               err={bundlesState[reduxProject.bundleLocalId]!.err}
           />
