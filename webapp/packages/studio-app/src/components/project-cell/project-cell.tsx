@@ -135,6 +135,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         updateFile({localId: _editedFile.localId, content: value});
 
         if (hotReloadRef.current) {
+          console.log(`bundleProjectDebounced()`);
           bundleProjectDebounced(null);
         }
 
@@ -157,6 +158,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
 
     if (reduxProject.ideReady) {
+      console.log(`bundleProject:ideReady`);
       bundleProject();
     }
   }, [reduxProject.ideReady]);
