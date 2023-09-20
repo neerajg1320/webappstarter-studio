@@ -59,7 +59,9 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
   // visibility logic ends
 
   useLayoutEffect(() => {
-    console.log(`useLayoutEffect[windowSize] width=${outerBoxRef.current.offsetWidth} height=${outerBoxRef.current.offsetHeight}`);
+    if (debugComponent) {
+      console.log(`useLayoutEffect[windowSize] width=${outerBoxRef.current.offsetWidth} height=${outerBoxRef.current.offsetHeight}`);
+    }
 
     // We do not use updateInnerWidth as we do not want to update the innerProportions.width.current
     setInnerSize((prev) => {

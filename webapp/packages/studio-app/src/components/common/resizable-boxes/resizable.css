@@ -33,6 +33,7 @@
   width: 20px;
   bottom: 0;
   right: 0;
+  cursor: se-resize;
 }
 
 .react-resizable-handle-sw {

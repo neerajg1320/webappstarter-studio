@@ -48,7 +48,9 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
   };
 
   useEffect(() => {
-    console.log(`ProjectListScroller:useEffect[]`);
+    if (debugComponent) {
+      console.log(`ProjectListScroller:useEffect[]`);
+    }
   }, []);
 
   return (

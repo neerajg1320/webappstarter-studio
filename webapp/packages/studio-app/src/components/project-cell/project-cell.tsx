@@ -155,7 +155,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (debugComponent) {
       console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady}`);
     }
-    // Using bundleProject causes plugin-load-from-redux to give error
+
     bundleProject();
   }, [reduxProject.ideReady]);
 
