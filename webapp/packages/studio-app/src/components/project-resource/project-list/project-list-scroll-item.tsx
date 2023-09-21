@@ -21,7 +21,7 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   const scrollItemRef = useRef<HTMLDivElement>();
   const innerBoxProportions = useMemo(() => {
     return {
-      width: {min:0.1, current:0.2, max:0.8}
+      width: {min:0.1, current:0.2, max:0.6}
     }
   }, [])
 
@@ -39,6 +39,8 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
         <>
         {reduxProject.bundleResult ?
             <div className="remaining-box" >
+              {/*<span>Hello this is a long string and we are going to watch</span>*/}
+              {/*<pre>{reduxProject.htmlContent}</pre>*/}
               <PreviewTabsPanel
                   html={reduxProject.htmlContent}
                   code={reduxProject.bundleResult.code}

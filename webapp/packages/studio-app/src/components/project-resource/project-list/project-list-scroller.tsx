@@ -19,11 +19,11 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
 
 
 
-  const scrollerRef = useRef<HTMLDivElement>();
-  const isScrollerVisible = useVisibility(scrollerRef);
-  if (debugComponent) {
-    console.log(`ProjectListScroller:render isScrollVisible:`, isScrollerVisible);
-  }
+  // const scrollerRef = useRef<HTMLDivElement>();
+  // const isScrollerVisible = useVisibility(scrollerRef);
+  // if (debugComponent) {
+  //   console.log(`ProjectListScroller:render isScrollVisible:`, isScrollerVisible);
+  // }
 
   const handleProjectListScroll = () => {
     // console.log(`handleProjectListScroll():`);
@@ -36,7 +36,7 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
   }, []);
 
   return (
-      <div ref={scrollerRef} className="project-scroll-list" onScroll={handleProjectListScroll} style={{visibility: propVisibility ? 'visible' : 'hidden'}}>
+      <div className="project-scroll-list" onScroll={handleProjectListScroll} style={{visibility: propVisibility ? 'visible' : 'hidden'}}>
         {projectList.map((project, index) => {
           return (
             <ProjectListScrollItem key={index} index={index} reduxProject={project} />

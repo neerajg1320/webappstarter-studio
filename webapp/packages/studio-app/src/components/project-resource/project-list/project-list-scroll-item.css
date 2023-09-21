@@ -9,7 +9,17 @@
 
 .remaining-box {
   flex-grow: 1;
-  max-height: 100%;
-  overflow: auto;
+  max-width: 100%;
   display: flex;
+  flex-direction: column;
+}
+
+.remaining-box pre {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+.remaining-box .preview-tabs-wrapper {
+  flex-grow: 1;
+  max-width: 100%;
 }

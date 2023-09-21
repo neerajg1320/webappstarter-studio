@@ -1,6 +1,6 @@
+import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import './preview-tabs-panel.css';
 import TabsBulma from "../common/tabs-bulma";
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import PreviewIframe from "./preview-iframe/preview-iframe";
 import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
@@ -87,4 +87,4 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   );
 }
 
-export default PreviewTabsPanel;
+export default React.memo(PreviewTabsPanel);
