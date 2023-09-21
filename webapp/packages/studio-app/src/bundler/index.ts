@@ -1,7 +1,7 @@
 import * as esbuild from 'esbuild-wasm';
 import {pluginResolve} from './plugins/plugin-resolve';
 import {pluginLoadFromServer} from './plugins/plugin-load-from-server';
-import {BundleInputType, BundleLanguage} from "../state/bundle";
+import {BundleInputType, BundleLanguage, BundleResult} from "../state/bundle";
 import {
   cellJsxFileName,
   cellTsxFileName,
@@ -52,7 +52,7 @@ export const bundleFilePath =  async (
     filePath: string,
     bundleLanguage: BundleLanguage,
     fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>
-) => {
+):Promise<BundleResult> => {
   return bundleCode(filePath, 'project', bundleLanguage, fileFetcher);
 }
 
@@ -63,7 +63,7 @@ const bundleCode = async (
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
-) => {
+):Promise<BundleResult> => {
     if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
     }
@@ -116,7 +116,7 @@ const bundleCode = async (
         return {
             code: result.outputFiles![0].text,
             err: ''
-        };
+        } as BundleResult;
     } catch (err) {
         console.error(`Got bundler error:`, err);
 
@@ -125,7 +125,7 @@ const bundleCode = async (
             return {
                 code: '',
                 err: err.message
-            };
+            } as BundleResult;
         } else {
             throw err;
         }

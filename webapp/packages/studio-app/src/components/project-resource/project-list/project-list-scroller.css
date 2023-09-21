@@ -10,18 +10,3 @@
   width: 100%;
   overflow: auto;
 }
-
-.content-box {
-  max-height: 100%;
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 5px;
-}
-
-.remaining-box {
-  flex-grow: 1;
-  max-height: 100%;
-  overflow: auto;
-}

@@ -1,4 +1,5 @@
 import {ServerObject, ServerObjectPartial} from "./obj";
+import {BundleResult} from "./bundle";
 
 export enum ProjectTemplates {
   JAVASCRIPT_WITH_CSS = 'javascript-css',
@@ -38,6 +39,7 @@ export interface ReduxProject extends ServerObject {
   htmlContent?: string|null;
   bundleDirty?: boolean;
   bundleLocalId?: string|null;
+  bundleResult?: BundleResult|null;
   zipBlob?: Blob|null;
   downloadingZip?: boolean;
 
@@ -63,6 +65,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   entryFileLocalId?: string|null;
   htmlContent?: string|null;
   bundleDirty?: boolean;
+  bundleResult?: BundleResult|null;
   bundleLocalId?: string|null;
   zipBlob?: Blob|null;
   downloadingZip?: boolean;

@@ -8,6 +8,7 @@ import {debugComponent} from "../../../config/global";
 import {useTypedSelector} from "../../../hooks/use-typed-selector";
 import {getFileFromLocalId} from "../../../state/helpers/file-helpers";
 import {useActions} from "../../../hooks/use-actions";
+import PreviewTabsPanel from "../../preview-section/preview-tabs-panel";
 
 const ProjectListScrollItem = ({index, reduxProject}) => {
   const appFilesLoaded = useTypedSelector(state => state.application.filesLoaded);
@@ -36,10 +37,16 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
     return (
         <>
-        {reduxProject.htmlContent ?
+        {!reduxProject.bundleDirty ?
             <div className="remaining-box" >
               {/*<pre>{JSON.stringify(project, null, 2)}</pre>*/}
-              <pre>{reduxProject.htmlContent}</pre>
+              {/*<pre>{reduxProject.bundleResult.code}</pre>*/}
+              {/*<pre>{reduxProject.htmlContent}</pre>*/}
+              <PreviewTabsPanel
+                  html={reduxProject.htmlContent}
+                  code={reduxProject.bundleResult.code}
+                  err={reduxProject.bundleResult.err}
+              />
             </div>
             :
             <h2>Loading</h2>
@@ -86,6 +93,11 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
     }
   }, [reduxProject.ideReady, reduxProject.bundleDirty]);
 
+  useEffect(() => {
+    if (!reduxProject.bundleDirty) {
+      console.log(`${reduxProject.title.padEnd(20)}: bundle is ready`);
+    }
+  }, [reduxProject.bundleDirty]);
   return (
       <div ref={scrollItemRef}>
         <ResizableHorizontalSplitBox

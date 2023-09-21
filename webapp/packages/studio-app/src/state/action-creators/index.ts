@@ -61,7 +61,7 @@ import {
   saveAuthToLocalStorage
 } from "../../local-storage/local-storage";
 import {AxiosError} from "axios";
-import {BundleLanguage, pathToBundleLanguage} from "../bundle";
+import {BundleLanguage, BundleResult, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 import {getFileType, getFileTypeFromPath, joinFileParts} from "../../utils/path";
@@ -279,7 +279,7 @@ export const createProjectBundle = (
         }
     });
 
-    const result = await bundleFilePath(
+    const result:BundleResult = await bundleFilePath(
         (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
         bundleLanguage,
         getFileContentsFromRedux
@@ -292,6 +292,8 @@ export const createProjectBundle = (
             bundle: result
         }
     });
+
+    dispatch(updateProject({localId:projectLocalId, bundleDirty:false, bundleResult:result}));
   };
 }
 
