@@ -58,7 +58,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  const { createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
+  const { bundleProject, createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -160,7 +160,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // This resolved our dual bundling problem
     if (reduxProject.ideReady) {
       console.log(`bundleProject:ideReady`);
-      bundleProject();
+      bundleProject(reduxProject.localId);
     }
   }, [reduxProject.ideReady]);
 
@@ -270,7 +270,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, [JSON.stringify(editedFile)]);
 
   // Make sure that we do not use useCallback( ,[]) here as it matters in useDebouncedCallback
-  const bundleProject = () => {
+  const bundleProjectOld = () => {
     if (reduxProject.entry_path) {
       updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
 
@@ -300,7 +300,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   // TBD: Need to put in settings
   const bundleProjectDebounced = useDebouncedCallback(
-      bundleProject,
+      () => bundleProject(reduxProject.localId),
       autoBundleDebounce
   );
 
@@ -324,7 +324,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`currentUser: `, currentUser);
     }
 
-    bundleProject();
+    bundleProject(reduxProject.localId);
   }
 
   const createDownloadLinkAndClick = () => {
@@ -428,7 +428,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       case "path-change":
         const {localId, newPath} = data;
         handleFilePathChange(localId, newPath);
-        bundleProject();
+        bundleProject(reduxProject.localId);
         break;
 
       default:
@@ -674,7 +674,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       </ResizableDiv>
       }
 
-
+      {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
           <PreviewTabsPanel
               html={htmlContent}

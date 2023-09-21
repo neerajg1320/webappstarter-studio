@@ -72,7 +72,7 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
-import {getProjectßFromLocalId} from "../helpers/project-helpers";
+import {getProjectFromLocalId} from "../helpers/project-helpers";
 import {getFileFromLocalId} from "../helpers/file-helpers";
 
 const apiForceDelay = false;
@@ -138,6 +138,33 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
   };
 }
 
+export const bundleProject = (localId) => {
+  return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+    const reduxProject = getProjectFromLocalId(getState().projects, localId);
+    const currentUser = getState().auth.currentUser;
+
+    if (reduxProject.entry_path) {
+      dispatch(updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId}));
+
+      // We have used entry_path as it is the path on the server that matters!
+      const bundleLanguage = pathToBundleLanguage(reduxProject.entry_path)
+
+      if (bundleLanguage !== BundleLanguage.UNKNOWN) {
+        if (currentUser) {
+          // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
+          // TBD: Remove the hardcoding of the project path
+          const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
+          createProjectBundle(reduxProject.localId, projectPath, `${reduxProject.entry_path}`, bundleLanguage)(dispatch, getState);
+        }
+      } else {
+        console.error(`Error! file type ${getFileTypeFromPath(reduxProject.entry_path)} not supported`)
+      }
+
+    } else {
+      console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
+    }
+  }
+}
 
 export const createProjectBundle = (
     projectLocalId:string,
@@ -727,7 +754,7 @@ export const saveFile = (localId: string) => {
 
 export const makeProjectIdeReady = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    const reduxProject = getProjectßFromLocalId(getState().projects, localId);
+    const reduxProject = getProjectFromLocalId(getState().projects, localId);
     // console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
 
     if (reduxProject.entryHtmlFileLocalId) {
