@@ -174,7 +174,7 @@ export const createProjectBundle = (
 ) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-    if (debugBundler || debugRedux) {
+    if (debugBundler || debugRedux || true) {
       console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}' bundleLanguage:${bundleLanguage}`);
     }
 

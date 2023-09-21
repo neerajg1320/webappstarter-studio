@@ -11,7 +11,7 @@ import {useActions} from "../../../hooks/use-actions";
 
 const ProjectListScrollItem = ({index, reduxProject}) => {
   const appFilesLoaded = useTypedSelector(state => state.application.filesLoaded);
-  const {makeProjectIdeReady} = useActions();
+  const {bundleProject, makeProjectIdeReady} = useActions();
 
   if (debugComponent && index === 0) {
     console.log(`ScrollItem:`, index, reduxProject,);
@@ -81,6 +81,8 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
     // console.log(`ScrollItem:useEffect[reduxProject.ideReady] ${reduxProject.ideReady}`);
     if (reduxProject.ideReady && reduxProject.bundleDirty) {
       console.log(`${reduxProject.title.padEnd(20)}: need to bundle the project .`);
+
+      bundleProject(reduxProject.localId);
     }
   }, [reduxProject.ideReady, reduxProject.bundleDirty]);
 
