@@ -19,6 +19,7 @@ export enum ActionType {
   UPDATE_PROJECT = 'update_project',
   DELETE_PROJECT = 'delete_project',
   SET_CURRENT_PROJECT = 'set_current_project',
+  FETCH_PROJECTS_START = 'fetch_projects_start',
   FETCH_PROJECTS_COMPLETE = 'fetch_projects_complete',
   FETCH_PROJECTS_ERROR = 'fetch_projects_error',
   DOWNLOAD_PROJECT_START = 'download_project_start',
@@ -28,6 +29,7 @@ export enum ActionType {
   UPDATE_FILE = 'update_file',
   DELETE_FILE = 'delete_file',
 
+  FETCH_FILES_START = 'fetch_files_start',
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
 

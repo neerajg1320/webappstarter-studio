@@ -157,6 +157,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady}`);
     }
 
+    // This resolved our dual bundling problem
     if (reduxProject.ideReady) {
       console.log(`bundleProject:ideReady`);
       bundleProject();

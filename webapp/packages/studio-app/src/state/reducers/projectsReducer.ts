@@ -48,6 +48,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         pkid: -1,
         confirmed: false,
         ideReady: false,
+        bundleDirty: true,
         selectedFileLocalId: null,
         synced: false,
         isServerResponse: false,
@@ -71,8 +72,18 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
       delete state.data[action.payload];
       return state;
 
+    case ActionType.FETCH_PROJECTS_START:
+      const {reset} = action.payload;
+      state.loading = true;
+      state.error = null;
+      if (reset) {
+        state.data = {};
+      }
+      return state;
+
     case ActionType.FETCH_PROJECTS_COMPLETE:
       state.loading = false;
+      state.error = null;
       if (action.payload.length > 0) {
         state.data = action.payload.reduce((acc, project) => {
           // We need to see how this behave. We generate this to stay consistent for localId across cells
@@ -80,6 +91,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           project.localId = generateLocalId();
           project.confirmed = true;
           project.ideReady = false;
+          project.bundleDirty = true;
           project.synced = true;
           project.deleteMarked = true;
           // TBD: This has to be cleaned

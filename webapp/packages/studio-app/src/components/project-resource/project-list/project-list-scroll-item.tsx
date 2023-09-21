@@ -5,13 +5,18 @@ import {ReduxProject} from "../../../state";
 import useVisibility from "../../../hooks/use-visibility";
 import useDebounceValue from "../../../hooks/use-debounce-value";
 import {debugComponent} from "../../../config/global";
-import {useActions} from "../../../hooks/use-actions";
 import {useTypedSelector} from "../../../hooks/use-typed-selector";
-
+import {getFileFromLocalId} from "../../../state/helpers/file-helpers";
+import {useActions} from "../../../hooks/use-actions";
 
 const ProjectListScrollItem = ({index, reduxProject}) => {
-  const filesStateData = useTypedSelector(state => state.files.data);
-  const {fetchFileContents} = useActions();
+  const appFilesLoaded = useTypedSelector(state => state.application.filesLoaded);
+  const {makeProjectIdeReady} = useActions();
+
+  if (debugComponent && index === 0) {
+    console.log(`ScrollItem:`, index, reduxProject,);
+  }
+
   const scrollItemRef = useRef<HTMLDivElement>();
   const innerBoxProportions = useMemo(() => {
     return {
@@ -19,19 +24,27 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
     }
   }, [])
 
-  const ContentBox = ({data:project}:{data:ReduxProject}) => {
+  const ContentBox = ({data:reduxProject}:{data:ReduxProject}) => {
     return (
         <div className="content-box">
-          <h2>{project.title}</h2>
-          <span>{project.description}</span>
+          <h2>{reduxProject.title}</h2>
+          <span>{reduxProject.description}</span>
+          <span>bundleDirty:{reduxProject.bundleDirty.toString()}</span>
         </div>
     );
   };
-  const RemainingBox = ({data:project}:{data:ReduxProject}) => {
+  const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
     return (
-        <div className="remaining-box" >
-          <pre>{project.bundle}</pre>
-        </div>
+        <>
+        {reduxProject.htmlContent ?
+            <div className="remaining-box" >
+              {/*<pre>{JSON.stringify(project, null, 2)}</pre>*/}
+              <pre>{reduxProject.htmlContent}</pre>
+            </div>
+            :
+            <h2>Loading</h2>
+        }
+        </>
     );
   };
 
@@ -44,20 +57,32 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   }
 
   useEffect(() => {
-    if (debugComponent || true) {
-      console.log(`debounced: ${reduxProject.title.padEnd(20)}: ${isVisibleDebounced}`);
+    if (!appFilesLoaded) {
+      return;
     }
-    if (reduxProject.entryHtmlFileLocalId) {
-      const htmlFile = filesStateData[reduxProject.entryHtmlFileLocalId];
-      if (!htmlFile.contentSynced) {
-        fetchFileContents([reduxProject.entryHtmlFileLocalId]);
-      } else {
+    if (!isVisibleDebounced) {
+      return;
+    }
 
+    if (debugComponent || false) {
+      console.log(`debounced: ${reduxProject.title.padEnd(20)}: ${isVisibleDebounced}`, `appfilesLoaded:`, appFilesLoaded);
+    }
+
+    if (isVisibleDebounced) {
+      if (!reduxProject.ideReady) {
+        // The following shall cause the ideReady for the project
+        makeProjectIdeReady(reduxProject.localId);
       }
     }
-  }, [isVisibleDebounced]);
+  }, [isVisibleDebounced, appFilesLoaded]);
   // visibility logic ends
 
+  useEffect(() => {
+    console.log(`ScrollItem:useEffect[reduxProject.ideReady] ${reduxProject.ideReady}`);
+    if (reduxProject.ideReady && reduxProject.bundleDirty) {
+      console.log(`We shall bundle the project here.`);
+    }
+  }, [reduxProject.ideReady, reduxProject.bundleDirty]);
 
   return (
       <div ref={scrollItemRef}>
@@ -74,4 +99,4 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   )
 }
 
-export default ProjectListScrollItem;
+export default React.memo(ProjectListScrollItem);

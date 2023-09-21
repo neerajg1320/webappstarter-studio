@@ -76,6 +76,16 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       delete state.data[action.payload];
       return state;
 
+    case ActionType.FETCH_FILES_START:
+      const {reset} = action.payload;
+
+      state.loading = true;
+      state.error = null;
+      if (reset) {
+        state.data = {};
+      }
+      return state;
+
     case ActionType.FETCH_FILES_COMPLETE:
       if (debugRedux) {
         console.log(`filesReducer:`, action);

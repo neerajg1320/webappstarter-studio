@@ -64,7 +64,7 @@ import {AxiosError} from "axios";
 import {BundleLanguage, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
-import {getFileType, joinFileParts} from "../../utils/path";
+import {getFileType, getFileTypeFromPath, joinFileParts} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
 import {loadData} from "../../bundler/plugins/loadSourceFiles";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
@@ -72,6 +72,8 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
+import {getProjectßFromLocalId} from "../helpers/project-helpers";
+import {getFileFromLocalId} from "../helpers/file-helpers";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -143,80 +145,81 @@ export const createProjectBundle = (
     entryFile:string,
     bundleLanguage: BundleLanguage
 ) => {
-    return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+  return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-      if (debugBundler || debugRedux) {
-        console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}' bundleLanguage:${bundleLanguage}`);
+    if (debugBundler || debugRedux) {
+      console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}' bundleLanguage:${bundleLanguage}`);
+    }
+
+    // We define a function closure as it needs getState() from getting files for project
+    const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
+      const enableUrlMap = false;
+
+      const projectState = getState().projects.data[projectLocalId];
+      const filesLocalIdMap = getState().files.data;
+
+      if (debugPlugin || debugRedux) {
+        console.log(`getFileContentsFromRedux: url:`, url);
+        console.log(`projectState:`, projectState);
       }
 
-      // We define a function closure as it needs getState() from getting files for project
-      const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-        const enableUrlMap = false;
+      let reduxFile: ReduxFile;
 
-        const projectState = getState().projects.data[projectLocalId];
-        const filesLocalIdMap = getState().files.data;
-
-        if (debugPlugin || debugRedux) {
-          console.log(`getFileContentsFromRedux: url:`, url);
-          console.log(`projectState:`, projectState);
-        }
-
-        let reduxFile: ReduxFile;
-
-        if (enableUrlMap) {
-          // Create a new map based on url instead of id
-          const projectUrlMap = Object.fromEntries(
-              Object.entries(filesLocalIdMap)
-                  .filter(([k, v]) => v.projectLocalId === projectLocalId)
-                  .map(([k, v]) => {
-                    return [v.file, v]
-                  })
-          );
-          reduxFile = projectUrlMap[url];
-
-          if (debugPlugin || debugRedux) {
-            console.log(`projectUrlMap:`, projectUrlMap);
-          }
-        } else {
-          // Create a new map based on filepath instead of id
-          const fileParts = url.split(projectDirPath + '/');
-
-          // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
-          // ['http://api.local.webappstarter.com/', 'src/index.js']
-          const reduxFilePath = fileParts[1];
-          // console.log(`reduxFilePath:`, reduxFilePath);
-
-          const projectFileMap = Object.fromEntries(
-              Object.entries(filesLocalIdMap)
-                  .filter(([k, v]) => v.projectLocalId === projectLocalId)
-                  .map(([k, v]) => {
-                    return [v.path, v]
-                  })
-          );
-
-          reduxFile = projectFileMap[reduxFilePath];
-
-          if (debugPlugin || debugRedux) {
-            console.log(`projectFileMap:`, projectFileMap);
-          }
-        }
+      if (enableUrlMap) {
+        // Create a new map based on url instead of id
+        const projectUrlMap = Object.fromEntries(
+            Object.entries(filesLocalIdMap)
+                .filter(([k, v]) => v.projectLocalId === projectLocalId)
+                .map(([k, v]) => {
+                  return [v.file, v]
+                })
+        );
+        reduxFile = projectUrlMap[url];
 
         if (debugPlugin || debugRedux) {
-          console.log(`File Contents:`, reduxFile.content);
+          console.log(`projectUrlMap:`, projectUrlMap);
         }
+      } else {
+        // Create a new map based on filepath instead of id
+        const fileParts = url.split(projectDirPath + '/');
 
-        let result: esbuild.OnLoadResult | null = null;
-        if (reduxFile) {
-          let content = reduxFile.content;
-          let resolveDir = new URL('./', url).pathname;
+        // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
+        // ['http://api.local.webappstarter.com/', 'src/index.js']
+        const reduxFilePath = fileParts[1];
+        // console.log(`reduxFilePath:`, reduxFilePath);
 
-          if (content === null) {
-            // const {data, request} = await axiosInstance.get(url);
-            // We should be using cache here or we should be using loadFileUrl
-            // We can make fetchFileContents to use loadFileUrl
-            const response = await fetchFileContents([reduxFile.localId])(dispatch, getState);
+        const projectFileMap = Object.fromEntries(
+            Object.entries(filesLocalIdMap)
+                .filter(([k, v]) => v.projectLocalId === projectLocalId)
+                .map(([k, v]) => {
+                  return [v.path, v]
+                })
+        );
 
-            if (response) {
+        reduxFile = projectFileMap[reduxFilePath];
+
+        if (debugPlugin || debugRedux) {
+          console.log(`projectFileMap:`, projectFileMap);
+        }
+      }
+
+      if (debugPlugin || debugRedux) {
+        console.log(`File Contents:`, reduxFile.content);
+      }
+
+      let result: esbuild.OnLoadResult | null = null;
+      if (reduxFile) {
+        let content = reduxFile.content;
+        let resolveDir = new URL('./', url).pathname;
+
+        if (content === null) {
+          // const {data, request} = await axiosInstance.get(url);
+          // We should be using cache here or we should be using loadFileUrl
+          // We can make fetchFileContents to use loadFileUrl
+          const responses = await fetchFileContents([reduxFile.localId])(dispatch, getState);
+
+          if (responses) {
+            responses.forEach(({response, reduxFile}) => {
               const {data, request} = response;
               // We will use result.content to fill in the reduxFile content
               if (data) {
@@ -225,45 +228,45 @@ export const createProjectBundle = (
               }
 
               resolveDir = new URL('./', request.responseURL).pathname;
-            }
-          }
-
-          if (content) {
-            result = loadData(content, getFileType(url));
-            result.resolveDir = resolveDir;
-          }
-
-          if (debugPlugin) {
-            console.log(`result:`, result);
+            })
           }
         }
 
-        return result;
+        if (content) {
+          result = loadData(content, getFileType(url));
+          result.resolveDir = resolveDir;
+        }
+
+        if (debugPlugin) {
+          console.log(`result:`, result);
+        }
       }
 
-      dispatch({
-          type: ActionType.PROJECT_BUNDLE_START,
-          payload: {
-              projectLocalId: projectLocalId,
-          }
-      });
+      return result;
+    }
 
-      const result = await bundleFilePath(
-          (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
-          bundleLanguage,
-          getFileContentsFromRedux
-      );
+    dispatch({
+        type: ActionType.PROJECT_BUNDLE_START,
+        payload: {
+            projectLocalId: projectLocalId,
+        }
+    });
 
-      dispatch({
-          type: ActionType.PROJECT_BUNDLE_COMPLETE,
-          payload: {
-              projectLocalId,
-              bundle: result
-          }
-      });
-    };
-  }
-  
+    const result = await bundleFilePath(
+        (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
+        bundleLanguage,
+        getFileContentsFromRedux
+    );
+
+    dispatch({
+        type: ActionType.PROJECT_BUNDLE_COMPLETE,
+        payload: {
+            projectLocalId,
+            bundle: result
+        }
+    });
+  };
+}
 
 // We will use thunk here as we use a network request which is asynchronous
 export const fetchCells = () => {
@@ -354,6 +357,7 @@ const __rm__gHeaders = {
 }
 
 
+// Called from ProjectListGrid
 export const fetchProjectsAndFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // console.log(getState().auth);
@@ -364,12 +368,14 @@ export const fetchProjectsAndFiles = () => {
 
 export const fetchProjects = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    dispatch({type:ActionType.FETCH_PROJECTS_START, payload:{reset:true}})
     try {
       const {data:projects}: {data: ReduxProject[]} = await axiosApiInstance.get(`/projects/`, );
       dispatch({
         type: ActionType.FETCH_PROJECTS_COMPLETE,
         payload: projects
       });
+      dispatch({type: ActionType.UPDATE_APPLICATION, payloade: {projectsLoaded: true}});
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
@@ -598,6 +604,8 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 export const fetchFiles = (projectPkid?:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
+      dispatch({type: ActionType.FETCH_FILES_START, payload:{reset:true}});
+
       // Later we can created a combined object
       let params:{[k:string]:string|number} = {};
       if (projectPkid) {
@@ -641,6 +649,7 @@ export const fetchFiles = (projectPkid?:string) => {
         type: ActionType.FETCH_FILES_COMPLETE,
         payload: files,
       });
+      dispatch({type: ActionType.UPDATE_APPLICATION, payload: {filesLoaded: true}});
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
@@ -716,6 +725,28 @@ export const saveFile = (localId: string) => {
   }
 }
 
+export const makeProjectIdeReady = (localId: string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const reduxProject = getProjectßFromLocalId(getState().projects, localId);
+    console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
+
+    if (reduxProject.entryHtmlFileLocalId) {
+      const htmlFile = getFileFromLocalId(getState().files, reduxProject.entryHtmlFileLocalId);
+      if (!htmlFile.contentSynced) {
+        const responses = await fetchFileContents([reduxProject.entryHtmlFileLocalId, reduxProject.entryFileLocalId])(dispatch, getState);
+        responses.forEach(({response, reduxFile}) => {
+          console.log(response, reduxFile);
+          if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
+            dispatch(updateProject({localId, htmlContent:response.data}))
+          }
+        });
+        console.log(`makeProjectIdeReady:`, responses);
+        dispatch(updateProject({localId, ideReady: true}));
+      }
+    }
+  }
+}
+
 export const removeFile = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
@@ -738,8 +769,18 @@ export const removeFile = (localId:string) => {
 }
 
 
+const fetchContent = (reduxFile) => {
+  return new Promise((resolve, reject) => {
+    axiosApiInstance.get(reduxFile.file!.replace('localhost', 'localhost:8080'))
+        .then(response => resolve({response, reduxFile}))
+        .catch(reject);
+  })
+}
+
 // Download File
 export const fetchFileContents = (localIds: [string]) => {
+  console.log(`fetchFileContents:`, localIds);
+
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
       console.log(`fetchFileContents: ${localIds[0]}`);
@@ -750,36 +791,40 @@ export const fetchFileContents = (localIds: [string]) => {
       return;
     }
 
-    const fileStates = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
-    // console.log(`fileStates:`, fileStates);
+    const reduxFiles = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
+    console.log(`reduxFiles:`, reduxFiles);
+    // const reduxFile = reduxFiles[0];
 
-    dispatch({
-      type: ActionType.UPDATE_FILE,
-      payload: {
-        localId: fileStates[0].localId,
-        requestInitiated: true,
-      }
-    });
-
-    try {
-      if (debugRedux) {
-        console.log(`fetchFileContents: url:${fileStates[0].file}`)
-      }
-      const response = await axiosApiInstance.get(fileStates[0].file!.replace('localhost', 'localhost:8080'));
-
+    reduxFiles.forEach(rFile => {
       dispatch({
         type: ActionType.UPDATE_FILE,
         payload: {
-          localId: fileStates[0].localId,
-          content: response.data,
-          prevContent: response.data,
-          contentSynced: true,
-          isServerResponse: true,
-          requestInitiated: false,
+          localId: rFile.localId,
+          requestInitiated: true,
         }
       });
+    })
 
-      return response;
+
+    try {
+      const responses = await Promise.all(reduxFiles.map(rFile => fetchContent(rFile)))
+
+      // const response = await
+      responses.forEach(({response, reduxFile}, index) => {
+        dispatch({
+          type: ActionType.UPDATE_FILE,
+          payload: {
+            localId: reduxFile.localId,
+            content: response.data,
+            prevContent: response.data,
+            contentSynced: true,
+            isServerResponse: true,
+            requestInitiated: false,
+          }
+        });
+      });
+
+      return responses;
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
