@@ -121,6 +121,11 @@ export interface DownloadProjectComplete {
   payload: any
 }
 
+export interface FetchProjectsStartAction {
+  type: ActionType.FETCH_PROJECTS_START,
+  payload: {reset: boolean}
+}
+
 export interface FetchProjectsCompleteAction {
   type: ActionType.FETCH_PROJECTS_COMPLETE,
   payload: ReduxProject[]
@@ -153,6 +158,10 @@ export interface DeleteFileAction {
   payload: string
 }
 
+export interface FetchFilesStartAction {
+  type: ActionType.FETCH_FILES_START,
+  payload: { reset: boolean }
+}
 
 export interface FetchFilesCompleteAction {
   type: ActionType.FETCH_FILES_COMPLETE,
@@ -232,12 +241,14 @@ export type Action =
     | DeleteProjectAction
     | DownloadProjectStart
     | DownloadProjectComplete
+    | FetchProjectsStartAction
     | FetchProjectsCompleteAction
     | FetchProjectsErrorAction
     | SetCurrentProjectAction
     | CreateFileAction
     | UpdateFileAction
     | DeleteFileAction
+    | FetchFilesStartAction
     | FetchFilesCompleteAction
     | FetchFilesErrorAction
     | UserRequestStartAction

@@ -404,7 +404,7 @@ export const fetchProjects = () => {
         type: ActionType.FETCH_PROJECTS_COMPLETE,
         payload: projects
       });
-      dispatch({type: ActionType.UPDATE_APPLICATION, payloade: {projectsLoaded: true}});
+      dispatch({type: ActionType.UPDATE_APPLICATION, payload: {projectsLoaded: true}});
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
@@ -807,7 +807,7 @@ const fetchContent = (reduxFile) => {
 }
 
 // Download File
-export const fetchFileContents = (localIds: [string]) => {
+export const fetchFileContents = (localIds: string[]) => {
   // console.log(`fetchFileContents:`, localIds);
 
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
