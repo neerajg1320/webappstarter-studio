@@ -78,9 +78,9 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   // visibility logic ends
 
   useEffect(() => {
-    console.log(`ScrollItem:useEffect[reduxProject.ideReady] ${reduxProject.ideReady}`);
+    // console.log(`ScrollItem:useEffect[reduxProject.ideReady] ${reduxProject.ideReady}`);
     if (reduxProject.ideReady && reduxProject.bundleDirty) {
-      console.log(`We shall bundle the project here.`);
+      console.log(`${reduxProject.title.padEnd(20)}: need to bundle the project .`);
     }
   }, [reduxProject.ideReady, reduxProject.bundleDirty]);
 

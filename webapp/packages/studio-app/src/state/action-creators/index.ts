@@ -728,19 +728,19 @@ export const saveFile = (localId: string) => {
 export const makeProjectIdeReady = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const reduxProject = getProjectßFromLocalId(getState().projects, localId);
-    console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
+    // console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
 
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = getFileFromLocalId(getState().files, reduxProject.entryHtmlFileLocalId);
       if (!htmlFile.contentSynced) {
         const responses = await fetchFileContents([reduxProject.entryHtmlFileLocalId, reduxProject.entryFileLocalId])(dispatch, getState);
         responses.forEach(({response, reduxFile}) => {
-          console.log(response, reduxFile);
+          // console.log(response, reduxFile);
           if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
             dispatch(updateProject({localId, htmlContent:response.data}))
           }
         });
-        console.log(`makeProjectIdeReady:`, responses);
+        // console.log(`makeProjectIdeReady:`, responses);
         dispatch(updateProject({localId, ideReady: true}));
       }
     }
@@ -779,7 +779,7 @@ const fetchContent = (reduxFile) => {
 
 // Download File
 export const fetchFileContents = (localIds: [string]) => {
-  console.log(`fetchFileContents:`, localIds);
+  // console.log(`fetchFileContents:`, localIds);
 
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (debugRedux) {
@@ -792,7 +792,7 @@ export const fetchFileContents = (localIds: [string]) => {
     }
 
     const reduxFiles = Object.entries(getState().files.data).filter(([k,v]) => localIds.includes(k)).map(([k, v]) => v);
-    console.log(`reduxFiles:`, reduxFiles);
+    // console.log(`reduxFiles:`, reduxFiles);
     // const reduxFile = reduxFiles[0];
 
     reduxFiles.forEach(rFile => {
