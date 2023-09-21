@@ -37,11 +37,8 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
     return (
         <>
-        {!reduxProject.bundleDirty ?
+        {reduxProject.bundleResult ?
             <div className="remaining-box" >
-              {/*<pre>{JSON.stringify(project, null, 2)}</pre>*/}
-              {/*<pre>{reduxProject.bundleResult.code}</pre>*/}
-              {/*<pre>{reduxProject.htmlContent}</pre>*/}
               <PreviewTabsPanel
                   html={reduxProject.htmlContent}
                   code={reduxProject.bundleResult.code}
