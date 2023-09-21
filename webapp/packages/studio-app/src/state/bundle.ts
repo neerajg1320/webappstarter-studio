@@ -8,6 +8,8 @@ export enum BundleLanguage {
   UNKNOWN = 'unknown',
 }
 
+export type BundleResult = {code:string, err:string};
+
 export const stringToBundleLanguage = (language:string): BundleLanguage => {
   return BundleLanguage[language as keyof typeof BundleLanguage] || BundleLanguage.UNKNOWN
 }

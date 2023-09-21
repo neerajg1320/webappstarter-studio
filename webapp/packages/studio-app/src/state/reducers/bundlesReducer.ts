@@ -1,17 +1,13 @@
 import produce from "immer";
 import { ActionType } from "../action-types";
 import { Action } from "../actions";
-import {BundleInputType} from "../bundle";
+import {BundleInputType, BundleResult} from "../bundle";
 import {debugRedux} from "../../config/global";
 
+type BundleInfo = BundleResult & {loading:boolean, type:BundleInputType};
 
 interface BundlesState {
-    [key: string]: {
-        loading: boolean;
-        code: string;
-        err: string;
-        type: BundleInputType
-    } | undefined;
+    [key: string]: BundleInfo | undefined;
 }
 
 const initialState: BundlesState = {}
