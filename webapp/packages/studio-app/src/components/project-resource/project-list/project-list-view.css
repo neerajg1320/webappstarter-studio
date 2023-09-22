@@ -3,6 +3,8 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  max-width: 100%;
   /*margin: 5px;*/
   /*border: 1px dashed lightblue;*/
 }
@@ -27,6 +29,7 @@
   position: relative;
   width: 100%;
   flex-grow: 1;
+  max-width: 100%;
   /*margin: 5px;*/
   /*border: 1px dashed salmon;*/
 }
