@@ -1,12 +1,12 @@
 import React, {useEffect, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
-import {useTypedSelector} from "../../../hooks/use-typed-selector";
+import {useTypedSelector} from "../../../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
-import {debugComponent, debugProject} from "../../../config/global";
-import {RoutePath} from "../../routes";
-import {generateLocalId} from "../../../state/id";
-import {useActions} from "../../../hooks/use-actions";
-import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../state";
+import {debugComponent, debugProject} from "../../../../config/global";
+import {RoutePath} from "../../../routes";
+import {generateLocalId} from "../../../../state/id";
+import {useActions} from "../../../../hooks/use-actions";
+import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../../state";
 import './project-list-grid.css';
 
 // This component shows us the projects available for a user

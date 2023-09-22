@@ -1,9 +1,9 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import './project-list-item-card.css';
-import {ReduxProject} from "../../../state";
-import {useActions} from "../../../hooks/use-actions";
-import {RoutePath} from "../../routes";
+import {ReduxProject} from "../../../../state";
+import {useActions} from "../../../../hooks/use-actions";
+import {RoutePath} from "../../../routes";
 
 interface ProjectCardProps {
   reduxProject: ReduxProject

@@ -1,6 +1,6 @@
 import {useState} from "react";
-import ProjectListScroller from "./project-list-scroller";
-import ProjectListGrid from "./project-list-grid";
+import ProjectListScroller from "./project-list-scroller/project-list-scroller";
+import ProjectListGrid from "./project-list-grid/project-list-grid";
 import './project-list-view.css';
 
 const ProjectListView = () => {

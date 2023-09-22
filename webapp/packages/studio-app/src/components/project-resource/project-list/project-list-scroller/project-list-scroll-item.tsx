@@ -1,14 +1,14 @@
 import React, {useEffect, useMemo, useRef} from "react";
 import "./project-list-scroll-item.css";
-import ResizableHorizontalSplitBox from "../../common/resizable-boxes/resizable-boxes-split";
-import {ReduxProject} from "../../../state";
-import useVisibility from "../../../hooks/use-visibility";
-import useDebounceValue from "../../../hooks/use-debounce-value";
-import {debugComponent} from "../../../config/global";
-import {useTypedSelector} from "../../../hooks/use-typed-selector";
-import {getFileFromLocalId} from "../../../state/helpers/file-helpers";
-import {useActions} from "../../../hooks/use-actions";
-import PreviewTabsPanel from "../../preview-section/preview-tabs-panel";
+import ResizableHorizontalSplitBox from "../../../common/resizable-boxes/resizable-boxes-split";
+import {ReduxProject} from "../../../../state";
+import useVisibility from "../../../../hooks/use-visibility";
+import useDebounceValue from "../../../../hooks/use-debounce-value";
+import {debugComponent} from "../../../../config/global";
+import {useTypedSelector} from "../../../../hooks/use-typed-selector";
+import {getFileFromLocalId} from "../../../../state/helpers/file-helpers";
+import {useActions} from "../../../../hooks/use-actions";
+import PreviewTabsPanel from "../../../preview-section/preview-tabs-panel";
 
 interface ProjectListScrollItemProps {
   index: number;

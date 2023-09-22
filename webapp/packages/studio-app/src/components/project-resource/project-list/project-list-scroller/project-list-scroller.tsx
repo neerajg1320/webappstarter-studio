@@ -1,10 +1,9 @@
 import React, {useEffect, useMemo, useRef} from "react";
 import './project-list-scroller.css';
-import ResizableHorizontalSplitBox from "../../common/resizable-boxes/resizable-boxes-split";
-import {useTypedSelector} from "../../../hooks/use-typed-selector";
-import {ReduxProject} from "../../../state";
-import useVisibility from "../../../hooks/use-visibility";
-import {debugComponent} from "../../../config/global";
+
+import {useTypedSelector} from "../../../../hooks/use-typed-selector";
+
+import {debugComponent} from "../../../../config/global";
 import ProjectListScrollItem from "./project-list-scroll-item";
 
 interface ProjectListScrollerProps {
