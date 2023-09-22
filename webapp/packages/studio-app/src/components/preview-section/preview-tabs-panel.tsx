@@ -45,7 +45,9 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({title, html, code, err}) =
       lifecyleInfo.current.count += 1;
       lifecyleInfo.current.timestamps.push(new Date());
     }
-    console.log(`PreviewTabsPanel:render(${lifecyleInfo.current.count}) '${title} '[${html.length}, ${code.length}, ${err.length}]`);
+    // console.log(`PreviewTabsPanel:render(${lifecyleInfo.current.count}) '${title} '[${html.length}]`);
+    // console.log(`PreviewTabsPanel:render(${lifecyleInfo.current.count}) '${title} '[${code.length}]`);
+    // console.log(`PreviewTabsPanel:render(${lifecyleInfo.current.count}) '${title} '[${err.length}]`);
   }
 
   useEffect(() => {
@@ -88,7 +90,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({title, html, code, err}) =
       </div>
       <div className="preview-tabs-panel" >
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
-          <PreviewIframe title={title} html={html} code={code} err={err} />
+          {html ? <PreviewIframe title={title} html={html} code={code} err={err} /> : <h2>html not populated</h2>}
         </div>
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? "flex" : "none"}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>

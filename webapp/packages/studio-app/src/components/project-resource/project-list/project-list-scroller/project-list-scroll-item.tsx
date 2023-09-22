@@ -6,7 +6,7 @@ import useVisibility from "../../../../hooks/use-visibility";
 import useDebounceValue from "../../../../hooks/use-debounce-value";
 import {debugComponent} from "../../../../config/global";
 import {useTypedSelector} from "../../../../hooks/use-typed-selector";
-import {getFileFromLocalId} from "../../../../state/helpers/file-helpers";
+
 import {useActions} from "../../../../hooks/use-actions";
 import PreviewTabsPanel from "../../../preview-section/preview-tabs-panel";
 
@@ -14,6 +14,37 @@ interface ProjectListScrollItemProps {
   index: number;
   reduxProject: ReduxProject;
 }
+
+const ContentBox = ({data:reduxProject}:{data:ReduxProject}) => {
+  return (
+      <div className="content-box">
+        <h2>{reduxProject.title}</h2>
+        <span>{reduxProject.description}</span>
+        <span>bundleDirty:{reduxProject.bundleDirty.toString()}</span>
+      </div>
+  );
+};
+
+const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
+  return (
+      <>
+        {reduxProject.bundleResult ?
+            <div className="remaining-box" >
+              {/*<span>Hello this is a long string and we are going to watch</span>*/}
+              {/*<pre>{reduxProject.htmlContent}</pre>*/}
+              <PreviewTabsPanel
+                  title={reduxProject.title}
+                  html={reduxProject.htmlContent}
+                  code={reduxProject.bundleResult.code}
+                  err={reduxProject.bundleResult.err}
+              />
+            </div>
+            :
+            <h2>Loading</h2>
+        }
+      </>
+  );
+};
 
 const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, reduxProject}) => {
   const appFilesLoaded = useTypedSelector(state => state.application.filesLoaded);
@@ -30,36 +61,7 @@ const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, redu
     }
   }, [])
 
-  const ContentBox = ({data:reduxProject}:{data:ReduxProject}) => {
-    return (
-        <div className="content-box">
-          <h2>{reduxProject.title}</h2>
-          <span>{reduxProject.description}</span>
-          <span>bundleDirty:{reduxProject.bundleDirty.toString()}</span>
-        </div>
-    );
-  };
 
-  const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
-    return (
-        <>
-        {reduxProject.bundleResult ?
-            <div className="remaining-box" >
-              {/*<span>Hello this is a long string and we are going to watch</span>*/}
-              {/*<pre>{reduxProject.htmlContent}</pre>*/}
-              <PreviewTabsPanel
-                  title={reduxProject.title}
-                  html={reduxProject.htmlContent}
-                  code={reduxProject.bundleResult.code}
-                  err={reduxProject.bundleResult.err}
-              />
-            </div>
-            :
-            <h2>Loading</h2>
-        }
-        </>
-    );
-  };
 
   //  TBD: The visibility logic can be taken out to a function like withVisibility()
   const isVisible = useVisibility(scrollItemRef);

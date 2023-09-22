@@ -159,7 +159,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     // This resolved our dual bundling problem
     if (reduxProject.ideReady) {
-      console.log(`bundleProject:ideReady`);
+      // console.log(`bundleProject:ideReady`);
       bundleProject(reduxProject.localId);
     }
   }, [reduxProject.ideReady]);
@@ -677,6 +677,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
           <PreviewTabsPanel
+              title={reduxProject.title}
               html={htmlContent}
               code={bundlesState[reduxProject.bundleLocalId]!.code}
               err={bundlesState[reduxProject.bundleLocalId]!.err}

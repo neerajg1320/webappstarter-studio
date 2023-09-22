@@ -14,7 +14,7 @@ interface PreviewIframeProps {
 const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) => {
   const iframeRef = useRef<any>();
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`PreviewIframe: ${title.padEnd(20)}  [${html.length}, ${code.length}]`);
   }
 
