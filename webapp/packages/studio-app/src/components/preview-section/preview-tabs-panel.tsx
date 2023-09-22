@@ -6,16 +6,19 @@ import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
 import PreviewBuild from "./preview-build";
+import {ElementLifeCycleInfo, getInitialLifecycleInfo, initialLifecycleInfo} from "../common/lifecycle/info";
 
 interface PreviewTabsProps {
+  title: string;
   html: string;
   code: string;
   err: string;
-  // height: string;
 }
 
 // We have to pass the height here
-const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
+const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({title, html, code, err}) => {
+  const debugComponentLifecycle = true;
+  const lifecyleInfo = useRef<ElementLifeCycleInfo>();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(1);
   const [count, setCount] = useState(0);
   const bundleSuccess = useMemo<boolean>(() => {
@@ -23,13 +26,27 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({html, code, err}) => {
   }, [err]);
 
   useEffect(() => {
-    console.log(`PreviewTabsPanel:useEffect[]`) ;
+    if (debugComponentLifecycle) {
+      console.log(`PreviewTabsPanel:useEffect[]  ${title.padEnd(20)}  created`);
+    }
     return () => {
-      console.log(`PreviewTabsPanel:useEffect[] destroyed`)
+      if (debugComponentLifecycle) {
+        console.log(`PreviewTabsPanel:useEffect[]  ${title.padEnd(20)}  destroyed `);
+        lifecyleInfo.current = {count:0, timestamps:[]};
+      }
     }
   }, []);
 
-  console.log(`PreviewTabsPanel:render [${html.length}, ${code.length}, ${err.length}]`);
+  if (debugComponent || true) {
+    if (debugComponentLifecycle) {
+      if (!lifecyleInfo.current) {
+        lifecyleInfo.current = getInitialLifecycleInfo();
+      }
+      lifecyleInfo.current.count += 1;
+      lifecyleInfo.current.timestamps.push(new Date());
+    }
+    console.log(`PreviewTabsPanel:render(${lifecyleInfo.current.count}) '${title} '[${html.length}, ${code.length}, ${err.length}]`);
+  }
 
   useEffect(() => {
     if (!bundleSuccess) {

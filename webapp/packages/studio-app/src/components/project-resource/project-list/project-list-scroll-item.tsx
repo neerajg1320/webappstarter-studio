@@ -10,7 +10,12 @@ import {getFileFromLocalId} from "../../../state/helpers/file-helpers";
 import {useActions} from "../../../hooks/use-actions";
 import PreviewTabsPanel from "../../preview-section/preview-tabs-panel";
 
-const ProjectListScrollItem = ({index, reduxProject}) => {
+interface ProjectListScrollItemProps {
+  index: number;
+  reduxProject: ReduxProject;
+}
+
+const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, reduxProject}) => {
   const appFilesLoaded = useTypedSelector(state => state.application.filesLoaded);
   const {bundleProject, makeProjectIdeReady} = useActions();
 
@@ -42,6 +47,7 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
               {/*<span>Hello this is a long string and we are going to watch</span>*/}
               {/*<pre>{reduxProject.htmlContent}</pre>*/}
               <PreviewTabsPanel
+                  title={reduxProject.title}
                   html={reduxProject.htmlContent}
                   code={reduxProject.bundleResult.code}
                   err={reduxProject.bundleResult.err}
@@ -84,19 +90,11 @@ const ProjectListScrollItem = ({index, reduxProject}) => {
   // visibility logic ends
 
   useEffect(() => {
-    // console.log(`ScrollItem:useEffect[reduxProject.ideReady] ${reduxProject.ideReady}`);
     if (reduxProject.ideReady && reduxProject.bundleDirty) {
-      console.log(`${reduxProject.title.padEnd(20)}: need to bundle the project .`);
-
       bundleProject(reduxProject.localId);
     }
   }, [reduxProject.ideReady, reduxProject.bundleDirty]);
 
-  useEffect(() => {
-    if (!reduxProject.bundleDirty) {
-      console.log(`${reduxProject.title.padEnd(20)}: bundle is ready`);
-    }
-  }, [reduxProject.bundleDirty]);
   return (
       <div ref={scrollItemRef}>
         <ResizableHorizontalSplitBox

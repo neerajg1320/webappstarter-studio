@@ -174,8 +174,8 @@ export const createProjectBundle = (
 ) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-    if (debugBundler || debugRedux || true) {
-      console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}' bundleLanguage:${bundleLanguage}`);
+    if (debugBundler || debugRedux) {
+      console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}'`);
     }
 
     // We define a function closure as it needs getState() from getting files for project
