@@ -39,6 +39,7 @@ const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, redu
         </div>
     );
   };
+
   const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
     return (
         <>

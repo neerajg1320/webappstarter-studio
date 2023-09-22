@@ -88,7 +88,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({title, html, code, err}) =
       </div>
       <div className="preview-tabs-panel" >
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
-          <PreviewIframe html={html} code={code} err={err} />
+          <PreviewIframe title={title} html={html} code={code} err={err} />
         </div>
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? "flex" : "none"}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>

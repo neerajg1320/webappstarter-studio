@@ -1,17 +1,22 @@
+import React, {useEffect, useRef, useState} from "react";
 import './preview-iframe.css';
-import {useEffect, useRef, useState} from "react";
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
 import {debugComponent} from "../../../config/global";
 
 interface PreviewIframeProps {
+  title: string;
   html: string;
   code: string;
   err: string;
 }
 
-const PreviewIframe:React.FC<PreviewIframeProps> = ({html, code, err}) => {
+const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) => {
   const iframeRef = useRef<any>();
+
+  if (debugComponent || true) {
+    console.log(`PreviewIframe: ${title.padEnd(20)}  [${html.length}, ${code.length}]`);
+  }
 
   useEffect(() => {
     if (debugComponent) {
@@ -38,4 +43,4 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({html, code, err}) => {
   );
 }
 
-export default PreviewIframe;
+export default React.memo(PreviewIframe);

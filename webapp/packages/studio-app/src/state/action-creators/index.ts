@@ -138,7 +138,7 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
   };
 }
 
-export const bundleProject = (localId) => {
+export const bundleProject = (localId:string) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
     const currentUser = getState().auth.currentUser;
@@ -174,7 +174,7 @@ export const createProjectBundle = (
 ) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-    if (debugBundler || debugRedux) {
+    if (debugBundler || debugRedux || true) {
       console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}'`);
     }
 
