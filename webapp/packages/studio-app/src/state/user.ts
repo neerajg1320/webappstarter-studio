@@ -7,6 +7,7 @@ export interface ReduxUser {
   is_anonymous: boolean,
   accessToken: string;
   refreshToken: string;
+  tokenExpired: boolean;
 };
 
 export interface ReduxCreateUserPartial {
@@ -18,13 +19,14 @@ export interface ReduxCreateUserPartial {
 };
 
 export interface ReduxUpdateUserPartial {
-  pkid: number,
+  pkid?: number,
   email?: string,
   first_name?: string,
   last_name?: string,
   is_anonymous?: boolean,
   accessToken?: string;
   refreshToken?: string;
+  tokenExpired?: boolean;
 };
 
 export enum UserFlowType {

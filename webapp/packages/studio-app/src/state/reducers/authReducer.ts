@@ -53,6 +53,7 @@ const initialUserState = {
   last_name: '',
   accessToken: '',
   refreshToken: '',
+  tokenExpired: false,
 };
 
 const initialState: AuthState = {

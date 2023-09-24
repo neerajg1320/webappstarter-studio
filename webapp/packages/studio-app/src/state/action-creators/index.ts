@@ -54,7 +54,7 @@ import {
 } from "../../config/global";
 import {createFileFromString} from "../../utils/file";
 import {ReduxUpdateUserPartial, ReduxUser, UserFlowType} from "../user";
-import {axiosApiInstance, setAxiosAuthToken} from "../../api/axiosApi";
+import {axiosApiInstance, setAxiosAuthToken, unsetAxiosAuthToken} from "../../api/axiosApi";
 import {
   fetchAuthFromLocalStorage,
   removeAuthFromLocalStorage,
@@ -416,7 +416,9 @@ export const fetchProjects = () => {
     } catch (err) {
       // console.log(`fetchProjects: err({message, response})`, err.message, err.response);
       if (err.response.status === 401) {
+        const currentUser = getState().auth.currentUser;
         console.log(`fetchProjects: We need to auth using refreshToken or login page`);
+        dispatch(userUpdate(currentUser.localId, {tokenExpired: true} as ReduxUpdateUserPartial));
       }
       if (err instanceof Error) {
         dispatch({
@@ -1148,8 +1150,9 @@ export const userDelete = (localId:string): UserDeleteAction => {
 }
 
 export const reAuthenticateUserNotSupported = () => {
-  console.log(`reAuthenticateUser(): `);ƒ
-  removeAuthFromLocalStorage();
+  console.log(`reAuthenticateUser(): `);
+  // We need to fix this via a callback
+  // removeAuthFromLocalStorage();
 }
 
 export const passwordResetUser = (email:string) => {
@@ -1355,7 +1358,8 @@ export const authenticateUser = (email:string, password:string) => {
         last_name: user.last_name,
         is_anonymous: user.is_anonymous,
         accessToken: access_token,
-        refreshToken: refresh_token
+        refreshToken: refresh_token,
+        tokenExpired: false,
       };
 
       const messages = ['API authentication successful'];
@@ -1391,6 +1395,7 @@ export const logoutUser = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     removeAuthFromLocalStorage();
     dispatch(userDelete(localId));
+    unsetAxiosAuthToken()
     // dispatch(logoutRequestStart());
     // TBD: We need to do this properly by calling API
   };
