@@ -6,7 +6,7 @@ import {debugComponent} from "../../config/global";
 import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
 import PreviewBuild from "./preview-build";
-import {ElementLifeCycleInfo, getInitialLifecycleInfo, initialLifecycleInfo} from "../common/lifecycle/info";
+import {ElementLifeCycleInfo, getInitialLifecycleInfo} from "../common/lifecycle/info";
 
 interface PreviewTabsProps {
   title: string;

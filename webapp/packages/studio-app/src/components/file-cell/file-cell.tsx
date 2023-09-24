@@ -93,7 +93,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
                     Loading
                   </progress>
                 </div>
-              : <PreviewIframe html={htmlNoScript} code={bundle.code} err={bundle.err}/>
+              : <PreviewIframe title={reduxFile.path} html={htmlNoScript} code={bundle.code} err={bundle.err}/>
             }
           </div>
         </div>
