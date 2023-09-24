@@ -7,6 +7,7 @@ import {generateLocalId} from "../../../state/id";
 import {RoutePath} from "../../routes";
 import {useActions} from "../../../hooks/use-actions";
 import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../state";
+import {withLifecyleLogger} from "../../../hoc/logger";
 
 const ProjectListView = () => {
   const [isPreviewLayout, setPreviewLayout] = useState<boolean>(false);
@@ -51,4 +52,4 @@ const ProjectListView = () => {
 
 }
 
-export default ProjectListView;
+export default withLifecyleLogger(ProjectListView);

@@ -27,7 +27,7 @@ export const setAxiosAuthToken = (jwtToken: string) => {
       // The axios library has a bug around applying headers in middleware.
       // The headers are applied to all instances.
       // In fact the other vars like baseUrl are also applied to all instances
-      const skippedUrls = ['/mediafiles', '/api/v1/auth'].filter(item => request.url?.includes(item));
+      const skippedUrls = ['/mediafiles', '/api/v1/auth/login'].filter(item => request.url?.includes(item));
       if (skippedUrls.length > 0) {
         if (debugOptimizationMarker) {
           console.log(`Token skipped for url '${skippedUrls}' Need to put a better solution`);
@@ -59,8 +59,8 @@ export const setAxiosAuthToken = (jwtToken: string) => {
         }
         if (error.response.status === 401) {
           // This needs to be fixed. We need to incorporate user email and server match
-          removeAuthFromLocalStorage();
-          // The following will re-authenticate the user
+          // removeAuthFromLocalStorage();
+          // We need to place an expiry callback
           if (autoReauthenticateUser) {
             reAuthenticateUserNotSupported();
           }

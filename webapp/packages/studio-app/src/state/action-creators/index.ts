@@ -390,8 +390,15 @@ const __rm__gHeaders = {
 export const fetchProjectsAndFiles = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // console.log(getState().auth);
-    await fetchProjects()(dispatch, getState);
-    fetchFiles()(dispatch, getState);
+    try {
+      const projects = await fetchProjects()(dispatch, getState);
+      console.log(`fetchProjectsAndFiles: projects:`, projects);
+      if (projects) {
+        fetchFiles()(dispatch, getState);
+      }
+    } catch (err) {
+      console.log(`fetchProjectsAndFiles: err:`, err);
+    }
   };
 }
 
@@ -405,7 +412,12 @@ export const fetchProjects = () => {
         payload: projects
       });
       dispatch({type: ActionType.UPDATE_APPLICATION, payload: {projectsLoaded: true}});
+      return projects;
     } catch (err) {
+      // console.log(`fetchProjects: err({message, response})`, err.message, err.response);
+      if (err.response.status === 401) {
+        console.log(`fetchProjects: We need to auth using refreshToken or login page`);
+      }
       if (err instanceof Error) {
         dispatch({
           type: ActionType.FETCH_PROJECTS_ERROR,
@@ -1136,14 +1148,8 @@ export const userDelete = (localId:string): UserDeleteAction => {
 }
 
 export const reAuthenticateUserNotSupported = () => {
-  console.log(`reAuthenticateUser(): Reauthenticating the user`)
-
-  const user:ReduxUser|null = fetchAuthFromLocalStorage();
-  if (user) {
-    removeAuthFromLocalStorage();
-  }
-
-  // We need to use refreshToken here!
+  console.log(`reAuthenticateUser(): `);ƒ
+  removeAuthFromLocalStorage();
 }
 
 export const passwordResetUser = (email:string) => {

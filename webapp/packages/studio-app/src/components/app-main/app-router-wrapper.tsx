@@ -23,7 +23,7 @@ import UserPasswordResetConfirm from "../page-user/user-password-reset-confirm";
 const ProjectListView = lazy(() => import("../project-resource/project-list/project-list-view"));
 const ProjectCell = lazy(() => import("../project-cell/project-cell"));
 const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
-
+import {withLifecyleLogger} from "../../hoc/logger";
 
 const AppRouterWrapper = () => {
   const currentProjectLocalId = useTypedSelector((state) => state.projects.currentProjectId);
@@ -86,4 +86,4 @@ const AppRouterWrapper = () => {
   );
 }
 
-export default AppRouterWrapper;
+export default withLifecyleLogger(AppRouterWrapper);
