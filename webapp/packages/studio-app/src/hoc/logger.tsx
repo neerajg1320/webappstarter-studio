@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useCallback} from 'react';
+import React, { useEffect, useRef, useCallback} from 'react';
 
 
-export const withLifecyleLogger = (InnerComponent, debug=true) => {
+export const withLifecyleLogger =  (InnerComponent:React.FC, debug=true):React.FC => {
   // Create the outer component
   const WithLifeCycleLogger = (props) => {
     const renderCountRef = useRef<number>(0);
