@@ -17,7 +17,7 @@ interface PreviewTabsProps {
 
 // We have to pass the height here
 const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({title, html, code, err}) => {
-  const debugComponentLifecycle = true;
+  const debugComponentLifecycle = false;
   const lifecyleInfo = useRef<ElementLifeCycleInfo>();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(1);
   const [count, setCount] = useState(0);
