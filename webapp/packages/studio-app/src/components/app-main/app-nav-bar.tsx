@@ -67,7 +67,7 @@ const AppNavBar = () => {
               <div style={{marginLeft: "40px", display: "flex", flexDirection:"row", alignItems:"center"}}>
                 <div className={"navbar-item " + (enableProjectsList ? "has-dropdown is-hoverable" : "")}>
                   <div className={enableProjectsList ? "navbar-link" : ""}>
-                    <Link className="navbar-item" to="/">Projects</Link>
+                    <Link className="navbar-item" to={`${RoutePath.PROJECTS}`}>Projects</Link>
                   </div>
 
                   {enableProjectsList &&

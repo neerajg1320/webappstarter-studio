@@ -1,4 +1,4 @@
-import React, {Suspense, lazy, useEffect} from "react";
+import React, {Suspense, lazy} from "react";
 import {BrowserRouter, Route, Routes, useNavigate} from "react-router-dom";
 
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -16,9 +16,7 @@ import LoadingIndicator from "../common/loading-indicator";
 import ProjectPlayground from "../project-resource/project-playground";
 import UserPasswordResetConfirm from "../page-user/user-password-reset-confirm";
 
-// import ProjectListGrid from "./components/project-resource/project-list-grid";
-// import ProjectCell from "./components/project-cell/project-cell";
-// import ProjectEdit from "./components/project-resource/project-edit";
+
 const ProjectListView = lazy(() => import("../project-resource/project-list/project-list-view"));
 const ProjectCell = lazy(() => import("../project-cell/project-cell"));
 const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
@@ -26,7 +24,6 @@ import {withLifecyleLogger} from "../../hoc/logger";
 
 const AppRouterWrapper = () => {
   const currentProjectLocalId = useTypedSelector((state) => state.projects.currentProjectId);
-  const currentUser = useTypedSelector(state => state.auth.currentUser);
 
   return (
       <BrowserRouter>
@@ -40,21 +37,18 @@ const AppRouterWrapper = () => {
             <Route path={`${RoutePath.USER_ACTIVATE}/:key`} element={<UserActivate />} />
             <Route path={`${RoutePath.USER_PASSWORD_RESET_CONFIRM}/:uid/:token`} element={<UserPasswordResetConfirm />} />
 
-            {(currentUser && !currentUser.is_anonymous) &&
-              <Route path={RoutePath.PROJECTS}
-                     element={
-                       <ProtectedRoute>
-                         <ProjectListView />
-                       </ProtectedRoute>
-                     }
-              />
-            }
+            <Route path={RoutePath.PROJECTS} element={
+                     <ProtectedRoute>
+                       <ProjectListView />
+                     </ProtectedRoute>
+                   }
+            />
 
             <Route path={RoutePath.PROJECT_CELL}
                    element={
                      <ProtectedRoute>
                        {currentProjectLocalId && <ProjectCell />}
-                       {!currentProjectLocalId && <h1>Current project is null</h1>}
+                       {!currentProjectLocalId && <h1>Select a project</h1>}
                      </ProtectedRoute>
                    }
             />
@@ -74,7 +68,6 @@ const AppRouterWrapper = () => {
             />
             <Route path={RoutePath.PROJECT_PLAYGROUND}
                    element={
-                     // <ProjectEdit isEdit={false} />
                      <ProjectPlayground />
                    }
             />

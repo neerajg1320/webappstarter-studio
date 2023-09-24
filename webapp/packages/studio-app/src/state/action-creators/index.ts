@@ -1313,20 +1313,20 @@ export const authenticationSuccess = (user:ReduxUser, messages:string[]) => {
       console.log(`Login successful messages:`, messages, user);
     }
 
-    // dispatch(loginRequestSuccess(messages, authInfo));
+    setAxiosAuthToken(user.accessToken);
+
+    // isAuthenticated should be set at the end
     const userLocalId = generateLocalId();
     dispatch(userAdd(userLocalId, user));
-
-    setAxiosAuthToken(user.accessToken);
   }
 }
 
-
+// TBD: Actually this should not be here
 export const authenticateUserFromLocalStorage = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (enableLocalStorageAuth) {
       const user = fetchAuthFromLocalStorage();
-      if (debugAuth) {
+      if (debugAuth || true) {
         console.log(user);
       }
       if (user) {

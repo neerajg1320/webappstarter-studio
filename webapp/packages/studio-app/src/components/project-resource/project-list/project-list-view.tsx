@@ -8,11 +8,13 @@ import {RoutePath} from "../../routes";
 import {useActions} from "../../../hooks/use-actions";
 import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../state";
 import {withLifecyleLogger} from "../../../hoc/logger";
+import {useTypedSelector} from "../../../hooks/use-typed-selector";
 
 const ProjectListView = () => {
   const [isPreviewLayout, setPreviewLayout] = useState<boolean>(false);
   const navigate = useNavigate();
   const {createAndSetProject} = useActions();
+  const currentUser = useTypedSelector(state => state.auth.currentUser);
 
   const handleNewProjectClick = () => {
     const localId = generateLocalId();
@@ -28,27 +30,35 @@ const ProjectListView = () => {
   }
 
   return (
-      <div className="project-list-view">
-        <div className="project-list-view-control-bar">
-          <div style={{
-            borderRadius: "15px",
-            display: "flex",
-          }}>
-            <button className="button is-family-secondary" style={{backgroundColor: "cornflowerblue", borderRadius: "5px"}} onClick={handleNewProjectClick}>
-              New
-            </button>
-          </div>
-          <div className="project-list-view-control-bar-setting">
-            <label>Preview Mode</label>
-            <input type="checkbox" checked={isPreviewLayout} onChange={(e) => setPreviewLayout(e.target.checked)}/>
-          </div>
-        </div>
-        <div className="project-list-view-panel">
-          <ProjectListScroller visibility={isPreviewLayout}/>
-          <ProjectListGrid  visibility={!isPreviewLayout}/>
-        </div>
-      </div>
-  )
+      <>
+        {(currentUser && !currentUser.is_anonymous) ?
+            <div className="project-list-view">
+              <div className="project-list-view-control-bar">
+                <div style={{
+                  borderRadius: "15px",
+                  display: "flex",
+                }}>
+                  <button className="button is-family-secondary" style={{backgroundColor: "cornflowerblue", borderRadius: "5px"}}
+                          onClick={handleNewProjectClick}>
+                    New
+                  </button>
+                </div>
+                <div className="project-list-view-control-bar-setting">
+                  <label>Preview Mode</label>
+                  <input type="checkbox" checked={isPreviewLayout} onChange={(e) => setPreviewLayout(e.target.checked)}/>
+                </div>
+              </div>
+              <div className="project-list-view-panel">
+                <ProjectListScroller visibility={isPreviewLayout}/>
+                <ProjectListGrid visibility={!isPreviewLayout}/>
+              </div>
+            </div>
+            :
+            <h2>User login needed</h2>
+        }
+      </>
+
+  );
 
 }
 

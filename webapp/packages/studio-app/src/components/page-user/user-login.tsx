@@ -53,12 +53,14 @@ const UserLogin = () => {
 
   useEffect( () => {
     if (isAuthenticated) {
+      // console.log(`User login successful`);
+
       // Created an IIFE (Immediately Invoked Function Expression) for adding delay after success.
       // For debugging purpose
       (async () => {
         await setTimeout(() => {
           navigate(RoutePath.LOGIN_SUCCESS);
-        }, 1000);
+        }, 0);
       })();
     }
   }, [isAuthenticated]);
