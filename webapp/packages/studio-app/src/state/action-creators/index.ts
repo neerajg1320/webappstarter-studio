@@ -392,7 +392,7 @@ export const fetchProjectsAndFiles = () => {
     // console.log(getState().auth);
     try {
       const projects = await fetchProjects()(dispatch, getState);
-      console.log(`fetchProjectsAndFiles: projects:`, projects);
+      // console.log(`fetchProjectsAndFiles: projects:`, projects);
       if (projects) {
         fetchFiles()(dispatch, getState);
       }
@@ -1346,7 +1346,7 @@ export const authenticateUser = (email:string, password:string) => {
     try {
       const response = await axiosApiInstance.post(`/auth/login/`, {email, password});
       const {refresh_token, access_token, user} = response.data;
-      if (debugAxios || true) {
+      if (debugAxios) {
         console.log(refresh_token, access_token, user);
       }
 

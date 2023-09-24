@@ -33,7 +33,7 @@ export const setAxiosAuthToken = (jwtToken: string) => {
       // In fact the other vars like baseUrl are also applied to all instances
       const skippedUrls = ['/mediafiles', '/api/v1/auth/login'].filter(item => config.url?.includes(item));
       if (skippedUrls.length > 0) {
-        if (debugOptimizationMarker || true) {
+        if (debugOptimizationMarker) {
           console.log(`Token skipped for url '${skippedUrls}' Need to put a better solution`);
         }
       } else {

@@ -85,4 +85,4 @@ const AppRouterWrapper = () => {
   );
 }
 
-export default withLifecyleLogger(AppRouterWrapper);
+export default withLifecyleLogger(AppRouterWrapper, false);

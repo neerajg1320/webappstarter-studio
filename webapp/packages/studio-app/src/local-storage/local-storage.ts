@@ -24,6 +24,6 @@ export const saveAuthToLocalStorage = (user: ReduxUser) => {
 }
 
 export const removeAuthFromLocalStorage = () => {
-  console.log(`removeAuthFromLocalStorage()`);
+  // console.log(`removeAuthFromLocalStorage()`);
   localStorage.removeItem(Storage.USER_KEY);
 }

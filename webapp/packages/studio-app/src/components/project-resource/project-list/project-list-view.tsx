@@ -52,4 +52,4 @@ const ProjectListView = () => {
 
 }
 
-export default withLifecyleLogger(ProjectListView);
+export default withLifecyleLogger(ProjectListView, false);
