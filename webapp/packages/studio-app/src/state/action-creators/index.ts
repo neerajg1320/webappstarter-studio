@@ -220,7 +220,7 @@ export const createProjectBundle = (
         // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
         // ['http://api.local.webappstarter.com/', 'src/index.js']
         const reduxFilePath = fileParts[1];
-        console.log(`reduxFilePath:`, reduxFilePath);
+        // console.log(`reduxFilePath:`, reduxFilePath);
 
         const projectFileMap = Object.fromEntries(
             Object.entries(filesLocalIdMap)
