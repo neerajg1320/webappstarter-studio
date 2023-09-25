@@ -103,6 +103,10 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
       state.loadCount += 1;
       return state;
 
+    case ActionType.RESET_PROJECTS:
+      state = initialState;
+      return state;
+
     case ActionType.SET_CURRENT_PROJECT:
       state.currentProjectId = action.payload;
       return state;

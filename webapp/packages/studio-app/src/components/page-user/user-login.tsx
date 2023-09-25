@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useReducer} from "react";
+import React, {useEffect, useReducer} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useActions} from "../../hooks/use-actions";
 import {Link, useNavigate} from "react-router-dom";
@@ -43,13 +43,8 @@ const UserLogin = () => {
   const [user, dispatch] = useReducer(reducer, blankUser);
   const { authenticateUser, resendActivationEmail, passwordResetUser } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
-  // const loginState = useTypedSelector(state => state.auth.login);
   const apiState = useTypedSelector(state => state.auth.api);
 
-  // const errMsg = useMemo<string|null>(() => {
-  //   console.log(`errMsg: ${loginState.err}`)
-  //   return loginState.err;
-  // },  [loginState.err]);
 
   useEffect( () => {
     if (isAuthenticated) {

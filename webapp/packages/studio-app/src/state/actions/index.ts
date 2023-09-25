@@ -77,6 +77,11 @@ export interface ProjectBundleCompleteAction {
     }
 }
 
+export interface ResetBundlesAction {
+  type: ActionType.RESET_BUNDLES,
+  payload?: any,
+}
+
 export interface FetchCellsAction {
     type: ActionType.FETCH_CELLS
 }
@@ -136,6 +141,10 @@ export interface FetchProjectsErrorAction {
   payload: string
 }
 
+export interface ResetProjectsAction {
+  type: ActionType.RESET_PROJECTS,
+  payload?: any;
+}
 
 export interface SetCurrentProjectAction {
     type: ActionType.SET_CURRENT_PROJECT,
@@ -171,6 +180,11 @@ export interface FetchFilesCompleteAction {
 export interface FetchFilesErrorAction {
   type: ActionType.FETCH_FILES_ERROR,
   payload: string
+}
+
+export interface ResetFilesAction {
+  type: ActionType.RESET_FILES,
+  payload?: any;
 }
 
 export interface UserRequestStartAction {
@@ -223,6 +237,11 @@ export interface UpdateApplicationAction {
   payload: ApplicatonStatePartial
 }
 
+export interface ResetApplicationAction {
+  type: ActionType.RESET_APPLICATION,
+  payload?: any,
+}
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -232,9 +251,11 @@ export type Action =
     | CellBundleCompleteAction
     | ProjectBundleStartAction
     | ProjectBundleCompleteAction
+    | ResetBundlesAction
     | FetchCellsAction
     | FetchCellsCompleteAction
     | FetchCellsErrorAction
+    | ResetFilesAction
     | SaveCellsErrorAction
     | CreateProjectAction
     | UpdateProjectAction
@@ -244,6 +265,7 @@ export type Action =
     | FetchProjectsStartAction
     | FetchProjectsCompleteAction
     | FetchProjectsErrorAction
+    | ResetProjectsAction
     | SetCurrentProjectAction
     | CreateFileAction
     | UpdateFileAction
@@ -261,4 +283,5 @@ export type Action =
     | ApiRequestSuccessAction
     | ApiRequestFailedAction
     | UpdateApplicationAction
+    | ResetApplicationAction
     ;

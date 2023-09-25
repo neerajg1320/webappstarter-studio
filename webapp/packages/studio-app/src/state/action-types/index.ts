@@ -8,6 +8,7 @@ export enum ActionType {
   CELL_BUNDLE_COMPLETE = "cell_bundle_complete",
   PROJECT_BUNDLE_START = "project_bundle_start",
   PROJECT_BUNDLE_COMPLETE = "project_bundle_complete",
+  RESET_BUNDLES = "reset_bundles",
 
   FETCH_CELLS = 'fetch_cells',
   FETCH_CELLS_COMPLETE = 'fetch_cells_complete',
@@ -22,6 +23,7 @@ export enum ActionType {
   FETCH_PROJECTS_START = 'fetch_projects_start',
   FETCH_PROJECTS_COMPLETE = 'fetch_projects_complete',
   FETCH_PROJECTS_ERROR = 'fetch_projects_error',
+  RESET_PROJECTS = 'reset_projects',
   DOWNLOAD_PROJECT_START = 'download_project_start',
   DOWNLOAD_PROJECT_COMPLETE = 'download_project_complete',
 
@@ -32,6 +34,7 @@ export enum ActionType {
   FETCH_FILES_START = 'fetch_files_start',
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
+  RESET_FILES = 'reset_files',
 
   // We need request set for following
   // REGISTER_USER
@@ -91,4 +94,5 @@ export enum ActionType {
 
   // There is no need of CREATE_APP and DELETE_APP as they are linked to lifecycle of App.
   UPDATE_APPLICATION = 'update_application',
+  RESET_APPLICATION = 'reset_application',
 }

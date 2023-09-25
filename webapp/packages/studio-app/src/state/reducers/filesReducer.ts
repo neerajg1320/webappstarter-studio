@@ -119,6 +119,10 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
 
       return state;
 
+    case ActionType.RESET_FILES:
+      state = initialState;
+      return state;
+
     default:
       return state;
   }

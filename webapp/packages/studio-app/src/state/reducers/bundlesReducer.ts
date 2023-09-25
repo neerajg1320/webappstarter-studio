@@ -61,7 +61,11 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
                 type: 'project'
             }
             return state;
-                      
+
+      case ActionType.RESET_BUNDLES:
+            state = initialState;
+            return state;
+
       default:
           return state;
   }

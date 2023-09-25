@@ -32,6 +32,10 @@ const reducer = produce((state:ApplicatonState = initialState, action: Action): 
       }
       return state;
 
+    case ActionType.RESET_APPLICATION:
+      state = initialState;
+      return state;
+      
     default:
       return state;
   }

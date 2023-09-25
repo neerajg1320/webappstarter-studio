@@ -11,7 +11,7 @@ import {
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
-  MoveCellAction,
+  MoveCellAction, ResetApplicationAction,
   SetCurrentProjectAction,
   UpdateApplicationAction,
   UpdateCellAction,
@@ -137,6 +137,14 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
       });
   };
 }
+
+
+export const resetBundles = () => {
+  return {
+    type: ActionType.RESET_BUNDLES
+  }
+}
+
 
 export const bundleProject = (localId:string) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
@@ -430,6 +438,11 @@ export const fetchProjects = () => {
   };
 }
 
+export const resetProjects = () => {
+  return {
+    type: ActionType.RESET_PROJECTS
+  }
+}
 
 export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
@@ -702,6 +715,12 @@ export const fetchFiles = (projectPkid?:string) => {
       }
     }
   };
+}
+
+export const resetFiles = () => {
+  return {
+    type: ActionType.RESET_FILES
+  }
 }
 
 export const saveProject = (localId: string) => {
@@ -1393,9 +1412,13 @@ export const authenticateUser = (email:string, password:string) => {
 
 export const logoutUser = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    dispatch(resetBundles());
+    dispatch(resetFiles());
+    dispatch(resetProjects());
     removeAuthFromLocalStorage();
     dispatch(userDelete(localId));
     unsetAxiosAuthToken()
+    dispatch(resetApplication());
     // dispatch(logoutRequestStart());
     // TBD: We need to do this properly by calling API
   };
@@ -1491,5 +1514,11 @@ export const updateApplication = (applicationStatePartial:ApplicatonStatePartial
   return {
     type: ActionType.UPDATE_APPLICATION,
     payload: applicationStatePartial
+  }
+}
+
+export const resetApplication = ():ResetApplicationAction => {
+  return {
+    type: ActionType.RESET_APPLICATION
   }
 }
