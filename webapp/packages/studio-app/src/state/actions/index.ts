@@ -239,7 +239,7 @@ export interface UpdateApplicationAction {
 
 export interface ResetApplicationAction {
   type: ActionType.RESET_APPLICATION,
-  payload?: any,
+  // payload?: any,
 }
 
 export type Action =

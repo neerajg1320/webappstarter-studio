@@ -11,7 +11,7 @@ import {
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
-  MoveCellAction, ResetApplicationAction,
+  MoveCellAction, ResetApplicationAction, ResetBundlesAction, ResetFilesAction, ResetProjectsAction,
   SetCurrentProjectAction,
   UpdateApplicationAction,
   UpdateCellAction,
@@ -139,7 +139,7 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
 }
 
 
-export const resetBundles = () => {
+export const resetBundles = ():ResetBundlesAction => {
   return {
     type: ActionType.RESET_BUNDLES
   }
@@ -438,7 +438,7 @@ export const fetchProjects = () => {
   };
 }
 
-export const resetProjects = () => {
+export const resetProjects = ():ResetProjectsAction => {
   return {
     type: ActionType.RESET_PROJECTS
   }
@@ -717,7 +717,7 @@ export const fetchFiles = (projectPkid?:string) => {
   };
 }
 
-export const resetFiles = () => {
+export const resetFiles = ():ResetFilesAction => {
   return {
     type: ActionType.RESET_FILES
   }
