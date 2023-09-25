@@ -189,13 +189,12 @@ export const createProjectBundle = (
     // We define a function closure as it needs getState() from getting files for project
     const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
       const enableUrlMap = false;
-
-      const projectState = getState().projects.data[projectLocalId];
       const filesLocalIdMap = getState().files.data;
 
       if (debugPlugin || debugRedux) {
         console.log(`getFileContentsFromRedux: url:`, url);
-        console.log(`projectState:`, projectState);
+        // const projectState = getState().projects.data[projectLocalId];
+        // console.log(`projectState:`, projectState);
       }
 
       let reduxFile: ReduxFile;
@@ -221,7 +220,7 @@ export const createProjectBundle = (
         // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
         // ['http://api.local.webappstarter.com/', 'src/index.js']
         const reduxFilePath = fileParts[1];
-        // console.log(`reduxFilePath:`, reduxFilePath);
+        console.log(`reduxFilePath:`, reduxFilePath);
 
         const projectFileMap = Object.fromEntries(
             Object.entries(filesLocalIdMap)
