@@ -4,10 +4,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import UserFlowStatus from "./user-flow-status";
-
+import './user.css';
 
 const UserActivate = () => {
-  // const key = "MjM:1qUKq0:M87nAd1mq9mV_ly2rNLN1sxoYFEHUQfh00YrhIRuqFA";
   const navigate = useNavigate();
   const { activateUser } = useActions();
   const { key } = useParams();
@@ -40,11 +39,9 @@ const UserActivate = () => {
       }}
       >
         <div className="user-value-list">
-          <div style={{width: "100%",
-            display: "flex", flexDirection: "row", gap: "20px"
-          }}>
-            <div className="user-value" style={{display: "flex"}}>
-              <label>User Key:</label>
+          <div style={{width: "100%", display: "flex", flexDirection: "row", gap: "20px", alignItems:"center", overflow: "hidden"}}>
+            <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+              <span>User Key:</span>
               <span>{key}</span>
             </div>
           </div>
