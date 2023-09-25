@@ -8,6 +8,9 @@ import {CELL_REGEX} from "../../utils/patterns";
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
 export const pluginResolve = () => {
+  const getNameSpace = (importer:string):string => {
+    return `a:${importer}`;
+  }
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
@@ -25,7 +28,7 @@ export const pluginResolve = () => {
       build.onResolve({filter: CELL_REGEX}, (args: any) => {
         return {
           path: args.path,
-          namespace: 'a'
+          namespace: getNameSpace(args.importer),
         };
       });
 
@@ -36,7 +39,7 @@ export const pluginResolve = () => {
 
         return {
           path: new URL(args.path, server + args.resolveDir + '/').href,
-          namespace: 'a'
+          namespace: getNameSpace(args.importer),
         };
       });
 
@@ -46,13 +49,13 @@ export const pluginResolve = () => {
         if (args.importer === '') {
           return {
             path: args.path,
-            namespace: 'a'
+            namespace: getNameSpace(args.importer),
           };
         }
 
         return {
           path: `${getPkgServer()}/${args.path}`,
-          namespace: 'a'
+          namespace: getNameSpace(args.importer),
         };
       });
     },

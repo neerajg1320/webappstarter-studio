@@ -21,10 +21,13 @@ export const pluginLoadFromCache = () => {
       build.onLoad({filter: /.*/}, async (args: esbuild.OnLoadArgs) => {
         // If we have already fetched this file then return from cache
         // We use args.path as key in the cache
-        if (debugPlugin) {
-          console.log(`args:`, args);
+        const fileContent = await getFileFromCache(args.path);
+        if (fileContent) {
+          if (debugPlugin || true) {
+            console.log(`cache.onLoad(): path:${args.path.padEnd(70)}  namespace:${args.namespace.padEnd(80)}`);
+          }
         }
-        return await getFileFromCache(args.path);
+        return fileContent;
       });
     }
   }
@@ -34,7 +37,7 @@ export const getFileFromCache = async (url:string) => {
   if (enableLoadFromCache) {
     const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(url);
     if (cachedResult) {
-      if (debugPlugin || debugCache || true) {
+      if (debugPlugin || debugCache) {
         console.log(`loaded ${url} from cache`);
       }
       return cachedResult;
