@@ -14,7 +14,7 @@ export const pluginLoadFromServer = (inputCodeOrFilePath: string, inputType: Bun
       // onLoad are for loading the file.
 
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
-        if (debugPlugin) {
+        if (debugPlugin || true) {
           console.log('onLoad', args);
         }
 

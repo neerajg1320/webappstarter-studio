@@ -48,7 +48,7 @@ export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbu
   // different from the args.path
   const { data, request } = await axiosInstance.get(url);
 
-  if (debugPlugin) {
+  if (debugPlugin || true) {
     console.log(`request.responseURL:${request.responseURL}`);
   }
 
