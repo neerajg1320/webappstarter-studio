@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ProjectListScroller from "./project-list-scroller/project-list-scroller";
 import ProjectListGrid from "./project-list-grid/project-list-grid";
@@ -9,12 +9,15 @@ import {useActions} from "../../../hooks/use-actions";
 import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../state";
 import {withLifecyleLogger} from "../../../hoc/logger";
 import {useTypedSelector} from "../../../hooks/use-typed-selector";
+import {debugComponent} from "../../../config/global";
 
 const ProjectListView = () => {
   const [isPreviewLayout, setPreviewLayout] = useState<boolean>(false);
   const navigate = useNavigate();
-  const {createAndSetProject} = useActions();
+  const {createAndSetProject, fetchProjectsAndFiles} = useActions();
   const currentUser = useTypedSelector(state => state.auth.currentUser);
+  const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
+  const projectsState = useTypedSelector((state) => state.projects);
 
   const handleNewProjectClick = () => {
     const localId = generateLocalId();
@@ -28,6 +31,25 @@ const ProjectListView = () => {
     });
     navigate(RoutePath.PROJECT_NEW);
   }
+
+  useEffect(() => {
+    if (debugComponent) {
+      console.log(`ProjectListGrid:useEffect[] projectState:`, projectsState);
+    }
+    if (!isAuthenticated) {
+      console.log(`Error! projects listed before authentication `)
+    } else {
+      if (projectsState.loadCount <= 0) {
+        fetchProjectsAndFiles();
+      }
+    }
+
+    return () => {
+      if (debugComponent) {
+        console.log(`ProjectListGrid:useEffect[] destroyed`);
+      }
+    }
+  }, []);
 
   return (
       <>
@@ -57,9 +79,7 @@ const ProjectListView = () => {
             <h2>User login needed</h2>
         }
       </>
-
   );
-
 }
 
 export default withLifecyleLogger(ProjectListView, false);

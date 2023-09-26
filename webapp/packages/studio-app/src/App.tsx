@@ -24,4 +24,4 @@ const App = () => {
   );
 }
 
-export default withLifecyleLogger(App, true);
+export default withLifecyleLogger(App, false);

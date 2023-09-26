@@ -1,5 +1,4 @@
-import React, {useEffect, useMemo} from "react";
-import {useNavigate} from "react-router-dom";
+import React, {useMemo} from "react";
 import {useTypedSelector} from "../../../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
 import {debugComponent, debugProject} from "../../../../config/global";
@@ -15,34 +14,31 @@ interface ProjectListGridProps {
 
 const ProjectListGrid:React.FC<ProjectListGridProps> = ({visibility:propVisibility}) => {
   // const debugComponent = true;
-  const navigate = useNavigate();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
-  const {fetchProjectsAndFiles} = useActions();
-
   const projectsState = useTypedSelector((state) => state.projects);
   const projectList = useMemo(() => {
     return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
 
 
-  useEffect(() => {
-    if (debugComponent) {
-      console.log(`ProjectListGrid:useEffect[] projectState:`, projectsState);
-    }
-    if (!isAuthenticated) {
-      console.log(`Error! projects listed before authentication `)
-    } else {
-      if (projectsState.loadCount <= 0) {
-        fetchProjectsAndFiles();
-      }
-    }
-
-    return () => {
-      if (debugComponent) {
-        console.log(`ProjectListGrid:useEffect[] destroyed`);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (debugComponent) {
+  //     console.log(`ProjectListGrid:useEffect[] projectState:`, projectsState);
+  //   }
+  //   if (!isAuthenticated) {
+  //     console.log(`Error! projects listed before authentication `)
+  //   } else {
+  //     if (projectsState.loadCount <= 0) {
+  //       fetchProjectsAndFiles();
+  //     }
+  //   }
+  //
+  //   return () => {
+  //     if (debugComponent) {
+  //       console.log(`ProjectListGrid:useEffect[] destroyed`);
+  //     }
+  //   }
+  // }, []);
 
   return (
       <div className="project-list-grid" style={{

@@ -16,14 +16,7 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
     return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
 
-
-
-  // const scrollerRef = useRef<HTMLDivElement>();
-  // const isScrollerVisible = useVisibility(scrollerRef);
-  // if (debugComponent) {
-  //   console.log(`ProjectListScroller:render isScrollVisible:`, isScrollerVisible);
-  // }
-
+  
   const handleProjectListScroll = () => {
     // console.log(`handleProjectListScroll():`);
   };
