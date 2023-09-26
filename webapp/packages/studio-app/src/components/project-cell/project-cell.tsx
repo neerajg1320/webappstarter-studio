@@ -166,7 +166,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (reduxProject.bundleDirty) {
       bundleProject(reduxProject.localId);
     }
-  }, [reduxProject.ideReady, bundlerReady]);
+  }, [reduxProject.ideReady, bundlerReady, reduxProject.bundleDirty]);
 
   useEffect(() => {
     if (debugComponent) {
@@ -650,7 +650,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
           <PreviewTabsPanel
               title={reduxProject.title}
-              html={htmlContent}
+              html={reduxProject.htmlContent}
               code={bundlesState[reduxProject.bundleLocalId]!.code}
               err={bundlesState[reduxProject.bundleLocalId]!.err}
           />
