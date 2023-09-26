@@ -47,10 +47,15 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
       // These are essentially library files.
       // TBD: We can pass the package server into the plugin
       build.onResolve({ filter: /.*/ }, async (args: any) => {
-        pkgMap[args.path] = {name:args.path} as PackageInfo;
+        const pkgUrl = `${pkgServer}/${args.path}`;
+        // Need to parse import path
+        const namePart = args.path.split('/')[0];
+        const name = namePart.split('@')[0];
+
+        pkgMap[pkgUrl] = {name, url: pkgUrl} as PackageInfo;
 
         return {
-          path: `${pkgServer}/${args.path}`,
+          path: pkgUrl,
           namespace: getNameSpace(args.importer)
         };
       });
