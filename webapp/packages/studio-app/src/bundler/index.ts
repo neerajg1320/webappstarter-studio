@@ -25,8 +25,8 @@ export const initializeEsbuildBundler = async (): Promise<void> => {
     wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
   });
 
-  // We can add delay for testing
-  await delayTimer(3000);
+  // We can add delay for testing. This is very effective way to check flows in UI components
+  // await delayTimer(3000);
 
   if (debugBundler) {
     console.log(`Esbuild Service: esbuild-wasm@${esbuildVersion}/esbuild.wasm downloaded successfully.`);

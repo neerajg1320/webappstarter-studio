@@ -163,7 +163,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (!bundlerReady) {
       return;
     }
-    
+
     if (reduxProject.bundleDirty) {
       bundleProject(reduxProject.localId);
     }
