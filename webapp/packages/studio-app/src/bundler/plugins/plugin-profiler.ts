@@ -6,7 +6,7 @@ export const pluginProfiler = () => {
     setup(build: esbuild.PluginBuild) {
 
       build.onResolve({filter: /.*/}, (args) => {
-        console.log(`args`, args);
+        // console.log(`pluginProfiler:onResolve() args`, args);
       })
     }
   }

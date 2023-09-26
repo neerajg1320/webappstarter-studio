@@ -10,33 +10,22 @@ import {
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
-import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
+
 import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 
-let service: esbuild.Service;
 
-export const getESBuildService = async (): Promise<esbuild.Service> => {
-  if (!service) {
-    try {
-      service = await esbuild.startService({
-        worker: true,
-        // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
-        wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
-      });
+export const initializeESBuildService = async (): Promise<void> => {
+  await esbuild.initialize({
+    worker: true,
+    // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
+    wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
+  });
 
-      if (debugBundler) {
-        console.log(`Esbuild Service: esbuild-wasm@${esbuildVersion}/esbuild.wasm downloaded successfully.`);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(`Error! Esbuild Service not Initiazed.`, err);
-      }
-    }
+  if (debugBundler || true) {
+    console.log(`Esbuild Service: esbuild-wasm@${esbuildVersion}/esbuild.wasm downloaded successfully.`);
   }
-
-  return service;
 }
 
 // We have to fix the logic here.
@@ -65,11 +54,15 @@ const bundleCode = async (
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
 ):Promise<BundleResult> => {
-    if (debugBundler) {
+    if (debugBundler || true) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
     }
 
-    const esbuildService = await getESBuildService();
+    await initializeESBuildService();
+
+    console.log(`initialize esbuild successful`, codeOrFilePath);
+
+    console.log(`initialization should be done:`, codeOrFilePath);
     const esbuildPlugins = [];
 
     if (enableProfilerPlugin) {
@@ -90,8 +83,6 @@ const bundleCode = async (
     if (enableLoadFromServer) {
       esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
     }
-
-    // const envVar = "NODE_ENV";
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
@@ -118,7 +109,7 @@ const bundleCode = async (
             builderServiceOptions.jsxFragment = '_React.Fragment';
         }
 
-        const result = await esbuildService.build(builderServiceOptions);
+        const result = await esbuild.build(builderServiceOptions);
 
         return {
             code: result.outputFiles![0].text,

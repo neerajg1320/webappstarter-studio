@@ -20,7 +20,7 @@
     "axios": "^1.5.0",
     "bulmaswatch": "^0.8.1",
     "diff-match-patch": "^1.0.5",
-    "esbuild-wasm": "0.8.27",
+    "esbuild-wasm": "0.11.15",
     "fflate": "^0.8.0",
     "immer": "9.0.21",
     "localforage": "^1.10.0",
