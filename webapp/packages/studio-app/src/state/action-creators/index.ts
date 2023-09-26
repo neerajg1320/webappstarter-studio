@@ -126,7 +126,7 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
           }
       });
 
-      const result = await bundleCodeStr(input, bundleLanguage);
+      const result = await bundleCodeStr(cellId, input, bundleLanguage);
 
       dispatch({
           type: ActionType.CELL_BUNDLE_COMPLETE,
@@ -174,7 +174,7 @@ export const bundleProject = (localId:string) => {
           // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
           // TBD: Remove the hardcoding of the project path
           const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
-          createProjectBundle(reduxProject.localId, projectPath, `${reduxProject.entry_path}`, bundleLanguage)(dispatch, getState);
+          createProjectBundle(reduxProject, reduxProject.localId, projectPath, `${reduxProject.entry_path}`, bundleLanguage)(dispatch, getState);
         }
       } else {
         console.error(`Error! file type ${getFileTypeFromPath(reduxProject.entry_path)} not supported`)
@@ -187,6 +187,7 @@ export const bundleProject = (localId:string) => {
 }
 
 export const createProjectBundle = (
+    reduxProject: ReduxProject,
     projectLocalId:string,
     projectDirPath:string,
     entryFile:string,
@@ -299,6 +300,7 @@ export const createProjectBundle = (
     });
 
     const result:BundleResult = await bundleFilePath(
+        reduxProject.title,
         (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
         bundleLanguage,
         getFileContentsFromRedux

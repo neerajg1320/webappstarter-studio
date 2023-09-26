@@ -32,36 +32,39 @@ export const initializeEsbuildBundler = async (): Promise<void> => {
 // In case the esbuild.wasm file is not downloaded or there is an error. We need to communicate to user
 
 export const bundleCodeStr = async (
+    title: string,
     rawCode: string,
     bundleLanguage: BundleLanguage
 ) => {
-  return bundleCode(rawCode, 'cell', bundleLanguage, null);
+  return bundleCode(title, rawCode, 'cell', bundleLanguage, null);
 }
 
 export const bundleFilePath =  async (
+    title: string,
     filePath: string,
     bundleLanguage: BundleLanguage,
     fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>
 ):Promise<BundleResult> => {
-  return bundleCode(filePath, 'project', bundleLanguage, fileFetcher);
+  return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher);
 }
 
 // The bundleCodeStr takes a string as input.
 // In pluginLoadFromServer, the onLoad method checks for index.js and provides this String
 const bundleCode = async (
+    title: string,
     codeOrFilePath: string,
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
 ):Promise<BundleResult> => {
     if (debugBundler) {
-      console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
+      console.log(`bundleCode: '${inputType}': title:'''${title}'''`);
     }
 
     const esbuildPlugins = [];
 
     if (enableProfilerPlugin) {
-      esbuildPlugins.push(pluginProfiler(codeOrFilePath));
+      esbuildPlugins.push(pluginProfiler(title));
     }
 
     esbuildPlugins.push(pluginResolve());

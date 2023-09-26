@@ -27,7 +27,7 @@ export const pluginProfiler = (title:string) => {
         endTime = new Date();
 
         // The result is the result that we get at the end of the build
-        console.log(`Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
+        console.log(`[${title}]: Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
       });
     }
   }
