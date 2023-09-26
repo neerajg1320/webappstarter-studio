@@ -87,7 +87,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginLoadFromCache());
     }
     if (enableLoadFromServer) {
-      esbuildPlugins.push(pluginLoadFromServer());
+      esbuildPlugins.push(pluginLoadFromServer(packageMap));
     }
 
     if (enableLoadCells) {

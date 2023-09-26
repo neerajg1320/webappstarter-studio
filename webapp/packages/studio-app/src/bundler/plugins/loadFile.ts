@@ -68,5 +68,5 @@ export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbu
     await setFileInCache(url, result);
   }
 
-  return result;
+  return {result, responseURL: request.responseURL};
 }

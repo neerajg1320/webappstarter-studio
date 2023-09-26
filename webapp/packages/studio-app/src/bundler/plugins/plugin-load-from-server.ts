@@ -2,9 +2,10 @@ import * as esbuild from "esbuild-wasm";
 import {debugPlugin, enableLoadFromCache} from "../../config/global";
 
 import {loadFileUrl} from "./loadFile";
+import {PackageMap} from "./package";
 
 // TBD: This should be broken and a separate loader for cells should be created
-export const pluginLoadFromServer = () => {
+export const pluginLoadFromServer = (pkgMap: PackageMap) => {
   return {
     name: 'fetch-from-server-plugin',
     setup(build: esbuild.PluginBuild) {          
@@ -14,8 +15,8 @@ export const pluginLoadFromServer = () => {
         if (debugPlugin || true) {
           console.log('onLoad', args);
         }
-
-        return await loadFileUrl(args.path, enableLoadFromCache);
+        const {result, responseURL} = await loadFileUrl(args.path, enableLoadFromCache)
+        return result;
       });
     }
   }

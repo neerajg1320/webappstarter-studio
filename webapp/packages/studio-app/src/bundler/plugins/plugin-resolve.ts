@@ -16,7 +16,7 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
 
       // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || false) {
+        if (debugPlugin || true) {
           console.log('onResolve', args);
         }
 
