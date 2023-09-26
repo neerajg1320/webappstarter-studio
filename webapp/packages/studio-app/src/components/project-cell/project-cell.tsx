@@ -134,8 +134,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         updateFile({localId: _editedFile.localId, content: value});
 
         if (hotReloadRef.current) {
-          console.log(`bundleProjectDebounced()`);
-          bundleProjectDebounced(null);
+          bundleMarkDirtyDebounced(null);
         }
 
         if (autoSaveRef.current) {
@@ -150,6 +149,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       }
     }
   };
+
+  const markProjectBundleDirty = () => {
+    updateProject({localId: reduxProject.localId, bundleDirty: true});
+  }
 
   useEffect(() => {
     if (debugComponent || true) {
@@ -201,9 +204,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
 
-  // TBD: Need to put in settings
-  const bundleProjectDebounced = useDebouncedCallback(
-      () => bundleProject(reduxProject.localId),
+
+  const bundleMarkDirtyDebounced = useDebouncedCallback(() => markProjectBundleDirty(),
       autoBundleDebounce
   );
 
@@ -227,7 +229,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       console.log(`currentUser: `, currentUser);
     }
 
-    bundleProject(reduxProject.localId);
+    markProjectBundleDirty();
   }
 
   const createDownloadLinkAndClick = () => {
@@ -333,7 +335,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       case "path-change":
         const {localId, newPath} = data;
         handleFilePathChange(localId, newPath);
-        bundleProject(reduxProject.localId);
+
+        // TBD: We have to do the same in case of file delete.
+        markProjectBundleDirty();
         break;
 
       default:
