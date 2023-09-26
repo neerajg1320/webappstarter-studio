@@ -106,6 +106,7 @@ const bundleCode = async (
 
         // The esbuild.initialize should have been already invoked
         const result = await esbuild.build(builderServiceOptions);
+        // console.log(`result:`, result);
 
         return {
             code: result.outputFiles![0].text,

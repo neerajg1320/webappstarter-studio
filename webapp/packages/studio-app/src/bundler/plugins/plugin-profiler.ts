@@ -20,12 +20,12 @@ export const pluginProfiler = (title:string) => {
 
       build.onStart(() => {
         startTime = new Date();
-        console.log(`Build Started`)
+        // console.log(`Build Started`)
       });
 
       build.onEnd((result) => {
         endTime = new Date();
-        
+
         // The result is the result that we get at the end of the build
         console.log(`Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
       });
