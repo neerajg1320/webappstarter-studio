@@ -9,7 +9,8 @@ import {CELL_REGEX} from "../../utils/patterns";
 // Hence we can use the closures for deciding the server to be contacted
 export const pluginResolve = () => {
   const getNameSpace = (importer:string):string => {
-    return `a:${importer}`;
+    // return `a:${importer}`;
+    return `a`;
   }
   return {
     name: 'unpkg-path-plugin',

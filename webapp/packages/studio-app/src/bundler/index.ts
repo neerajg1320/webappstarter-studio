@@ -61,7 +61,7 @@ const bundleCode = async (
     const esbuildPlugins = [];
 
     if (enableProfilerPlugin) {
-      esbuildPlugins.push(pluginProfiler());
+      esbuildPlugins.push(pluginProfiler(codeOrFilePath));
     }
 
     esbuildPlugins.push(pluginResolve());
