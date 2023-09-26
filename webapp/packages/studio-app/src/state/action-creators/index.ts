@@ -26,7 +26,7 @@ import {
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import {Dispatch} from "react";
-import {bundleCodeStr, bundleFilePath} from "../../bundler";
+import {bundleCodeStr, bundleFilePath, initializeEsbuildBundler} from "../../bundler";
 
 import {RootState} from "../reducers";
 import {
@@ -145,14 +145,22 @@ export const resetBundles = ():ResetBundlesAction => {
   }
 }
 
+export const initializeBundler = () => {
+  return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+    await initializeEsbuildBundler();
+    dispatch(updateApplication({bundlerReady: true}));
+  }
+}
 
 export const bundleProject = (localId:string) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+    const reduxProject = getProjectFromLocalId(getState().projects, localId);
+
     if (!getState().application.bundlerReady ) {
-      console.log(`Error! application bundler is not ready`);
+      console.log(`Error! could not build project '${reduxProject.title.padEnd(20)}', bundler is not ready`);
       return;
     }
-    const reduxProject = getProjectFromLocalId(getState().projects, localId);
+
     const currentUser = getState().auth.currentUser;
 
     if (reduxProject.entry_path) {

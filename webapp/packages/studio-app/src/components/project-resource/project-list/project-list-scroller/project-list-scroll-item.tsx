@@ -48,6 +48,7 @@ const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
 
 const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, reduxProject}) => {
   const appFilesLoaded = useTypedSelector(state => state.application.filesLoaded);
+  const bundlerReady = useTypedSelector(state => state.application.bundlerReady);
   const {bundleProject, makeProjectIdeReady} = useActions();
 
   if (debugComponent && index === 0) {
@@ -72,6 +73,10 @@ const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, redu
   }
 
   useEffect(() => {
+    if (!bundlerReady) {
+      return;
+    }
+
     if (!appFilesLoaded) {
       return;
     }
@@ -89,7 +94,7 @@ const ProjectListScrollItem:React.FC<ProjectListScrollItemProps> = ({index, redu
         makeProjectIdeReady(reduxProject.localId);
       }
     }
-  }, [isVisibleDebounced, appFilesLoaded]);
+  }, [isVisibleDebounced, appFilesLoaded, bundlerReady]);
   // visibility logic ends
 
   useEffect(() => {

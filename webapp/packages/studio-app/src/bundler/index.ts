@@ -16,14 +16,14 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 
 
-export const initializeESBuildService = async (): Promise<void> => {
+export const initializeEsbuildBundler = async (): Promise<void> => {
   await esbuild.initialize({
     worker: true,
     // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
     wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
   });
 
-  if (debugBundler || true) {
+  if (debugBundler) {
     console.log(`Esbuild Service: esbuild-wasm@${esbuildVersion}/esbuild.wasm downloaded successfully.`);
   }
 }
@@ -54,15 +54,10 @@ const bundleCode = async (
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
 ):Promise<BundleResult> => {
-    if (debugBundler || true) {
+    if (debugBundler) {
       console.log(`bundleCode: '${inputType}': codeOrFilePath:'''${codeOrFilePath}'''`);
     }
 
-    await initializeESBuildService();
-
-    console.log(`initialize esbuild successful`, codeOrFilePath);
-
-    console.log(`initialization should be done:`, codeOrFilePath);
     const esbuildPlugins = [];
 
     if (enableProfilerPlugin) {
@@ -109,6 +104,7 @@ const bundleCode = async (
             builderServiceOptions.jsxFragment = '_React.Fragment';
         }
 
+        // The esbuild.initialize should have been already invoked
         const result = await esbuild.build(builderServiceOptions);
 
         return {
