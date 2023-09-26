@@ -163,26 +163,37 @@ export const bundleProject = (localId:string) => {
 
     const currentUser = getState().auth.currentUser;
 
-    if (reduxProject.entry_path) {
-      dispatch(updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId}));
+    dispatch(updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId}));
 
-      // We have used entry_path as it is the path on the server that matters!
-      const bundleLanguage = pathToBundleLanguage(reduxProject.entry_path)
-
-      if (bundleLanguage !== BundleLanguage.UNKNOWN) {
-        if (currentUser) {
-          // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
-          // TBD: Remove the hardcoding of the project path
-          const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
-          createProjectBundle(reduxProject, projectPath, `${reduxProject.entry_path}`, bundleLanguage)(dispatch, getState);
-        }
-      } else {
-        console.error(`Error! file type ${getFileTypeFromPath(reduxProject.entry_path)} not supported`)
-      }
-
-    } else {
-      console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
+    const entryFile = getState().files.data[reduxProject.entryFileLocalId];
+    if (!entryFile) {
+      console.log(`entry file not found for project '${reduxProject.title}'`);
+      return;
     }
+    console.log(`bundleProject(): `, reduxProject, entryFile);
+
+    // Earlier entryPath was reduxProject.entry_path
+    const entryPath = entryFile.path;
+
+
+    // We have used entry_path as it is the path on the server that matters!
+    const bundleLanguage = pathToBundleLanguage(entryPath)
+
+    if (bundleLanguage !== BundleLanguage.UNKNOWN) {
+      if (currentUser) {
+        // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
+        // TBD: Remove the hardcoding of the project path
+        const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
+        // TBD: The entry_path should come from the front-end as now it lags behind
+
+        // In case the bundling has been initiated due to file name change of entry file then we need local.
+
+        createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage)(dispatch, getState);
+      }
+    } else {
+      console.error(`Error! file type ${getFileTypeFromPath(entryPath)} not supported`)
+    }
+    
   }
 }
 
