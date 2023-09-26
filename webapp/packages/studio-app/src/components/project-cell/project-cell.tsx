@@ -30,7 +30,6 @@ import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
-// const debugComponent = true;
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -58,7 +57,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  const { bundleProject, createProjectBundle, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
+  const { bundleProject, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -154,8 +153,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   };
 
   useEffect(() => {
-    if (debugComponent) {
-      console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady} bundlerReady:${bundlerReady}`);
+    if (debugComponent || true) {
+      console.log(`ProjectCell:useEffect[...]  bundlerReady:${bundlerReady}  ideReady:${reduxProject.ideReady}  bundleDirty:${reduxProject.bundleDirty}`);
     }
     if (!bundlerReady) {
       return;
@@ -164,7 +163,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       return;
     }
 
-    bundleProject(reduxProject.localId);
+    if (reduxProject.bundleDirty) {
+      bundleProject(reduxProject.localId);
+    }
   }, [reduxProject.ideReady, bundlerReady]);
 
   useEffect(() => {
@@ -221,6 +222,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
 
     setHtmlContent(_htmlContent);
+    updateProject({localId: reduxProject.localId, htmlContent:_htmlContent});
 
     // This happens when we reach here after creating a project
     // Check if this can be optimized since selected and edited are supposed to be same
@@ -265,35 +267,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // Note we have to make sure that we do not use editedFile with JSON.stringify
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(editedFile)]);
-
-  // Make sure that we do not use useCallback( ,[]) here as it matters in useDebouncedCallback
-  const bundleProjectOld = () => {
-    if (reduxProject.entry_path) {
-      updateProject({localId: reduxProject.localId, bundleLocalId: reduxProject.localId})
-
-      // We have used entry_path as it is the path on the server that matters!
-      const bundleLanguage = pathToBundleLanguage(reduxProject.entry_path)
-
-      if (bundleLanguage !== BundleLanguage.UNKNOWN) {
-        if (currentUser) {
-          // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
-          // TBD: Remove the hardcoding of the project path
-          const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
-          createProjectBundle(
-              reduxProject.localId,
-              projectPath,
-              `${reduxProject.entry_path}`,
-              bundleLanguage
-          );
-        }
-      } else {
-        console.error(`Error! file type ${getFileTypeFromPath(reduxProject.entry_path)} not supported`)
-      }
-
-    } else {
-      console.error(`Error! entry_path is not set for project '${reduxProject?.title}'`);
-    }
-  }
 
   // TBD: Need to put in settings
   const bundleProjectDebounced = useDebouncedCallback(

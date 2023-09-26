@@ -15,6 +15,7 @@ import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
+import {delayTimer} from "../utils/delay";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -23,6 +24,9 @@ export const initializeEsbuildBundler = async (): Promise<void> => {
     // wasmURL: '/esbuild.wasm' // picks esbuild.wasm placed in public folder
     wasmURL: `${pkgServerUrl}/esbuild-wasm@${esbuildVersion}/esbuild.wasm`
   });
+
+  // We can add delay for testing
+  await delayTimer(3000);
 
   if (debugBundler) {
     console.log(`Esbuild Service: esbuild-wasm@${esbuildVersion}/esbuild.wasm downloaded successfully.`);
