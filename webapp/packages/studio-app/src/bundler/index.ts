@@ -6,7 +6,7 @@ import {
   cellJsxFileName,
   cellTsxFileName,
   combineCellsCode,
-  debugBundler, enableLoadFromCache, enableLoadFromRedux, enableLoadFromServer, enableProfilerPlugin,
+  debugBundler, enableLoadCells, enableLoadFromCache, enableLoadFromRedux, enableLoadFromServer, enableProfilerPlugin,
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
@@ -14,6 +14,7 @@ import {
 import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
+import {pluginLoadFromString} from "./plugins/plugin-load-from-string";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -57,8 +58,8 @@ const bundleCode = async (
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
 ):Promise<BundleResult> => {
-    if (debugBundler) {
-      console.log(`bundleCode: '${inputType}': title:'''${title}'''`);
+    if (debugBundler || true) {
+      console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
     }
 
     const esbuildPlugins = [];
@@ -79,7 +80,11 @@ const bundleCode = async (
       esbuildPlugins.push(pluginLoadFromCache());
     }
     if (enableLoadFromServer) {
-      esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
+      esbuildPlugins.push(pluginLoadFromServer());
+    }
+
+    if (enableLoadCells) {
+      esbuildPlugins.push(pluginLoadFromString(codeOrFilePath));
     }
 
     try {

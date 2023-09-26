@@ -7,18 +7,21 @@ import {isPathTypescript} from "../../utils/path";
 import {loadFileUrl} from "./loadSourceFiles";
 
 // TBD: This should be broken and a separate loader for cells should be created
-export const pluginLoadFromServer = () => {
+export const pluginLoadFromString = (code: string) => {
   return {
     name: 'fetch-from-server-plugin',
     setup(build: esbuild.PluginBuild) {          
       // onLoad are for loading the file.
 
-      build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
+      build.onLoad({ filter: CELL_REGEX }, async (args: esbuild.OnLoadArgs) => {
         if (debugPlugin || true) {
-          console.log('onLoad', args);
+          console.log('pluginLoadFromString:onLoad()', args);
         }
 
-        return await loadFileUrl(args.path, enableLoadFromCache);
+        return {
+          loader: isPathTypescript(args.path) ? 'tsx' : 'jsx',
+          contents: code
+        };
       });
     }
   }

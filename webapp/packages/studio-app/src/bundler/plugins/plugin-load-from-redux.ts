@@ -20,16 +20,7 @@ export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<esbuil
             return result;
           }
         }
-        // else {
-        //   console.error(`${args.path} does not contain ${serverMediaBaseUrl}`);
-        // }
       });
-
-      // For debug purpose
-      // build.onLoad({filter: /.*/}, async (args: any) => {
-      //   console.log(`pluginLoadFromRedux:onLoad() not handled args=`, args);
-      //   return undefined;
-      // });
     }
   }
 }
