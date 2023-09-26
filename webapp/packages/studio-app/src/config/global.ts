@@ -16,7 +16,8 @@ export const debugPlugin = false;
 // Bundler
 export const debugBundler = false;
 // export const esbuildVersion = "0.8.27";
-export const esbuildVersion = "0.11.15";
+// export const esbuildVersion = "0.11.15";
+export const esbuildVersion = "0.18.20";
 export const autoBundling = false;
 export const combineCellsCode = false;
 export const cellJsxFileName = '__cell.jsx';
