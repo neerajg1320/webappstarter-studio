@@ -4,7 +4,7 @@ import {debugPlugin, enableLoadFromCache} from "../../config/global";
 import {isRegexMatch} from "../../utils/regex";
 import {CELL_REGEX} from "../../utils/patterns";
 import {isPathTypescript} from "../../utils/path";
-import {loadFileUrl} from "./loadSourceFiles";
+import {loadFileUrl} from "./loadFile";
 
 // TBD: This should be broken and a separate loader for cells should be created
 export const pluginCells = (code: string) => {

@@ -1,13 +1,9 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
-import {BundleInputType} from "../../state/bundle";
-import {getPkgServer} from "./servers";
-import {CELL_REGEX} from "../../utils/patterns";
-
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = () => {
+export const pluginResolve = (pkgServer:string) => {
   const getNameSpace = (importer:string):string => {
     // return `a:${importer}`;
     return `a`;
@@ -23,6 +19,7 @@ export const pluginResolve = () => {
           console.log('onResolve', args);
         }
 
+        // In case of entry point we have full URL with server
         if (args.kind === 'entry-point') {
           return {
             path: args.path,
@@ -33,7 +30,7 @@ export const pluginResolve = () => {
         return undefined;
       });
 
-      // For relative paths like ./abc, ../abc/def etc
+      // For relative paths like ./abc, ../abc/def etc we get the server from importer
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
         // let server = getServerFromArgs(args, true);
         let server = (new URL(args.importer)).origin;
@@ -44,10 +41,13 @@ export const pluginResolve = () => {
         };
       });
 
-      // For any other file
+      // For any other files
+      // These are non-relative files like 'react', 'react-dom', 'axios' etc
+      // These are essentially library files.
+      // TBD: We can pass the package server into the plugin
       build.onResolve({ filter: /.*/ }, async (args: any) => {
         return {
-          path: `${getPkgServer()}/${args.path}`,
+          path: `${pkgServer}/${args.path}`,
           namespace: getNameSpace(args.importer),
         };
       });

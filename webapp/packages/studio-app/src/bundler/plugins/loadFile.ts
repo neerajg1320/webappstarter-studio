@@ -32,6 +32,7 @@ export const loadData = (data:string, contentType:string|null):esbuild.OnLoadRes
 }
 
 
+// TBD: It should be called from redux only as we want to store the library files in redux as well
 export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbuild.OnLoadResult> => {
   const contentType = getFileType(url);
 
@@ -48,7 +49,7 @@ export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbu
   // different from the args.path
   const { data, request } = await axiosInstance.get(url);
 
-  if (debugPlugin || true) {
+  if (debugPlugin) {
     console.log(`request.responseURL:${request.responseURL}`);
   }
 
@@ -60,6 +61,7 @@ export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbu
     if (debugPlugin) {
       console.log(`INFO: url:${url} <not equal> responseUrl:${request.responseURL}`);
     }
+    console.log(`Found '${url}' library entry file '${request.responseURL}'`)
   }
 
   if (cacheEnabled) {

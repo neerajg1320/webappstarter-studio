@@ -15,7 +15,7 @@ import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
-import {delayTimer} from "../utils/delay";
+import {getPkgServer} from "../api/servers";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -72,7 +72,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginProfiler(title));
     }
 
-    esbuildPlugins.push(pluginResolve());
+    esbuildPlugins.push(pluginResolve(getPkgServer()));
 
     if (enableLoadFromRedux) {
       // fileFetcher would be null in case of call from bundleCodeStr

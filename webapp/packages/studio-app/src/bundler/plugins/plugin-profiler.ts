@@ -9,7 +9,10 @@ export const pluginProfiler = (title:string) => {
     setup:  (build: esbuild.PluginBuild) => {
 
       build.onResolve({filter: /.*/}, (args: esbuild.OnResolveArgs) => {
-        // console.log(`pluginProfiler:onResolve() args`, args);
+        // We don't need  namespace, kind, pluginData yet
+        const {path, importer, resolveDir} = args;
+
+        console.log(`pluginProfiler:onResolve() [${path.padEnd(40)}  ${importer.padEnd(80)} ${resolveDir}]`);
         return undefined;
       });
 
@@ -27,7 +30,7 @@ export const pluginProfiler = (title:string) => {
         endTime = new Date();
 
         // The result is the result that we get at the end of the build
-        console.log(`[${title}]: Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
+        // console.log(`[${title}]: Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
       });
     }
   }

@@ -1,4 +1,4 @@
-import {pkgServerUrl, serverUrl} from "../../config/global";
+import {pkgServerUrl, serverUrl} from "../config/global";
 
 
 

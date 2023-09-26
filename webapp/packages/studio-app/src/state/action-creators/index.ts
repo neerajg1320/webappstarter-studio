@@ -66,7 +66,7 @@ import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 import {getFileType, getFileTypeFromPath, joinFileParts} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
-import {loadData} from "../../bundler/plugins/loadSourceFiles";
+import {loadData} from "../../bundler/plugins/loadFile";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
@@ -170,7 +170,9 @@ export const bundleProject = (localId:string) => {
       console.log(`entry file not found for project '${reduxProject.title}'`);
       return;
     }
-    console.log(`bundleProject(): `, reduxProject, entryFile);
+    if (debugRedux) {
+      console.log(`bundleProject(): `, reduxProject, entryFile);
+    }
 
     // Earlier entryPath was reduxProject.entry_path
     const entryPath = entryFile.path;
@@ -193,7 +195,7 @@ export const bundleProject = (localId:string) => {
     } else {
       console.error(`Error! file type ${getFileTypeFromPath(entryPath)} not supported`)
     }
-    
+
   }
 }
 
@@ -813,7 +815,7 @@ export const makeProjectIdeReady = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
 
-    if (debugRedux || true) {
+    if (debugRedux) {
       console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
     }
 
