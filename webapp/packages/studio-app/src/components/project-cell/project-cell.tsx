@@ -57,7 +57,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  const { bundleProject, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents } = useActions();
+  const { bundleProject, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents, makeProjectIdeReady } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -155,84 +155,19 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (debugComponent || true) {
       console.log(`ProjectCell:useEffect[...]  bundlerReady:${bundlerReady}  ideReady:${reduxProject.ideReady}  bundleDirty:${reduxProject.bundleDirty}`);
     }
-    if (!bundlerReady) {
-      return;
-    }
     if (!reduxProject.ideReady) {
+      makeProjectIdeReady(reduxProject.localId);
       return;
     }
 
+    if (!bundlerReady) {
+      return;
+    }
+    
     if (reduxProject.bundleDirty) {
       bundleProject(reduxProject.localId);
     }
   }, [reduxProject.ideReady, bundlerReady, reduxProject.bundleDirty]);
-
-  useEffect(() => {
-    if (debugComponent) {
-      console.log(`ProjectCell: useEffect([reduxProject]) reduxProject:`, reduxProject)
-    }
-
-    let _selectedFileId = reduxProject.selectedFileLocalId;
-
-    if (reduxProject.entryFileLocalId) {
-      const entryFile = filesState.data[reduxProject.entryFileLocalId];
-      if (entryFile) {
-        if (!entryFile.contentSynced) {
-          if (!entryFile.requestInitiated) {
-            fetchFileContents([reduxProject.entryFileLocalId]);
-          }
-        } else {
-          if (!reduxProject.ideReady) {
-
-          }
-        }
-      } else {
-        // This could happen when we render the project and the files haven't been loaded
-        console.log("ProjectCell:useEffect entryFile not found");
-      }
-
-      if (!_selectedFileId) {
-        _selectedFileId = reduxProject.entryFileLocalId;
-      }
-    }
-
-    // This has been placed here so that we can download index.html even when we reach here after creating project,
-    // because in that case the projectLocalId does not change but the project state changes.
-    let _htmlContent:string|null = null;
-    if (reduxProject.entryHtmlFileLocalId) {
-      const htmlFile = filesState.data[reduxProject.entryHtmlFileLocalId];
-      if (htmlFile) {
-        if (htmlFile.contentSynced) {
-          _htmlContent = htmlFile.content;
-        } else {
-          if (!htmlFile.requestInitiated) {
-            fetchFileContents([reduxProject.entryHtmlFileLocalId]);
-          }
-        }
-      } else {
-        console.log("The project html not found. Using default html file");
-      }
-      if (!_selectedFileId) {
-        _selectedFileId = reduxProject.entryHtmlFileLocalId;
-      }
-    }
-    if (!_htmlContent) {
-      _htmlContent = htmlNoScript
-    }
-
-    updateProject({localId: reduxProject.localId, htmlContent:_htmlContent, ideReady: true});
-
-    // This happens when we reach here after creating a project
-    // Check if this can be optimized since selected and edited are supposed to be same
-    if (!reduxProject.selectedFileLocalId) {
-      updateProject({localId: reduxProject.localId, selectedFileLocalId:_selectedFileId});
-    }
-
-    if (!reduxProject.selectedFileLocalId) {
-      setProjectSelectedFile(_selectedFileId);
-    }
-  }, [filesState.data]);
-
 
   useEffect(() => {
     if (debugComponent) {

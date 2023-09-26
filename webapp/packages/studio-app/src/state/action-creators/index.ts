@@ -801,7 +801,10 @@ export const saveFile = (localId: string) => {
 export const makeProjectIdeReady = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
-    // console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
+
+    if (debugRedux || true) {
+      console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
+    }
 
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = getFileFromLocalId(getState().files, reduxProject.entryHtmlFileLocalId);
