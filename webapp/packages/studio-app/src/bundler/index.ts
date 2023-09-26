@@ -16,6 +16,7 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
+import {PackageMap} from "./plugins/package";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -66,13 +67,15 @@ const bundleCode = async (
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
     }
 
+    const packageMap = {} as PackageMap;
+
     const esbuildPlugins = [];
 
     if (enableProfilerPlugin) {
-      esbuildPlugins.push(pluginProfiler(title));
+      esbuildPlugins.push(pluginProfiler(title, packageMap));
     }
 
-    esbuildPlugins.push(pluginResolve(getPkgServer()));
+    esbuildPlugins.push(pluginResolve(getPkgServer(), packageMap));
 
     if (enableLoadFromRedux) {
       // fileFetcher would be null in case of call from bundleCodeStr

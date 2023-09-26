@@ -1,7 +1,8 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from "../../config/global";
+import {PackageMap} from "./package";
 
-export const pluginProfiler = (title:string) => {
+export const pluginProfiler = (title:string, pkgMap: PackageMap) => {
   let startTime;
   let endTime;
 
@@ -32,6 +33,7 @@ export const pluginProfiler = (title:string) => {
       build.onEnd((result) => {
         endTime = new Date();
 
+        console.log(`pkgMap:`, pkgMap);
         // The result is the result that we get at the end of the build
         // console.log(`[${title}]: Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
       });
