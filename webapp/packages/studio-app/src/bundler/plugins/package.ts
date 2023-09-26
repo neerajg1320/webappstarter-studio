@@ -1,6 +1,7 @@
 export type PackageInfo = {
   name: string,
   version: string,
+  entry: string,
   url: string
 }
 
