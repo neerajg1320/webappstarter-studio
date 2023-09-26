@@ -6,13 +6,14 @@ import {
   cellJsxFileName,
   cellTsxFileName,
   combineCellsCode,
-  debugBundler, enableLoadFromCache, enableLoadFromRedux, enableLoadFromServer,
+  debugBundler, enableLoadFromCache, enableLoadFromRedux, enableLoadFromServer, enableProfilerPlugin,
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
 import {getFileBasenameParts, getFileTypeFromPath} from "../utils/path";
 import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
+import {pluginProfiler} from "./plugins/plugin-profiler";
 
 let service: esbuild.Service;
 
@@ -69,9 +70,13 @@ const bundleCode = async (
     }
 
     const esbuildService = await getESBuildService();
-    const esbuildPlugins = [
-        pluginResolve()
-    ];
+    const esbuildPlugins = [];
+
+    if (enableProfilerPlugin) {
+      esbuildPlugins.push(pluginProfiler());
+    }
+
+    esbuildPlugins.push(pluginResolve());
 
     if (enableLoadFromRedux) {
       // fileFetcher would be null in case of call from bundleCodeStr
@@ -86,7 +91,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginLoadFromServer(codeOrFilePath, inputType));
     }
 
-    const envVar = "NODE_ENV";
+    // const envVar = "NODE_ENV";
 
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
@@ -96,6 +101,8 @@ const bundleCode = async (
                 [inputLanguage === BundleLanguage.TYPESCRIPT ? cellTsxFileName : cellJsxFileName] :
                 [codeOrFilePath],
             bundle: true,
+
+            // This prevents the write to disk
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: esbuildPlugins,

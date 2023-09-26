@@ -23,7 +23,7 @@ export const pluginLoadFromCache = () => {
         // We use args.path as key in the cache
         const fileContent = await getFileFromCache(args.path);
         if (fileContent) {
-          if (debugPlugin || true) {
+          if (debugPlugin || false) {
             console.log(`cache.onLoad(): path:${args.path.padEnd(70)}  namespace:${args.namespace.padEnd(80)}`);
           }
         }
