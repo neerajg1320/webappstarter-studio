@@ -810,11 +810,9 @@ export const makeProjectIdeReady = (localId: string) => {
         responses.forEach(({response, reduxFile}) => {
           // console.log(response, reduxFile);
           if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
-            dispatch(updateProject({localId, htmlContent:response.data}))
+            dispatch(updateProject({localId, htmlContent:response.data, ideReady: true}))
           }
         });
-        // console.log(`makeProjectIdeReady:`, responses);
-        dispatch(updateProject({localId, ideReady: true}));
       }
     }
   }

@@ -64,7 +64,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
   const bundlerReady = useTypedSelector(state => state.application.bundlerReady);
-  const [htmlContent, setHtmlContent] = useState<string|null>(null);
 
   // TBD: 2023-09-08 This is same as reduxProject.selectFileLocalId
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
@@ -184,7 +183,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           }
         } else {
           if (!reduxProject.ideReady) {
-            updateProject({localId:projectLocalId, ideReady: true})
+
           }
         }
       } else {
@@ -220,9 +219,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (!_htmlContent) {
       _htmlContent = htmlNoScript
     }
-
-    setHtmlContent(_htmlContent);
-    updateProject({localId: reduxProject.localId, htmlContent:_htmlContent});
+    
+    updateProject({localId: reduxProject.localId, htmlContent:_htmlContent, ideReady: true});
 
     // This happens when we reach here after creating a project
     // Check if this can be optimized since selected and edited are supposed to be same
@@ -647,7 +645,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       }
 
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
-      {(htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+      {(reduxProject.htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
           <PreviewTabsPanel
               title={reduxProject.title}
               html={reduxProject.htmlContent}
