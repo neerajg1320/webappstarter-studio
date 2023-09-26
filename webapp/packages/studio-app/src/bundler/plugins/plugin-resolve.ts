@@ -32,7 +32,7 @@ export const pluginResolve = () => {
 
         return undefined;
       });
-      
+
       // For relative paths like ./abc, ../abc/def etc
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
         // let server = getServerFromArgs(args, true);

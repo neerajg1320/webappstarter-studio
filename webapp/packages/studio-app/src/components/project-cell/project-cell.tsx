@@ -64,6 +64,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const filesState = useTypedSelector((state) => state.files);
   const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
+  const bundlerReady = useTypedSelector(state => state.application.bundlerReady);
   const [htmlContent, setHtmlContent] = useState<string|null>(null);
 
   // TBD: 2023-09-08 This is same as reduxProject.selectFileLocalId
@@ -154,15 +155,17 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   useEffect(() => {
     if (debugComponent) {
-      console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady}`);
+      console.log(`useEffect[reduxProject.ideReady] ideReady:${reduxProject.ideReady} bundlerReady:${bundlerReady}`);
+    }
+    if (!bundlerReady) {
+      return;
+    }
+    if (!reduxProject.ideReady) {
+      return;
     }
 
-    // This resolved our dual bundling problem
-    if (reduxProject.ideReady) {
-      // console.log(`bundleProject:ideReady`);
-      bundleProject(reduxProject.localId);
-    }
-  }, [reduxProject.ideReady]);
+    bundleProject(reduxProject.localId);
+  }, [reduxProject.ideReady, bundlerReady]);
 
   useEffect(() => {
     if (debugComponent) {
@@ -238,12 +241,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     setProjectSelectedFile(reduxProject.selectedFileLocalId);
   }, [reduxProject.localId]);
-
-  useEffect(() => {
-    if (debugComponent) {
-      console.log(`bundlesState:`, bundlesState);
-    }
-  }, [bundlesState]);
 
   useEffect( () => {
     if (debugComponent || false) {
