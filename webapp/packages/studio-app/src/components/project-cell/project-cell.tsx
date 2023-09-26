@@ -379,6 +379,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   const setProjectSelectedFile = useCallback((fileLocalId:string|null) => {
     if (reduxProject.selectedFileLocalId) {
+      // TBD: We need to check if the file is deleted then only do this.
+      // This logic in any case we have to clean up.
       updateFile({localId: reduxProject.selectedFileLocalId, isSelected: false});
     }
 

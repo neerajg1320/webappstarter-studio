@@ -47,7 +47,7 @@ interface FilesTreeProps {
 const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect, onEvent:propOnEvent}) => {
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {createFile, updateFile, removeFile, deleteFile} = useActions();
+  const {createFile, removeFile, deleteFile} = useActions();
   const selectedFileLocalId = reduxProject.selectedFileLocalId || null;
   const [fileTree, setFileTree] = useState<FileReduxNode|null>(null)
 
@@ -183,6 +183,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       case FileBrowserControlBarEventType.DELETE_FILE:
         if (event.localId) {
           removeFile(event.localId);
+          // TBD: We should be marking the file selection properly here.
+          // updateProject({})
         }
         break;
     }

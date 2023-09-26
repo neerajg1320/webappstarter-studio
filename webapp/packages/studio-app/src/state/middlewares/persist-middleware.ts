@@ -10,6 +10,7 @@ import {
   syncFilesToServer,
   syncProjectsToServer
 } from "../../config/global";
+import {act} from "react-dom/test-utils";
 
 export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Action>, getState: () => RootState}) => {
   let saveTimer: NodeJS.Timeout;
@@ -33,7 +34,8 @@ export const persistMiddleware = ({dispatch, getState}: {dispatch: Dispatch<Acti
               delete (action as UpdateFileAction).payload['content'];
             }
           } else {
-            console.error(`The file is already deleted`);
+            // TBD: The isSelected false is dispatched here for a deleted file as well.
+            // console.log(`The file id '${localId}' is already deleted`, action);
             return;
           }
         }
