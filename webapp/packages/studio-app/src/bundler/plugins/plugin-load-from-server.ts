@@ -7,7 +7,7 @@ import {PackageInfo, PackageMap} from "./package";
 
 const parseResonseURL = (responseURL:string, pkgInfo: PackageInfo) => {
     console.log(`[${pkgInfo.name}]`, responseURL);
-    return {version: "0.0.1", entry: "./index.js"};
+    return {version: "0.0.1"};
 }
 
 // TBD: This should be broken and a separate loader for cells should be created
@@ -25,8 +25,8 @@ export const pluginLoadFromServer = (pkgMap: PackageMap) => {
 
         if (args.path !== responseURL) {
           try {
-            const {version, entry} = parseResonseURL(responseURL, pkgMap[args.path]);
-            pkgMap[args.path] = {...pkgMap[args.path], version, entry, url: responseURL};
+            const {version} = parseResonseURL(responseURL, pkgMap[args.path]);
+            pkgMap[args.path] = {...pkgMap[args.path], version, responseURL};
 
           } catch (err) {
             console.log(err);

@@ -52,7 +52,7 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
         const namePart = args.path.split('/')[0];
         const name = namePart.split('@')[0];
 
-        pkgMap[pkgUrl] = {name, url: pkgUrl} as PackageInfo;
+        pkgMap[pkgUrl] = {name, importPath: args.path, url: pkgUrl} as PackageInfo;
 
         return {
           path: pkgUrl,
