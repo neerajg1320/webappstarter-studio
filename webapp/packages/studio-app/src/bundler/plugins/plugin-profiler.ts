@@ -5,9 +5,9 @@ export const pluginProfiler = () => {
     'name': 'profiler-plugin',
     setup(build: esbuild.PluginBuild) {
 
-      build.onResolve({filter: /.*/}, (args) => {
-        // console.log(`pluginProfiler:onResolve() args`, args);
-      })
+      // build.onResolve({filter: /.*/}, (args) => {
+      //   // console.log(`pluginProfiler:onResolve() args`, args);
+      // })
     }
   }
 }

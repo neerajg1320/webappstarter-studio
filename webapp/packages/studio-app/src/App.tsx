@@ -4,6 +4,7 @@ import AppRouterWrapper from "./components/app-main/app-router-wrapper";
 import {useActions} from "./hooks/use-actions";
 import {useEffect} from "react";
 import {useTypedSelector} from "./hooks/use-typed-selector";
+import {debugComponent} from "./config/global";
 
 
 const App = () => {
@@ -12,7 +13,10 @@ const App = () => {
   const bundlerReady = useTypedSelector(state => state.application.bundlerReady)
 
   useEffect(() => {
-    console.log(`App:useEffect[]  projectsLoaded:${projectsLoaded}  bundlerReady:${bundlerReady}`)
+    if (debugComponent) {
+      console.log(`App:useEffect[]  projectsLoaded:${projectsLoaded}  bundlerReady:${bundlerReady}`)
+    }
+
     if (projectsLoaded && !bundlerReady) {
       initializeBundler();
     }

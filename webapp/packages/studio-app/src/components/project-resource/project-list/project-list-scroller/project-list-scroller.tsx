@@ -16,7 +16,7 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
     return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
 
-  
+
   const handleProjectListScroll = () => {
     // console.log(`handleProjectListScroll():`);
   };

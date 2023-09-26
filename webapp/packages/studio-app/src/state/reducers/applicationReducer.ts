@@ -35,7 +35,7 @@ const reducer = produce((state:ApplicatonState = initialState, action: Action): 
 
     case ActionType.RESET_APPLICATION:
       // We do not want to reset bundler. This hack shall be removed when we move projectsLoaded and filesLoaded to user
-      state = {...initialState, bundlerReady:initialState.bundlerReady};
+      state = {...initialState, bundlerReady:state.bundlerReady};
       return state;
 
     default:
