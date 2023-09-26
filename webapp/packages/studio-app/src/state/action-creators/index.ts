@@ -148,6 +148,10 @@ export const resetBundles = ():ResetBundlesAction => {
 
 export const bundleProject = (localId:string) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+    if (!getState().application.bundlerReady ) {
+      console.log(`Error! application bundler is not ready`);
+      return;
+    }
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
     const currentUser = getState().auth.currentUser;
 

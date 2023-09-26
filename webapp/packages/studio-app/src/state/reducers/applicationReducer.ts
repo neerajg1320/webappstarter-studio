@@ -10,8 +10,9 @@ const initialState: ApplicatonState = {
   hotReload: true,
   autoSave: true,
   advanceFeatures: false,
-  projectsLoaded: false,
-  filesLoaded: false,
+  projectsLoaded: false, // This should be moved to user
+  filesLoaded: false, // This should be moved to user
+  bundlerReady: false,
 }
 
 // Note: The bundler so far doesn't differentiate about bundling a cell or a project.
@@ -33,7 +34,8 @@ const reducer = produce((state:ApplicatonState = initialState, action: Action): 
       return state;
 
     case ActionType.RESET_APPLICATION:
-      state = initialState;
+      // We do not want to reset bundler. This hack shall be removed when we move projectsLoaded and filesLoaded to user
+      state = {...initialState, bundlerReady:initialState.bundlerReady};
       return state;
 
     default:
