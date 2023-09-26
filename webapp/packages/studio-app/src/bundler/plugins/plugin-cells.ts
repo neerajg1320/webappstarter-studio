@@ -7,15 +7,20 @@ import {isPathTypescript} from "../../utils/path";
 import {loadFileUrl} from "./loadSourceFiles";
 
 // TBD: This should be broken and a separate loader for cells should be created
-export const pluginLoadFromString = (code: string) => {
+export const pluginCells = (code: string) => {
   return {
-    name: 'fetch-from-server-plugin',
-    setup(build: esbuild.PluginBuild) {          
-      // onLoad are for loading the file.
+    name: 'cells-plugin',
+    setup(build: esbuild.PluginBuild) {
+      build.onResolve({filter: CELL_REGEX}, (args: any) => {
+        return {
+          path: args.path,
+          namespace: 'cells',
+        };
+      });
 
       build.onLoad({ filter: CELL_REGEX }, async (args: esbuild.OnLoadArgs) => {
         if (debugPlugin || true) {
-          console.log('pluginLoadFromString:onLoad()', args);
+          console.log('pluginCells:onLoad()', args);
         }
 
         return {

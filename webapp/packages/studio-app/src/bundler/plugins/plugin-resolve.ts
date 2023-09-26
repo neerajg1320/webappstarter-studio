@@ -17,22 +17,22 @@ export const pluginResolve = () => {
     setup(build: esbuild.PluginBuild) {
       // onResolve are for path resolutions
 
-      // Kept for generating debug messages. It returns undefined so that lookup continues
+      // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
         if (debugPlugin || true) {
           console.log('onResolve', args);
         }
+
+        if (args.kind === 'entry-point') {
+          return {
+            path: args.path,
+            namespace: getNameSpace(args.importer),
+          };
+        }
+
         return undefined;
       });
-
-      // detection of hard coded file name for cell.
-      build.onResolve({filter: CELL_REGEX}, (args: any) => {
-        return {
-          path: args.path,
-          namespace: getNameSpace(args.importer),
-        };
-      });
-
+      
       // For relative paths like ./abc, ../abc/def etc
       build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
         // let server = getServerFromArgs(args, true);
@@ -46,14 +46,6 @@ export const pluginResolve = () => {
 
       // For any other file
       build.onResolve({ filter: /.*/ }, async (args: any) => {
-        // This is for entrypoint. There is no importer at the entry point.
-        if (args.importer === '') {
-          return {
-            path: args.path,
-            namespace: getNameSpace(args.importer),
-          };
-        }
-
         return {
           path: `${getPkgServer()}/${args.path}`,
           namespace: getNameSpace(args.importer),

@@ -14,7 +14,7 @@ import {
 import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
-import {pluginLoadFromString} from "./plugins/plugin-load-from-string";
+import {pluginCells} from "./plugins/plugin-cells";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -84,7 +84,7 @@ const bundleCode = async (
     }
 
     if (enableLoadCells) {
-      esbuildPlugins.push(pluginLoadFromString(codeOrFilePath));
+      esbuildPlugins.push(pluginCells(codeOrFilePath));
     }
 
     try {
