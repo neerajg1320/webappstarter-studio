@@ -19,7 +19,7 @@ export const pluginResolve = () => {
 
       // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || true) {
+        if (debugPlugin || false) {
           console.log('onResolve', args);
         }
 

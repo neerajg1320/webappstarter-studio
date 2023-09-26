@@ -219,7 +219,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (!_htmlContent) {
       _htmlContent = htmlNoScript
     }
-    
+
     updateProject({localId: reduxProject.localId, htmlContent:_htmlContent, ideReady: true});
 
     // This happens when we reach here after creating a project
