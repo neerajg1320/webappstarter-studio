@@ -14,7 +14,7 @@ export const pluginLoadFromServer = () => {
       // onLoad are for loading the file.
 
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
-        if (debugPlugin || true) {
+        if (debugPlugin || false) {
           console.log('onLoad', args);
         }
 

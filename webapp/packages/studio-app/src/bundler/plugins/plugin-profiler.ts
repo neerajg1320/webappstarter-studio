@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild-wasm';
+import {debugPlugin} from "../../config/global";
 
 export const pluginProfiler = (title:string) => {
   let startTime;
@@ -12,7 +13,9 @@ export const pluginProfiler = (title:string) => {
         // We don't need  namespace, kind, pluginData yet
         const {path, importer, resolveDir} = args;
 
-        console.log(`pluginProfiler:onResolve() [${path.padEnd(40)}  ${importer.padEnd(80)} ${resolveDir}]`);
+        if (debugPlugin || false) {
+          console.log(`pluginProfiler:onResolve() [${path.padEnd(40)}  ${importer.padEnd(80)} ${resolveDir}]`);
+        }
         return undefined;
       });
 
