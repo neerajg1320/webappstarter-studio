@@ -206,8 +206,6 @@ export const createProjectBundle = (
 
       if (debugPlugin || debugRedux) {
         console.log(`getFileContentsFromRedux: url:`, url);
-        // const projectState = getState().projects.data[projectLocalId];
-        // console.log(`projectState:`, projectState);
       }
 
       let reduxFile: ReduxFile;
@@ -216,7 +214,7 @@ export const createProjectBundle = (
         // Create a new map based on url instead of id
         const projectUrlMap = Object.fromEntries(
             Object.entries(filesLocalIdMap)
-                .filter(([k, v]) => v.projectLocalId === projectLocalId)
+                .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
                 .map(([k, v]) => {
                   return [v.file, v]
                 })
@@ -237,7 +235,7 @@ export const createProjectBundle = (
 
         const projectFileMap = Object.fromEntries(
             Object.entries(filesLocalIdMap)
-                .filter(([k, v]) => v.projectLocalId === projectLocalId)
+                .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
                 .map(([k, v]) => {
                   return [v.path, v]
                 })
@@ -295,7 +293,7 @@ export const createProjectBundle = (
     dispatch({
         type: ActionType.PROJECT_BUNDLE_START,
         payload: {
-            projectLocalId: projectLocalId,
+            projectLocalId: reduxProject.localId,
         }
     });
 
@@ -309,12 +307,12 @@ export const createProjectBundle = (
     dispatch({
         type: ActionType.PROJECT_BUNDLE_COMPLETE,
         payload: {
-            projectLocalId,
+            projectLocalId: reduxProject.localId,
             bundle: result
         }
     });
 
-    dispatch(updateProject({localId:projectLocalId, bundleDirty:false, bundleResult:result}));
+    dispatch(updateProject({localId:reduxProject.localId, bundleDirty:false, bundleResult:result}));
   };
 }
 
