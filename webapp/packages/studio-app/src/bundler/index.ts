@@ -79,9 +79,12 @@ const bundleCode = async (
       console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
       if (!packageMap[pkgInfo.name]) {
         packageMap[pkgInfo.name] = pkgInfo as PackageEntry;
-        packageMap[pkgInfo.name].importPaths = [];
+        packageMap[pkgInfo.name].importers = [];
       }
-      packageMap[pkgInfo.name].importPaths.push(pkgInfo.importPath);
+      packageMap[pkgInfo.name].importers.push({
+        url: pkgInfo.importerURL,
+        importPath: pkgInfo.importPath
+      });
     }
 
     const esbuildPlugins = [];

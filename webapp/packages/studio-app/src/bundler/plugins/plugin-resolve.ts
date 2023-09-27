@@ -49,7 +49,7 @@ export const pluginResolve = (pkgServer:string, onPackageResolve:(PackageInfo) =
         const namePart = args.path.split('/')[0];
         const name = namePart.split('@')[0];
 
-        const pluginData = {name, importPath: args.path};
+        const pluginData = {name, importPath: args.path, importerURL: args.importer};
         onPackageResolve(pluginData as PackageInfo);
 
         return {

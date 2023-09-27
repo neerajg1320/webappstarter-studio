@@ -42,10 +42,10 @@ export const pluginLoadFromServer = (onPackageLoad:(PackageInfo) => void) => {
         // console.log(`args:`, args, `responseURL:${responseURL}`)
         if (args.path !== responseURL) {
           try {
-            const {name, importPath} = args.pluginData;
+            const {name, importerURL, importPath} = args.pluginData;
             const {version} = parseResonseURL(responseURL, name);
             // console.log(`[${args.path.padEnd(50)}]`, version);
-            onPackageLoad({name, importPath, version, url:args.path, responseURL} as PackageInfo);
+            onPackageLoad({name, importerURL, importPath, version, url:args.path, responseURL} as PackageInfo);
           } catch (err) {
             console.error(err);
           }
