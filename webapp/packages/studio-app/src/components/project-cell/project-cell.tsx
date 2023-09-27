@@ -156,8 +156,19 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   useEffect(() => {
     if (debugComponent || true) {
-      console.log(`ProjectCell:useEffect[...]  bundlerReady:${bundlerReady}  ideReady:${reduxProject.ideReady}  bundleDirty:${reduxProject.bundleDirty}`);
+      console.log(`ProjectCell:useEffect[...]  filesSynced:${reduxProject.filesSynced} bundlerReady:${bundlerReady}  ideReady:${reduxProject.ideReady}  bundleDirty:${reduxProject.bundleDirty}`);
     }
+
+    if (!reduxProject.filesSynced) {
+      return;
+    } else {
+      if (!reduxProject.selectedFileLocalId) {
+        // updateProject({localId: reduxProject.localId, selectedFileLocalId: reduxProject.entryFileLocalId});
+        setProjectSelectedFile(reduxProject.entryFileLocalId);
+        setEditedFileLocalId(reduxProject.entryFileLocalId);
+      }
+    }
+
     if (!reduxProject.ideReady) {
       makeProjectIdeReady(reduxProject.localId);
       return;
@@ -170,7 +181,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     if (reduxProject.bundleDirty) {
       bundleProject(reduxProject.localId);
     }
-  }, [reduxProject.ideReady, bundlerReady, reduxProject.bundleDirty]);
+  }, [reduxProject.filesSynced, reduxProject.ideReady, bundlerReady, reduxProject.bundleDirty]);
 
   useEffect(() => {
     if (debugComponent) {

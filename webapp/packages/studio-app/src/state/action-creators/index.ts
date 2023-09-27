@@ -426,6 +426,7 @@ export const fetchProjectsAndFiles = () => {
       const projects = await fetchProjects()(dispatch, getState);
       // console.log(`fetchProjectsAndFiles: projects:`, projects);
       if (projects) {
+        // Adding await here delay the program start by around 5 seconds
         fetchFiles()(dispatch, getState);
       }
     } catch (err) {
@@ -700,13 +701,20 @@ export const fetchFiles = (projectPkid?:string) => {
       }, {});
       // console.log(projectsPkidToLocalIdMap);
 
+
       // We need to do change this once we create a combined or server object
+      const projectsFound = [];
+
       const files = data.map((file) => {
         file.localId = generateLocalId();
 
         // file.project is the project pkid
         if (file.project) {
-          file.projectLocalId = projectsPkidToLocalIdMap[file.project]
+          file.projectLocalId = projectsPkidToLocalIdMap[file.project]; // This should be projectLocalId
+          if (file.projectLocalId) {
+            projectsFound.push(file.projectLocalId);
+          }
+
           file.isEntryPoint = file.is_entry_point;
           file.bundleLanguage = pathToBundleLanguage(file.path);
           file.language = pathToCodeLanguage(file.path);
@@ -729,9 +737,16 @@ export const fetchFiles = (projectPkid?:string) => {
         type: ActionType.FETCH_FILES_COMPLETE,
         payload: files,
       });
-      
+
+      projectsFound.forEach(projectLocalId => {
+        dispatch(updateProject({localId:projectLocalId, filesSynced:true}));
+      })
+
       if (!projectPkid) {
         dispatch({type: ActionType.UPDATE_APPLICATION, payload: {filesLoaded: true}});
+      } else {
+        const projectLocalId = projectsPkidToLocalIdMap[projectPkid];
+        dispatch(updateProject({localId:projectLocalId, filesSynced:true}));
       }
     } catch (err) {
       if (err instanceof Error) {

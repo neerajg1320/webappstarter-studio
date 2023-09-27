@@ -22,7 +22,9 @@ export enum ReactToolchains {
 };
 
 // TBD: Need to add a strong documentation here as this is one of the focal points of our application
-// selectedFileLocalId: This is the selected to be shown in the editor
+// selectedFileLocalId: This is the selected to be shown in the editor.
+// filesSynced is set to true when the project file models are downloaded. This happens before ideReady.
+// The ideReady is set to true when the content of the entryFile and entryHTMLFile are downloaded as well.
 
 export interface ReduxProject extends ServerObject {
   reduxType: 'project',
@@ -32,6 +34,7 @@ export interface ReduxProject extends ServerObject {
   template: ProjectTemplates;
   framework: ProjectFrameworks;
   toolchain: ReactToolchains;
+  filesSynced: boolean;
   ideReady: boolean;
   selectedFileLocalId: string|null;
   entryHtmlFileLocalId?: string|null;
@@ -58,6 +61,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   template?: ProjectTemplates;
   framework?: ProjectFrameworks;
   toolchain?: ReactToolchains;
+  filesSynced?: boolean;
   ideReady?: boolean;
   remoteId?: string;
   selectedFileLocalId?: string|null;

@@ -47,6 +47,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         id: '',
         pkid: -1,
         confirmed: false,
+        filesSynced: false,
         ideReady: false,
         bundleDirty: true,
         selectedFileLocalId: null,
@@ -90,6 +91,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
           project.reduxType = 'project'
           project.localId = generateLocalId();
           project.confirmed = true;
+          project.filesSynced = false;
           project.ideReady = false;
           project.bundleDirty = true;
           project.synced = true;
