@@ -62,15 +62,18 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
         // console.log(`${args.path}:result:`, result)
 
         if (args.path !== responseURL) {
-          try {
+          if (args.pluginData) {
             const {name, importerURL, importPath} = args.pluginData;
-            const {version} = parseResonseURL(responseURL, name);
-            // console.log(`[${args.path.padEnd(50)}]`, version);
-            if (onPackageLoad) {
-              onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+            try {
+              const {version} = parseResonseURL(responseURL, name );
+              if (onPackageLoad) {
+                onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+              }
+            } catch (err) {
+              console.error(err);
             }
-          } catch (err) {
-            console.error(err);
+          } else {
+            console.log(`No plugin data for`, args);
           }
         }
 
