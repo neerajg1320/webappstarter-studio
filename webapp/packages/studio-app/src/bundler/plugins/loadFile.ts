@@ -18,7 +18,7 @@ export const wrapScriptOnCssContent = (cssStr:string):string => {
             `;
 }
 
-export const loadData = (data:string, contentType:string|null):esbuild.OnLoadResult => {
+export const getLoadResult = (data:string, contentType:string|null):esbuild.OnLoadResult => {
   let contents = data;
   if (contentType === "css") {
     contents = wrapScriptOnCssContent(data);
@@ -53,7 +53,7 @@ export const loadFileUrl= async (url:string, cacheEnabled:boolean):Promise<esbui
     console.log(`request.responseURL:${request.responseURL}`);
   }
 
-  const result = loadData(data, contentType);
+  const result = getLoadResult(data, contentType);
   // Keeping resolveDir is important
   result.resolveDir = new URL('./', request.responseURL).pathname;
 
@@ -70,40 +70,14 @@ export const loadFileUrl= async (url:string, cacheEnabled:boolean):Promise<esbui
   return {result, responseURL: request.responseURL};
 }
 
-export const loadPackgeFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbuild.OnLoadResult> => {
-  const contentType = getFileType(url);
+export interface LoadPackageFileResult {
+  content: string,
+  responseURL: string
+}
 
-  // This is needed here as this function is called directly from redix.
-  // We might remove it later as this is getting repeated
-  // Also this check is not necessary as the file is already looked up in the load-from-cache-plugin
-  if (cacheEnabled) {
-    const cachedResult = await getFileFromCache(url);
-    if (cachedResult) {
-      return cachedResult
-    }
-  }
-  // Note we are parsing the request as well to get the path of the downloaded file which might be
-  // different from the args.path
+export const loadPackgeFileUrl = async (url:string, cacheEnabled:boolean):Promise<LoadPackageFileResult> => {
   const { data, request } = await axiosInstance.get(url);
 
-  if (debugPlugin) {
-    console.log(`request.responseURL:${request.responseURL}`);
-  }
-
-  const result = loadData(data, contentType);
-  // Keeping resolveDir is important
-  result.resolveDir = new URL('./', request.responseURL).pathname;
-
-  if (request.responseURL !== url) {
-    if (debugPlugin) {
-      console.log(`INFO: url:${url} <not equal> responseUrl:${request.responseURL}`);
-    }
-  }
-
-  if (cacheEnabled) {
-    await setFileInCache(url, result);
-  }
-
-  return {result, responseURL: request.responseURL};
+  return {content: data, responseURL: request.responseURL};
 }
 

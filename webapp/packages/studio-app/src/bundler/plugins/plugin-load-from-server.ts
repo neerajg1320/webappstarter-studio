@@ -1,9 +1,12 @@
 import * as esbuild from "esbuild-wasm";
 import {debugPlugin, enableLoadFromCache} from "../../config/global";
 
-import {loadPackgeFileUrl} from "./loadFile";
+import {getLoadResult, loadFileUrl, loadPackgeFileUrl} from "./loadFile";
 import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
+import {setFileInCache} from "./plugin-load-from-cache";
+import {getFileType} from "../../utils/path";
+import {OnLoadResult} from "esbuild-wasm";
 
 
 const parseResonseURL = (responseURL:string, pkgName: string) => {
@@ -42,8 +45,18 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
         if (debugPlugin || false) {
           console.log('onLoad', args);
         }
-        const {result, responseURL} = await loadPackgeFileUrl(args.path, enableLoadFromCache)
-        // console.log(`args:`, args, `responseURL:${responseURL}`)
+        // const contentType = getFileType(args.path);
+        // const {content, responseURL} = await loadPackgeFileUrl(args.path, enableLoadFromCache)
+        //
+        // const result:esbuild.OnLoadResult = getLoadResult(content, contentType);
+        //
+        // if (enableLoadFromCache) {
+        //   await setFileInCache(args.path, result);
+        // }
+        const {result, responseURL} = await loadFileUrl(args.path, enableLoadFromCache);
+
+        console.log(`${args.path}:result:`, result)
+
         if (args.path !== responseURL) {
           try {
             const {name, importerURL, importPath} = args.pluginData;

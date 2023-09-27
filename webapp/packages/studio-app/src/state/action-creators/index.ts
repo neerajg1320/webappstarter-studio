@@ -66,7 +66,7 @@ import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 import {getFileType, getFileTypeFromPath, joinFileParts} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
-import {loadData} from "../../bundler/plugins/loadFile";
+import {getLoadResult} from "../../bundler/plugins/loadFile";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
@@ -291,7 +291,7 @@ export const createProjectBundle = (
         }
 
         if (content) {
-          result = loadData(content, getFileType(url));
+          result = getLoadResult(content, getFileType(url));
           result.resolveDir = resolveDir;
         }
 
