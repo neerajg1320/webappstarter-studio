@@ -61,7 +61,6 @@ export const loadFileUrl = async (url:string, cacheEnabled:boolean):Promise<esbu
     if (debugPlugin) {
       console.log(`INFO: url:${url} <not equal> responseUrl:${request.responseURL}`);
     }
-    // console.log(`Found '${url}' library entry file '${request.responseURL}'`)
   }
 
   if (cacheEnabled) {

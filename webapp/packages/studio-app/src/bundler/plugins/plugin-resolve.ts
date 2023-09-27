@@ -50,7 +50,8 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
       // TBD: We can pass the package server into the plugin
       build.onResolve({ filter: /.*/ }, async (args: any) => {
         const pkgUrl = `${pkgServer}/${args.path}`;
-        // Need to parse import path
+
+        // Need to parse import path. We need to check if explicit version is provided
         const namePart = args.path.split('/')[0];
         const name = namePart.split('@')[0];
 
