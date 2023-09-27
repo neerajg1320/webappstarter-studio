@@ -6,6 +6,7 @@ import {ReduxUpdateUserPartial, ReduxUser} from "../user";
 import {UserRequestStart, UserRequestSuccess, UserRequestFailed} from "../user";
 import {ApiRequestFailed, ApiRequestStart, ApiRequestSuccess} from "../api";
 import {ApplicatonStatePartial} from "../application";
+import {PackageMap} from "../../bundler/plugins/package";
 
 export type Direction = 'up' | 'down';
 
@@ -73,6 +74,7 @@ export interface ProjectBundleCompleteAction {
         bundle: {
             code: string;
             err: string;
+            packageMap: PackageMap;
         }
     }
 }

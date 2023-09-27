@@ -155,7 +155,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`ProjectCell:useEffect[...]  filesSynced:${reduxProject.filesSynced} bundlerReady:${bundlerReady}  ideReady:${reduxProject.ideReady}  bundleDirty:${reduxProject.bundleDirty}`);
     }
 

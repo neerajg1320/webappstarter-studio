@@ -75,11 +75,13 @@ const bundleCode = async (
       // console.log(`onPackageResolve(): pkgInfo:`, pkgInfo);
     }
 
+    // This will be called only when packages are not found in cache and are loaded from server
+    // The packageMap once created should be stored. This would be analogous to package-lock.json
     const onPackageLoad:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
       // console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+
       if (!packageMap[pkgInfo.name]) {
-        packageMap[pkgInfo.name] = pkgInfo as PackageEntry;
-        packageMap[pkgInfo.name].importers = [];
+        packageMap[pkgInfo.name] = {...pkgInfo, importers: []} as PackageEntry;
       }
       packageMap[pkgInfo.name].importers.push({
         url: pkgInfo.importerURL,

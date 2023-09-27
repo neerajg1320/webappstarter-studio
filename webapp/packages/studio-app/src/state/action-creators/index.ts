@@ -833,7 +833,7 @@ export const makeProjectIdeReady = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
 
-    if (debugRedux || true) {
+    if (debugRedux) {
       console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
     }
 

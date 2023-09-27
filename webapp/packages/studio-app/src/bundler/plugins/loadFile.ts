@@ -67,7 +67,7 @@ export const loadFileUrl= async (url:string, cacheEnabled:boolean):Promise<esbui
     await setFileInCache(url, result);
   }
 
-  return {result, responseURL: request.responseURL};
+  return result;
 }
 
 export interface LoadPackageFileResult {

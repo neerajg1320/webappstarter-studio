@@ -32,6 +32,7 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
               code: '',
               err: '',
               type: 'cell',
+              packageMap: {}
           }
           return state;
 
@@ -41,6 +42,7 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
               code: action.payload.bundle.code,
               err: action.payload.bundle.err,
               type: 'cell',
+              packageMap: {}
           }
           return state;
 
@@ -49,7 +51,8 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
                 loading: true,
                 code: '',
                 err: '',
-                type: 'project'
+                type: 'project',
+                packageMap: {}
             }
             return state;
   
@@ -58,7 +61,8 @@ const reducer = produce((state:BundlesState = initialState, action: Action): Bun
                 loading: false,
                 code: action.payload.bundle.code,
                 err: action.payload.bundle.err,
-                type: 'project'
+                type: 'project',
+                packageMap: action.payload.bundle.packageMap
             }
             return state;
 
