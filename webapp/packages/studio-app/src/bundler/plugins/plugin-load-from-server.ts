@@ -45,15 +45,17 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
         if (debugPlugin || false) {
           console.log('onLoad', args);
         }
-        // const contentType = getFileType(args.path);
-        // const {content, responseURL} = await loadPackgeFileUrl(args.path, enableLoadFromCache)
-        //
-        // const result:esbuild.OnLoadResult = getLoadResult(content, contentType);
-        //
-        // if (enableLoadFromCache) {
-        //   await setFileInCache(args.path, result);
-        // }
-        const {result, responseURL} = await loadFileUrl(args.path, enableLoadFromCache);
+        const contentType = getFileType(args.path);
+        const {content, responseURL} = await loadPackgeFileUrl(args.path, enableLoadFromCache)
+
+        const result:esbuild.OnLoadResult = getLoadResult(content, contentType);
+        // Keeping resolveDir is important
+        result.resolveDir = new URL('./', responseURL).pathname;
+
+        if (enableLoadFromCache) {
+          await setFileInCache(args.path, result);
+        }
+        // const {result, responseURL} = await loadFileUrl(args.path, enableLoadFromCache);
 
         console.log(`${args.path}:result:`, result)
 
