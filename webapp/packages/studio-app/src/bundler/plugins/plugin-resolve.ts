@@ -49,12 +49,13 @@ export const pluginResolve = (pkgServer:string, onPackageResolve:(PackageInfo) =
         const namePart = args.path.split('/')[0];
         const name = namePart.split('@')[0];
 
-        onPackageResolve({name} as PackageInfo);
+        const pluginData = {name, importPath: args.path};
+        onPackageResolve(pluginData as PackageInfo);
 
         return {
           path: pkgUrl,
           namespace: 'a',
-          pluginData: {name, importPath: args.path}
+          pluginData
         };
       });
     },

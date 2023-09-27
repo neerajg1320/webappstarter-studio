@@ -16,7 +16,7 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
-import {PackageInfo, PackageMap} from "./plugins/package";
+import {PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -72,11 +72,16 @@ const bundleCode = async (
     const packageMap = {} as PackageMap;
 
     const onPackageResolve:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
-      console.log(`onPackageResolve(): pkgInfo:`, pkgInfo);
+      // console.log(`onPackageResolve(): pkgInfo:`, pkgInfo);
     }
 
     const onPackageLoad:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
       console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+      if (!packageMap[pkgInfo.name]) {
+        packageMap[pkgInfo.name] = pkgInfo as PackageEntry;
+        packageMap[pkgInfo.name].importPaths = [];
+      }
+      packageMap[pkgInfo.name].importPaths.push(pkgInfo.importPath);
     }
 
     const esbuildPlugins = [];
@@ -133,9 +138,13 @@ const bundleCode = async (
         const result = await esbuild.build(builderServiceOptions);
         // console.log(`result:`, result);
 
+        // TBD: Later we will add the functionality to specify explicit versions
+        console.log(`pkgMap:`, packageMap);
+
         return {
             code: result.outputFiles![0].text,
-            err: ''
+            err: '',
+            packageMap
         } as BundleResult;
     } catch (err) {
         console.error(`Got bundler error:`, err);

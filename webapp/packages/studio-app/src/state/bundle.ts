@@ -1,4 +1,5 @@
 import {isPathJavascript, isPathTypescript} from "../utils/path";
+import {PackageMap} from "../bundler/plugins/package";
 
 export type BundleInputType = 'cell' | 'project';
 
@@ -8,7 +9,7 @@ export enum BundleLanguage {
   UNKNOWN = 'unknown',
 }
 
-export type BundleResult = {code:string, err:string};
+export type BundleResult = {code:string, err:string, packageMap: PackageMap};
 
 export const stringToBundleLanguage = (language:string): BundleLanguage => {
   return BundleLanguage[language as keyof typeof BundleLanguage] || BundleLanguage.UNKNOWN

@@ -1,11 +1,18 @@
-export type PackageInfo = {
+type Package = {
   name: string,
-  importPath: string,
   version: string,
   url: string,
   responseURL: string
 }
 
+export type PackageInfo = Package & {
+  importPath: string,
+}
+
+export type PackageEntry = Package & {
+  importPaths: string[]
+}
+
 export type PackageMap = {
-  [k:string]: PackageInfo
+  [k:string]: PackageEntry
 }
