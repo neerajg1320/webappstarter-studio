@@ -4,11 +4,8 @@ import {PackageMap, PackageInfo} from "./package";
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
-  const getNameSpace = (importer:string):string => {
-    // return `a:${importer}`;
-    return `a`;
-  }
+export const pluginResolve = (pkgServer:string, onPackageResolve:(PackageInfo) => void) => {
+
   return {
     name: 'unpkg-path-plugin',
     setup(build: esbuild.PluginBuild) {
@@ -16,7 +13,7 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
 
       // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || true) {
+        if (debugPlugin || false) {
           console.log('onResolve', args);
         }
 
@@ -24,7 +21,7 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
         if (args.kind === 'entry-point') {
           return {
             path: args.path,
-            namespace: getNameSpace(args.importer),
+            namespace: 'a',
           };
         }
 
@@ -38,7 +35,7 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
 
         return {
           path: new URL(args.path, server + args.resolveDir + '/').href,
-          namespace: getNameSpace(args.importer),
+          namespace: 'a',
         };
       });
 
@@ -52,11 +49,12 @@ export const pluginResolve = (pkgServer:string, pkgMap: PackageMap) => {
         const namePart = args.path.split('/')[0];
         const name = namePart.split('@')[0];
 
-        pkgMap[pkgUrl] = {name, importPath: args.path, url: pkgUrl} as PackageInfo;
+        onPackageResolve({name} as PackageInfo);
 
         return {
           path: pkgUrl,
-          namespace: getNameSpace(args.importer)
+          namespace: 'a',
+          pluginData: {name, importPath: args.path}
         };
       });
     },

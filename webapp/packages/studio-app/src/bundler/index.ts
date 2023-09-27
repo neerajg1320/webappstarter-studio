@@ -16,7 +16,7 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
-import {PackageMap} from "./plugins/package";
+import {PackageInfo, PackageMap} from "./plugins/package";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -67,15 +67,25 @@ const bundleCode = async (
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
     }
 
+    // This was a bad idea as the packageMap get copied and is not treated as a global structure
+    // So we will use a callback function and see
     const packageMap = {} as PackageMap;
+
+    const onPackageResolve:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
+      console.log(`onPackageResolve(): pkgInfo:`, pkgInfo);
+    }
+
+    const onPackageLoad:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
+      console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+    }
 
     const esbuildPlugins = [];
 
     if (enableProfilerPlugin) {
-      esbuildPlugins.push(pluginProfiler(title, packageMap));
+      esbuildPlugins.push(pluginProfiler(title));
     }
 
-    esbuildPlugins.push(pluginResolve(getPkgServer(), packageMap));
+    esbuildPlugins.push(pluginResolve(getPkgServer(), onPackageResolve));
 
     if (enableLoadFromRedux) {
       // fileFetcher would be null in case of call from bundleCodeStr
@@ -87,7 +97,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginLoadFromCache());
     }
     if (enableLoadFromServer) {
-      esbuildPlugins.push(pluginLoadFromServer(packageMap));
+      esbuildPlugins.push(pluginLoadFromServer(onPackageLoad));
     }
 
     if (enableLoadCells) {
