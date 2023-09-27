@@ -93,7 +93,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginProfiler(title));
     }
 
-    esbuildPlugins.push(pluginResolve(getPkgServer(), onPackageResolve));
+    esbuildPlugins.push(pluginResolve({pkgServer:getPkgServer(), onPackageResolve}));
 
     if (enableLoadFromRedux) {
       // fileFetcher would be null in case of call from bundleCodeStr

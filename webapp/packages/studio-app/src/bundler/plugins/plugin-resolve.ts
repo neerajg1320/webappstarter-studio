@@ -2,9 +2,14 @@ import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
 import {PackageMap, PackageInfo} from "./package";
 
+export interface PluginResolveArgs {
+  pkgServer: string,
+  onPackageResolve:(PackageInfo) => void,
+}
+
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = (pkgServer:string, onPackageResolve:(PackageInfo) => void) => {
+export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) => {
 
   return {
     name: 'unpkg-path-plugin',
