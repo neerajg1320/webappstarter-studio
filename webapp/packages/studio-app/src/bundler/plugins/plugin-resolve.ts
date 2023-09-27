@@ -24,9 +24,15 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
 
         // In case of entry point we have full URL with server
         if (args.kind === 'entry-point') {
+          const pluginData = {name: 'entryPoint', importPath: args.path, importerURL: args.importer};
+          if (onPackageResolve) {
+            onPackageResolve(pluginData as PackageInfo);
+          }
+
           return {
             path: args.path,
             namespace: 'a',
+            pluginData
           };
         }
 

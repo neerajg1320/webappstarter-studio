@@ -63,7 +63,7 @@ const bundleCode = async (
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
 ):Promise<BundleResult> => {
-    if (debugBundler || true) {
+    if (debugBundler) {
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
     }
 
@@ -144,7 +144,7 @@ const bundleCode = async (
         // console.log(`result:`, result);
 
         // TBD: Later we will add the functionality to specify explicit versions
-        console.log(`packageMap:`, packageMap);
+        // console.log(`packageMap:`, packageMap);
 
         return {
             code: result.outputFiles![0].text,
