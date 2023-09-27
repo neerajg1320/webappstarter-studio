@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {debugPlugin, enableLoadFromCache} from "../../config/global";
 
-import {loadFileUrl} from "./loadFile";
+import {loadPackgeFileUrl} from "./loadFile";
 import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
 
@@ -42,7 +42,7 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
         if (debugPlugin || false) {
           console.log('onLoad', args);
         }
-        const {result, responseURL} = await loadFileUrl(args.path, enableLoadFromCache)
+        const {result, responseURL} = await loadPackgeFileUrl(args.path, enableLoadFromCache)
         // console.log(`args:`, args, `responseURL:${responseURL}`)
         if (args.path !== responseURL) {
           try {
