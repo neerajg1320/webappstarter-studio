@@ -18,16 +18,22 @@ const parseResonseURL = (responseURL:string, pkgName: string) => {
   // ["https://unpkg.com", "scheduler@0.23.0", "index.js"]
   // The output from getRegexMatches is as shown below. Notice the first element is complete match string:
   // ["https://unpkg.com/scheduler@0.23.0/index.js", "https://unpkg.com", "scheduler@0.23.0", "index.js"]
+  const matches = getRegexMatches(pkgUrlRegex, responseURL)
+  if (matches && matches.length > 0) {
+    const [match, pkgServer, pkgNameVersion, pkgSuffix] = getRegexMatches(pkgUrlRegex, responseURL);
 
-  const [match, pkgServer, pkgNameVersion, pkgSuffix] = getRegexMatches(pkgUrlRegex, responseURL);
+    // Since we have matched above with regex /(${pkgInfo.name}@[\\d.]+)/ we can be sure that pkgNameVersion is of the form
+    // <pkgName>@<pkgVersion>
+    const pkgVersion = pkgNameVersion.split('@')[1];
 
-  // Since we have matched above with regex /(${pkgInfo.name}@[\\d.]+)/ we can be sure that pkgNameVersion is of the form
-  // <pkgName>@<pkgVersion>
-  const pkgVersion = pkgNameVersion.split('@')[1];
+    // console.log(`[${pkgInfo.name}]`.padEnd(20), match.padEnd(50), pkgServer.padEnd(20), pkgNameVersion.padEnd(20), pkgVersion, pkgSuffix);
 
-  // console.log(`[${pkgInfo.name}]`.padEnd(20), match.padEnd(50), pkgServer.padEnd(20), pkgNameVersion.padEnd(20), pkgVersion, pkgSuffix);
+    return {version: pkgVersion};
+  } else {
+    console.log(`regex:${pkgUrlRegex} not matched url:${responseURL}`);
+  }
 
-  return {version: pkgVersion};
+  return null;
 }
 
 export interface PlugingLoadFromServerArgs {
