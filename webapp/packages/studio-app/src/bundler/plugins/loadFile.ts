@@ -75,7 +75,7 @@ export interface LoadPackageFileResult {
   responseURL: string
 }
 
-export const loadPackgeFileUrl = async (url:string, cacheEnabled:boolean):Promise<LoadPackageFileResult> => {
+export const loadPackgeFileUrl = async (url:string):Promise<LoadPackageFileResult> => {
   const { data, request } = await axiosInstance.get(url);
 
   return {content: data, responseURL: request.responseURL};

@@ -729,7 +729,10 @@ export const fetchFiles = (projectPkid?:string) => {
         type: ActionType.FETCH_FILES_COMPLETE,
         payload: files,
       });
-      dispatch({type: ActionType.UPDATE_APPLICATION, payload: {filesLoaded: true}});
+      
+      if (!projectPkid) {
+        dispatch({type: ActionType.UPDATE_APPLICATION, payload: {filesLoaded: true}});
+      }
     } catch (err) {
       if (err instanceof Error) {
         dispatch({
@@ -815,7 +818,7 @@ export const makeProjectIdeReady = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
 
-    if (debugRedux) {
+    if (debugRedux || true) {
       console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
     }
 

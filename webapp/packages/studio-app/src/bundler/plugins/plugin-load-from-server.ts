@@ -45,19 +45,21 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
         if (debugPlugin || false) {
           console.log('onLoad', args);
         }
+
+        // args.path is a complete url created by onResolve
         const contentType = getFileType(args.path);
-        const {content, responseURL} = await loadPackgeFileUrl(args.path, enableLoadFromCache)
+        const {content, responseURL} = await loadPackgeFileUrl(args.path)
 
         const result:esbuild.OnLoadResult = getLoadResult(content, contentType);
         // Keeping resolveDir is important
         result.resolveDir = new URL('./', responseURL).pathname;
 
+        // We shall see if we can move this to cache-plugin
         if (enableLoadFromCache) {
           await setFileInCache(args.path, result);
         }
-        // const {result, responseURL} = await loadFileUrl(args.path, enableLoadFromCache);
 
-        console.log(`${args.path}:result:`, result)
+        // console.log(`${args.path}:result:`, result)
 
         if (args.path !== responseURL) {
           try {
