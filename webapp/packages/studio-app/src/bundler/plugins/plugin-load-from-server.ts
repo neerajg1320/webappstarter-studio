@@ -71,9 +71,12 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
           if (args.pluginData) {
             const {name, importerURL, importPath} = args.pluginData;
             try {
-              const {version} = parseResonseURL(responseURL, name );
-              if (onPackageLoad) {
-                onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+              const parsedInfo = parseResonseURL(responseURL, name);
+              if (parsedInfo) {
+                const {version} = parsedInfo;
+                if (onPackageLoad) {
+                  onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+                }
               }
             } catch (err) {
               console.error(err);
