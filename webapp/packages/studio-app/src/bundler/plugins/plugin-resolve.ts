@@ -18,7 +18,7 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
 
       // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || false) {
+        if (debugPlugin || args.path[0] === "@") {
           console.log('onResolve', args);
         }
 
@@ -57,9 +57,13 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
       build.onResolve({ filter: /.*/ }, async (args: any) => {
         const pkgUrl = `${pkgServer}/${args.path}`;
 
-        // Need to parse import path. We need to check if explicit version is provided
-        const namePart = args.path.split('/')[0];
-        const name = namePart.split('@')[0];
+        let name = args.path;
+        // If package name is not of the form @monaco-editor/react
+        if (args.path[0] !== "@") {
+          // Need to parse import path. We need to check if explicit version is provided
+          const namePart = args.path.split('/')[0];
+          name = namePart.split('@')[0];
+        }
 
         const pluginData = {name, importPath: args.path, importerURL: args.importer};
         if (onPackageResolve) {
