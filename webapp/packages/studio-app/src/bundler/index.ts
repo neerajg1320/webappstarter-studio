@@ -76,7 +76,7 @@ const bundleCode = async (
     }
 
     const onPackageLoad:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
-      console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+      // console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
       if (!packageMap[pkgInfo.name]) {
         packageMap[pkgInfo.name] = pkgInfo as PackageEntry;
         packageMap[pkgInfo.name].importers = [];
@@ -142,7 +142,7 @@ const bundleCode = async (
         // console.log(`result:`, result);
 
         // TBD: Later we will add the functionality to specify explicit versions
-        console.log(`pkgMap:`, packageMap);
+        console.log(`packageMap:`, packageMap);
 
         return {
             code: result.outputFiles![0].text,

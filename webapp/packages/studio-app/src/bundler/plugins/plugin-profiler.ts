@@ -33,9 +33,8 @@ export const pluginProfiler = (title:string) => {
       build.onEnd((result) => {
         endTime = new Date();
 
-        // console.log(`pkgMap:`, pkgMap);
         // The result is the result that we get at the end of the build
-        // console.log(`[${title}]: Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
+        console.log(`[${title}]: Build Finished (${endTime - startTime}ms), ${result.errors.length} errors`)
       });
     }
   }
