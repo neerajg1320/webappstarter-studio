@@ -141,10 +141,11 @@ const bundleCode = async (
 
         // The esbuild.initialize should have been already invoked
         const result = await esbuild.build(builderServiceOptions);
-        // console.log(`result:`, result);
 
         // TBD: Later we will add the functionality to specify explicit versions
-        console.log(`packageMap:`, packageMap);
+        if (debugBundler) {
+          console.log(`packageMap:`, packageMap);
+        }
 
         return {
             code: result.outputFiles![0].text,

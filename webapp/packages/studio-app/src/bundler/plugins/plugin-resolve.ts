@@ -18,7 +18,7 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
 
       // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin || args.path[0] === "@") {
+        if (debugPlugin) {
           console.log('onResolve', args);
         }
 
