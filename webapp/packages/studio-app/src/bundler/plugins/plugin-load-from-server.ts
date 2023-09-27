@@ -27,8 +27,12 @@ const parseResonseURL = (responseURL:string, pkgName: string) => {
   return {version: pkgVersion};
 }
 
+export interface PlugingLoadFromServerArgs {
+  onPackageLoad:(PackageInfo) => void;
+}
+
 // TBD: This should be broken and a separate loader for cells should be created
-export const pluginLoadFromServer = (onPackageLoad:(PackageInfo) => void) => {
+export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs) => {
   return {
     name: 'fetch-from-server-plugin',
     setup(build: esbuild.PluginBuild) {          

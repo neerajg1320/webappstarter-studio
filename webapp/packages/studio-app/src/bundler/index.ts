@@ -105,7 +105,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginLoadFromCache());
     }
     if (enableLoadFromServer) {
-      esbuildPlugins.push(pluginLoadFromServer(onPackageLoad));
+      esbuildPlugins.push(pluginLoadFromServer({onPackageLoad}));
     }
 
     if (enableLoadCells) {

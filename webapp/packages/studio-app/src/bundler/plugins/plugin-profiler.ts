@@ -1,6 +1,5 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from "../../config/global";
-import {PackageMap} from "./package";
 
 export const pluginProfiler = (title:string) => {
   let startTime;
