@@ -19,13 +19,10 @@ import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser"
 import {ReduxFile, ReduxProject} from "../../state";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
-import FileCellControlBar, {FileCellEventType} from "../file-cell/file-cell-control-bar";
-import FileList from "../cell-list/file-list";
+import FileCellControlBar from "../file-cell/file-cell-control-bar";
 import PreviewTabsPanel from "../preview-section/preview-tabs-panel";
-import {BundleLanguage, pathToBundleLanguage} from "../../state/bundle";
-import {getFileTypeFromPath} from "../../utils/path";
+import {pathToBundleLanguage} from "../../state/bundle";
 import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import {htmlNoScript} from "../preview-section/preview-iframe/markup";
 import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
@@ -87,29 +84,14 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, [autoSave])
 
   const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
-  const reduxProject = useMemo(() => {
+  const  reduxProject = useMemo<ReduxProject>(() => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);
 
   if (debugComponent || false) {
     console.log(`ProjectCell:render reduxProject`, reduxProject);
   }
-
-  // The following is used in the FileList component
-  // eslint-disable-next-line
-  const projectFiles:ReduxFile[] = useMemo(() => {
-    if (reduxProject) {
-      const files = Object.entries(filesState.data)
-          .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
-          .map(([k, v]) => v);
-
-      // console.log(`files:`, files);
-      return files;
-    }
-
-    return [];
-  }, [reduxProject, filesState.data]);
-
+  
   const editedFile = useMemo<ReduxFile|null>(() => {
     if (editedFileLocalId) {
       editedFileRef.current = filesState.data[editedFileLocalId];
