@@ -25,7 +25,7 @@ export enum ReactToolchains {
 // selectedFileLocalId: This is the selected to be shown in the editor.
 // filesSynced is set to true when the project file models are downloaded. This happens before ideReady.
 // The ideReady is set to true when the content of the entryFile and entryHTMLFile are downloaded as well.
-
+// bundleResult was added here to keep redux updates in check.
 export interface ReduxProject extends ServerObject {
   reduxType: 'project',
   localId: string;

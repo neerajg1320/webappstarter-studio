@@ -61,7 +61,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
-  const bundlesState =  useTypedSelector((state) => state.bundles);
+  // const bundlesState =  useTypedSelector((state) => state.bundles);
   const currentUser =  useTypedSelector((state) => state.auth.currentUser);
   const bundlerReady = useTypedSelector(state => state.application.bundlerReady);
 
@@ -595,12 +595,12 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       }
 
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
-      {(reduxProject.htmlContent && reduxProject.bundleLocalId && bundlesState[reduxProject.bundleLocalId]) &&
+      {(reduxProject.htmlContent && reduxProject.bundleLocalId && reduxProject.bundleResult) &&
           <PreviewTabsPanel
               title={reduxProject.title}
               html={reduxProject.htmlContent}
-              code={bundlesState[reduxProject.bundleLocalId]!.code}
-              err={bundlesState[reduxProject.bundleLocalId]!.err}
+              code={reduxProject.bundleResult.code}
+              err={reduxProject.bundleResult.err}
           />
       }
     </div>

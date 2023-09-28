@@ -30,8 +30,7 @@ const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
       <>
         {reduxProject.bundleResult ?
             <div className="remaining-box" >
-              {/*<span>Hello this is a long string and we are going to watch</span>*/}
-              {/*<pre>{reduxProject.htmlContent}</pre>*/}
+              {/*<pre>{JSON.stringify(reduxProject.bundleResult, null, 2)}</pre>*/}
               <PreviewTabsPanel
                   title={reduxProject.title}
                   html={reduxProject.htmlContent}

@@ -81,7 +81,8 @@ const bundleCode = async (
       // console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
 
       if (!packageMap[pkgInfo.name]) {
-        packageMap[pkgInfo.name] = {...pkgInfo, importers: []} as PackageEntry;
+        const {name, url, responseURL, version} = pkgInfo;
+        packageMap[pkgInfo.name] = {name, url, responseURL, version, importers: []} as PackageEntry;
       }
       packageMap[pkgInfo.name].importers.push({
         url: pkgInfo.importerURL,
@@ -143,7 +144,7 @@ const bundleCode = async (
         const result = await esbuild.build(builderServiceOptions);
 
         // TBD: Later we will add the functionality to specify explicit versions
-        if (debugBundler) {
+        if (debugBundler || true) {
           console.log(`packageMap:`, packageMap);
         }
 
