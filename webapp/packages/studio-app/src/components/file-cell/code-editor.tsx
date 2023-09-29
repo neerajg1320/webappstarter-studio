@@ -71,7 +71,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                                                  disabled
 }) => {
   // const debugComponent = true;
-  const enableFormatButton = useMemo<boolean>(() => true, []);
+  const enableFormatButton = useMemo<boolean>(() => false, []);
 
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
