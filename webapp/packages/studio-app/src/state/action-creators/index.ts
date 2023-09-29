@@ -916,12 +916,21 @@ export const fetchFileContents = (localIds: string[]) => {
 
       // const response = await
       responses.forEach(({response, reduxFile}, index) => {
+        if (debugRedux || false) {
+          console.log(`fetchFileContents: `, response, response.headers['content-type']);
+        }
+
+        let content = response.data;
+        if (response.headers['content-type'] === "application/json") {
+          content = JSON.stringify(response.data, null, 2);
+        }
+
         dispatch({
           type: ActionType.UPDATE_FILE,
           payload: {
             localId: reduxFile.localId,
-            content: response.data,
-            prevContent: response.data,
+            content,
+            prevContent: content,
             contentSynced: true,
             isServerResponse: true,
             requestInitiated: false,

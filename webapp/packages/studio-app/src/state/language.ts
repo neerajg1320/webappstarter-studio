@@ -1,4 +1,12 @@
-import {isPathJavascript, isPathTypescript, isPathCss, isPathScss, isPathHtml} from "../utils/path";
+import {
+  isPathJavascript,
+  isPathTypescript,
+  isPathCss,
+  isPathScss,
+  isPathHtml,
+  isPathJson,
+  isPathText
+} from "../utils/path";
 import {BundleLanguage} from "./bundle";
 
 export enum CodeLanguage {
@@ -8,6 +16,8 @@ export enum CodeLanguage {
   SCSS = 'scss',
   HTML = 'html',
   HTM = 'htm',
+  TEXT = 'txt',
+  JSON = 'json',
   UNKNOWN = 'unknown',
 }
 
@@ -29,7 +39,11 @@ export const pathToCodeLanguage = (path:string): CodeLanguage => {
     return CodeLanguage.HTML
   } else if (isPathHtml(path)) {
     return CodeLanguage.HTM
+  } else if (isPathJson(path)) {
+    return CodeLanguage.JSON
+  } else if (isPathText(path)) {
+    return CodeLanguage.TEXT
   }
 
-return CodeLanguage.UNKNOWN;
+  return CodeLanguage.UNKNOWN;
 }

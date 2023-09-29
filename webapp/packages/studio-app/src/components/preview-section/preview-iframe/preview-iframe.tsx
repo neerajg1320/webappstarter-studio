@@ -29,7 +29,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
     // Get the initialization message from iframe and then send.
     // iframe is yet to support an initialization message
     setTimeout(() => {
-      iframeRef.current.contentWindow.postMessage(code, '*');
+      if (iframeRef.current) {
+        iframeRef.current.contentWindow.postMessage(code, '*');
+      }
     }, 200);
   }, [code]);
 

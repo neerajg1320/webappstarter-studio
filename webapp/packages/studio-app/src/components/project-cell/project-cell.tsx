@@ -27,6 +27,7 @@ import useDebouncedCallback from "../../hooks/use-debounced-callback";
 import useWindowSize from "../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
+import CodeFallbackEditor from "../file-cell/code-fallback-editor";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -91,7 +92,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   if (debugComponent || false) {
     console.log(`ProjectCell:render reduxProject`, reduxProject);
   }
-  
+
   const editedFile = useMemo<ReduxFile|null>(() => {
     if (editedFileLocalId) {
       editedFileRef.current = filesState.data[editedFileLocalId];
@@ -107,9 +108,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     const _editedFile = editedFileRef.current;
 
     if (_editedFile && _editedFile.localId && _editedFile.isEditAllowed) {
-      if (debugComponent || false) {
+      if (debugComponent) {
         console.log('handleEditorChange: _editedFile:', _editedFile);
-        console.log(`handleEditorChange: file[${_editedFile.localId}]: value=${value}`)
+        console.log(`handleEditorChange: file[${_editedFile.localId}]: typeof(value):${typeof(value)} value:${value}`)
       }
 
       if (_editedFile.content !== value) {
@@ -551,7 +552,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               </div>
 
               {(editedFile && editedFile.contentSynced) ?
-                  <Suspense fallback={<textarea value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
+                  // <Suspense fallback={<textarea value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
+                  <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} />}>
                     <CodeEditor
                         modelKey={editedFile?.localId}
                         value={editedFile?.content || ""}

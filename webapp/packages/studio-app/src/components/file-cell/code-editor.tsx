@@ -6,6 +6,9 @@ import prettier from 'prettier';
 import parserBabel from 'prettier/parser-babel';
 import {CodeLanguage} from "../../state/language";
 import {debugComponent} from "../../config/global";
+import ErrorBoundary from "../common/error-boundary";
+import CodeFallbackEditor from "./code-fallback-editor";
+
 // Keeping this for reference: Uncommenting the following lines add 3MB of size to our bundle
 // import {editor} from "monaco-editor";
 // import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
@@ -68,7 +71,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                                                  disabled
 }) => {
   // const debugComponent = true;
-  const enableFormatButton = false;
+  const enableFormatButton = useMemo<boolean>(() => true, []);
 
   const editorRef = useRef<any>();
   const editorLanguage = useMemo(() => {
@@ -82,6 +85,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       return 'scss';
     } else if (language === CodeLanguage.HTML) {
       return 'html';
+    } else if (language === CodeLanguage.TEXT) {
+      return 'txt';
+    } else if (language === CodeLanguage.JSON) {
+      return 'json';
     }
 
     return 'javascript';
@@ -166,24 +173,26 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
               </button>
             }
             <div className="editor-main">
-              <MonacoEditorReact
-                  path={modelKey}
-                  value={propValue}
-                  language={editorLanguage}
-                  onMount={handleEditorMount}
-                  theme='vs-dark'
-                  height="calc(100% - 20px)"
-                  options={{
-                    wordWrap: "off",
-                    minimap: {enabled: false},
-                    showUnused: false,
-                    folding: true,
-                    lineNumbersMinChars: 3,
-                    fontSize: 16,
-                    scrollBeyondLastLine: false,
-                    automaticLayout: true,
-                  }}
-              />
+              <ErrorBoundary key={modelKey} fallback={<CodeFallbackEditor value={propValue} onChange={newValue => propOnChange(newValue)} />} >
+                <MonacoEditorReact
+                    path={modelKey}
+                    value={propValue}
+                    language={editorLanguage}
+                    onMount={handleEditorMount}
+                    theme='vs-dark'
+                    height="calc(100% - 20px)"
+                    options={{
+                      wordWrap: "off",
+                      minimap: {enabled: false},
+                      showUnused: false,
+                      folding: true,
+                      lineNumbersMinChars: 3,
+                      fontSize: 16,
+                      scrollBeyondLastLine: false,
+                      automaticLayout: true,
+                    }}
+                />
+              </ErrorBoundary>
             </div>
           </>
       }
