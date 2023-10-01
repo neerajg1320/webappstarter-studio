@@ -913,17 +913,15 @@ export const fetchFileContents = (localIds: string[]) => {
 
     try {
       const responses = await Promise.all(reduxFiles.map(rFile => fetchContent(rFile)))
-
-      // const response = await
+      
       responses.forEach(({response, reduxFile}, index) => {
-        if (debugRedux || false) {
+        const {request, data} = response;
+
+        if (debugRedux || true) {
           console.log(`fetchFileContents: `, response, response.headers['content-type']);
         }
 
-        let content = response.data;
-        if (response.headers['content-type'] === "application/json") {
-          content = JSON.stringify(response.data, null, 2);
-        }
+        let content = request.responseText;
 
         dispatch({
           type: ActionType.UPDATE_FILE,
