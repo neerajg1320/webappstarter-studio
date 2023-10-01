@@ -553,7 +553,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
               {(editedFile && editedFile.contentSynced) ?
                   // <Suspense fallback={<textarea value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
-                  <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} />}>
+                  <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''} onChange={(newValue) => handleEditorChange(newValue)} />}>
                     <CodeEditor
                         modelKey={editedFile?.localId}
                         value={editedFile?.content || ""}

@@ -913,7 +913,7 @@ export const fetchFileContents = (localIds: string[]) => {
 
     try {
       const responses = await Promise.all(reduxFiles.map(rFile => fetchContent(rFile)))
-      
+
       responses.forEach(({response, reduxFile}, index) => {
         const {request, data} = response;
 
