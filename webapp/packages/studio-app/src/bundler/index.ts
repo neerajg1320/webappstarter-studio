@@ -78,7 +78,7 @@ const bundleCode = async (
       let detectResult;
       if (getPackageVersion) {
         detectResult = getPackageVersion(pkgInfo.importPath);
-        console.log(`onPackageDetect(): detectResult:`, detectResult);
+        // console.log(`onPackageDetect(): detectResult:`, detectResult);
       }
 
       return detectResult;

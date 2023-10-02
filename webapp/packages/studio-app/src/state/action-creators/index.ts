@@ -307,7 +307,7 @@ export const createProjectBundle = (
         for (const k of Object.keys(packageDependencyMap)) {
           if (pkgPath.includes(k)) {
             const version = packageDependencyMap[k];
-            console.log(`getPackageVersion(): found '${k}' version '${version}'`);
+            // console.log(`getPackageVersion(): found '${k}' version '${version}'`);
 
             pkgDetectionResult = {
               name: k,

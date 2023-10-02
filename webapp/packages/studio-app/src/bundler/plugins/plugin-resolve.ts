@@ -54,7 +54,7 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
       // These are non-relative files like 'react', 'react-dom', 'axios' etc
       // These are essentially library files.
       // TBD: We can pass the package server into the plugin
-      build.onResolve({ filter: /.*/ }, async (args: any) => {
+      build.onResolve({ filter: /.*/ }, async (args: any):Promise<esbuild.OnResolveResult> => {
         let name = args.path;
         // If package name is not of the form @monaco-editor/react
         // TBD: We need to add a dynamic way of detecting the package name
@@ -69,12 +69,15 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
         }
 
         // const pluginData = {name, importPath: args.path, importerURL: args.importer};
-        const pluginData = {importPath: args.path, importerURL: args.importer};
+        const pluginData = {importPath: args.path, importerURL: args.importer} as PackageInfo;
 
         let pkgUrlPath:string;
         if (onPackageDetect) {
           const detectResult = onPackageDetect(pluginData as PackageInfo);
           pkgUrlPath = detectResult.url;
+          if (detectResult.name) {
+            pluginData.name = detectResult.name;
+          }
         }
 
         return {
