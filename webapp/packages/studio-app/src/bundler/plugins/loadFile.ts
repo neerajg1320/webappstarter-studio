@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
-import {getLoadResultFromCache, setLoadResultInCache} from "./plugin-load-from-cache";
+import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./plugin-load-from-cache";
 import {getFileType} from "../../utils/path";
 import {debugCache, debugPlugin, enableLoadFromCache} from "../../config/global";
 
@@ -40,7 +40,7 @@ export const loadFileUrl= async (url:string, cacheEnabled:boolean):Promise<esbui
   // We might remove it later as this is getting repeated
   // Also this check is not necessary as the file is already looked up in the load-from-cache-plugin
   if (cacheEnabled) {
-    const cachedResult = await getLoadResultFromCache(url);
+    const cachedResult = await getLoadResultFromIndexDBCache(url);
     if (cachedResult) {
       return cachedResult
     }
@@ -64,7 +64,7 @@ export const loadFileUrl= async (url:string, cacheEnabled:boolean):Promise<esbui
   }
 
   if (cacheEnabled) {
-    await setLoadResultInCache(url, result);
+    await setLoadResultInIndexDBCache(url, result);
   }
 
   return result;

@@ -2,10 +2,10 @@ import localforage from "localforage";
 import {enableLoadFromCache, debugCache, debugPlugin} from "../../config/global";
 import * as esbuild from "esbuild-wasm";
 
-let fileCache: LocalForage;
+let loadResultCache: LocalForage;
 
 if (enableLoadFromCache) {
-  fileCache = localforage.createInstance({
+  loadResultCache = localforage.createInstance({
       name: 'fileCache'
   });
   if (debugCache) {
@@ -21,7 +21,7 @@ export const pluginLoadFromCache = () => {
       build.onLoad({filter: /.*/}, async (args: esbuild.OnLoadArgs) => {
         // If we have already fetched this file then return from cache
         // We use args.path as key in the cache
-        const loadResult = await getLoadResultFromCache(args.path);
+        const loadResult = await getLoadResultFromIndexDBCache(args.path);
         if (loadResult) {
           if (debugPlugin || false) {
             console.log(`cache.onLoad(): path:${args.path.padEnd(70)}  namespace:${args.namespace.padEnd(80)}`);
@@ -33,9 +33,9 @@ export const pluginLoadFromCache = () => {
   }
 }
 
-export const getLoadResultFromCache = async (url:string):Promise<esbuild.OnLoadResult> => {
+export const getLoadResultFromIndexDBCache = async (url:string):Promise<esbuild.OnLoadResult> => {
   if (enableLoadFromCache) {
-    const cachedResult = await fileCache.getItem<esbuild.OnLoadResult>(url);
+    const cachedResult = await loadResultCache.getItem<esbuild.OnLoadResult>(url);
     if (cachedResult) {
       if (debugPlugin || debugCache) {
         console.log(`loaded ${url} from cache`);
@@ -45,10 +45,10 @@ export const getLoadResultFromCache = async (url:string):Promise<esbuild.OnLoadR
   }
 }
 
-export const setLoadResultInCache = async (url:string, contents:esbuild.OnLoadResult) => {
+export const setLoadResultInIndexDBCache = async (url:string, loadResult:esbuild.OnLoadResult) => {
   if (enableLoadFromCache) {
     // Store result in cache
-    await fileCache.setItem(url, contents);
+    await loadResultCache.setItem(url, loadResult);
     if (debugPlugin || debugCache) {
       console.log(`stored ${url} to cache`);
     }
