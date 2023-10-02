@@ -6,7 +6,7 @@ export const pluginProfiler = (title:string) => {
   let endTime;
 
   return {
-    name: 'profiler-plugin',
+    name: 'plugin-profiler',
     setup:  (build: esbuild.PluginBuild) => {
 
       build.onResolve({filter: /.*/}, (args: esbuild.OnResolveArgs) => {

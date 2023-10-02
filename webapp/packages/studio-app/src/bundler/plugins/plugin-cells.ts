@@ -6,7 +6,7 @@ import {isPathTypescript} from "../../utils/path";
 
 export const pluginCells = (code: string) => {
   return {
-    name: 'cells-plugin',
+    name: 'plugin-cells',
     setup(build: esbuild.PluginBuild) {
       build.onResolve({filter: CELL_REGEX}, (args: any) => {
         return {

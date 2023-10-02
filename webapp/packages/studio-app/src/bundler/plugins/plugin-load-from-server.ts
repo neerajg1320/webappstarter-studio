@@ -6,7 +6,7 @@ import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
 import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./indexDBCache";
 import {getFileType} from "../../utils/path";
-import {OnLoadResult} from "esbuild-wasm";
+
 
 
 const parseResonseURL = (responseURL:string, pkgName: string) => {
@@ -43,7 +43,7 @@ export interface PlugingLoadFromServerArgs {
 
 export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs) => {
   return {
-    name: 'fetch-from-server-plugin',
+    name: 'plugin-load-from-server',
     setup(build: esbuild.PluginBuild) {          
       // onLoad are for loading the file.
 

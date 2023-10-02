@@ -3,7 +3,7 @@ import {debugPlugin, serverMediaBaseUrl} from "../../config/global";
 
 export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>) => {
   return {
-    name: 'fetch-from-redux-plugin',
+    name: 'plugin-load-from-redux',
     setup(build: esbuild.PluginBuild) {
       // Load the files which are being fetched from api server
       build.onLoad({filter: /.*/}, async (args: any) => {

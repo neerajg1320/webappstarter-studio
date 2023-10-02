@@ -12,7 +12,7 @@ export interface PluginResolveArgs {
 export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) => {
 
   return {
-    name: 'unpkg-path-plugin',
+    name: 'plugin-resolve',
     setup(build: esbuild.PluginBuild) {
       // onResolve are for path resolutions
 
@@ -60,12 +60,16 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
         let pkgUrlPath:string;
         if (onPackageDetect) {
           const detectResult = onPackageDetect(pluginData as PackageInfo);
-          pkgUrlPath = detectResult.url;
-          if (detectResult.name) {
-            pluginData.name = detectResult.name;
-          }
+          if (detectResult) {
+            pkgUrlPath = detectResult.url;
+            if (detectResult.name) {
+              pluginData.name = detectResult.name;
+            }
 
-          return {path: pkgUrlPath, namespace: 'a', pluginData};
+            return {path: pkgUrlPath, namespace: 'a', pluginData};
+          } else {
+            console.error(`No detectResult`);
+          }
         }
       });
     },

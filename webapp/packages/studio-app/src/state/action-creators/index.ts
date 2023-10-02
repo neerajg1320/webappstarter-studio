@@ -332,9 +332,9 @@ export const createProjectBundle = (
             }
           }
         }
-        
-        return pkgDetectionResult;
       }
+
+      return pkgDetectionResult;
     };
 
     const setPackageVersion = (pkgName:string, version:string) => {
