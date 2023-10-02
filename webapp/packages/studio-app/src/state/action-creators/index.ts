@@ -232,7 +232,7 @@ export const createProjectBundle = (
       if (debugPlugin || debugRedux || true) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
-      
+
       // Create a new map based on filepath instead of id
       // We use projectDirPath e.g. 'mediafiles/user_72/first' as separator
       // So for  http://api.local.webappstarter.com/mediafiles/user_72/first/src/index.jsx
@@ -245,7 +245,6 @@ export const createProjectBundle = (
       console.log(`reduxFilePath:`, reduxFilePath);
 
       const reduxFile = projectFileMap[reduxFilePath];
-
 
       if (debugPlugin || debugRedux) {
         console.log(`File Contents:`, reduxFile.content);
@@ -264,10 +263,10 @@ export const createProjectBundle = (
 
           if (responses) {
             responses.forEach(({response, reduxFile}) => {
-              const {data, request} = response;
-              // We will use result.content to fill in the reduxFile content
-              if (data) {
-                content = data;
+              const {request} = response;
+              // We should be able to disable this as fetchFileContents would have already done this.
+              if (request.responseText) {
+                content = request.responseText;
                 dispatch(updateFile({localId: reduxFile.localId, content}));
               }
 
