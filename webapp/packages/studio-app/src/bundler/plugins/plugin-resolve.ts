@@ -4,12 +4,12 @@ import {PackageMap, PackageInfo} from "./package";
 
 export interface PluginResolveArgs {
   pkgServer: string,
-  onPackageResolve:(PackageInfo) => void,
+  onPackageDetect?: (PackageInfo) => void,
 }
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) => {
+export const pluginResolve = ({pkgServer, onPackageDetect, onPackageResolve}:PluginResolveArgs) => {
 
   return {
     name: 'unpkg-path-plugin',
@@ -25,9 +25,9 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
         // In case of entry point we have full URL with server
         if (args.kind === 'entry-point') {
           const pluginData = {name: 'entryPoint', importPath: args.path, importerURL: args.importer};
-          if (onPackageResolve) {
-            onPackageResolve(pluginData as PackageInfo);
-          }
+          // if (onPackageResolve) {
+          //   onPackageResolve(pluginData as PackageInfo);
+          // }
 
           return {
             path: args.path,
@@ -55,8 +55,6 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
       // These are essentially library files.
       // TBD: We can pass the package server into the plugin
       build.onResolve({ filter: /.*/ }, async (args: any) => {
-        const pkgUrl = `${pkgServer}/${args.path}`;
-
         let name = args.path;
         // If package name is not of the form @monaco-editor/react
         if (args.path[0] !== "@") {
@@ -66,9 +64,16 @@ export const pluginResolve = ({pkgServer, onPackageResolve}:PluginResolveArgs) =
         }
 
         const pluginData = {name, importPath: args.path, importerURL: args.importer};
-        if (onPackageResolve) {
-          onPackageResolve(pluginData as PackageInfo);
+
+        if (onPackageDetect) {
+          onPackageDetect(pluginData as PackageInfo);
         }
+
+        // if (onPackageResolve) {
+        //   onPackageResolve(pluginData as PackageInfo);
+        // }
+
+        const pkgUrl = `${pkgServer}/${args.path}`;
 
         return {
           path: pkgUrl,

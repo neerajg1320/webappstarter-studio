@@ -37,7 +37,7 @@ const parseResonseURL = (responseURL:string, pkgName: string) => {
 }
 
 export interface PlugingLoadFromServerArgs {
-  onPackageLoad:(PackageInfo) => void;
+  onPackageLoad?: (PackageInfo) => void;
 }
 
 

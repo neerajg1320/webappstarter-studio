@@ -71,8 +71,8 @@ const bundleCode = async (
     // So we will use a callback function and see
     const packageMap = {} as PackageMap;
 
-    const onPackageResolve:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
-      // console.log(`onPackageResolve(): pkgInfo:`, pkgInfo);
+    const onPackageDetect:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
+      console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
     }
 
     // This will be called only when packages are not found in cache and are loaded from server
@@ -96,7 +96,7 @@ const bundleCode = async (
       esbuildPlugins.push(pluginProfiler(title));
     }
 
-    esbuildPlugins.push(pluginResolve({pkgServer:getPkgServer(), onPackageResolve}));
+    esbuildPlugins.push(pluginResolve({pkgServer:getPkgServer(), onPackageDetect}));
 
     if (enableLoadFromRedux) {
       // fileFetcher would be null in case of call from bundleCodeStr
