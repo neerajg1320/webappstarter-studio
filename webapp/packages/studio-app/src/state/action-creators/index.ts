@@ -230,7 +230,7 @@ export const createProjectBundle = (
 
     // We define a function closure as it needs getState() from getting files for project
     const getLoadResultFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-      if (debugPlugin || debugRedux || true) {
+      if (debugPlugin || debugRedux) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
 
@@ -243,8 +243,6 @@ export const createProjectBundle = (
       // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
       // ['http://api.local.webappstarter.com/', 'src/index.js']
       const reduxFilePath = fileParts[1];
-      console.log(`reduxFilePath:`, reduxFilePath);
-
       const reduxFile = projectFileMap[reduxFilePath];
 
       if (debugPlugin || debugRedux) {
@@ -295,7 +293,7 @@ export const createProjectBundle = (
     }
 
     const getPackageInfo = (pkgName:string):PackageDependency => {
-      console.log(`getPackageInfo: pkgName:${pkgName}`);
+      // console.log(`getPackageInfo: pkgName:${pkgName}`);
       const pkgDependency = {name: pkgName} as PackageDependency;
       if (packageDependencyMap[pkgName]) {
         pkgDependency.version = packageDependencyMap[pkgName];

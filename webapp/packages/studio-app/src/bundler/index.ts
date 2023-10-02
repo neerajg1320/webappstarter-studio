@@ -86,7 +86,7 @@ const bundleCode = async (
         }
       }
 
-      console.log(`onPackageDetect(): packagePath:${packagePath}`);
+      // console.log(`onPackageDetect(): packagePath:${packagePath}`);
 
       return `${getPkgServer()}/${packagePath}`;
     }
