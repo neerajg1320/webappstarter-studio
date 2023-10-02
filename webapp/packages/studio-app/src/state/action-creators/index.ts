@@ -200,16 +200,18 @@ export const bundleProject = (localId:string) => {
   }
 }
 
+// Example params:
+// projectDirPath: 'mediafiles/user_72/first'
+// entryFile: 'src/index.jsx'
 export const createProjectBundle = (
     reduxProject: ReduxProject,
-    // projectLocalId:string,
     projectDirPath:string,
     entryFile:string,
     bundleLanguage: BundleLanguage
 ) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-    if (debugBundler || debugRedux) {
+    if (debugBundler || debugRedux || true) {
       console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}'`);
     }
 
@@ -218,7 +220,7 @@ export const createProjectBundle = (
       const enableUrlMap = false;
       const filesLocalIdMap = getState().files.data;
 
-      if (debugPlugin || debugRedux) {
+      if (debugPlugin || debugRedux || true) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
 
@@ -240,12 +242,15 @@ export const createProjectBundle = (
         }
       } else {
         // Create a new map based on filepath instead of id
+        // We use projectDirPath e.g. 'mediafiles/user_72/first' as separator
+        // So for  http://api.local.webappstarter.com/mediafiles/user_72/first/src/index.jsx
+        // we will get [' http://api.local.webappstarter.com/', 'src/index.jsx']
         const fileParts = url.split(projectDirPath + '/');
 
         // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
         // ['http://api.local.webappstarter.com/', 'src/index.js']
         const reduxFilePath = fileParts[1];
-        // console.log(`reduxFilePath:`, reduxFilePath);
+        console.log(`reduxFilePath:`, reduxFilePath);
 
         const projectFileMap = Object.fromEntries(
             Object.entries(filesLocalIdMap)
@@ -257,7 +262,7 @@ export const createProjectBundle = (
 
         reduxFile = projectFileMap[reduxFilePath];
 
-        if (debugPlugin || debugRedux) {
+        if (debugPlugin || debugRedux || true) {
           console.log(`projectFileMap:`, projectFileMap);
         }
       }
@@ -934,7 +939,7 @@ export const fetchFileContents = (localIds: string[]) => {
       responses.forEach(({response, reduxFile}, index) => {
         const {request, data} = response;
 
-        if (debugRedux || true) {
+        if (debugRedux) {
           console.log(`fetchFileContents: `, response, response.headers['content-type']);
         }
 
