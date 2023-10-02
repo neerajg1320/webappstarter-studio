@@ -28,11 +28,10 @@ export const autoBundleDebounce = 500;
 // Flag for enabling in-memory fetching. Redux act as an ad-hoc file system.
 export const enableLoadFromRedux = true;
 // The following are required for loading packages
-export const enableLoadFromIndexDBCache = false;
+export const enableLoadFromIndexDBCache = true;
 export const enableLoadFromServer = true;
 export const enableLoadCells = true;
 export const enableProfilerPlugin = true;
-
 
 
 

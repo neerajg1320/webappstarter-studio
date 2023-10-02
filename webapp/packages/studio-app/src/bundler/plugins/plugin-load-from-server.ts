@@ -56,41 +56,49 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
 
         if (enableLoadFromIndexDBCache) {
           result = await getLoadResultFromIndexDBCache(args.path);
-        } else {
-          // args.path is a complete url created by onResolve
-          const contentType = getFileType(args.path);
-          const {content, responseURL} = await loadPackgeFileUrl(args.path)
-
-          result = getLoadResult(content, contentType);
-          // Keeping resolveDir is important
-          result.resolveDir = new URL('./', responseURL).pathname;
-
-          // We shall see if we can move this to cache-plugin
-          if (enableLoadFromIndexDBCache) {
-            await setLoadResultInIndexDBCache(args.path, result);
-          }
-
-          // console.log(`${args.path}:result:`, result)
-
-          if (args.path !== responseURL) {
-            if (args.pluginData) {
-              const {name, importerURL, importPath} = args.pluginData;
-              try {
-                const parsedInfo = parseResonseURL(responseURL, name);
-                if (parsedInfo) {
-                  const {version} = parsedInfo;
-                  if (onPackageLoad) {
-                    onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
-                  }
-                }
-              } catch (err) {
-                console.error(err);
-              }
-            } else {
-              console.log(`No plugin data for`, args);
+          if (result) {
+            if (debugPlugin) {
+              console.log(`pluginLoadFromServer.onLoad: indexDBCache result:`, result);
             }
+
+            return result;
           }
         }
+
+        // args.path is a complete url created by onResolve
+        const contentType = getFileType(args.path);
+        const {content, responseURL} = await loadPackgeFileUrl(args.path)
+
+        result = getLoadResult(content, contentType);
+        // Keeping resolveDir is important
+        result.resolveDir = new URL('./', responseURL).pathname;
+
+        // We shall see if we can move this to cache-plugin
+        if (enableLoadFromIndexDBCache) {
+          await setLoadResultInIndexDBCache(args.path, result);
+        }
+
+        // console.log(`${args.path}:result:`, result)
+
+        if (args.path !== responseURL) {
+          if (args.pluginData) {
+            const {name, importerURL, importPath} = args.pluginData;
+            try {
+              const parsedInfo = parseResonseURL(responseURL, name);
+              if (parsedInfo) {
+                const {version} = parsedInfo;
+                if (onPackageLoad) {
+                  onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+                }
+              }
+            } catch (err) {
+              console.error(err);
+            }
+          } else {
+            console.log(`No plugin data for`, args);
+          }
+        }
+
 
         return result;
       });
