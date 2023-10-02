@@ -286,7 +286,7 @@ export const createProjectBundle = (
       return result;
     }
 
-    const packageDependencyMap = reduxProject.packageConfig.dependencies;
+    let packageDependencyMap = reduxProject.packageConfig.dependencies;
 
     if (debugPlugin || debugRedux || true) {
       console.log(`Package Dependency Map:`, packageDependencyMap);
@@ -299,6 +299,9 @@ export const createProjectBundle = (
 
     const setPackageVersion = (pkgName:string, version:string) => {
       console.log(`setPackageVersion: pkg:${pkgName} version:`, version);
+      if (!packageDependencyMap[pkgName]) {
+        packageDependencyMap = {...packageDependencyMap, [pkgName]: version};
+      }
     };
 
     dispatch({
@@ -324,6 +327,10 @@ export const createProjectBundle = (
             bundle: result
         }
     });
+
+    if (debugPlugin || debugRedux || true) {
+      console.log(`Package Dependency Map Post Bundling:`, packageDependencyMap);
+    }
 
     dispatch(updateProject({localId:reduxProject.localId, bundleDirty:false, bundleResult:result}));
   };
