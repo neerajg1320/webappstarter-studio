@@ -1,5 +1,5 @@
 import * as esbuild from "esbuild-wasm";
-import {debugPlugin, enableLoadFromCache} from "../../config/global";
+import {debugPlugin, enableLoadFromIndexDBCache} from "../../config/global";
 
 import {isRegexMatch} from "../../utils/regex";
 import {CELL_REGEX} from "../../utils/patterns";

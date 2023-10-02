@@ -1,10 +1,10 @@
 import * as esbuild from "esbuild-wasm";
-import {debugPlugin, enableLoadFromCache} from "../../config/global";
+import {debugPlugin, enableLoadFromIndexDBCache} from "../../config/global";
 
 import {getLoadResult, loadFileUrl, loadPackgeFileUrl} from "./loadFile";
 import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
-import {setLoadResultInIndexDBCache} from "./plugin-load-from-cache";
+import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./plugin-load-from-cache";
 import {getFileType} from "../../utils/path";
 import {OnLoadResult} from "esbuild-wasm";
 
@@ -52,37 +52,43 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
           console.log('onLoad', args);
         }
 
-        // args.path is a complete url created by onResolve
-        const contentType = getFileType(args.path);
-        const {content, responseURL} = await loadPackgeFileUrl(args.path)
+        let result: esbuild.OnLoadResult;
 
-        const result:esbuild.OnLoadResult = getLoadResult(content, contentType);
-        // Keeping resolveDir is important
-        result.resolveDir = new URL('./', responseURL).pathname;
+        if (enableLoadFromIndexDBCache) {
+          result = await getLoadResultFromIndexDBCache(args.path);
+        } else {
+          // args.path is a complete url created by onResolve
+          const contentType = getFileType(args.path);
+          const {content, responseURL} = await loadPackgeFileUrl(args.path)
 
-        // We shall see if we can move this to cache-plugin
-        if (enableLoadFromCache) {
-          await setLoadResultInIndexDBCache(args.path, result);
-        }
+          result = getLoadResult(content, contentType);
+          // Keeping resolveDir is important
+          result.resolveDir = new URL('./', responseURL).pathname;
 
-        // console.log(`${args.path}:result:`, result)
+          // We shall see if we can move this to cache-plugin
+          if (enableLoadFromIndexDBCache) {
+            await setLoadResultInIndexDBCache(args.path, result);
+          }
 
-        if (args.path !== responseURL) {
-          if (args.pluginData) {
-            const {name, importerURL, importPath} = args.pluginData;
-            try {
-              const parsedInfo = parseResonseURL(responseURL, name);
-              if (parsedInfo) {
-                const {version} = parsedInfo;
-                if (onPackageLoad) {
-                  onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+          // console.log(`${args.path}:result:`, result)
+
+          if (args.path !== responseURL) {
+            if (args.pluginData) {
+              const {name, importerURL, importPath} = args.pluginData;
+              try {
+                const parsedInfo = parseResonseURL(responseURL, name);
+                if (parsedInfo) {
+                  const {version} = parsedInfo;
+                  if (onPackageLoad) {
+                    onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
+                  }
                 }
+              } catch (err) {
+                console.error(err);
               }
-            } catch (err) {
-              console.error(err);
+            } else {
+              console.log(`No plugin data for`, args);
             }
-          } else {
-            console.log(`No plugin data for`, args);
           }
         }
 

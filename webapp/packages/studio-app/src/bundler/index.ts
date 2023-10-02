@@ -6,7 +6,7 @@ import {
   cellJsxFileName,
   cellTsxFileName,
   combineCellsCode,
-  debugBundler, enableLoadCells, enableLoadFromCache, enableLoadFromRedux, enableLoadFromServer, enableProfilerPlugin,
+  debugBundler, enableLoadCells, enableLoadFromIndexDBCache, enableLoadFromRedux, enableLoadFromServer, enableProfilerPlugin,
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
@@ -104,9 +104,7 @@ const bundleCode = async (
         esbuildPlugins.push(pluginLoadFromRedux(fileFetcher));
       }
     }
-    if (enableLoadFromCache) {
-      esbuildPlugins.push(pluginLoadFromCache());
-    }
+
     if (enableLoadFromServer) {
       esbuildPlugins.push(pluginLoadFromServer({onPackageLoad}));
     }

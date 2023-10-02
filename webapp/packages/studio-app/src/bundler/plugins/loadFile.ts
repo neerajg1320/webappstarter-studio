@@ -2,7 +2,7 @@ import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
 import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./plugin-load-from-cache";
 import {getFileType} from "../../utils/path";
-import {debugCache, debugPlugin, enableLoadFromCache} from "../../config/global";
+import {debugCache, debugPlugin, enableLoadFromIndexDBCache} from "../../config/global";
 
 export const wrapScriptOnCssContent = (cssStr:string):string => {
   // start: The custom part for css
