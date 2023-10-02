@@ -11,7 +11,6 @@ import {
   pkgServerUrl
 } from "../config/global";
 
-import {pluginLoadFromCache} from "./plugins/indexDBCache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
@@ -50,10 +49,10 @@ export const bundleFilePath =  async (
     filePath: string,
     bundleLanguage: BundleLanguage,
     fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
-    getPackageDependency?: (name:string) => PackageDependency,
-    setPackageDependency?: (name:string, pkgDependency:PackageDependency) => void
+    getPackageVersion?: (name:string) => string,
+    setPackageVersion?: (name:string, pkgDependency:string) => void
 ):Promise<BundleResult> => {
-  return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher, getPackageDependency, setPackageDependency);
+  return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher, getPackageVersion, setPackageVersion);
 }
 
 // The bundleCodeStr takes a string as input.
@@ -75,15 +74,16 @@ const bundleCode = async (
     // So we will use a callback function and see
     const packageMap = {} as PackageMap;
 
-    const onPackageDetect:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
+    const onPackageDetect:(PackageInfo) => string = (pkgInfo:PackageInfo) => {
       // console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
       let packagePath = pkgInfo.importPath;
 
       if (getPackageVersion) {
         const version = getPackageVersion(pkgInfo.name);
-        if (version) {
-          packagePath = `${packagePath}@${version}`;
-        }
+        // Temporarily disabled till we fix package name detection
+        // if (version) {
+        //   packagePath = `${packagePath}@${version}`;
+        // }
       }
 
       // console.log(`onPackageDetect(): packagePath:${packagePath}`);

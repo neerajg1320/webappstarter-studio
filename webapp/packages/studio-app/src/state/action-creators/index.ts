@@ -286,7 +286,13 @@ export const createProjectBundle = (
       return result;
     }
 
-    let packageDependencyMap = reduxProject.packageConfig.dependencies;
+    // This should be read in the fileFetchContents
+    let packageDependencyMap;
+    if (reduxProject.packageConfig) {
+      packageDependencyMap = reduxProject.packageConfig.dependencies;
+    } else {
+      console.log(`Package Dependency map not available`);
+    }
 
     if (debugPlugin || debugRedux || true) {
       console.log(`Package Dependency Map:`, packageDependencyMap);
@@ -294,13 +300,17 @@ export const createProjectBundle = (
 
     const getPackageVersion = (pkgName:string):string => {
       // console.log(`getPackageVersion: pkgName:${pkgName}`);
-      return packageDependencyMap[pkgName];
+      if (packageDependencyMap) {
+        return packageDependencyMap[pkgName];
+      }
     };
 
     const setPackageVersion = (pkgName:string, version:string) => {
       console.log(`setPackageVersion: pkg:${pkgName} version:`, version);
-      if (!packageDependencyMap[pkgName]) {
-        packageDependencyMap = {...packageDependencyMap, [pkgName]: version};
+      if (packageDependencyMap) {
+        if (!packageDependencyMap[pkgName]) {
+          packageDependencyMap = {...packageDependencyMap, [pkgName]: version};
+        }
       }
     };
 
