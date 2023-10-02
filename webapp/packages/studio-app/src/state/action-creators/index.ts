@@ -75,7 +75,8 @@ import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../uti
 import {createDiff} from "../../utils/diff";
 import {getProjectFromLocalId} from "../helpers/project-helpers";
 import {getFileFromLocalId} from "../helpers/file-helpers";
-import {PackageDependency, PackageInfo} from "../../bundler/plugins/package";
+import {PackageDependency, PackageDetectResult, PackageInfo} from "../../bundler/plugins/package";
+import {getPkgServer} from "../../api/servers";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -298,10 +299,23 @@ export const createProjectBundle = (
       console.log(`Package Dependency Map:`, packageDependencyMap);
     }
 
-    const getPackageVersion = (pkgName:string):string => {
+    const getPackageVersion = (pkgPath:string):PackageDetectResult => {
       // console.log(`getPackageVersion: pkgName:${pkgName}`);
+      let pkgDetectionResult = {url: `${getPkgServer()}/${pkgPath}`} as PackageDetectResult;
+
       if (packageDependencyMap) {
-        return packageDependencyMap[pkgName];
+        for (const k of Object.keys(packageDependencyMap)) {
+          if (pkgPath.includes(k)) {
+            const version = packageDependencyMap[k];
+            pkgDetectionResult = {
+              name: k,
+              version,
+              url: `${getPkgServer()}/${pkgPath}@${version}`
+            };
+          }
+        }
+        
+        return pkgDetectionResult;
       }
     };
 

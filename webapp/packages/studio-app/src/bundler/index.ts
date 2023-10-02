@@ -49,7 +49,7 @@ export const bundleFilePath =  async (
     filePath: string,
     bundleLanguage: BundleLanguage,
     fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
-    getPackageVersion?: (name:string) => string,
+    getPackageVersion?: (name:string) => PackageDetectResult,
     setPackageVersion?: (name:string, pkgDependency:string) => void
 ):Promise<BundleResult> => {
   return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher, getPackageVersion, setPackageVersion);
@@ -63,7 +63,7 @@ const bundleCode = async (
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
-    getPackageVersion?: (name:string) => string,
+    getPackageVersion?: (name:string) => PackageDetectResult,
     setPackageVersion?: (name:string, version:string) => void
 ):Promise<BundleResult> => {
     if (debugBundler) {
@@ -75,20 +75,13 @@ const bundleCode = async (
     const packageMap = {} as PackageMap;
 
     const onPackageDetect:(PackageInfo) => PackageDetectResult = (pkgInfo:PackageInfo) => {
-      // console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
-      let packagePath = pkgInfo.importPath;
-
+      let detectResult;
       if (getPackageVersion) {
-        const version = getPackageVersion(pkgInfo.name);
-        // Temporarily disabled till we fix package name detection
-        // if (version) {
-        //   packagePath = `${packagePath}@${version}`;
-        // }
+        detectResult = getPackageVersion(pkgInfo.importPath);
+        console.log(`onPackageDetect(): detectResult:`, detectResult);
       }
 
-      // console.log(`onPackageDetect(): packagePath:${packagePath}`);
-
-      return {url: `${getPkgServer()}/${packagePath}`} as PackageDetectResult;
+      return detectResult;
     }
 
     // This will be called only when packages are not found in cache and are loaded from server
