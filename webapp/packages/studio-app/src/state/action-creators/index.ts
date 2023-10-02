@@ -843,15 +843,20 @@ export const makeProjectIdeReady = (localId: string) => {
       if (!htmlFile.contentSynced) {
         const ideFiles = [
           reduxProject.entryHtmlFileLocalId,
+          reduxProject.packageFileLocalId,
           reduxProject.entryFileLocalId
         ];
 
         const responses = await fetchFileContents(ideFiles)(dispatch, getState);
         responses.forEach(({response, reduxFile}) => {
           // console.log(response, reduxFile);
+          let projectUpdatePartial:ReduxUpdateProjectPartial = {localId};
           if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
-            dispatch(updateProject({localId, htmlContent:response.data, ideReady: true}))
+            projectUpdatePartial.htmlContent = response.data;
           }
+          projectUpdatePartial.ideReady = true;
+
+          dispatch(updateProject(projectUpdatePartial));
         });
       }
     }
