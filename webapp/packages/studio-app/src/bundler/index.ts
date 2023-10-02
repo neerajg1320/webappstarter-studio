@@ -53,7 +53,7 @@ export const bundleFilePath =  async (
     getPackageDependency?: (name:string) => PackageDependency,
     setPackageDependency?: (name:string, pkgDependency:PackageDependency) => void
 ):Promise<BundleResult> => {
-  return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher);
+  return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher, getPackageDependency, setPackageDependency);
 }
 
 // The bundleCodeStr takes a string as input.
@@ -64,8 +64,8 @@ const bundleCode = async (
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
-    getPackageInfo?: (name:string) => PackageInfo,
-    setPackageInfo?: (name:string, pkgInfo:PackageInfo) => void
+    getPackageInfo?: (name:string) => PackageDependency,
+    setPackageInfo?: (name:string, pkgInfo:PackageDependency) => void
 ):Promise<BundleResult> => {
     if (debugBundler) {
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
@@ -76,7 +76,7 @@ const bundleCode = async (
     const packageMap = {} as PackageMap;
 
     const onPackageDetect:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
-      console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
+      // console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
       if (getPackageInfo) {
         const pkgDependency = getPackageInfo(pkgInfo.name);
       }
