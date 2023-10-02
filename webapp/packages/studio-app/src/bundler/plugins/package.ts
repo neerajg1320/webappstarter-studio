@@ -31,4 +31,5 @@ export type PackageDetectResult = {
   url: string,
   name: string,
   version: string,
+  suffixPath?: string,
 }

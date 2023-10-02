@@ -307,11 +307,20 @@ export const createProjectBundle = (
         for (const k of Object.keys(packageDependencyMap)) {
           if (pkgPath.includes(k)) {
             const version = packageDependencyMap[k];
+            console.log(`getPackageVersion(): found '${k}' version '${version}'`);
+
             pkgDetectionResult = {
               name: k,
               version,
-              url: `${getPkgServer()}/${pkgPath}@${version}`
-            };
+            } as PackageDetectResult;
+
+            if (k === pkgPath) {
+              pkgDetectionResult.url = `${getPkgServer()}/${k}@${version}`;
+            } else {
+              const suffixPath = pkgPath.substring(k.length);
+              pkgDetectionResult.url = `${getPkgServer()}/${k}@${version}${suffixPath}`;
+              pkgDetectionResult.suffixPath = suffixPath;
+            }
           }
         }
         
