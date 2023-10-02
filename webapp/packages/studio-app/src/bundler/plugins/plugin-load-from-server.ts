@@ -4,7 +4,7 @@ import {debugPlugin, enableLoadFromIndexDBCache} from "../../config/global";
 import {getLoadResult, loadFileUrl, loadPackgeFileUrl} from "./loadFile";
 import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
-import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./plugin-load-from-cache";
+import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./indexDBCache";
 import {getFileType} from "../../utils/path";
 import {OnLoadResult} from "esbuild-wasm";
 
@@ -40,7 +40,7 @@ export interface PlugingLoadFromServerArgs {
   onPackageLoad:(PackageInfo) => void;
 }
 
-// TBD: This should be broken and a separate loader for cells should be created
+
 export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs) => {
   return {
     name: 'fetch-from-server-plugin',

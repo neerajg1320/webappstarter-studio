@@ -11,7 +11,7 @@ import {
   pkgServerUrl
 } from "../config/global";
 
-import {pluginLoadFromCache} from "./plugins/plugin-load-from-cache";
+import {pluginLoadFromCache} from "./plugins/indexDBCache";
 import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";

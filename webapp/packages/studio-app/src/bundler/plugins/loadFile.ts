@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
-import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./plugin-load-from-cache";
+import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./indexDBCache";
 import {getFileType} from "../../utils/path";
 import {debugCache, debugPlugin, enableLoadFromIndexDBCache} from "../../config/global";
 
