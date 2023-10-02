@@ -64,8 +64,8 @@ const bundleCode = async (
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
     fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
-    getPackageInfo?: (name:string) => PackageDependency,
-    setPackageInfo?: (name:string, pkgInfo:PackageDependency) => void
+    getPackageVersion?: (name:string) => string,
+    setPackageVersion?: (name:string, version:string) => void
 ):Promise<BundleResult> => {
     if (debugBundler) {
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
@@ -79,10 +79,10 @@ const bundleCode = async (
       // console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
       let packagePath = pkgInfo.importPath;
 
-      if (getPackageInfo) {
-        const pkgDependency = getPackageInfo(pkgInfo.name);
-        if (pkgDependency.version) {
-          packagePath = `${packagePath}@${pkgDependency.version}`;
+      if (getPackageVersion) {
+        const version = getPackageVersion(pkgInfo.name);
+        if (version) {
+          packagePath = `${packagePath}@${version}`;
         }
       }
 
@@ -99,6 +99,10 @@ const bundleCode = async (
       if (!packageMap[pkgInfo.name]) {
         const {name, url, responseURL, version} = pkgInfo;
         packageMap[pkgInfo.name] = {name, url, responseURL, version, importers: []} as PackageEntry;
+
+        if (setPackageVersion) {
+          setPackageVersion(name, version);
+        }
       }
       packageMap[pkgInfo.name].importers.push({
         url: pkgInfo.importerURL,

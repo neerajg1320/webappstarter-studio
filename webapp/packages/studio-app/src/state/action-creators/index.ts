@@ -292,17 +292,17 @@ export const createProjectBundle = (
       console.log(`Package Dependency Map:`, packageDependencyMap);
     }
 
-    const getPackageInfo = (pkgName:string):PackageDependency => {
-      // console.log(`getPackageInfo: pkgName:${pkgName}`);
+    const getPackageVersion = (pkgName:string):string => {
+      // console.log(`getPackageVersion: pkgName:${pkgName}`);
       const pkgDependency = {name: pkgName} as PackageDependency;
-      if (packageDependencyMap[pkgName]) {
-        pkgDependency.version = packageDependencyMap[pkgName];
-      }
-      return pkgDependency;
+      // if (packageDependencyMap[pkgName]) {
+      //   pkgDependency.version = packageDependencyMap[pkgName];
+      // }
+      return packageDependencyMap[pkgName];
     };
 
-    const setPackageInfo = (pkgName:string, pkgInfo:PackageDependency) => {
-      console.log(`getPackageInfo: pkg:${pkgName} pkgInfo:`, pkgInfo);
+    const setPackageVersion = (pkgName:string, version:string) => {
+      console.log(`getPackageInfo: pkg:${pkgName} version:`, version);
     };
 
     dispatch({
@@ -317,8 +317,8 @@ export const createProjectBundle = (
         (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
         bundleLanguage,
         getLoadResultFromRedux,
-        getPackageInfo,
-        setPackageInfo
+        getPackageVersion,
+        setPackageVersion
     );
 
     dispatch({
