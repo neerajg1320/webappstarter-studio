@@ -57,6 +57,11 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
       build.onResolve({ filter: /.*/ }, async (args: any) => {
         let name = args.path;
         // If package name is not of the form @monaco-editor/react
+        // TBD: We need to add a dynamic way of detecting the package name
+        // We have to compare the request.url and the response.url.
+        // Then we have to compare the paths i.e. the url part after the origin.
+        // The common part from start till @<version> in response.url is the package name
+        // Also while resolving we should send the importPath. The packageConfig should then do a longest match
         if (args.path[0] !== "@") {
           // Need to parse import path. We need to check if explicit version is provided
           const namePart = args.path.split('/')[0];
