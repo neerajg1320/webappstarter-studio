@@ -88,12 +88,12 @@ const bundleCode = async (
     // This will be called only when packages are not found in cache and are loaded from server
     // The packageMap once created should be stored. This would be analogous to package-lock.json
     const onPackageLoad:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
-      console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+      // console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
 
       if (!pkgInfo.name) {
         const {url, responseURL} = pkgInfo;
 
-        console.log(`We need to derive name and version`, pkgInfo);
+        // console.log(`We need to derive name and version`, pkgInfo);
 
         // const suffixURL = responseURL.substring(url.length);
         // console.log(`suffixPath:`, suffixURL);
@@ -102,7 +102,7 @@ const bundleCode = async (
         const matches = getRegexMatches(responseURLRegex, responseURL);
         if (matches) {
           const [fullURL, origin, name, version, suffixPath] = matches;
-          console.log(`matches:`, fullURL, origin, name, version, suffixPath);
+          // console.log(`matches:`, fullURL, origin, name, version, suffixPath);
 
           if (!packageMap[name]) {
             packageMap[name] = {name, url, responseURL, version, importers: []} as PackageEntry;
@@ -172,7 +172,7 @@ const bundleCode = async (
         const result = await esbuild.build(builderServiceOptions);
 
         // TBD: Later we will add the functionality to specify explicit versions
-        if (debugBundler || true) {
+        if (debugBundler) {
           console.log(`packageMap:`, packageMap);
         }
 

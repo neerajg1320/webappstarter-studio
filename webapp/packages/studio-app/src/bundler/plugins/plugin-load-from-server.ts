@@ -87,7 +87,7 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
             if (!name) {
               // args.path: 'https://unpkg.com/scheduler'
               // responseURL: 'https://unpkg.com/scheduler@0.23.0/index.js'
-              console.log(`Need to detect name. importPath:${importPath} args.path:${args.path} responseURL:${responseURL}`);
+              // console.log(`Need to detect name. importPath:${importPath} args.path:${args.path} responseURL:${responseURL}`);
 
               if (onPackageLoad) {
                 onPackageLoad({importerURL, importPath, url: args.path, responseURL} as PackageInfo);

@@ -214,7 +214,7 @@ export const createProjectBundle = (
 ) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
-    if (debugBundler || debugRedux || true) {
+    if (debugBundler || debugRedux) {
       console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}'`);
     }
 
@@ -293,10 +293,10 @@ export const createProjectBundle = (
     if (reduxProject.packageConfig) {
       packageDependencyMap = reduxProject.packageConfig.dependencies;
     } else {
-      console.log(`Package Dependency map not available`);
+      // console.log(`Package Dependency map not available`);
     }
 
-    if (debugPlugin || debugRedux || true) {
+    if (debugPlugin || debugRedux) {
       console.log(`Package Dependency Map:`, packageDependencyMap);
     }
 
@@ -338,7 +338,7 @@ export const createProjectBundle = (
     };
 
     const setPackageVersion = (pkgName:string, version:string) => {
-      console.log(`setPackageVersion: pkg:${pkgName} version:`, version);
+      // console.log(`setPackageVersion: pkg:${pkgName} version:`, version);
       if (packageDependencyMap) {
         if (!packageDependencyMap[pkgName]) {
           packageDependencyMap = {...packageDependencyMap, [pkgName]: version};
@@ -370,7 +370,7 @@ export const createProjectBundle = (
         }
     });
 
-    if (debugPlugin || debugRedux || true) {
+    if (debugPlugin || debugRedux) {
       console.log(`Package Dependency Map Post Bundling:`, packageDependencyMap);
     }
 
