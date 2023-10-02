@@ -223,9 +223,13 @@ export const createProjectBundle = (
               return [v.path, v]
             })
     );
-    if (debugPlugin || debugRedux || true) {
+    if (debugPlugin || debugRedux) {
       console.log(`projectFileMap:`, projectFileMap);
     }
+
+    const getPackageInfo = (pkg:string) => {
+      console.log(`getPackageInfo: pkg:${pkg}`);
+    };
 
     // We define a function closure as it needs getState() from getting files for project
     const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
@@ -264,11 +268,9 @@ export const createProjectBundle = (
           if (responses) {
             responses.forEach(({response, reduxFile}) => {
               const {request} = response;
-              
+
               if (request.responseText) {
                 content = request.responseText;
-                // We should be able to disable this as fetchFileContents would have already done this.
-                // dispatch(updateFile({localId: reduxFile.localId, content}));
               }
 
               resolveDir = new URL('./', request.responseURL).pathname;

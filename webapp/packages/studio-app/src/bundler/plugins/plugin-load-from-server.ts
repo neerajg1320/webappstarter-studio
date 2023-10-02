@@ -4,7 +4,7 @@ import {debugPlugin, enableLoadFromCache} from "../../config/global";
 import {getLoadResult, loadFileUrl, loadPackgeFileUrl} from "./loadFile";
 import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
-import {setFileInCache} from "./plugin-load-from-cache";
+import {setLoadResultInCache} from "./plugin-load-from-cache";
 import {getFileType} from "../../utils/path";
 import {OnLoadResult} from "esbuild-wasm";
 
@@ -62,7 +62,7 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
 
         // We shall see if we can move this to cache-plugin
         if (enableLoadFromCache) {
-          await setFileInCache(args.path, result);
+          await setLoadResultInCache(args.path, result);
         }
 
         // console.log(`${args.path}:result:`, result)
