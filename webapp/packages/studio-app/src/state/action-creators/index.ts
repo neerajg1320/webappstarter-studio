@@ -294,15 +294,11 @@ export const createProjectBundle = (
 
     const getPackageVersion = (pkgName:string):string => {
       // console.log(`getPackageVersion: pkgName:${pkgName}`);
-      const pkgDependency = {name: pkgName} as PackageDependency;
-      // if (packageDependencyMap[pkgName]) {
-      //   pkgDependency.version = packageDependencyMap[pkgName];
-      // }
       return packageDependencyMap[pkgName];
     };
 
     const setPackageVersion = (pkgName:string, version:string) => {
-      console.log(`getPackageInfo: pkg:${pkgName} version:`, version);
+      console.log(`setPackageVersion: pkg:${pkgName} version:`, version);
     };
 
     dispatch({
