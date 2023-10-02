@@ -288,9 +288,19 @@ export const createProjectBundle = (
       return result;
     }
 
+    const packageDependencyMap = reduxProject.packageConfig.dependencies;
+
+    if (debugPlugin || debugRedux || true) {
+      console.log(`Package Dependency Map:`, packageDependencyMap);
+    }
+
     const getPackageInfo = (pkgName:string):PackageDependency => {
       console.log(`getPackageInfo: pkgName:${pkgName}`);
-      return {name:pkgName} as PackageInfo;
+      const pkgDependency = {name: pkgName} as PackageDependency;
+      if (packageDependencyMap[pkgName]) {
+        pkgDependency.version = packageDependencyMap[pkgName];
+      }
+      return pkgDependency;
     };
 
     const setPackageInfo = (pkgName:string, pkgInfo:PackageDependency) => {

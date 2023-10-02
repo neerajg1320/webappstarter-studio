@@ -77,11 +77,18 @@ const bundleCode = async (
 
     const onPackageDetect:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
       // console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
+      let packagePath = pkgInfo.importPath;
+
       if (getPackageInfo) {
         const pkgDependency = getPackageInfo(pkgInfo.name);
+        if (pkgDependency.version) {
+          packagePath = `${packagePath}@${pkgDependency.version}`;
+        }
       }
 
-      return `${getPkgServer()}/${pkgInfo.importPath}`;
+      console.log(`onPackageDetect(): packagePath:${packagePath}`);
+
+      return `${getPkgServer()}/${packagePath}`;
     }
 
     // This will be called only when packages are not found in cache and are loaded from server
@@ -161,6 +168,7 @@ const bundleCode = async (
             packageMap
         } as BundleResult;
     } catch (err) {
+
         console.error(`Got bundler error:`, err);
 
         if (err instanceof Error) {

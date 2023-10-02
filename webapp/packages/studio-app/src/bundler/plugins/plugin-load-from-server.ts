@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {debugPlugin, enableLoadFromIndexDBCache} from "../../config/global";
 
-import {getLoadResult, loadFileUrl, loadPackgeFileUrl} from "./loadFile";
+import {getLoadResult, loadPackgeFileUrl} from "./loadFile";
 import {PackageInfo, PackageMap} from "./package";
 import {getRegexMatches} from "../../utils/regex";
 import {getLoadResultFromIndexDBCache, setLoadResultInIndexDBCache} from "./indexDBCache";
@@ -48,7 +48,7 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
       // onLoad are for loading the file.
 
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
-        if (debugPlugin || false) {
+        if (debugPlugin || true) {
           console.log('onLoad', args);
         }
 
