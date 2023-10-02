@@ -264,10 +264,11 @@ export const createProjectBundle = (
           if (responses) {
             responses.forEach(({response, reduxFile}) => {
               const {request} = response;
-              // We should be able to disable this as fetchFileContents would have already done this.
+              
               if (request.responseText) {
                 content = request.responseText;
-                dispatch(updateFile({localId: reduxFile.localId, content}));
+                // We should be able to disable this as fetchFileContents would have already done this.
+                // dispatch(updateFile({localId: reduxFile.localId, content}));
               }
 
               resolveDir = new URL('./', request.responseURL).pathname;
