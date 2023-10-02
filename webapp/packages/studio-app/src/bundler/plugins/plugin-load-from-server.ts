@@ -85,23 +85,13 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
             const {name, importerURL, importPath} = args.pluginData;
 
             if (!name) {
-              console.log(`Need to detect name`);
-            }
-            // TBD: If name is present then verify that responseURL conforms to it.
-            // If name is not present then derive it using @<version> as splitter in the responseURL.
-            // We should have packageName and suffixPath at the end.
-            // e.g.: For react-dom/client responseURL would be react-dom@18.2.0/client
-            // So in above packgeName is 'react-dom' version is '18.2.0' and suffixPath is 'client'
-            try {
-              const parsedInfo = parseResonseURL(responseURL, name);
-              if (parsedInfo) {
-                const {version} = parsedInfo;
-                if (onPackageLoad) {
-                  onPackageLoad({name, importerURL, importPath, version, url: args.path, responseURL} as PackageInfo);
-                }
+              // args.path: 'https://unpkg.com/scheduler'
+              // responseURL: 'https://unpkg.com/scheduler@0.23.0/index.js'
+              console.log(`Need to detect name. importPath:${importPath} args.path:${args.path} responseURL:${responseURL}`);
+
+              if (onPackageLoad) {
+                onPackageLoad({importerURL, importPath, url: args.path, responseURL} as PackageInfo);
               }
-            } catch (err) {
-              console.error(err);
             }
           } else {
             console.log(`No plugin data for`, args);

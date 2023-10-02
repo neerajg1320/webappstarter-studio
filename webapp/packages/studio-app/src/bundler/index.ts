@@ -16,6 +16,7 @@ import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
 import {PackageDependency, PackageDetectResult, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
+import {getRegexMatches} from "../utils/regex";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -87,7 +88,23 @@ const bundleCode = async (
     // This will be called only when packages are not found in cache and are loaded from server
     // The packageMap once created should be stored. This would be analogous to package-lock.json
     const onPackageLoad:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
-      // console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+      console.log(`onPackageLoad(): pkgInfo:`, pkgInfo);
+
+      if (!pkgInfo.name) {
+        const {url, responseURL} = pkgInfo;
+
+        console.log(`We need to derive name and version`, pkgInfo);
+
+        const suffixURL = responseURL.substring(url.length);
+        console.log(`suffixPath:`, suffixURL);
+
+        const matches = getRegexMatches(/@(\d+(?:\.\d+)*)\/(.*)/, suffixURL);
+        if (matches) {
+          const [suffixFullURL, version, suffixPath] = matches;
+          console.log(`matches:`, suffixFullURL, version, suffixPath);
+        }
+
+      }
 
       if (!packageMap[pkgInfo.name]) {
         const {name, url, responseURL, version} = pkgInfo;
