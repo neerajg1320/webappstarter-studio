@@ -77,6 +77,7 @@ import {getProjectFromLocalId} from "../helpers/project-helpers";
 import {getFileFromLocalId} from "../helpers/file-helpers";
 import {PackageDependency, PackageDetectResult, PackageInfo} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
+import {getRegexMatches} from "../../utils/regex";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -305,7 +306,15 @@ export const createProjectBundle = (
 
       if (packageDependencyMap) {
         for (const k of Object.keys(packageDependencyMap)) {
-          if (pkgPath.includes(k)) {
+          // We look for patterns "react", "react-dom" etc or "react-dom/client" etc as well
+          const pkgLookupRegex = new RegExp(`${k}(?:\/(.*))?$`);
+          const matches = getRegexMatches(pkgLookupRegex, pkgPath);
+
+          // We have found the package
+          if (matches) {
+            const [fullPath, suffixPath] = matches;
+            // console.log(`pkgLookup: matches:`, fullPath, suffixPath);
+
             const version = packageDependencyMap[k];
             // console.log(`getPackageVersion(): found '${k}' version '${version}'`);
 
