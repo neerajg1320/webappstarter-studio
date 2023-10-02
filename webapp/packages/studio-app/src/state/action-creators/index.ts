@@ -719,6 +719,7 @@ export const fetchFiles = (projectPkid?:string) => {
           file.bundleLanguage = pathToBundleLanguage(file.path);
           file.language = pathToCodeLanguage(file.path);
 
+          // TBD: The dispatches should be combined
           if (file.isEntryPoint) {
             dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
           }
@@ -726,9 +727,9 @@ export const fetchFiles = (projectPkid?:string) => {
           // TBD: Hardcoding to be removed entry_html_path hardcoding
           if (file.path === 'index.html') {
             dispatch(updateProject({localId: file.projectLocalId, entryHtmlFileLocalId: file.localId}));
+          } else if (file.path === 'package.json') {
+            dispatch(updateProject({localId: file.projectLocalId, packageFileLocalId: file.localId}));
           }
-          // This dispatch is unnecessary
-          // dispatch(updateProject({localId: file.projectLocalId, entryFileLocalId: file.localId}));
         }
         return file;
       });
@@ -840,7 +841,12 @@ export const makeProjectIdeReady = (localId: string) => {
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = getFileFromLocalId(getState().files, reduxProject.entryHtmlFileLocalId);
       if (!htmlFile.contentSynced) {
-        const responses = await fetchFileContents([reduxProject.entryHtmlFileLocalId, reduxProject.entryFileLocalId])(dispatch, getState);
+        const ideFiles = [
+          reduxProject.entryHtmlFileLocalId,
+          reduxProject.entryFileLocalId
+        ];
+
+        const responses = await fetchFileContents(ideFiles)(dispatch, getState);
         responses.forEach(({response, reduxFile}) => {
           // console.log(response, reduxFile);
           if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
