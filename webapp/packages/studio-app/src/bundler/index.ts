@@ -16,7 +16,7 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
-import {PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
+import {PackageDependency, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -49,7 +49,9 @@ export const bundleFilePath =  async (
     title: string,
     filePath: string,
     bundleLanguage: BundleLanguage,
-    fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>
+    fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
+    getPackageDependency?: (name:string) => PackageDependency,
+    setPackageDependency?: (name:string, pkgDependency:PackageDependency) => void
 ):Promise<BundleResult> => {
   return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher);
 }
@@ -61,7 +63,9 @@ const bundleCode = async (
     codeOrFilePath: string,
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
-    fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null
+    fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
+    getPackageInfo?: (name:string) => PackageInfo,
+    setPackageInfo?: (name:string, pkgInfo:PackageInfo) => void
 ):Promise<BundleResult> => {
     if (debugBundler) {
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
@@ -73,6 +77,11 @@ const bundleCode = async (
 
     const onPackageDetect:(PackageInfo) => void = (pkgInfo:PackageInfo) => {
       console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
+      if (getPackageInfo) {
+        const pkgDependency = getPackageInfo(pkgInfo.name);
+      }
+
+      return `${getPkgServer()}/${pkgInfo.importPath}`;
     }
 
     // This will be called only when packages are not found in cache and are loaded from server

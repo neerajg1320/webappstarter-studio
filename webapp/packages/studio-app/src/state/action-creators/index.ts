@@ -75,6 +75,7 @@ import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../uti
 import {createDiff} from "../../utils/diff";
 import {getProjectFromLocalId} from "../helpers/project-helpers";
 import {getFileFromLocalId} from "../helpers/file-helpers";
+import {PackageDependency, PackageInfo} from "../../bundler/plugins/package";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -227,12 +228,8 @@ export const createProjectBundle = (
       console.log(`projectFileMap:`, projectFileMap);
     }
 
-    const getPackageInfo = (pkg:string) => {
-      console.log(`getPackageInfo: pkg:${pkg}`);
-    };
-
     // We define a function closure as it needs getState() from getting files for project
-    const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
+    const getLoadResultFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
       if (debugPlugin || debugRedux || true) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
@@ -291,6 +288,15 @@ export const createProjectBundle = (
       return result;
     }
 
+    const getPackageInfo = (pkgName:string):PackageDependency => {
+      console.log(`getPackageInfo: pkgName:${pkgName}`);
+      return {name:pkgName} as PackageInfo;
+    };
+
+    const setPackageInfo = (pkgName:string, pkgInfo:PackageDependency) => {
+      console.log(`getPackageInfo: pkg:${pkgName} pkgInfo:`, pkgInfo);
+    };
+
     dispatch({
         type: ActionType.PROJECT_BUNDLE_START,
         payload: {
@@ -302,7 +308,9 @@ export const createProjectBundle = (
         reduxProject.title,
         (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
         bundleLanguage,
-        getFileContentsFromRedux
+        getLoadResultFromRedux,
+        getPackageInfo,
+        setPackageInfo
     );
 
     dispatch({

@@ -4,12 +4,12 @@ import {PackageMap, PackageInfo} from "./package";
 
 export interface PluginResolveArgs {
   pkgServer: string,
-  onPackageDetect?: (PackageInfo) => void,
+  onPackageDetect?: (PackageInfo) => string,
 }
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = ({pkgServer, onPackageDetect, onPackageResolve}:PluginResolveArgs) => {
+export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) => {
 
   return {
     name: 'unpkg-path-plugin',
@@ -65,18 +65,13 @@ export const pluginResolve = ({pkgServer, onPackageDetect, onPackageResolve}:Plu
 
         const pluginData = {name, importPath: args.path, importerURL: args.importer};
 
+        let pkgUrlPath:string;
         if (onPackageDetect) {
-          onPackageDetect(pluginData as PackageInfo);
+          pkgUrlPath = onPackageDetect(pluginData as PackageInfo);
         }
 
-        // if (onPackageResolve) {
-        //   onPackageResolve(pluginData as PackageInfo);
-        // }
-
-        const pkgUrl = `${pkgServer}/${args.path}`;
-
         return {
-          path: pkgUrl,
+          path: pkgUrlPath,
           namespace: 'a',
           pluginData
         };

@@ -1,6 +1,9 @@
-type Package = {
+export type PackageDependency = {
   name: string,
   version: string,
+}
+
+type Package = PackageDependency & {
   url: string,
   responseURL: string
 }
@@ -9,6 +12,7 @@ export type PackageInfo = Package & {
   importerURL: string,
   importPath: string,
 }
+
 
 export type ImporterInfo = {
   url: string,
