@@ -30,6 +30,7 @@ import {bundleCodeStr, bundleFilePath, initializeEsbuildBundler} from "../../bun
 
 import {RootState} from "../reducers";
 import {
+  PackageConfig,
   ReduxCreateProjectPartial,
   ReduxDeleteProjectPartial,
   ReduxProject,
@@ -853,6 +854,11 @@ export const makeProjectIdeReady = (localId: string) => {
           let projectUpdatePartial:ReduxUpdateProjectPartial = {localId};
           if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
             projectUpdatePartial.htmlContent = response.data;
+          }
+          if (reduxProject.packageFileLocalId === reduxFile.localId) {
+            const pkgConfig = JSON.parse(response.request.responseText) as PackageConfig;
+            // console.log(JSON.stringify(pkgConfig, null, 2));
+            projectUpdatePartial.packageConfig = pkgConfig;
           }
           projectUpdatePartial.ideReady = true;
 

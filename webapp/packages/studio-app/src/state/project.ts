@@ -41,6 +41,7 @@ export interface ReduxProject extends ServerObject {
   entryFileLocalId?: string|null;
   packageFileLocalId?: string|null;
   htmlContent?: string|null;
+  packageConfig?: PackageConfig|null;
   bundleDirty?: boolean;
   bundleLocalId?: string|null;
   bundleResult?: BundleResult|null;
@@ -70,6 +71,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   entryFileLocalId?: string|null;
   packageFileLocalId?: string|null;
   htmlContent?: string|null;
+  packageConfig?: PackageConfig|null;
   bundleDirty?: boolean;
   bundleResult?: BundleResult|null;
   bundleLocalId?: string|null;
@@ -96,4 +98,12 @@ export interface ReduxCreateProjectPartial {
 export interface ReduxDeleteProjectPartial {
   localId: string;
   pkid?:string;
+}
+
+export type DependencyMap = {[k:string]: string};
+
+export interface PackageConfig {
+  name: string;
+  version: string;
+  dependencies: DependencyMap
 }
