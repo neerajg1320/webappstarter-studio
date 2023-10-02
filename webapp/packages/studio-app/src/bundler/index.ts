@@ -95,29 +95,29 @@ const bundleCode = async (
 
         console.log(`We need to derive name and version`, pkgInfo);
 
-        const suffixURL = responseURL.substring(url.length);
-        console.log(`suffixPath:`, suffixURL);
+        // const suffixURL = responseURL.substring(url.length);
+        // console.log(`suffixPath:`, suffixURL);
 
-        const matches = getRegexMatches(/@(\d+(?:\.\d+)*)\/(.*)/, suffixURL);
+        const responseURLRegex = new RegExp(`(${getPkgServer()})\/(.*)@(\\d+(?:\\.\\d+)*)\\/(.*)`)
+        const matches = getRegexMatches(responseURLRegex, responseURL);
         if (matches) {
-          const [suffixFullURL, version, suffixPath] = matches;
-          console.log(`matches:`, suffixFullURL, version, suffixPath);
+          const [fullURL, origin, name, version, suffixPath] = matches;
+          console.log(`matches:`, fullURL, origin, name, version, suffixPath);
+
+          if (!packageMap[name]) {
+            packageMap[name] = {name, url, responseURL, version, importers: []} as PackageEntry;
+
+            if (setPackageVersion) {
+              setPackageVersion(name, version);
+            }
+          }
+          
+          packageMap[name].importers.push({
+            url: pkgInfo.importerURL,
+            importPath: pkgInfo.importPath
+          });
         }
-
       }
-
-      if (!packageMap[pkgInfo.name]) {
-        const {name, url, responseURL, version} = pkgInfo;
-        packageMap[pkgInfo.name] = {name, url, responseURL, version, importers: []} as PackageEntry;
-
-        if (setPackageVersion) {
-          setPackageVersion(name, version);
-        }
-      }
-      packageMap[pkgInfo.name].importers.push({
-        url: pkgInfo.importerURL,
-        importPath: pkgInfo.importPath
-      });
     }
 
     const esbuildPlugins = [];
