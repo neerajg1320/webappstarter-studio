@@ -15,7 +15,7 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
-import {PackageDependency, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
+import {PackageDependency, PackageDetectResult, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -74,7 +74,7 @@ const bundleCode = async (
     // So we will use a callback function and see
     const packageMap = {} as PackageMap;
 
-    const onPackageDetect:(PackageInfo) => string = (pkgInfo:PackageInfo) => {
+    const onPackageDetect:(PackageInfo) => PackageDetectResult = (pkgInfo:PackageInfo) => {
       // console.log(`onPackageDetect(): pkgInfo:`, pkgInfo);
       let packagePath = pkgInfo.importPath;
 
@@ -88,7 +88,7 @@ const bundleCode = async (
 
       // console.log(`onPackageDetect(): packagePath:${packagePath}`);
 
-      return `${getPkgServer()}/${packagePath}`;
+      return {url: `${getPkgServer()}/${packagePath}`} as PackageDetectResult;
     }
 
     // This will be called only when packages are not found in cache and are loaded from server

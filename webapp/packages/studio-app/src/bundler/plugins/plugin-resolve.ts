@@ -1,10 +1,10 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
-import {PackageMap, PackageInfo} from "./package";
+import {PackageDetectResult, PackageInfo} from "./package";
 
 export interface PluginResolveArgs {
   pkgServer: string,
-  onPackageDetect?: (PackageInfo) => string,
+  onPackageDetect?: (PackageInfo) => PackageDetectResult,
 }
 
 // The plugins are created for each bundle request
@@ -72,7 +72,8 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
 
         let pkgUrlPath:string;
         if (onPackageDetect) {
-          pkgUrlPath = onPackageDetect(pluginData as PackageInfo);
+          const detectResult = onPackageDetect(pluginData as PackageInfo);
+          pkgUrlPath = detectResult.url;
         }
 
         return {

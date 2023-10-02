@@ -83,6 +83,15 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
         if (args.path !== responseURL) {
           if (args.pluginData) {
             const {name, importerURL, importPath} = args.pluginData;
+
+            if (!name) {
+              console.log(`Need to detect name`);
+            }
+            // TBD: If name is present then verify that responseURL conforms to it.
+            // If name is not present then derive it using @<version> as splitter in the responseURL.
+            // We should have packageName and suffixPath at the end.
+            // e.g.: For react-dom/client responseURL would be react-dom@18.2.0/client
+            // So in above packgeName is 'react-dom' version is '18.2.0' and suffixPath is 'client'
             try {
               const parsedInfo = parseResonseURL(responseURL, name);
               if (parsedInfo) {

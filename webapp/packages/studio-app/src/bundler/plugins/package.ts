@@ -26,3 +26,9 @@ export type PackageEntry = Package & {
 export type PackageMap = {
   [k:string]: PackageEntry
 }
+
+export type PackageDetectResult = {
+  url: string,
+  name: string,
+  version: string,
+}
