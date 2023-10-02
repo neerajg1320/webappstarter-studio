@@ -215,57 +215,37 @@ export const createProjectBundle = (
       console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}'`);
     }
 
+    const filesLocalIdMap = getState().files.data;
+    const projectFileMap = Object.fromEntries(
+        Object.entries(filesLocalIdMap)
+            .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
+            .map(([k, v]) => {
+              return [v.path, v]
+            })
+    );
+    if (debugPlugin || debugRedux || true) {
+      console.log(`projectFileMap:`, projectFileMap);
+    }
+
     // We define a function closure as it needs getState() from getting files for project
     const getFileContentsFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-      const enableUrlMap = false;
-      const filesLocalIdMap = getState().files.data;
-
       if (debugPlugin || debugRedux || true) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
+      
+      // Create a new map based on filepath instead of id
+      // We use projectDirPath e.g. 'mediafiles/user_72/first' as separator
+      // So for  http://api.local.webappstarter.com/mediafiles/user_72/first/src/index.jsx
+      // we will get [' http://api.local.webappstarter.com/', 'src/index.jsx']
+      const fileParts = url.split(projectDirPath + '/');
 
-      let reduxFile: ReduxFile;
+      // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
+      // ['http://api.local.webappstarter.com/', 'src/index.js']
+      const reduxFilePath = fileParts[1];
+      console.log(`reduxFilePath:`, reduxFilePath);
 
-      if (enableUrlMap) {
-        // Create a new map based on url instead of id
-        const projectUrlMap = Object.fromEntries(
-            Object.entries(filesLocalIdMap)
-                .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
-                .map(([k, v]) => {
-                  return [v.file, v]
-                })
-        );
-        reduxFile = projectUrlMap[url];
+      const reduxFile = projectFileMap[reduxFilePath];
 
-        if (debugPlugin || debugRedux) {
-          console.log(`projectUrlMap:`, projectUrlMap);
-        }
-      } else {
-        // Create a new map based on filepath instead of id
-        // We use projectDirPath e.g. 'mediafiles/user_72/first' as separator
-        // So for  http://api.local.webappstarter.com/mediafiles/user_72/first/src/index.jsx
-        // we will get [' http://api.local.webappstarter.com/', 'src/index.jsx']
-        const fileParts = url.split(projectDirPath + '/');
-
-        // Example: http://api.local.webappstarter.com/mediafiles/user_67/react-project/src/index.js
-        // ['http://api.local.webappstarter.com/', 'src/index.js']
-        const reduxFilePath = fileParts[1];
-        console.log(`reduxFilePath:`, reduxFilePath);
-
-        const projectFileMap = Object.fromEntries(
-            Object.entries(filesLocalIdMap)
-                .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
-                .map(([k, v]) => {
-                  return [v.path, v]
-                })
-        );
-
-        reduxFile = projectFileMap[reduxFilePath];
-
-        if (debugPlugin || debugRedux || true) {
-          console.log(`projectFileMap:`, projectFileMap);
-        }
-      }
 
       if (debugPlugin || debugRedux) {
         console.log(`File Contents:`, reduxFile.content);
