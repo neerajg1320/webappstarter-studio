@@ -58,7 +58,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
           .map(([k, v]) => v);
 
-      return files;
+      return files as ReduxFile[];
     }
 
     return [];
@@ -90,11 +90,11 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
     }
   }, [reduxProject.title, projectFiles]);
 
-  useEffect(() => {
-    if (debugComponent) {
-      console.log(`FileBrowser:useEffect[fileTree] fileTree:`, fileTree);
-    }
-  }, [fileTree]);
+  // useEffect(() => {
+  //   if (debugComponent) {
+  //     console.log(`FileBrowser:useEffect[fileTree] fileTree:`, fileTree);
+  //   }
+  // }, [fileTree]);
 
   // Needed for selecting file
   useEffect(() => {

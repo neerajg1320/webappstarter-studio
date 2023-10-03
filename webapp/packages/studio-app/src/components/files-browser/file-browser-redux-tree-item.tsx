@@ -15,8 +15,24 @@ import {KeyValueHOComponentProps} from "../common/expandable-args/component-tree
 //
 
 const fileNodeTraversalFunc:TraversalFunc = (fileNode:FileReduxNode) => {
+  const sortFileNodes = (n1, n2) => {
+    // console.log(`sortFileNodes(n1,n2):  node1:`, n1,  `node2`, n2);
+
+    // If they are not of same type then folders get preference over files
+    if (n1[1].info.type !== n2[1].info.type) {
+      if (n1[1].info.type === 'folder') {
+        return -1;
+      }
+      return 1;
+    }
+
+    // If same types then we need to compare the names
+    return n1[0].localeCompare(n2[0]);
+  }
+
   if (fileNode && fileNode.childrenFileNodeMap) {
-    return Object.entries(fileNode.childrenFileNodeMap)
+    // console.log(`fileNodeTraversalFunc(): fileNode;${fileNode.info.rootNamePath} children:`, fileNode.childrenFileNodeMap);
+    return Object.entries(fileNode.childrenFileNodeMap).sort(sortFileNodes);
   }
   return [];
 }
