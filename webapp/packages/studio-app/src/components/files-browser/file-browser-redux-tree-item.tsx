@@ -81,13 +81,13 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
   }, [itemNode.info.name]);
 
   const handleOnChange = (value:string) => {
-    console.log(`handleOnChange(): value=${value}`);
+    // console.log(`handleOnChange(): value=${value}`);
     setFileName(value);
   }
 
   const handleFileNameBlur:FocusEventHandler<HTMLInputElement>  = (e) => {
     if (propOnEvent) {
-      console.log(`handleOnChange(): value=${fileName} and event`);
+      // console.log(`handleOnChange(): value=${fileName} and event`);
       propOnEvent("change", {keyName, itemInfo, value:fileName});
     }
   }

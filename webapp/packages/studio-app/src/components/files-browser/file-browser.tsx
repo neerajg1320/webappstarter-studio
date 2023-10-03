@@ -202,7 +202,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   }
 
   const handleFileComponentTreeEvent:ItemEventFunc = (type, data) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`FileBrowser:handleFileComponentTreeEvent()  type:${type} data:`, data);
     }
 
@@ -220,7 +220,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           // Need to fix the Type below
           const newBasenameOrPath = (data as ItemEventNameChangeType).value;
 
-          console.log(`newPath: '${newBasenameOrPath}'`);
+          // console.log(`newPath: '${newBasenameOrPath}'`);
 
           let newPath:string|null = null;
 
@@ -230,9 +230,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           } else {
             // This would work only for file name change. The redux path should have been copied
             const {dirname, basename} = getFilePathParts(newBasenameOrPath);
-            console.log(`dirname:${dirname} basename:${basename}`)
+            // console.log(`dirname:${dirname} basename:${basename}`)
             const {name, ext} = getFileBasenameParts(basename);
-            console.log(`name:${name} ext:${ext}`)
+            // console.log(`name:${name} ext:${ext}`)
 
             if (!name) {
               deleteFile(reduxFile.localId);

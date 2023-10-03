@@ -61,7 +61,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
   }
 
   const handleInputBlur:FocusEventHandler<HTMLInputElement> = (e) => {
-    console.log(`EditableSpanProps:handleInputBlur() editedValue:${editedValue}`);
+    // console.log(`EditableSpanProps:handleInputBlur() editedValue:${editedValue}`);
 
     // if (propOnChange) {
     //   propOnChange(editedValue);
@@ -90,7 +90,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
   const handleInputFocus = (e) => {
     const value = e.target.value;
     const dotPosition = value.indexOf('.');
-    console.log(`handleInputFocus: value=${value} dotPosition:${dotPosition}`);
+    // console.log(`handleInputFocus: value=${value} dotPosition:${dotPosition}`);
 
     e.target.selectionStart = 0;
     e.target.selectionEnd= dotPosition;
