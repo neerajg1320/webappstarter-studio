@@ -10,9 +10,9 @@ export interface ReduxFile extends ServerObject {
   reduxType: 'file',
   localId: string,
   path: string;
-  bundleLanguage: BundleLanguage;
-  language: CodeLanguage,
-  content: string|null;
+  bundleLanguage?: BundleLanguage;
+  language?: CodeLanguage,
+  content?: string|null;
 
   contentSynced: boolean;
   // We need localFile blob to upload non-code files like jpeg, pdf etc/
@@ -37,9 +37,9 @@ export interface ReduxFile extends ServerObject {
 export interface ReduxCreateFilePartial extends ServerObjectPartial {
   localId: string,
   path: string,
-  bundleLanguage: BundleLanguage,
-  language: CodeLanguage,
-  content: string|null;
+  bundleLanguage?: BundleLanguage,
+  language?: CodeLanguage,
+  content?: string|null;
   contentSynced: boolean;
 
   // Only used while sending request to server
