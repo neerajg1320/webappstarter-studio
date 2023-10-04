@@ -154,3 +154,35 @@ export const getFileType = (path:string): string|null => {
 
   return null;
 }
+
+export enum FileContentType {
+  TEXT = 'text',
+  IMAGE = 'image',
+  PDF = 'pdf',
+  CODE = 'code',
+  UNKNOWN = 'unknown',
+}
+
+export const getFileContentType = (path:string):FileContentType => {
+  const fileExtn = getFileTypeFromPath(path);
+  console.log(`getFileContentType(): fileExtn:`, fileExtn);
+  
+  if (['jpg', 'png'].includes(fileExtn)) {
+    return FileContentType.IMAGE;
+  }
+
+  if (['pdf', 'xpdf'].includes(fileExtn)) {
+    return FileContentType.PDF;
+  }
+
+  if (['js', 'html', 'css', 'jsx', 'ts', 'tsx'].includes(fileExtn)) {
+    return FileContentType.CODE;
+  }
+
+  if (['text', 'txt', 'log'].includes(fileExtn)) {
+    return FileContentType.CODE;
+  }
+
+
+  return FileContentType.UNKNOWN
+}

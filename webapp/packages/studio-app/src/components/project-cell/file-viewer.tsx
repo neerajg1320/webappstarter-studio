@@ -1,10 +1,11 @@
 import './file-viewer.css';
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
-import React, {Suspense} from "react";
+import React, {Suspense, useMemo} from "react";
 import CodeFallbackEditor from "../file-cell/code-fallback-editor";
 import {CodeLanguage} from "../../state/language";
 import {ReduxFile, ReduxProject} from "../../state";
 import CodeEditor from "../file-cell/code-editor";
+import {FileContentType, getFileContentType} from "../../utils/path";
 
 
 interface FileViewerProps {
@@ -15,15 +16,22 @@ interface FileViewerProps {
 
 
 const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChange:propOnChange}) => {
+  const fileContentType = useMemo<FileContentType>(() => {
+    return getFileContentType(editedFile.path);
+  }, [editedFile]);
+
   return (
     <>
+      <span>{fileContentType}</span>
       <div className="file-cell-control-bar-wrapper">
         {editedFile && <FileCellControlBar reduxProject={reduxProject} reduxFile={editedFile}/>}
       </div>
 
       {(editedFile && editedFile.contentSynced) ?
-          // <Suspense fallback={<textarea value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
-          <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''} onChange={(newValue) => handleEditorChange(newValue)} />}>
+          <>
+          {(fileContentType === FileContentType.CODE) &&
+          <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''}
+                                                  onChange={(newValue) => handleEditorChange(newValue)}/>}>
             <CodeEditor
                 modelKey={editedFile?.localId}
                 value={editedFile?.content || ""}
@@ -32,7 +40,8 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
                 disabled={!editedFile}
             />
           </Suspense>
-
+          }
+          </>
           :
           <div style={{
             height: "100%", width: "100%",
