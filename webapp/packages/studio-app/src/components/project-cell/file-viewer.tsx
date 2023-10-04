@@ -28,7 +28,7 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
 
   return (
     <>
-      <span>{fileContentType}</span>
+      {/*<span>{fileContentType}</span>*/}
       <div className="file-cell-control-bar-wrapper">
         {editedFile && <FileCellControlBar reduxProject={reduxProject} reduxFile={editedFile}/>}
       </div>

@@ -9,7 +9,7 @@ export const parentCommunicationJavascriptCode = `
     
     window.console.log = function(...args) {
       // We save the console.log function before we override it
-      // window_console_log(...args);
+      window_console_log(...args);
       
       const message = {
         source: "iframe",

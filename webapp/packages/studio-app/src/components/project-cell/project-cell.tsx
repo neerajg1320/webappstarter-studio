@@ -548,7 +548,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               display: "flex", flexDirection: "column", border: "3px solid lightblue"
             }}
             >
-              <FileViewer reduxProject={reduxProject} editedFile={editedFile} onChange={handleEditorChange} />
+              {editedFile && <FileViewer reduxProject={reduxProject} editedFile={editedFile} onChange={handleEditorChange} />}
             </div>
           </ResizableDiv>
         </div>

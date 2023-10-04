@@ -165,7 +165,7 @@ export enum FileContentType {
 
 export const getFileContentType = (path:string):FileContentType => {
   const fileExtn = getFileTypeFromPath(path);
-  console.log(`getFileContentType(): fileExtn:`, fileExtn);
+  // console.log(`getFileContentType(): fileExtn:`, fileExtn);
   
   if (['bmp', 'jpeg', 'jpg', 'png'].includes(fileExtn)) {
     return FileContentType.IMAGE;
