@@ -43,9 +43,8 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
 
   const handleUploadFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const uploadedFiles = Array.from(e.target.files);
-    // console.log(`handleUploadFile(): `, uploadedFiles);
-
     onEvent({name: FileBrowserControlBarEventType.UPLOAD_FILES, files: uploadedFiles});
+    e.target.value = null;
   }
 
   const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {

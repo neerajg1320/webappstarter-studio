@@ -846,6 +846,7 @@ export const saveFile = (localId: string) => {
     if (!pkid || pkid < 0) {
       const _createFilePartial:ReduxCreateFilePartial = {...fileState};
 
+      // We generate blob when the fileState has content
       if (Object.keys(_createFilePartial).includes('content')) {
         _createFilePartial.localFile = createFileFromString(fileState.content || '', fileState.localId);
       }
@@ -1021,7 +1022,7 @@ const projectLocalUpdate = false;
 // This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    if (debugRedux) {
+    if (debugRedux || true) {
       console.log(`fileCreatePartial:`, fileCreatePartial);
     }
 

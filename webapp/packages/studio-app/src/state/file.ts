@@ -15,8 +15,8 @@ export interface ReduxFile extends ServerObject {
   content: string|null;
 
   contentSynced: boolean;
-  // To verify if we beed localFile blob
-  // localFile?: File;
+  // We need localFile blob to upload non-code files like jpeg, pdf etc/
+  localFile?: File;
   projectLocalId?: string;
   isEntryPoint?: boolean;
   isEditAllowed?:boolean;

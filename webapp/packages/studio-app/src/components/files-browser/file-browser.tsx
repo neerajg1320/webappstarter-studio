@@ -42,7 +42,7 @@ interface FilesTreeProps {
 const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSelect, onEvent:propOnEvent}) => {
   const fileNameInputRef = useRef<HTMLInputElement|null>(null);
   const filesState = useTypedSelector((state) => state.files);
-  const {createFile, removeFile, deleteFile} = useActions();
+  const {createFile, removeFile, deleteFile, saveFile} = useActions();
   const selectedFileLocalId = reduxProject.selectedFileLocalId || null;
   const [fileTree, setFileTree] = useState<FileReduxNode|null>(null)
 
@@ -187,6 +187,24 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         console.log(`file-browser: folderPath:`, folderPath);
         for (const file of event.files) {
           console.log(`file-browser; file:`, file);
+
+          const newFileLocalId = generateLocalId();
+          const newPath = joinFileParts(folderPath, file.name);
+
+          createFile({
+            localId: newFileLocalId,
+            path: newPath,
+            // bundleLanguage: origFile.bundleLanguage,
+            // language: CodeLanguage.UNKNOWN,
+            // content: origFile.content,
+            localFile: file,
+            contentSynced: false,
+            projectLocalId: reduxProject.localId,
+            isEntryPoint: false,
+            isPathEditing: false,
+          });
+
+          saveFile(newFileLocalId);
         }
         break;
 
