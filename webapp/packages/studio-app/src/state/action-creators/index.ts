@@ -889,7 +889,7 @@ export const makeProjectIdeReady = (localId: string) => {
 
     if (reduxProject.entryHtmlFileLocalId) {
       const htmlFile = getFileFromLocalId(getState().files, reduxProject.entryHtmlFileLocalId);
-      if (!htmlFile.contentSynced) {
+      if (htmlFile && !htmlFile.contentSynced) {
         const ideFiles = [
           reduxProject.entryHtmlFileLocalId,
           reduxProject.packageFileLocalId,
