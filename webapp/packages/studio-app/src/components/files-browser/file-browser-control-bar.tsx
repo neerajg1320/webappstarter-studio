@@ -1,17 +1,19 @@
 import './file-browser-control-bar.css';
-import React from "react";
+import React, {useRef} from "react";
 import {ReduxProject} from "../../state";
 
 export enum FileBrowserControlBarEventType {
   NEW_FILE = 'new_file',
   NEW_FOLDER = 'new_folder',
   COPY_FILE = 'copy_file',
+  UPLOAD_FILES = 'upload_files',
   DELETE_FILE = 'delete_file',
 }
 
 export interface FileBrowserControlBarEvent {
   name: FileBrowserControlBarEventType;
   localId?: string;
+  files?: File[];
 }
 
 interface FileBrowserControlBarProps {
@@ -23,6 +25,7 @@ interface FileBrowserControlBarProps {
 const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProject,
                                                                 selectedFileLocalId,
                                                                 onEvent}) => {
+  const uploadFileRef = useRef<HTMLInputElement>();
 
   const handleCreateFile: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     onEvent({name: FileBrowserControlBarEventType.NEW_FILE});
@@ -36,6 +39,13 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
     if (selectedFileLocalId) {
       onEvent({name: FileBrowserControlBarEventType.COPY_FILE, localId: selectedFileLocalId});
     }
+  }
+
+  const handleUploadFile: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const uploadedFiles = Array.from(e.target.files);
+    // console.log(`handleUploadFile(): `, uploadedFiles);
+
+    onEvent({name: FileBrowserControlBarEventType.UPLOAD_FILES, files: uploadedFiles});
   }
 
   const handleDeleteFile: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -60,6 +70,16 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
           <span className="icon">
               <i className="fas fa-copy" />
           </span>
+        </button>
+        <button className="button is-family-secondary is-small" onClick={e => {
+          if (uploadFileRef.current) {
+            uploadFileRef.current.click();
+          }
+        }}>
+          <span className="icon">
+              <i className="fas fa-upload" />
+          </span>
+          <input ref={uploadFileRef} type="file" style={{display:"none"}} onChange={handleUploadFile} multiple />
         </button>
         <button className="button is-family-secondary is-small" onClick={handleDeleteFile}>
           <span className="icon">

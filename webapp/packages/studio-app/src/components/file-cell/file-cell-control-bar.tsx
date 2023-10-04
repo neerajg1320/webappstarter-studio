@@ -104,7 +104,7 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
             </div>
         }
 
-        {
+        {isAdmin &&
             <div style={{display: "flex", flexDirection: "column", gap: "5px", alignItems: "center"}}>
               <button
                   className="button is-family-primary is-small"

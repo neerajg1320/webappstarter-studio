@@ -1,34 +1,29 @@
 import './file-browser.css';
 import {ReduxProject} from "../../state/project";
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {ReduxFile} from "../../state/file";
 import {useActions} from "../../hooks/use-actions";
-import FileBrowserControlBar, {FileBrowserControlBarEvent, FileBrowserControlBarEventType} from "./file-browser-control-bar";
+import FileBrowserControlBar, {
+  FileBrowserControlBarEvent,
+  FileBrowserControlBarEventType
+} from "./file-browser-control-bar";
 import {debugComponent, debugLocalOnlyPendingSupport} from "../../config/global";
 import {generateLocalId} from "../../state/id";
-import {
-  getCopyPath,
-  hasTrailingSlash,
-  getFilePathParts,
-  joinFileParts, getFileBasenameParts
-} from "../../utils/path";
+import {getCopyPath, getFileBasenameParts, getFilePathParts, joinFileParts} from "../../utils/path";
 import {BundleLanguage} from "../../state/bundle";
 import {CodeLanguage} from "../../state/language";
-import {
-  FileInfo,
-  FileReduxNode,
-  getFileTreeFromReduxFileList,
-  getSampleFileTree,
-  safeFileNodeTraveral
-} from "./file-redux-node";
+import {FileInfo, FileReduxNode, getFileTreeFromReduxFileList} from "./file-redux-node";
 import ComponentTree from "../common/expandable-args/component-tree";
 import {getFileTreeItemInfo} from "./file-browser-redux-tree-item";
 import {
   ItemClickFunc,
-  ItemEventFunc, ItemEventNameChangeType, ItemInfoType,
+  ItemEventFunc,
+  ItemEventNameChangeType,
+  ItemInfoType,
 } from "../common/expandable-args/component-tree-item";
 import useDifferentialCallback from "../../hooks/use-differential-callback";
+import {getFileFromLocalId} from "../../state/helpers/file-helpers";
 
 export type FileBrowserEventType = "select" | "path-change";
 export type FileBrowserEventData = {
@@ -177,6 +172,21 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           });
 
           propOnSelect(newFileLocalId);
+        }
+        break;
+
+      case FileBrowserControlBarEventType.UPLOAD_FILES:
+        // console.log(`file-browser: uploaded files;`, event.files);
+        let folderPath = 'assets';
+        if (reduxProject.selectedFileLocalId) {
+          const selectedFile = getFileFromLocalId(filesState, reduxProject.selectedFileLocalId)
+          if (selectedFile) {
+            folderPath = getFilePathParts(selectedFile.path).dirname;
+          }
+        }
+        console.log(`file-browser: folderPath:`, folderPath);
+        for (const file of event.files) {
+          console.log(`file-browser; file:`, file);
         }
         break;
 
