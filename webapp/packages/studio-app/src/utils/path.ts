@@ -167,7 +167,7 @@ export const getFileContentType = (path:string):FileContentType => {
   const fileExtn = getFileTypeFromPath(path);
   console.log(`getFileContentType(): fileExtn:`, fileExtn);
   
-  if (['jpg', 'png'].includes(fileExtn)) {
+  if (['bmp', 'jpeg', 'jpg', 'png'].includes(fileExtn)) {
     return FileContentType.IMAGE;
   }
 

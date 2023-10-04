@@ -6,6 +6,7 @@ import {CodeLanguage} from "../../state/language";
 import {ReduxFile, ReduxProject} from "../../state";
 import CodeEditor from "../file-cell/code-editor";
 import {FileContentType, getFileContentType} from "../../utils/path";
+import ImageViewer from "./image-viewer";
 
 
 interface FileViewerProps {
@@ -17,7 +18,12 @@ interface FileViewerProps {
 
 const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChange:propOnChange}) => {
   const fileContentType = useMemo<FileContentType>(() => {
-    return getFileContentType(editedFile.path);
+    if (editedFile) {
+      return getFileContentType(editedFile.path);
+    } else {
+      console.error(`editedFile:`, editedFile);
+      return FileContentType.UNKNOWN;
+    }
   }, [editedFile]);
 
   return (
@@ -31,7 +37,7 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
           <>
           {(fileContentType === FileContentType.CODE) &&
           <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''}
-                                                  onChange={(newValue) => handleEditorChange(newValue)}/>}>
+                                                  onChange={propOnChange}/>}>
             <CodeEditor
                 modelKey={editedFile?.localId}
                 value={editedFile?.content || ""}
@@ -40,6 +46,9 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
                 disabled={!editedFile}
             />
           </Suspense>
+          }
+          {(fileContentType === FileContentType.IMAGE) &&
+              <ImageViewer imageFile={editedFile}/>
           }
           </>
           :
