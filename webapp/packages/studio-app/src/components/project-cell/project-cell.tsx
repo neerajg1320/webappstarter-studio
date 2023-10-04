@@ -28,6 +28,7 @@ import useWindowSize from "../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
 import CodeFallbackEditor from "../file-cell/code-fallback-editor";
+import FileViewer from "./file-viewer";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -547,31 +548,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               display: "flex", flexDirection: "column", border: "3px solid lightblue"
             }}
             >
-              <div className="file-cell-control-bar-wrapper">
-                {editedFile && <FileCellControlBar reduxFile={editedFile}/>}
-              </div>
-
-              {(editedFile && editedFile.contentSynced) ?
-                  // <Suspense fallback={<textarea value={editedFile?.content || ''} onChange={(e) => handleEditorChange(e.target.value)} style={{height: "100%", fontSize: "1.2em", padding:"5px"}}/>}>
-                  <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''} onChange={(newValue) => handleEditorChange(newValue)} />}>
-                    <CodeEditor
-                        modelKey={editedFile?.localId}
-                        value={editedFile?.content || ""}
-                        language={editedFile?.language || CodeLanguage.UNKNOWN}
-                        onChange={handleEditorChange}
-                        disabled={!editedFile}
-                    />
-                  </Suspense>
-
-                  :
-                  <div style={{
-                    height: "100%", width: "100%",
-                    display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
-                  }}
-                  >
-                    <h3>Select a File</h3>
-                  </div>
-              }
+              <FileViewer reduxProject={reduxProject} editedFile={editedFile} onChange={handleEditorChange} />
             </div>
           </ResizableDiv>
         </div>

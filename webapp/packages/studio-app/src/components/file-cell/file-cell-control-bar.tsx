@@ -19,11 +19,12 @@ export interface FileCellEvent {
 }
 
 interface FileCellControlBarProps {
+  reduxProject?: ReduxProject;
   reduxFile: ReduxFile;
   // onEvent: (event: FileCellEvent) => void;
 }
 
-const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
+const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, reduxFile}) => {
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const { updateFile, saveFile, createCellBundle, updateProject, updateApplication } = useActions();
   const [isAdmin, setAdmin] = useState(false);
@@ -96,92 +97,106 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxFile}) => {
 
   return (
       <div className="file-cell-control-bar">
-        {isAdmin &&
+        <div className="file-cell-control-bar-left">
+          {reduxProject &&  <span style={{fontSize:"1.2em"}}>{reduxProject.title}</span>}
+          <span>:</span>
+          <span>{reduxFile.path}</span>
+          {isAdmin &&
             <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
               <span>localId: {reduxFile.localId}</span>
               <span>Pkid: {reduxFile.pkid}</span>
               <span>Language: {reduxFile.language}</span>
             </div>
-        }
+          }
+        </div>
 
-        {isAdmin &&
-            <div style={{display: "flex", flexDirection: "column", gap: "5px", alignItems: "center"}}>
-              <button
-                  className="button is-family-primary is-small"
-                  onClick={() => {
-                    selectFileInputRef.current!.click()
-                  }}
-              >
-                Upload File
-              </button>
-              <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
-            </div>
-        }
-
-
-
-        <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+        <div className="file-cell-control-bar-right">
           {isAdmin &&
-              <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
-                <label>Editable</label>
-                <input
-                    type="checkbox"
-                    checked={(reduxFile && reduxFile.isEditAllowed) || false}
-                    onChange={(e) => handleFileEditableChange( e.target.checked)}
-                />
+              <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
+                <span>localId: {reduxFile.localId}</span>
+                <span>Pkid: {reduxFile.pkid}</span>
+                <span>Language: {reduxFile.language}</span>
               </div>
           }
-          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
-            <label>Auto-Save</label>
-            <input
-                type="checkbox"
-                checked={autoSave}
-                onChange={(e) => updateApplication({autoSave: e.target.checked})}
-            />
-          </div>
-          <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
-            <label>Hot-Reload</label>
-            <input
-                type="checkbox"
-                checked={hotReload}
-                onChange={(e) => updateApplication({hotReload: e.target.checked})}
-            />
-          </div>
-          {(advanceFeatures) &&
-            <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
-              <label>EntryPoint</label>
+
+          {isAdmin &&
+              <div style={{display: "flex", flexDirection: "column", gap: "5px", alignItems: "center"}}>
+                <button
+                    className="button is-family-primary is-small"
+                    onClick={() => {
+                      selectFileInputRef.current!.click()
+                    }}
+                >
+                  Upload File
+                </button>
+                <input ref={selectFileInputRef} type="file" style={{display: "none"}} onChange={handleFileChange}/>
+              </div>
+          }
+
+
+
+          <div style={{display:"flex", flexDirection:"row", gap:"20px", alignItems:"center"}}>
+            {isAdmin &&
+                <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
+                  <label>Editable</label>
+                  <input
+                      type="checkbox"
+                      checked={(reduxFile && reduxFile.isEditAllowed) || false}
+                      onChange={(e) => handleFileEditableChange( e.target.checked)}
+                  />
+                </div>
+            }
+            <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
+              <label>Auto-Save</label>
               <input
                   type="checkbox"
-                  checked={(reduxFile && reduxFile.isEntryPoint) || false}
-                  onChange={(e) => handleEntryPointChange(e.target.checked)}
+                  checked={autoSave}
+                  onChange={(e) => updateApplication({autoSave: e.target.checked})}
               />
             </div>
-          }
-        </div>
+            <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
+              <label>Hot-Reload</label>
+              <input
+                  type="checkbox"
+                  checked={hotReload}
+                  onChange={(e) => updateApplication({hotReload: e.target.checked})}
+              />
+            </div>
+            {(advanceFeatures) &&
+              <div style={{display: "flex", flexDirection: "row", gap: "5px", alignItems: "center"}}>
+                <label>EntryPoint</label>
+                <input
+                    type="checkbox"
+                    checked={(reduxFile && reduxFile.isEntryPoint) || false}
+                    onChange={(e) => handleEntryPointChange(e.target.checked)}
+                />
+              </div>
+            }
+          </div>
 
-        <div style={{
-          display: "flex", flexDirection:"row", gap:"20px", alignItems:"center",
-          visibility: autoSave ? "hidden" : "visible"
-        }}
-        >
-          <button
-              className="button is-primary is-small"
-              onClick={() => handleSaveClick()}
-              disabled={!reduxFile.contentSynced}
+          <div style={{
+            display: "flex", flexDirection:"row", gap:"20px", alignItems:"center",
+            visibility: autoSave ? "hidden" : "visible"
+          }}
           >
-            Save
-          </button>
-          {isAdmin &&
-              <button
-                  className="button is-family-secondary is-small"
-                  onClick={() => handleBundleClick()}
-                  disabled={!(reduxFile.content && reduxFile.content.length > 0)}
-              >
-                Bundle
-              </button>
-          }
+            <button
+                className="button is-primary is-small"
+                onClick={() => handleSaveClick()}
+                disabled={!reduxFile.contentSynced}
+            >
+              Save
+            </button>
+            {isAdmin &&
+                <button
+                    className="button is-family-secondary is-small"
+                    onClick={() => handleBundleClick()}
+                    disabled={!(reduxFile.content && reduxFile.content.length > 0)}
+                >
+                  Bundle
+                </button>
+            }
+          </div>
         </div>
-
       </div>
   );
 }

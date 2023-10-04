@@ -1,7 +1,30 @@
 .file-cell-control-bar {
+  /*border: 2px dashed white;*/
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.file-cell-control-bar-left {
+  /*border: 1px dashed salmon;*/
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.file-cell-control-bar-left span {
+  white-space: nowrap;
+}
+
+.file-cell-control-bar-right {
+  /*border: 1px dashed salmon;*/
   width: 100%;
   display: flex;
-  /*display: none;*/
   justify-content: flex-end;
   gap: 60px;
   align-items: center;
