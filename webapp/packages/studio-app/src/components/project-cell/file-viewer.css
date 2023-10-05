@@ -1,0 +1,23 @@
+.file-cell-control-bar-wrapper {
+  height: 60px;
+  padding: 0 10px;
+  display: flex;
+  overflow: hidden;
+  margin: 5px 0;
+}
+
+.file-content-panel-wrapper {
+  /*border: 1px solid salmon;*/
+  width: 100%;
+  height: calc(100% - 60px);
+  max-height: calc(100% - 60px);
+}
+
+.file-content-panel-empty {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

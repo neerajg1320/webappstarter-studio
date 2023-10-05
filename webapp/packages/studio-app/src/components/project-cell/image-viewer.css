@@ -1,0 +1,14 @@
+.image-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 100%;
+  /*overflow: auto;*/
+}
+
+.image-container {
+  /*max-height: 100%;*/
+  pading: 2px;
+  width: 100%;
+  overflow: auto;
+}

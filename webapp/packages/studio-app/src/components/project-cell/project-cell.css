@@ -10,13 +10,6 @@
   flex-direction: column;
 }
 
-.file-cell-control-bar-wrapper {
-  height: 60px;
-  padding: 0 10px;
-  display: flex;
-  overflow: hidden;
-  margin: 5px 0;
-}
 
 .project-download-async-button-group progress {
   /*border: 1px solid lightsalmon;*/

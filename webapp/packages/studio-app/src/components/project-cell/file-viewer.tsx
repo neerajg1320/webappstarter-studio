@@ -34,29 +34,25 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
       </div>
 
       {(editedFile && editedFile.contentSynced) ?
-          <>
-          {(fileContentType === FileContentType.CODE) &&
-          <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''}
-                                                  onChange={propOnChange}/>}>
-            <CodeEditor
-                modelKey={editedFile?.localId}
-                value={editedFile?.content || ""}
-                language={editedFile?.language || CodeLanguage.UNKNOWN}
-                onChange={propOnChange}
-                disabled={!editedFile}
-            />
-          </Suspense>
-          }
-          {(fileContentType === FileContentType.IMAGE) &&
-              <ImageViewer imageFile={editedFile}/>
-          }
-          </>
+          <div className="file-content-panel-wrapper">
+            {(fileContentType === FileContentType.CODE) &&
+            <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''}
+                                                    onChange={propOnChange}/>}>
+              <CodeEditor
+                  modelKey={editedFile?.localId}
+                  value={editedFile?.content || ""}
+                  language={editedFile?.language || CodeLanguage.UNKNOWN}
+                  onChange={propOnChange}
+                  disabled={!editedFile}
+              />
+            </Suspense>
+            }
+            {(fileContentType === FileContentType.IMAGE) &&
+                <ImageViewer imageFile={editedFile}/>
+            }
+          </div>
           :
-          <div style={{
-            height: "100%", width: "100%",
-            display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
-          }}
-          >
+          <div className="file-content-panel-empty">
             <h3>Select a File</h3>
           </div>
       }
