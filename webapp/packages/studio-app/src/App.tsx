@@ -9,19 +9,32 @@ import {debugComponent} from "./config/global";
 
 const App = () => {
   const { initializeBundler } = useActions();
+  const isAuthenticated = useTypedSelector(state => state.auth.isAuthenticated);
+  const currentUser = useTypedSelector(state => state.auth.currentUser);
   const projectsLoaded = useTypedSelector(state => state.application.projectsLoaded)
   const bundlerReady = useTypedSelector(state => state.application.bundlerReady)
 
   useEffect(() => {
     if (debugComponent) {
-      console.log(`App:useEffect[]  projectsLoaded:${projectsLoaded}  bundlerReady:${bundlerReady}`)
+      console.log(`App:useEffect[]  isAuthenticated:${isAuthenticated} projectsLoaded:${projectsLoaded}  bundlerReady:${bundlerReady} currentUser:`, currentUser);
     }
 
-    if (projectsLoaded && !bundlerReady) {
-      initializeBundler();
+    if (!isAuthenticated) {
+      return;
     }
 
-  }, [projectsLoaded, bundlerReady]);
+    if (!currentUser.is_anonymous) {
+      if (!projectsLoaded) {
+        return;
+      }
+    }
+
+    if (bundlerReady) {
+      return;
+    }
+
+    initializeBundler();
+  }, [isAuthenticated, currentUser, projectsLoaded, bundlerReady]);
 
   return (
       <AppRouterWrapper />
