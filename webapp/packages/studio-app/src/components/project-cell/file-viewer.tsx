@@ -33,7 +33,7 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
         {editedFile && <FileCellControlBar reduxProject={reduxProject} reduxFile={editedFile}/>}
       </div>
 
-      {(editedFile && editedFile.contentSynced) ?
+      {(editedFile && editedFile.contentSynced) &&
           <div className="file-content-panel-wrapper">
             {(fileContentType === FileContentType.CODE) &&
             <Suspense fallback={<CodeFallbackEditor value={editedFile?.content || ''}
@@ -50,10 +50,6 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
             {(fileContentType === FileContentType.IMAGE) &&
                 <ImageViewer imageFile={editedFile}/>
             }
-          </div>
-          :
-          <div className="file-content-panel-empty">
-            <h3>Select a File</h3>
           </div>
       }
     </>

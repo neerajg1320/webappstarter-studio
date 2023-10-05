@@ -25,10 +25,10 @@ import {
 import useDifferentialCallback from "../../hooks/use-differential-callback";
 import {getFileFromLocalId} from "../../state/helpers/file-helpers";
 
-export type FileBrowserEventType = "select" | "path-change";
+export type FileBrowserEventType = "select" | "path-change" | "file-delete";
 export type FileBrowserEventData = {
-  localId: string;
-  newPath: string;
+  localId?: string;
+  newPath?: string;
 }
 export type FileBrowserEventFunc = (type: FileBrowserEventType, data:FileBrowserEventData) => void;
 
@@ -213,6 +213,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           removeFile(event.localId);
           // TBD: We should be marking the file selection properly here.
           // updateProject({})
+          if (propOnEvent) {
+            propOnEvent("file-delete", {localId: event.localId});
+          }
         }
         break;
     }

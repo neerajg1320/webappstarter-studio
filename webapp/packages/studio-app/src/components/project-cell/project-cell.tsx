@@ -319,7 +319,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
   const handleFileBrowserEvent:FileBrowserEventFunc = (type, data) => {
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`ProjectCell:handleFileBrowserEvent()  type:${type} data:`, data);
     }
 
@@ -333,6 +333,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
         // TBD: We have to do the same in case of file delete.
         markProjectBundleDirty();
+        break;
+
+      case "file-delete":
+        setEditedFileLocalId(null);
         break;
 
       default:
@@ -548,7 +552,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               display: "flex", flexDirection: "column", border: "3px solid lightblue"
             }}
             >
-              {editedFile && <FileViewer reduxProject={reduxProject} editedFile={editedFile} onChange={handleEditorChange} />}
+              {editedFile ?
+                  <FileViewer reduxProject={reduxProject} editedFile={editedFile} onChange={handleEditorChange} />
+                  :
+                  <div className="file-content-panel-empty">
+                    <h3>Select a File</h3>
+                  </div>
+              }
             </div>
           </ResizableDiv>
         </div>
