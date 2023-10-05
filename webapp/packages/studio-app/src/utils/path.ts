@@ -186,6 +186,6 @@ export const getFileContentType = (path:string):FileContentType => {
   if (['json'].includes(fileExtn)) {
     return FileContentType.CODE;
   }
-  
+
   return FileContentType.UNKNOWN
 }
