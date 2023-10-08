@@ -1,6 +1,6 @@
 
 .landing-page {
-  margin: 60px;
+  /*margin: 60px;*/
   height: calc(100vh - 60px);
   overflow: auto;
   width: 100%;
