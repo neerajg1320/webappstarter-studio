@@ -78,6 +78,7 @@ import {getFileFromLocalId} from "../helpers/file-helpers";
 import {PackageDependency, PackageDetectResult, PackageInfo} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
+import {htmlNoScript, htmlWithScript} from "../../components/preview-section/preview-iframe/markup";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -888,33 +889,38 @@ export const makeProjectIdeReady = (localId: string) => {
       console.log(`makeProjectIdeReady(): reduxProject:`, reduxProject);
     }
 
+    let projectUpdatePartial:ReduxUpdateProjectPartial = {localId};
+
+    const ideFiles = [
+      reduxProject.entryFileLocalId
+    ];
+
     if (reduxProject.entryHtmlFileLocalId) {
-      const htmlFile = getFileFromLocalId(getState().files, reduxProject.entryHtmlFileLocalId);
-      if (htmlFile && !htmlFile.contentSynced) {
-        const ideFiles = [
-          reduxProject.entryHtmlFileLocalId,
-          reduxProject.packageFileLocalId,
-          reduxProject.entryFileLocalId
-        ];
-
-        const responses = await fetchFileContents(ideFiles)(dispatch, getState);
-        responses.forEach(({response, reduxFile}) => {
-          // console.log(response, reduxFile);
-          let projectUpdatePartial:ReduxUpdateProjectPartial = {localId};
-          if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
-            projectUpdatePartial.htmlContent = response.data;
-          }
-          if (reduxProject.packageFileLocalId === reduxFile.localId) {
-            const pkgConfig = JSON.parse(response.request.responseText) as PackageConfig;
-            // console.log(JSON.stringify(pkgConfig, null, 2));
-            projectUpdatePartial.packageConfig = pkgConfig;
-          }
-          projectUpdatePartial.ideReady = true;
-
-          dispatch(updateProject(projectUpdatePartial));
-        });
-      }
+      ideFiles.push(reduxProject.entryHtmlFileLocalId);
+    } else {
+      projectUpdatePartial.htmlContent = htmlWithScript;
     }
+
+    if (reduxProject.packageFileLocalId) {
+      ideFiles.push(reduxProject.packageFileLocalId);
+    }
+
+    const responses = await fetchFileContents(ideFiles)(dispatch, getState);
+    responses.forEach(({response, reduxFile}) => {
+      // console.log(response, reduxFile);
+
+      if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
+        projectUpdatePartial.htmlContent = response.data;
+      }
+      if (reduxProject.packageFileLocalId === reduxFile.localId) {
+        const pkgConfig = JSON.parse(response.request.responseText) as PackageConfig;
+        // console.log(JSON.stringify(pkgConfig, null, 2));
+        projectUpdatePartial.packageConfig = pkgConfig;
+      }
+      projectUpdatePartial.ideReady = true;
+
+      dispatch(updateProject(projectUpdatePartial));
+    });
   }
 }
 
