@@ -3,7 +3,7 @@
   height: 60px;
   width: 100%;
   padding: 0 20px;
-  position: absolute;
+  position: sticky;
   top: 0px;
 }
 
