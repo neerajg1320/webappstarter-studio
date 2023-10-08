@@ -898,7 +898,7 @@ export const makeProjectIdeReady = (localId: string) => {
     if (reduxProject.entryHtmlFileLocalId) {
       ideFiles.push(reduxProject.entryHtmlFileLocalId);
     } else {
-      projectUpdatePartial.htmlContent = htmlWithScript;
+      projectUpdatePartial.htmlContent = htmlNoScript;
     }
 
     if (reduxProject.packageFileLocalId) {
