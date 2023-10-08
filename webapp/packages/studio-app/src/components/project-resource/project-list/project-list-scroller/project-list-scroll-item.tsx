@@ -20,7 +20,6 @@ const ContentBox = ({data:reduxProject}:{data:ReduxProject}) => {
       <div className="content-box">
         <h2>{reduxProject.title}</h2>
         <span>{reduxProject.description}</span>
-        <span>bundleDirty:{reduxProject.bundleDirty.toString()}</span>
       </div>
   );
 };
