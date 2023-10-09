@@ -53,18 +53,24 @@ const ProjectListGrid:React.FC<ProjectListGridProps> = ({visibility:propVisibili
         <div style={{
           height: "100%",
           width: "100%",
-          // width: "fit-content",
+
           // border: "1px solid lightblue",
           // borderRadius: "15px",
 
-          display: "flex",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, 350px)",
+          gridRowGap: "40px",
+          gridColumnGap: "40px",
           justifyContent: "space-evenly",
-          // alignItems: "flex-start",
-          flexWrap: "wrap",
 
-          gap: "40px",
-          overflowY: "auto",
-          padding: "20px"
+          // display: "flex",
+          // justifyContent: "space-evenly",
+          // alignItems: "flex-start",
+          // flexWrap: "wrap",
+
+          // gap: "40px",
+          // overflowY: "auto",
+          padding: "40px"
         }}>
           {projectList &&
               projectList.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
