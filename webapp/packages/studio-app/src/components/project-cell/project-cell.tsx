@@ -319,7 +319,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
   const handleFileBrowserEvent:FileBrowserEventFunc = (type, data) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`ProjectCell:handleFileBrowserEvent()  type:${type} data:`, data);
     }
 
