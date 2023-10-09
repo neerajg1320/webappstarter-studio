@@ -39,6 +39,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
   return (
     <div className="card" style={{
         height: "200px",
+        width: "350px",
         borderRadius: "10px", padding: "15px 10px 5px",
         backgroundColor: "cornflowerblue",
         cursor: "pointer",
@@ -66,7 +67,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
           </span>
         </div>
         <div className="card-item">
-          <label>Entry Javascript:</label>
+          <label>Entry File:</label>
           <span
               className="value"
               onClick={(e) => {
