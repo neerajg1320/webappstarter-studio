@@ -1,9 +1,8 @@
 import './project-edit.css';
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useActions} from "../../hooks/use-actions";
-import Select from "react-select";
-import {SingleValue} from "react-select";
-import {ReduxProject, ReduxUpdateProjectPartial} from "../../state";
+import Select, {SingleValue} from "react-select";
+import {ReduxProject, ReduxUpdateProjectPartial, StartConfigType} from "../../state";
 import {useNavigate} from "react-router-dom";
 import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -30,10 +29,14 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   const navigate = useNavigate();
   const { updateProject, saveProject } = useActions();
   const isFrameworkEnabled = useMemo(() => false, []);
+  const inputFileRef = useRef<HTMLInputElement>();
+  const [selectedZipFile, setSelectedZipFile] = useState<File>();
 
   const projectsState = useTypedSelector(state => state.projects);
   const apiState = useTypedSelector(state => state.api.apiFlowState);
   const saveClickRef = useRef<boolean>(false);
+
+  const [isUpload, setUpload] = useState<boolean>(true);
 
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (projectsState.currentProjectId) {
@@ -116,7 +119,12 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     if (currentProject) {
       // TBD: Here we should add the checks for validation
       // We confirm the creation locally
-      updateProject({localId:currentProject.localId, confirmed: true});
+      const updateProjectPartial:ReduxUpdateProjectPartial = {localId: currentProject.localId};
+      updateProjectPartial.startConfigType = isUpload ? StartConfigType.PROJECT_ZIP : StartConfigType.PROJECT_TEMPLATE;
+      if (isUpload) {
+        updateProjectPartial.zipBlob = selectedZipFile;
+      }
+      updateProject(updateProjectPartial);
       saveProject(currentProject.localId);
     }
   }
@@ -137,6 +145,15 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     }
   }, [currentProject?.synced]);
 
+  const handleFileChange:React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const files = Array.from(e.target.files);
+    if (e.target.files.length > 0) {
+      const file = files[0];
+      console.log(`selected file: `, file);
+      setSelectedZipFile(file);
+    }
+  }
+
   return (
       <div style={{
           // border: "2px solid yellow",
@@ -148,7 +165,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       >
         <span className="title">Project Details</span>
         <div className="project-value-list">
-          <div className="project-value" style={{display: "flex"}}>
+          <div className="project-value" >
             <label>Title</label>
             <input
                 className="value"
@@ -156,28 +173,62 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                 onChange={(e) => {updateProject({localId: currentProject?.localId, title: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
-          <div className="project-value" style={{display: "flex"}}>
+          <div className="project-value" >
             <label>Description</label>
             <textarea
                 rows={4}
-                className="value"
+                className="value description"
                 value={currentProject?.description}
                 onChange={(e) => {updateProject({localId: currentProject?.localId, description: e.target.value} as ReduxUpdateProjectPartial)}}
             />
           </div>
           {!isEdit &&
-            <div className="project-value" style={{display: "flex"}}>
-              <label>Template</label>
-              <Select
-                  className="value framework-select"
-                  value={projectTemplateOption}
-                  options={projectTemplateOptions}
-                  onChange={(selected) => updateProject({
-                    localId: currentProject?.localId,
-                    template: selected?.value || 'none'
-                  } as ReduxUpdateProjectPartial)}
-              />
-            </div>
+            <>
+              <div className="project-value">
+                <label>Start Config</label>
+                <div className="value">
+                  <div className="radio">
+                    <span>Template</span>
+                    <input type="radio" name="init-type" defaultChecked={!isUpload} onClick={e => setUpload(false)} />
+                  </div>
+                  <div className="radio">
+                    <span>Upload</span>
+                    <input type="radio" name="init-type" defaultChecked={isUpload} onClick={e => setUpload(true)} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="project-value">
+                {!isUpload ?
+                  <div className="start-config">
+                    <label>Template</label>
+                    <Select
+                        className="value framework-select"
+                        value={projectTemplateOption}
+                        options={projectTemplateOptions}
+                        onChange={(selected) => updateProject({
+                          localId: currentProject?.localId,
+                          template: selected?.value || 'none'
+                        } as ReduxUpdateProjectPartial)}
+                    />
+                  </div>
+                    :
+                  <div className="start-config">
+                    <label>Project Zip</label>
+                    <div className="value zip-upload">
+                      <button className="button is-info is-small is-rounded" onClick={e => inputFileRef.current.click()}>Browse</button>
+                      <input ref={inputFileRef} type="file" accept=".zip" onChange={handleFileChange} style={{display: "none"}}/>
+                      {selectedZipFile &&
+                        <div className="selected-file">
+                          <span>{selectedZipFile.name}</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+              </div>
+            </>
           }
           {isFrameworkEnabled &&
             <>
@@ -204,7 +255,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
             </div>
             </>
           }
-          <div style={{display:"flex", flexDirection:"row", gap:"20px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"20px", marginTop: "20px"}}>
             <button
                 className="button is-primary is-small"
                 onClick={handleSaveClick}

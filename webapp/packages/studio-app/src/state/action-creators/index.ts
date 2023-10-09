@@ -523,7 +523,9 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const reqId = generateLocalId();
     dispatch(apiRequestStart(reqId, ApiFlowResource.PROJECT, ApiFlowOperation.POST));
-    
+
+    // We need to create form-data as we are supporting upload zip file as well
+
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
       const {files, ...rest} = response.data

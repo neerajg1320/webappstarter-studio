@@ -21,6 +21,12 @@ export enum ReactToolchains {
   NONE = 'none',
 };
 
+export enum StartConfigType {
+  PROJECT_TEMPLATE = 'project_template',
+  PROJECT_ZIP = 'project_zip',
+  PROEJCT_COPY = 'project_copy'
+}
+
 // TBD: Need to add a strong documentation here as this is one of the focal points of our application
 // selectedFileLocalId: This is the selected to be shown in the editor.
 // filesSynced is set to true when the project file models are downloaded. This happens before ideReady.
@@ -31,9 +37,11 @@ export interface ReduxProject extends ServerObject {
   localId: string;
   title: string;
   description: string;
-  template: ProjectTemplates;
-  framework: ProjectFrameworks;
-  toolchain: ReactToolchains;
+  startConfigType: StartConfigType;
+  file?: Blob|null;
+  template?: ProjectTemplates;
+  framework?: ProjectFrameworks;
+  toolchain?: ReactToolchains;
   filesSynced: boolean;
   ideReady: boolean;
   selectedFileLocalId: string|null;
@@ -60,6 +68,8 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   localId: string;
   title?: string;
   description?: string;
+  startConfigType?: StartConfigType;
+  file?: Blob|null;
   template?: ProjectTemplates;
   framework?: ProjectFrameworks;
   toolchain?: ReactToolchains;
@@ -90,9 +100,11 @@ export interface ReduxCreateProjectPartial {
   localId: string;
   title: string;
   description: string;
-  template  : ProjectTemplates;
-  framework: ProjectFrameworks;
-  toolchain: ReactToolchains;
+  startConfigType: StartConfigType;
+  file?: Blob|null;
+  template?: ProjectTemplates;
+  framework?: ProjectFrameworks;
+  toolchain?: ReactToolchains;
 }
 
 export interface ReduxDeleteProjectPartial {
