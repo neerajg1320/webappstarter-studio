@@ -11,7 +11,11 @@ import {
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
-  MoveCellAction, ResetApplicationAction, ResetBundlesAction, ResetFilesAction, ResetProjectsAction,
+  MoveCellAction,
+  ResetApplicationAction,
+  ResetBundlesAction,
+  ResetFilesAction,
+  ResetProjectsAction,
   SetCurrentProjectAction,
   UpdateApplicationAction,
   UpdateCellAction,
@@ -34,23 +38,19 @@ import {
   ReduxCreateProjectPartial,
   ReduxDeleteProjectPartial,
   ReduxProject,
-  ReduxUpdateProjectPartial
+  ReduxUpdateProjectPartial,
+  StartConfigType
 } from "../project";
-import {
-  ReduxCreateFilePartial,
-  ReduxDeleteFilePartial,
-  ReduxFile,
-  ReduxUpdateFilePartial
-} from "../file";
+import {ReduxCreateFilePartial, ReduxDeleteFilePartial, ReduxFile, ReduxUpdateFilePartial} from "../file";
 import {generateLocalId} from "../id";
 import {
   debugAuth,
   debugAxios,
   debugBundler,
   debugPlugin,
-  debugRedux, enableDiffForFileUpdate,
+  debugRedux,
+  enableDiffForFileUpdate,
   enableLocalStorageAuth,
-  serverApiBaseUrl,
   serverMediaBaseUrl
 } from "../../config/global";
 import {createFileFromString} from "../../utils/file";
@@ -71,14 +71,13 @@ import {getLoadResult} from "../../bundler/plugins/loadFile";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
 import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
-import {convertStrToUint8, getSampleZipBlobSync, getZipBlobSync} from "../../utils/zip";
+import {convertStrToUint8, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
 import {getProjectFromLocalId} from "../helpers/project-helpers";
-import {getFileFromLocalId} from "../helpers/file-helpers";
-import {PackageDependency, PackageDetectResult, PackageInfo} from "../../bundler/plugins/package";
+import {PackageDetectResult} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
-import {htmlNoScript, htmlWithScript} from "../../components/preview-section/preview-iframe/markup";
+import {htmlNoScript} from "../../components/preview-section/preview-iframe/markup";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -525,9 +524,25 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
     dispatch(apiRequestStart(reqId, ApiFlowResource.PROJECT, ApiFlowOperation.POST));
 
     // We need to create form-data as we are supporting upload zip file as well
+    const {localId} = projectPartial;
+
+    const formData = new FormData();
+    formData.append("title", projectPartial.title);
+    formData.append("description", projectPartial.description);
+
+    if (projectPartial.startConfigType === StartConfigType.PROJECT_ZIP) {
+      if (!projectPartial.file) {
+        console.error(`upload file is ${projectPartial.file} for startConfigType ${projectPartial.startConfigType}`);
+      }
+      formData.append("file", projectPartial.file);
+    }
+
+    formData.append("template", projectPartial.template);
+    formData.append("framework", projectPartial.framework);
+    formData.append("toolchain", projectPartial.toolchain);
 
     try {
-      const response = await axiosApiInstance.post(`${gApiUri}/projects/`, projectPartial, {headers: __rm__gHeaders});
+      const response = await axiosApiInstance.post(`${gApiUri}/projects/`, formData, {headers: __rm__gHeaders});
       const {files, ...rest} = response.data
 
       if (debugAxios) {
@@ -537,7 +552,7 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
       dispatch(apiRequestSuccess(reqId, messages));
 
       // TBD: For now we will hard code the entry_html_path to 'index.html'
-      dispatch(updateProject({localId:projectPartial.localId, ...rest, entry_html_path: 'index.html', synced:true}));
+      dispatch(updateProject({localId, ...rest, entry_html_path: 'index.html', synced:true}));
       await fetchFiles(rest.pkid)(dispatch, getState);
     } catch (err) {
       if (err instanceof AxiosError) {

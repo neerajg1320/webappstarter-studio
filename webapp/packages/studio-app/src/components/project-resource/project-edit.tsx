@@ -119,12 +119,8 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     if (currentProject) {
       // TBD: Here we should add the checks for validation
       // We confirm the creation locally
-      const updateProjectPartial:ReduxUpdateProjectPartial = {localId: currentProject.localId};
-      updateProjectPartial.startConfigType = isUpload ? StartConfigType.PROJECT_ZIP : StartConfigType.PROJECT_TEMPLATE;
-      if (isUpload) {
-        updateProjectPartial.zipBlob = selectedZipFile;
-      }
-      updateProject(updateProjectPartial);
+
+      updateProject({localId: currentProject.localId, confirmed: true});
       saveProject(currentProject.localId);
     }
   }
@@ -151,6 +147,8 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       const file = files[0];
       console.log(`selected file: `, file);
       setSelectedZipFile(file);
+
+      updateProject({localId: currentProject.localId, startConfigType: StartConfigType.PROJECT_ZIP, file});
     }
   }
 
