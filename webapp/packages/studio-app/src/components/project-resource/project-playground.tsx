@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useActions} from "../../hooks/use-actions";
 import {generateLocalId} from "../../state/id";
-import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../state";
+import {ProjectFrameworks, ProjectTemplates, ReactToolchains, StartConfigType} from "../../state";
 import ProjectEdit from "./project-edit";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import LoadingIndicator from "../common/loading-indicator";
@@ -44,6 +44,7 @@ const ProjectPlayground:React.FC = () => {
           localId,
           title: `my-project-${localId}`,
           description: 'A temporary project for trial purpose. This project will not be accessible after the session is closed.',
+          startConfigType: StartConfigType.PROJECT_TEMPLATE,
           template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
           framework: ProjectFrameworks.NONE,
           toolchain: ReactToolchains.NONE

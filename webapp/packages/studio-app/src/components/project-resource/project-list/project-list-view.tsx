@@ -6,7 +6,7 @@ import './project-list-view.css';
 import {generateLocalId} from "../../../state/id";
 import {RoutePath} from "../../routes";
 import {useActions} from "../../../hooks/use-actions";
-import {ProjectFrameworks, ProjectTemplates, ReactToolchains} from "../../../state";
+import {ProjectFrameworks, ProjectTemplates, ReactToolchains, StartConfigType} from "../../../state";
 import {withLifecyleLogger} from "../../../hoc/logger";
 import {useTypedSelector} from "../../../hooks/use-typed-selector";
 import {debugComponent} from "../../../config/global";
@@ -25,6 +25,7 @@ const ProjectListView = () => {
       localId,
       title: `Project-${localId}`,
       description: 'This is a web application',
+      startConfigType: StartConfigType.PROJECT_TEMPLATE,
       template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
       framework: ProjectFrameworks.NONE,
       toolchain: ReactToolchains.NONE

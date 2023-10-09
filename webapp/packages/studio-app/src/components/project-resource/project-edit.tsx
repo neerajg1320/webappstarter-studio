@@ -36,7 +36,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   const apiState = useTypedSelector(state => state.api.apiFlowState);
   const saveClickRef = useRef<boolean>(false);
 
-  const [isUpload, setUpload] = useState<boolean>(true);
+  const [isImport, setImport] = useState<boolean>(false);
 
   const currentProject = useMemo<ReduxProject|null>(() => {
     if (projectsState.currentProjectId) {
@@ -145,7 +145,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     const files = Array.from(e.target.files);
     if (e.target.files.length > 0) {
       const file = files[0];
-      console.log(`selected file: `, file);
+      // console.log(`selected file: `, file);
       setSelectedZipFile(file);
 
       updateProject({localId: currentProject.localId, startConfigType: StartConfigType.PROJECT_ZIP, file});
@@ -187,17 +187,17 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                 <div className="value">
                   <div className="radio">
                     <span>Template</span>
-                    <input type="radio" name="init-type" defaultChecked={!isUpload} onClick={e => setUpload(false)} />
+                    <input type="radio" name="init-type" defaultChecked={!isImport} onClick={e => setImport(false)} />
                   </div>
                   <div className="radio">
-                    <span>Upload</span>
-                    <input type="radio" name="init-type" defaultChecked={isUpload} onClick={e => setUpload(true)} />
+                    <span>Import</span>
+                    <input type="radio" name="init-type" defaultChecked={isImport} onClick={e => setImport(true)} />
                   </div>
                 </div>
               </div>
 
               <div className="project-value">
-                {!isUpload ?
+                {!isImport ?
                   <div className="start-config">
                     <label>Template</label>
                     <Select
