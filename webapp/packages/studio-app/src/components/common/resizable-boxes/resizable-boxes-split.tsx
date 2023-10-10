@@ -28,7 +28,7 @@ const ResizableHorizontalSplitBox:React.FC<ResizableHorizontalSplitBoxProps>  = 
                                                                                    contentComponent:PropContentComponent,
                                                                                    remainingComponent:PropRemainingComponent,
                                                                                    preserveProportion=true,
-                                                                                   defaultHeight=200,
+                                                                                   defaultHeight=300,
                                                                                    heightConstraints={min:100, max:Infinity},
                                                                                    innerBoxProportions,
                                                                                    data:propData,

@@ -20,26 +20,8 @@ const ProjectListGrid:React.FC<ProjectListGridProps> = ({visibility:propVisibili
     return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
   }, [projectsState.data]);
 
-
-  // useEffect(() => {
-  //   if (debugComponent) {
-  //     console.log(`ProjectListGrid:useEffect[] projectState:`, projectsState);
-  //   }
-  //   if (!isAuthenticated) {
-  //     console.log(`Error! projects listed before authentication `)
-  //   } else {
-  //     if (projectsState.loadCount <= 0) {
-  //       fetchProjectsAndFiles();
-  //     }
-  //   }
-  //
-  //   return () => {
-  //     if (debugComponent) {
-  //       console.log(`ProjectListGrid:useEffect[] destroyed`);
-  //     }
-  //   }
-  // }, []);
-
+  // Grid Layout
+  // Ref: https://codepen.io/TomckySan/pen/mxVbgR
   return (
       <div className="project-list-grid" style={{
         width: "100%",
