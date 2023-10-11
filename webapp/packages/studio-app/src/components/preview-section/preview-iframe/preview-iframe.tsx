@@ -96,7 +96,6 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
 
   return (
     <div className="preview-iframe">
-      <span>{iteration}</span>
       <iframe
         id={id}
         ref={iframeRef} 
