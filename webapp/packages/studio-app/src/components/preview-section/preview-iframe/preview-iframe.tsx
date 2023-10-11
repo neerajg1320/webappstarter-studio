@@ -57,11 +57,6 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
       return;
     }
 
-    // TBD: To make it fool proof we should convert it to be dependent on message from iframe
-    // Get the initialization message from iframe and then send.
-    // iframe is yet to support an initialization message
-
-    // Today: This shall be made conditional
     setTimeout(() => {
       if (iframeRef.current) {
         console.log(`useEffect[code]: code of ${code.length} bytes sent to iframe`);
@@ -74,7 +69,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
         };
         iframeRef.current.contentWindow.postMessage(codeMessage, '*');
       }
-    }, 200);
+    }, 0);
 
   }, [code, isIframeInitialized]);
 
