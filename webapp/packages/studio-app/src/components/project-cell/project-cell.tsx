@@ -569,6 +569,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {(reduxProject.htmlContent && reduxProject.bundleLocalId && reduxProject.bundleResult) &&
           <PreviewTabsPanel
               id={reduxProject.localId}
+              iteration={0}
               title={reduxProject.title}
               html={reduxProject.htmlContent}
               code={reduxProject.bundleResult.code}

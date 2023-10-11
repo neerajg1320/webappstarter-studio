@@ -7,17 +7,18 @@ import {debugWindowEvent, IframeMessage} from "../message";
 
 interface PreviewIframeProps {
   id: string;
+  iteration: number,
   title: string;
   html: string;
   code: string;
   err: string;
 }
 
-const PreviewIframe:React.FC<PreviewIframeProps> = ({id, title, html, code, err}) => {
+const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html, code, err}) => {
   const iframeRef = useRef<any>();
   const [isIframeInitialized, setIframeInitialized] = useState<boolean>(false);
 
-  if (debugComponent) {
+  if (debugComponent || true) {
     console.log(`PreviewIframe: ${title.padEnd(20)}  [${html.length}, ${code.length}]`);
   }
 
@@ -39,8 +40,10 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, title, html, code, err}
 
       const {source, type} = event.data as IframeMessage;
       if ((source && source === "iframe") && (type && type === "init")) {
-        console.log(`PreviewIframe[${title.padStart(20)}] got the init from iframe`, event.data);
-        setIframeInitialized(true);
+        if (!isIframeInitialized) {
+          console.log(`PreviewIframe[${title.padStart(20)}] setting iframe initialized.`, event.data);
+          setIframeInitialized(true);
+        }
       }
     };
 

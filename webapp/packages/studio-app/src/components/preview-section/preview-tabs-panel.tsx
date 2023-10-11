@@ -10,6 +10,7 @@ import {ElementLifeCycleInfo, getInitialLifecycleInfo} from "../common/lifecycle
 
 interface PreviewTabsProps {
   id: string;
+  iteration: number;
   title: string;
   html: string;
   code: string;
@@ -17,7 +18,7 @@ interface PreviewTabsProps {
 }
 
 // We have to pass the height here
-const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, title, html, code, err}) => {
+const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html, code, err}) => {
   const debugComponentLifecycle = false;
   const lifecyleInfo = useRef<ElementLifeCycleInfo>();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(1);
@@ -91,7 +92,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, title, html, code, err
       </div>
       <div className="preview-tabs-panel" >
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
-          {html ? <PreviewIframe id={id} title={title} html={html} code={code} err={err} /> : <h2>html not populated</h2>}
+          {html ? <PreviewIframe id={id} iteration={iteration} title={title} html={html} code={code} err={err} /> : <h2>html not populated</h2>}
         </div>
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? "flex" : "none"}}>
           <PreviewConsole count={count} onChange={handleConsoleTextChange}/>

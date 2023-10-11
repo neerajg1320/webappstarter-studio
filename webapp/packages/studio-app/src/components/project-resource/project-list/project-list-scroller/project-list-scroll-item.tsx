@@ -32,6 +32,7 @@ const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
               {/*<pre>{JSON.stringify(reduxProject.bundleResult, null, 2)}</pre>*/}
               <PreviewTabsPanel
                   id={reduxProject.localId}
+                  count={0}
                   title={reduxProject.title}
                   html={reduxProject.htmlContent}
                   code={reduxProject.bundleResult.code}
