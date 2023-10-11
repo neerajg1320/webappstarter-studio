@@ -1,8 +1,3 @@
-export const simpleJavascriptCode = `
-    console.log('hello from script');
-    console.log('would you talk to me');
-`;
-
 export const parentCommunicationJavascriptCode = `
     const window_console_log = window.console.log;
     const window_console_error = window.console.error;
@@ -11,12 +6,15 @@ export const parentCommunicationJavascriptCode = `
       // We save the console.log function before we override it
       window_console_log(...args);
       
-      const message = {
+      // This is part of a string which contains javascript hence we are not using typescript
+      const logMessage = {
         source: "iframe",
         type: 'log',
         content: args, // args is an array
       }
-      window.parent.postMessage(message, '*');
+      
+      // This is subscribed to by the preview-console
+      window.parent.postMessage(logMessage, '*');
     }
     
     // TBD: Need to verify the flow here
@@ -31,13 +29,15 @@ export const parentCommunicationJavascriptCode = `
         window_console_error(err);
       }
       
-      const message = {
+      const errorMessage = {
         source: "iframe",
         type: 'error',
         // TBD: We have to resolve browser messaging issues!
         content: err ? err : {message: "err is null"},
       }
-      window.parent.postMessage(message, '*');
+      
+      // This is subscribed to by the preview-console
+      window.parent.postMessage(errorMessage, '*');
     };
 
     window.addEventListener('error', (event) => {
@@ -46,15 +46,31 @@ export const parentCommunicationJavascriptCode = `
     });
 
     window.addEventListener('message', (event) => {
-      // console.log(event.data);
-      try {
-        eval(event.data);
-      } catch (err) {
-        handleError(err);
+      console.log('iframe: received from parent', event.data);
+      const {source, type, content} = event.data;
+      
+      if ((source === 'main') && (type === 'code')) {
+        try {
+          eval(content);
+        } catch (err) {
+          handleError(err);
+        }        
       }
     }, false);
     
     // console.log('Parent Communicated Script Injected');
+    const initMessage = {
+      source: "iframe",
+      type: 'init',
+      // TBD: We have to resolve browser messaging issues!
+      content: ['Initialized'],
+    }  
+    
+    // This is subscribed to by the preview-iframe
+    window.parent.postMessage(initMessage, '*');    
 `;
 
-
+export const simpleJavascriptCode = `
+    console.log('hello from script');
+    console.log('would you talk to me');
+`;

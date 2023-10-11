@@ -3,6 +3,7 @@ import './preview-iframe.css';
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
 import {debugComponent} from "../../../config/global";
+import {IframeMessage} from "../message";
 
 interface PreviewIframeProps {
   title: string;
@@ -19,6 +20,26 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
   }
 
   useEffect(() => {
+    const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
+      const {source, type} = event.data as IframeMessage;
+      if ((source && source === "iframe") && (type && type === "init")) {
+        console.log(`PreviewIframe[${title}]: got the init from iframe`, event.data);
+      }
+    };
+
+    window.addEventListener('message', handleMessage, false);
+    if (debugComponent) {
+      console.log(`PreviewConsole:useEffect[] 'message' event listener added.`)
+    }
+
+    return () => {
+      window.removeEventListener('message', handleMessage)
+      if (debugComponent) {
+        console.log(`PreviewConsole:useEffect[]:destroy 'message' event listener removed.`)
+      }
+    }
+  })
+  useEffect(() => {
     if (debugComponent) {
       console.log(`PreviewIframe: html:`, html);
     }
@@ -28,11 +49,22 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
     // TBD: To make it fool proof we should convert it to be dependent on message from iframe
     // Get the initialization message from iframe and then send.
     // iframe is yet to support an initialization message
+
+    // Today: This shall be made conditional
     setTimeout(() => {
       if (iframeRef.current) {
-        iframeRef.current.contentWindow.postMessage(code, '*');
+        console.log(`useEffect[code]: code of ${code.length} bytes sent to iframe`);
+
+        // This is where the parent window sends the code to the child window
+        const codeMessage:IframeMessage = {
+          source: 'main',
+          type: 'code',
+          content: code
+        };
+        iframeRef.current.contentWindow.postMessage(codeMessage, '*');
       }
     }, 200);
+
   }, [code]);
 
   return (

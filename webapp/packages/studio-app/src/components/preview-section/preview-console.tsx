@@ -2,12 +2,13 @@ import './preview-console.css';
 import {useEffect, useMemo, useRef, useState} from "react";
 import {debugComponent} from "../../config/global";
 import ArgList from "../common/expandable-args/arg-list";
+import {IframeMessage} from "./message";
 
-export interface ConsoleMessage {
-  source: string,
-  type: string,
-  content: any[]|TypeError,
-}
+// export interface ConsoleMessage {
+//   source: string,
+//   type: string,
+//   content: any[]|TypeError,
+// }
 
 interface PreviewConsoleProps {
   count?: number;
@@ -15,7 +16,7 @@ interface PreviewConsoleProps {
 }
 
 const PreviewConsole:React.FC<PreviewConsoleProps> = ({count=0, onChange:propOnChange}) => {
-  const [messages, setMessages] = useState<ConsoleMessage[]>([]);
+  const [messages, setMessages] = useState<IframeMessage[]>([]);
   const consoleRef = useRef<HTMLDivElement|null>(null);
 
   // Kept for debugging purpose
@@ -40,7 +41,7 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({count=0, onChange:propOnC
         console.log('iframe:', event.data);
       }
 
-      const {source} = event.data as ConsoleMessage;
+      const {source} = event.data as IframeMessage;
       if (source && source === "iframe") {
         setMessages((prev) => {
           return [...prev, event.data];
@@ -49,7 +50,6 @@ const PreviewConsole:React.FC<PreviewConsoleProps> = ({count=0, onChange:propOnC
     };
 
     window.addEventListener('message', handleMessage, false);
-
     if (debugComponent) {
       console.log(`PreviewConsole:useEffect[] 'message' event listener added.`)
     }
