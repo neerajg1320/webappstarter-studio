@@ -47,7 +47,7 @@ export const parentCommunicationJavascriptCode = `
 
     window.addEventListener('message', (event) => {
       const {source, type, content} = event.data;
-      console.log(\`iframe: code size of $\{content.length\} bytes received from parent\`, event.data);
+      // console.log(\`iframe: code size of $\{content.length\} bytes received from parent\`, event.data);
       const {id, code} = content;
        
       if ((source === 'main') && (type === 'code')) {
@@ -59,10 +59,8 @@ export const parentCommunicationJavascriptCode = `
       }
     }, false);
     
-    const iframeElement = document.querySelector("iframe");
-    if (iframeElement || true) {
-      console.log(iframeElement);
-    }
+    const iframeElement = document.querySelector("#root");
+    // console.log(Object.create(iframeElement));
     
     // console.log('Parent Communicated Script Injected');
     const initMessage = {

@@ -57,6 +57,9 @@ export const debugAxios = false;
 export const debugComponent = false;
 export const debugProject = false;
 
+// Iframe
+export const debugIframeMessages = false;
+
 // Auth Component
 export const debugAuth = false;
 export const autoReauthenticateUser = true;

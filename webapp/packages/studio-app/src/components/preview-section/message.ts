@@ -1,6 +1,6 @@
 export type IframeMessage = {
   source: 'iframe' | 'main',
-  sourceId?: string,
+  sourceId?: string, // currently not used
   type: 'log' | 'error' | 'init' | 'code',
   content: any | TypeError,
 }
