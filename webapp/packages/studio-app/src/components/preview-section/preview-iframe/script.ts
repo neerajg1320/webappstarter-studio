@@ -47,16 +47,16 @@ export const parentCommunicationJavascriptCode = `
 
     window.addEventListener('message', (event) => {
       const {source, type, content} = event.data;
-      console.log(\`iframe: code size of $\{content.length\} bytes received from parent\`, event.data);
       
-      const {id, code} = content;
-       
-      if ((source === 'main') && (type === 'code')) {
+      if ((type === 'code') && (source === 'main')) { 
+        const {id, code} = content;
+        console.log(\`iframe: code size of $\{code.length\} bytes received from parent\`, event.data);
+         
         try {
           eval(code);
         } catch (err) {
           handleError(err);
-        }        
+        }                
       }
     }, false);
     

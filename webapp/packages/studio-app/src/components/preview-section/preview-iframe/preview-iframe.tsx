@@ -29,7 +29,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       // debugWindowEvent(event);
 
       if (!iframeRef.current) {
-        console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`)
+        console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
         return;
       }
 
@@ -79,7 +79,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     if (!isIframeInitialized) {
       return;
     }
-    
+
     // This is where the parent window sends the code to the child window
     const codeMessage:IframeMessage = {
       source: 'main',
