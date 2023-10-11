@@ -14,6 +14,7 @@ interface PreviewIframeProps {
 
 const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) => {
   const iframeRef = useRef<any>();
+  const [isIframeInitialized, setIframeInitialized] = useState<boolean>(false);
 
   if (debugComponent) {
     console.log(`PreviewIframe: ${title.padEnd(20)}  [${html.length}, ${code.length}]`);
@@ -24,6 +25,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
       const {source, type} = event.data as IframeMessage;
       if ((source && source === "iframe") && (type && type === "init")) {
         console.log(`PreviewIframe[${title}]: got the init from iframe`, event.data);
+        setIframeInitialized(true);
       }
     };
 
@@ -38,14 +40,17 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
         console.log(`PreviewConsole:useEffect[]:destroy 'message' event listener removed.`)
       }
     }
-  })
+  }, []);
+
   useEffect(() => {
     if (debugComponent) {
       console.log(`PreviewIframe: html:`, html);
     }
 
     iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode);
+  }, [html])
 
+  useEffect(() => {
     // TBD: To make it fool proof we should convert it to be dependent on message from iframe
     // Get the initialization message from iframe and then send.
     // iframe is yet to support an initialization message
