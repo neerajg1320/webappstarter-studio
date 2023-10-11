@@ -51,6 +51,12 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
   }, [html])
 
   useEffect(() => {
+    console.log(`PreviewIframe:useEffect[...] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length}`);
+
+    if (!isIframeInitialized) {
+      return;
+    }
+
     // TBD: To make it fool proof we should convert it to be dependent on message from iframe
     // Get the initialization message from iframe and then send.
     // iframe is yet to support an initialization message
@@ -70,7 +76,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
       }
     }, 200);
 
-  }, [code]);
+  }, [code, isIframeInitialized]);
 
   return (
     <div className="preview-iframe">
