@@ -19,7 +19,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
   const [isIframeInitialized, setIframeInitialized] = useState<boolean>(false);
 
   if (debugComponent || true) {
-    console.log(`PreviewIframe: ${title.padEnd(20)}  [${html.length}, ${code.length}]`);
+    console.log(`PreviewIframe: ${title.padEnd(20)}  iteration:{iteration} [${html.length}, ${code.length}]`);
   }
 
   useEffect(() => {
@@ -71,35 +71,36 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
   useEffect(() => {
     console.log(`PreviewIframe[${title.padStart(20)}] useEffect[...] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length}`);
 
-    if (!isIframeInitialized) {
+    if (!iframeRef.current) {
+      console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`)
       return;
     }
 
-    if (iframeRef.current) {
-      if (debugIframeMessages) {
-        console.log(`useEffect[code]: code size of ${code.length} bytes sent to iframe`);
-      }
-
-      // This is where the parent window sends the code to the child window
-      const codeMessage:IframeMessage = {
-        source: 'main',
-        type: 'code',
-        content: {id, code}
-      };
-      iframeRef.current.contentWindow.postMessage(codeMessage, '*');
+    if (!isIframeInitialized) {
+      return;
     }
+    
+    // This is where the parent window sends the code to the child window
+    const codeMessage:IframeMessage = {
+      source: 'main',
+      type: 'code',
+      content: {id, code}
+    };
 
-    setTimeout(() => {
-    }, 0);
+    iframeRef.current.contentWindow.postMessage(codeMessage, '*');
 
-  }, [code, isIframeInitialized]);
+    if (debugIframeMessages || true) {
+      console.log(`useEffect[code]: code size of ${code.length} bytes sent to iframe`);
+    }
+  }, [code, isIframeInitialized, iteration]);
 
   return (
     <div className="preview-iframe">
+      <span>{iteration}</span>
       <iframe
         id={id}
         ref={iframeRef} 
-        title={title}
+        title={title + iteration.toString()}
         sandbox="allow-scripts allow-modals allow-same-origin" />
     </div>
   );
