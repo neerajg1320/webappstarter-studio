@@ -57,18 +57,19 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
       return;
     }
 
-    setTimeout(() => {
-      if (iframeRef.current) {
-        console.log(`useEffect[code]: code of ${code.length} bytes sent to iframe`);
+    if (iframeRef.current) {
+      console.log(`useEffect[code]: code size of ${code.length} bytes sent to iframe`);
 
-        // This is where the parent window sends the code to the child window
-        const codeMessage:IframeMessage = {
-          source: 'main',
-          type: 'code',
-          content: code
-        };
-        iframeRef.current.contentWindow.postMessage(codeMessage, '*');
-      }
+      // This is where the parent window sends the code to the child window
+      const codeMessage:IframeMessage = {
+        source: 'main',
+        type: 'code',
+        content: code
+      };
+      iframeRef.current.contentWindow.postMessage(codeMessage, '*');
+    }
+
+    setTimeout(() => {
     }, 0);
 
   }, [code, isIframeInitialized]);

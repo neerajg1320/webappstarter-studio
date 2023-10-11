@@ -46,8 +46,8 @@ export const parentCommunicationJavascriptCode = `
     });
 
     window.addEventListener('message', (event) => {
-      console.log('iframe: received from parent', event.data);
       const {source, type, content} = event.data;
+      console.log(\`iframe: code size of $\{content.length\} bytes received from parent\`, event.data);
       
       if ((source === 'main') && (type === 'code')) {
         try {
