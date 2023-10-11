@@ -75,7 +75,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // Kept due to the behaviour of the editor onChange callback
   const autoSaveRef = useRef<boolean>(hotReload);
   const downloadClickedRef = useRef<boolean>(false);
-
+  // The following is used for forcing the re-rendering the PreviewTabsPanel component
+  const [iteration, setIteration] = useState<number>(0);
 
   useEffect(() => {
     hotReloadRef.current = hotReload;
@@ -225,6 +226,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
 
     markProjectBundleDirty();
+    setIteration((prev) => prev + 1);
   }
 
   const createDownloadLinkAndClick = () => {
@@ -569,7 +571,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {(reduxProject.htmlContent && reduxProject.bundleLocalId && reduxProject.bundleResult) &&
           <PreviewTabsPanel
               id={reduxProject.localId}
-              iteration={0}
+              iteration={iteration}
               title={reduxProject.title}
               html={reduxProject.htmlContent}
               code={reduxProject.bundleResult.code}
