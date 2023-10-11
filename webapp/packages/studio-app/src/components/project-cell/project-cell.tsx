@@ -568,6 +568,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
       {(reduxProject.htmlContent && reduxProject.bundleLocalId && reduxProject.bundleResult) &&
           <PreviewTabsPanel
+              id={reduxProject.localId}
               title={reduxProject.title}
               html={reduxProject.htmlContent}
               code={reduxProject.bundleResult.code}

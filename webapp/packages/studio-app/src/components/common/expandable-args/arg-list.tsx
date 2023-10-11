@@ -31,13 +31,15 @@ export const getConsoleItemInfo = (value:any):ItemInfoType => {
   let _enclosingClass = null;
 
   if (_isRecursive) {
-    if (value.length !== undefined) {
-      _itemType = "array";
-      _traversalFunc = ArrayTraversalFunc;
-      _enclosingClass = "array-box";
-    } else {
-      _traversalFunc = ObjectTraversalFunc;
-      _enclosingClass = "object-box";
+    if (value) {
+      if (value.length !== undefined) {
+        _itemType = "array";
+        _traversalFunc = ArrayTraversalFunc;
+        _enclosingClass = "array-box";
+      } else {
+        _traversalFunc = ObjectTraversalFunc;
+        _enclosingClass = "object-box";
+      }
     }
   }
 

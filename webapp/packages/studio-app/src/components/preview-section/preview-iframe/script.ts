@@ -48,15 +48,21 @@ export const parentCommunicationJavascriptCode = `
     window.addEventListener('message', (event) => {
       const {source, type, content} = event.data;
       console.log(\`iframe: code size of $\{content.length\} bytes received from parent\`, event.data);
-      
+      const {id, code} = content;
+       
       if ((source === 'main') && (type === 'code')) {
         try {
-          eval(content);
+          eval(code);
         } catch (err) {
           handleError(err);
         }        
       }
     }, false);
+    
+    const iframeElement = document.querySelector("iframe");
+    if (iframeElement || true) {
+      console.log(iframeElement);
+    }
     
     // console.log('Parent Communicated Script Injected');
     const initMessage = {

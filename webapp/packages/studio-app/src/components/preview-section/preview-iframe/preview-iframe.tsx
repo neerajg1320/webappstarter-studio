@@ -3,16 +3,17 @@ import './preview-iframe.css';
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
 import {debugComponent} from "../../../config/global";
-import {IframeMessage} from "../message";
+import {debugWindowEvent, IframeMessage} from "../message";
 
 interface PreviewIframeProps {
+  id: string;
   title: string;
   html: string;
   code: string;
   err: string;
 }
 
-const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) => {
+const PreviewIframe:React.FC<PreviewIframeProps> = ({id, title, html, code, err}) => {
   const iframeRef = useRef<any>();
   const [isIframeInitialized, setIframeInitialized] = useState<boolean>(false);
 
@@ -22,8 +23,11 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
 
   useEffect(() => {
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
-      const {source, type} = event.data as IframeMessage;
-      if ((source && source === "iframe") && (type && type === "init")) {
+      // debugWindowEvent(event);
+
+      const {source, sourceId, type} = event.data as IframeMessage;
+      // We need to put the sourceId check as well below
+      if ((source && source === "iframe") && (sourceId === id) && (type && type === "init")) {
         console.log(`PreviewIframe[${title}]: got the init from iframe`, event.data);
         setIframeInitialized(true);
       }
@@ -64,7 +68,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
       const codeMessage:IframeMessage = {
         source: 'main',
         type: 'code',
-        content: code
+        content: {id, code}
       };
       iframeRef.current.contentWindow.postMessage(codeMessage, '*');
     }
@@ -76,9 +80,10 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({title, html, code, err}) =>
 
   return (
     <div className="preview-iframe">
-      <iframe 
+      <iframe
+        id={id}
         ref={iframeRef} 
-        title="preview" 
+        title={title}
         sandbox="allow-scripts allow-modals allow-same-origin" />
     </div>
   );

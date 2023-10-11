@@ -31,6 +31,7 @@ const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
             <div className="remaining-box" >
               {/*<pre>{JSON.stringify(reduxProject.bundleResult, null, 2)}</pre>*/}
               <PreviewTabsPanel
+                  id={reduxProject.localId}
                   title={reduxProject.title}
                   html={reduxProject.htmlContent}
                   code={reduxProject.bundleResult.code}
