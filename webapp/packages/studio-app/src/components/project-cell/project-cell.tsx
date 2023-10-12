@@ -117,10 +117,10 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
       if (_editedFile.content !== value) {
         updateFile({localId: _editedFile.localId, content: value});
-
+        let needBundling = true;
         if (reduxProject.entryHtmlFileLocalId === _editedFile.localId) {
-          console.log(`Update htmlContent of project`);
           updateProject({localId: reduxProject.localId, htmlContent: value});
+          needBundling = false;
         } else if (reduxProject.packageFileLocalId === _editedFile.localId) {
           console.log(`Update packageConfig of project`);
           try {
@@ -133,7 +133,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         }
 
         if (hotReloadRef.current) {
-          bundleMarkDirtyDebounced(null);
+          if (needBundling) {
+            bundleMarkDirtyDebounced(null);
+          }
         }
 
         if (autoSaveRef.current) {
