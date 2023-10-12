@@ -53,7 +53,7 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
         const {id, code} = content;
          
         try {
-          console.log(\`$\{debugName\}: eval(code) code.length:$\{code.length\} bytes received from parent\`, event.data);
+          console.log(\`$\{debugName\} eval(code) code.length:$\{code.length\} bytes received from parent\`, event.data);
           eval(code);
         } catch (err) {
           handleError(err);
@@ -74,6 +74,7 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
     
     // This is subscribed to by the preview-iframe
     window.parent.postMessage(initMessage, '*');    
+    console.log(\`$\{debugName\}: posted the initMessage to parent\`);
 `;
 };
 
