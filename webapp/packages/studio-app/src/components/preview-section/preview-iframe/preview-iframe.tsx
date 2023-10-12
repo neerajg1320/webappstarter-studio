@@ -50,12 +50,21 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       }
 
       const {source, type} = event.data as IframeMessage;
-      if ((source && source === "iframe") && (type && type === "init")) {
-        if (!isIframeInitialized) {
-          if (debugComponent) {
-            console.log(`${debugName} setting iframe initialized.`, event.data);
+      if ((source && source === "iframe")) {
+        if (type && type === "init") {
+          if (!isIframeInitialized) {
+            if (debugComponent) {
+              console.log(`${debugName} setting iframe initialized.`, event.data);
+            }
+            setIframeInitialized(true);
           }
-          setIframeInitialized(true);
+        } else if (type && type === "eval-finished") {
+          // We enable the iframe reload after first eval is finished
+          enableReloadRef.current = true;
+
+          if (debugComponent) {
+            console.log(`${debugName} iframe reload enabled.`, event.data);
+          }
         }
       }
     };
@@ -94,8 +103,8 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
   }, [html])
 
   useEffect(() => {
-    if (debugComponent) {
-      console.log(`${debugName} useEffect[...] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length}`);
+    if (debugComponent || true) {
+      console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length} iteration:${iteration}`);
     }
 
     if (!iframeRef.current) {
@@ -117,10 +126,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     // We enable the reload when we get the first onLoad callback in handleIframeOnLoad
     if (enableReloadRef.current) {
       iframeRef.current.contentWindow.location.reload(true);
-    }
-
-    if (debugIframeMessages) {
-      console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] iframe reload called`);
+      if (debugIframeMessages || true) {
+        console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] iframe reload called`);
+      }
     }
   }, [code, isIframeInitialized, iteration]);
 
@@ -135,9 +143,6 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       content: {id, code}
     };
     iframeRef.current.contentWindow.postMessage(codeMessage, '*');
-
-    // We enable the iframe reload after we get the first onload
-    enableReloadRef.current = true;
   }
 
   return (

@@ -6,7 +6,7 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
     
     window.console.log = function(...args) {
       // We save the console.log function before we override it
-      window_console_log(...args);
+      window_console_log(debugName, ...args);
       
       // This is part of a string which contains javascript hence we are not using typescript
       const logMessage = {
@@ -58,23 +58,23 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
             console.log(\`$\{debugName\} eval(code) code.length:$\{code.length\} bytes received from parent\`, event.data);
           }
           eval(code);
+          const evalFinished = { source: "iframe", type: 'eval-finished', content: ['Eval Finsihed'] }
+          window.parent.postMessage(evalFinished, '*');
+          if (flagDebugIframe) {    
+            console.log(\`$\{debugName\}: posted the evalFinished to parent\`);
+          }                     
         } catch (err) {
           handleError(err);
         }                
       }
     }, false);
     
-    // console.log('Parent Communicated Script Injected');
-    const initMessage = {
-      source: "iframe",
-      type: 'init',
-      // TBD: We have to resolve browser messaging issues!
-      content: ['Initialized'],
-    }  
+    // TBD: We have to resolve browser messaging issues!
+    const initMessage = { source: "iframe", type: 'init', content: ['Initialized'] }  
     
     // This is subscribed to by the preview-iframe
     // We will try and use onLoad as we are getting the message twice
-    
+        
     // Temporary disabled
     window.parent.postMessage(initMessage, '*');
     if (flagDebugIframe) {    
