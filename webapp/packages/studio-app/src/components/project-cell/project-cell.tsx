@@ -16,7 +16,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 // import CodeEditor from "../file-cell/code-editor";
 import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser";
-import {ReduxFile, ReduxProject} from "../../state";
+import {PackageConfig, ReduxFile, ReduxProject} from "../../state";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
@@ -121,6 +121,15 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         if (reduxProject.entryHtmlFileLocalId === _editedFile.localId) {
           console.log(`Update htmlContent of project`);
           updateProject({localId: reduxProject.localId, htmlContent: value});
+        } else if (reduxProject.packageFileLocalId === _editedFile.localId) {
+          console.log(`Update packageConfig of project`);
+          try {
+            const pkgConfig = JSON.parse(value) as PackageConfig;
+            // console.log(JSON.stringify(pkgConfig, null, 2));
+            updateProject({localId: reduxProject.localId, packageConfig: pkgConfig});
+          } catch (err) {
+            // console.error(err);
+          }
         }
 
         if (hotReloadRef.current) {
