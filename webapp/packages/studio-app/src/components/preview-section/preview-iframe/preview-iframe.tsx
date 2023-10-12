@@ -103,7 +103,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
   }, [html])
 
   useEffect(() => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length} iteration:${iteration}`);
     }
 
@@ -126,7 +126,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     // We enable the reload when we get the first onLoad callback in handleIframeOnLoad
     if (enableReloadRef.current) {
       iframeRef.current.contentWindow.location.reload(true);
-      if (debugIframeMessages || true) {
+      if (debugIframeMessages) {
         console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] iframe reload called`);
       }
     }
