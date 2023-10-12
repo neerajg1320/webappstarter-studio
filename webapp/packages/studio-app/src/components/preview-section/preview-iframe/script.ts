@@ -1,4 +1,5 @@
-export const parentCommunicationJavascriptCode = `
+export const parentCommunicationJavascriptCode = (title:string) => {
+  return `
     const window_console_log = window.console.log;
     const window_console_error = window.console.error;
     
@@ -74,6 +75,7 @@ export const parentCommunicationJavascriptCode = `
     // This is subscribed to by the preview-iframe
     window.parent.postMessage(initMessage, '*');    
 `;
+};
 
 export const simpleJavascriptCode = `
     console.log('hello from script');

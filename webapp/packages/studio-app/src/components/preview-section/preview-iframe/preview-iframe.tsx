@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {SyntheticEvent, useEffect, useRef, useState} from "react";
 import './preview-iframe.css';
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
@@ -29,7 +29,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       // debugWindowEvent(event);
 
       if (!iframeRef.current) {
-        console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
+        console.log(`PreviewIframe[[${title.padStart(20)}]] useEffect[] handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
         return;
       }
 
@@ -48,13 +48,13 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     };
 
     window.addEventListener('message', handleMessage, false);
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`PreviewIframe[${title.padStart(20)}] useEffect[] 'message' event listener added.`)
     }
 
     return () => {
       window.removeEventListener('message', handleMessage)
-      if (debugComponent) {
+      if (debugComponent || true) {
         console.log(`PreviewIframe[[${title.padStart(20)}]] useEffect[]:destroy 'message' event listener removed.`)
       }
     }
@@ -65,7 +65,17 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       console.log(`PreviewIframe: html:`, html);
     }
 
-    iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode);
+    if (!iframeRef.current) {
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] iframe.current is '${iframeRef.current}' for '${title}'`)
+      return;
+    }
+
+    if (!iframeRef.current.srcdoc) {
+      console.log(`useEffect[html] injected srcdoc in iframe`);
+      iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode(title));
+    }
+
+    console.log(`PreviewIframe[${title.padStart(20)}] useEffect[...] set the srcdoc code.length:${code.length}`);
   }, [html])
 
   useEffect(() => {
@@ -94,12 +104,19 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     }
   }, [code, isIframeInitialized, iteration]);
 
+  const handleIframeLoad = (event: SyntheticEvent) => {
+    console.log(`PreviewIframe[${title.padStart(20)}] handleIframeLoad`, event);
+
+
+  }
+
   return (
     <div className="preview-iframe">
       <iframe
         id={id}
         ref={iframeRef} 
         title={title + iteration.toString()}
+        onLoad={handleIframeLoad}
         sandbox="allow-scripts allow-modals allow-same-origin" />
     </div>
   );
