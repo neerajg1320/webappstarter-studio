@@ -98,8 +98,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       return;
     }
 
-    // Temporary disabled
+    // Can be temporarily disabled
     if (!isIframeInitialized) {
+      console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] isIframeInitialized:${isIframeInitialized}`);
       return;
     }
 
