@@ -51,7 +51,7 @@ export const parentCommunicationJavascriptCode = (title:string) => {
       
       if ((type === 'code') && (source === 'main')) { 
         const {id, code} = content;
-        console.log(\`iframe: code size of $\{code.length\} bytes received from parent\`, event.data);
+        console.log(\`iframe[${title.padStart(20)}]: code size of $\{code.length\} bytes received from parent\`, event.data);
          
         try {
           eval(code);
