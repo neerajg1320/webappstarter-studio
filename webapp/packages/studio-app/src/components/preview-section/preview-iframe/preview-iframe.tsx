@@ -16,6 +16,7 @@ interface PreviewIframeProps {
 
 const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html, code, err}) => {
   // const debugComponent = true;
+  const debugAlarms = false
   const iframeRef = useRef<any>();
   const enableReloadRef = useRef<boolean>(false);
 
@@ -37,7 +38,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
       if (!iframeRef.current) {
         // TBD: Sometimes we are reaching here even when iframeRef.current is null
-        console.log(`${debugName} useEffect[] handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
+        if (debugAlarms) {
+          console.log(`${debugName} useEffect[] handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
+        }
         return;
       }
 
@@ -72,7 +75,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
 
   useEffect(() => {
     if (!iframeRef.current) {
-      console.log(`${debugName} useEffect[html] iframe.current is '${iframeRef.current}' for '${title}'`)
+      if (debugAlarms) {
+        console.log(`${debugName} useEffect[html] iframe.current is '${iframeRef.current}' for '${title}'`)
+      }
       return;
     }
 
@@ -94,13 +99,17 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     }
 
     if (!iframeRef.current) {
-      console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`)
+      if (debugAlarms) {
+        console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`)
+      }
       return;
     }
 
     // Can be temporarily disabled
     if (!isIframeInitialized) {
-      console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] isIframeInitialized:${isIframeInitialized}`);
+      if (debugAlarms) {
+        console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] isIframeInitialized:${isIframeInitialized}`);
+      }
       return;
     }
 
