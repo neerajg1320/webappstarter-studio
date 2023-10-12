@@ -122,7 +122,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
           updateProject({localId: reduxProject.localId, htmlContent: value});
           needBundling = false;
         } else if (reduxProject.packageFileLocalId === _editedFile.localId) {
-          console.log(`Update packageConfig of project`);
           try {
             const pkgConfig = JSON.parse(value) as PackageConfig;
             // console.log(JSON.stringify(pkgConfig, null, 2));
