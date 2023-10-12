@@ -76,7 +76,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode(title));
     }
 
-    console.log(`PreviewIframe[${title.padStart(20)}] useEffect[...] set the srcdoc code.length:${code.length}`);
+    console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] set the srcdoc code.length:${code.length}`);
   }, [html])
 
   useEffect(() => {
@@ -101,7 +101,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     iframeRef.current.contentWindow.postMessage(codeMessage, '*');
 
     if (debugIframeMessages || true) {
-      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[code] code size of ${code.length} bytes sent to iframe`);
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[code, isIframeInitialized, iteration] code size of ${code.length} bytes sent to iframe`);
     }
   }, [code, isIframeInitialized, iteration]);
 
