@@ -1,6 +1,7 @@
 export const parentCommunicationJavascriptCode = (title:string) => { return `
     const window_console_log = window.console.log;
     const window_console_error = window.console.error;
+    const debugName = \`iframe       [${title.padStart(20)}]\`;
     
     window.console.log = function(...args) {
       // We save the console.log function before we override it
@@ -50,9 +51,9 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
       
       if ((type === 'code') && (source === 'main')) { 
         const {id, code} = content;
-        console.log(\`iframe       [${title.padStart(20)}]: code size of $\{code.length\} bytes received from parent\`, event.data);
          
         try {
+          console.log(\`$\{debugName\}: eval(code) code.length:$\{code.length\} bytes received from parent\`, event.data);
           eval(code);
         } catch (err) {
           handleError(err);

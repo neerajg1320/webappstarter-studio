@@ -71,9 +71,12 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       return;
     }
 
+    // This check can be disabled temporarily
     if (!iframeRef.current.srcdoc) {
-      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected srcdoc in iframe`);
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected communication script in html`);
       iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode(title));
+    } else {
+      console.log(`srcdoc is already populated. We need to enable updates for srcdoc`);
     }
 
     console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] set the srcdoc code.length:${code.length}`);
