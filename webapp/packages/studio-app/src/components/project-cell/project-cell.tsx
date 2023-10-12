@@ -118,6 +118,11 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       if (_editedFile.content !== value) {
         updateFile({localId: _editedFile.localId, content: value});
 
+        if (reduxProject.entryHtmlFileLocalId === _editedFile.localId) {
+          console.log(`Update htmlContent of project`);
+          updateProject({localId: reduxProject.localId, htmlContent: value});
+        }
+
         if (hotReloadRef.current) {
           bundleMarkDirtyDebounced(null);
         }

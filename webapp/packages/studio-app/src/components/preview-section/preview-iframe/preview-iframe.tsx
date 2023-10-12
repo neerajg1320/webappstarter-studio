@@ -1,4 +1,4 @@
-import React, {SyntheticEvent, useEffect, useMemo, useRef, useState} from "react";
+import React, {SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import './preview-iframe.css';
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
@@ -132,7 +132,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     }
   }, [code, isIframeInitialized, iteration]);
 
-  const handleIframeOnLoad = (event: SyntheticEvent) => {
+  const handleIframeOnLoad = useCallback((event: SyntheticEvent) => {
     if (debugComponent) {
       console.log(`${debugName} handleIframeLoad`, event);
     }
@@ -143,7 +143,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       content: {id, code}
     };
     iframeRef.current.contentWindow.postMessage(codeMessage, '*');
-  }
+  }, [code]);
 
   return (
     <div className="preview-iframe">
