@@ -15,7 +15,11 @@ interface PreviewIframeProps {
 }
 
 const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html, code, err}) => {
+  const debugComponent = true;
   const iframeRef = useRef<any>();
+  const enableReloadRef = useRef<boolean>(false);
+
+  // The setIframeInitialized might be redundant as we are posting code in onLoad
   const [isIframeInitialized, setIframeInitialized] = useState<boolean>(false);
   const debugName = useMemo<string>(() => {
     return `PreviewIframe[${title.padStart(20)}]`;
@@ -26,11 +30,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
   }
 
   useEffect(() => {
-    // console.log(iframeRef.current.contentWindow);
-    const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
-      // console.log(`handleMessage:`, event.source, event.source === iframeRef.current.contentWindow);
-      // debugWindowEvent(event);
+    console.log(`${debugName}: mounted`);
 
+    const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
       if (!iframeRef.current) {
         // TBD: Sometimes we are reaching here even when iframeRef.current is null
         console.log(`${debugName} useEffect[] handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
@@ -45,30 +47,28 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       const {source, type} = event.data as IframeMessage;
       if ((source && source === "iframe") && (type && type === "init")) {
         if (!isIframeInitialized) {
-          console.log(`${debugName} setting iframe initialized.`, event.data);
+          if (debugComponent) {
+            console.log(`${debugName} setting iframe initialized.`, event.data);
+          }
           setIframeInitialized(true);
         }
       }
     };
 
     window.addEventListener('message', handleMessage, false);
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`${debugName} useEffect[] 'message' event listener added.`)
     }
 
     return () => {
       window.removeEventListener('message', handleMessage)
-      if (debugComponent || true) {
+      if (debugComponent) {
         console.log(`${debugName} useEffect[]:destroy 'message' event listener removed.`)
       }
     }
   }, []);
 
   useEffect(() => {
-    if (debugComponent) {
-      console.log(`PreviewIframe: html:`, html);
-    }
-
     if (!iframeRef.current) {
       console.log(`${debugName} useEffect[html] iframe.current is '${iframeRef.current}' for '${title}'`)
       return;
@@ -76,35 +76,46 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
 
     // Updating the srcdoc is necessary to reset the code in the iframe.
     // However it still does not reset the style information present in the iframe.
-    console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected communication script in html`);
+    if (debugComponent) {
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected communication script in html`);
+    }
     const hydratedHtml = injectScriptInHtml(html, parentCommunicationJavascriptCode(title));
     iframeRef.current.srcdoc = hydratedHtml;
-    console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] set the hydratedHtml (length:${hydratedHtml.length}) in iframe.srcdoc`);
-
+    if (debugComponent) {
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] set the hydratedHtml (length:${hydratedHtml.length}) in iframe.srcdoc`);
+    }
   }, [html])
 
   useEffect(() => {
-    console.log(`${debugName} useEffect[...] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length}`);
+    if (debugComponent) {
+      console.log(`${debugName} useEffect[...] isIframeInitialized=${isIframeInitialized} code.length=${code && code.length}`);
+    }
 
     if (!iframeRef.current) {
       console.log(`handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`)
       return;
     }
 
+    // Temporary disabled
     if (!isIframeInitialized) {
       return;
     }
 
-    // We reload the iframe and then send the code message in onLoad
-    iframeRef.current.contentWindow.location.reload(true);
+    // We avoid reload the when we create the iframe. Hence it is disabled by default
+    // We enable the reload when we get the first onLoad callback in handleIframeOnLoad
+    if (enableReloadRef.current) {
+      iframeRef.current.contentWindow.location.reload(true);
+    }
 
     if (debugIframeMessages || true) {
-      console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] code size of ${code.length} bytes sent to iframe`);
+      console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] iframe reload called`);
     }
   }, [code, isIframeInitialized, iteration]);
 
   const handleIframeOnLoad = (event: SyntheticEvent) => {
-    console.log(`${debugName} handleIframeLoad`, event);
+    if (debugComponent || true) {
+      console.log(`${debugName} handleIframeLoad`, event);
+    }
 
     const codeMessage:IframeMessage = {
       source: 'main',
@@ -112,6 +123,9 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       content: {id, code}
     };
     iframeRef.current.contentWindow.postMessage(codeMessage, '*');
+
+    // We enable the iframe reload after we get the first onload
+    enableReloadRef.current = true;
   }
 
   return (

@@ -1,6 +1,7 @@
 export const parentCommunicationJavascriptCode = (title:string) => { return `
     const window_console_log = window.console.log;
     const window_console_error = window.console.error;
+    const flagDebugIframe = true;
     const debugName = \`iframe       [${title.padStart(20)}]\`;
     
     window.console.log = function(...args) {
@@ -53,16 +54,15 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
         const {id, code} = content;
          
         try {
-          console.log(\`$\{debugName\} eval(code) code.length:$\{code.length\} bytes received from parent\`, event.data);
+          if (flagDebugIframe) {
+            console.log(\`$\{debugName\} eval(code) code.length:$\{code.length\} bytes received from parent\`, event.data);
+          }
           eval(code);
         } catch (err) {
           handleError(err);
         }                
       }
     }, false);
-    
-    const iframeElement = document.querySelector("#root");
-    // console.log(Object.create(iframeElement));
     
     // console.log('Parent Communicated Script Injected');
     const initMessage = {
@@ -73,8 +73,13 @@ export const parentCommunicationJavascriptCode = (title:string) => { return `
     }  
     
     // This is subscribed to by the preview-iframe
-    window.parent.postMessage(initMessage, '*');    
-    console.log(\`$\{debugName\}: posted the initMessage to parent\`);
+    // We will try and use onLoad as we are getting the message twice
+    
+    // Temporary disabled
+    window.parent.postMessage(initMessage, '*');
+    if (flagDebugIframe) {    
+      console.log(\`$\{debugName\}: posted the initMessage to parent\`);
+    }
 `;
 };
 
