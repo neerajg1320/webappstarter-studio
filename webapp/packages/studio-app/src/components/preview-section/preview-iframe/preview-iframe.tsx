@@ -19,7 +19,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
   const [isIframeInitialized, setIframeInitialized] = useState<boolean>(false);
 
   if (debugComponent || true) {
-    console.log(`PreviewIframe: ${title.padEnd(20)}  iteration:{iteration} [${html.length}, ${code.length}]`);
+    console.log(`PreviewIframe[${title.padStart(20)}] iteration:${iteration} [${html.length}, ${code.length}]`);
   }
 
   useEffect(() => {
@@ -29,6 +29,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       // debugWindowEvent(event);
 
       if (!iframeRef.current) {
+        // TBD: Sometimes we are reaching here even when iframeRef.current is null
         console.log(`PreviewIframe[[${title.padStart(20)}]] useEffect[] handleMessage: iframe.current is '${iframeRef.current}' for '${title}'`, event)
         return;
       }
@@ -55,7 +56,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     return () => {
       window.removeEventListener('message', handleMessage)
       if (debugComponent || true) {
-        console.log(`PreviewIframe[[${title.padStart(20)}]] useEffect[]:destroy 'message' event listener removed.`)
+        console.log(`PreviewIframe[${title.padStart(20)}] useEffect[]:destroy 'message' event listener removed.`)
       }
     }
   }, []);
@@ -71,7 +72,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     }
 
     if (!iframeRef.current.srcdoc) {
-      console.log(`useEffect[html] injected srcdoc in iframe`);
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected srcdoc in iframe`);
       iframeRef.current.srcdoc = injectScriptInHtml(html, parentCommunicationJavascriptCode(title));
     }
 
@@ -100,7 +101,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     iframeRef.current.contentWindow.postMessage(codeMessage, '*');
 
     if (debugIframeMessages || true) {
-      console.log(`useEffect[code]: code size of ${code.length} bytes sent to iframe`);
+      console.log(`PreviewIframe[${title.padStart(20)}] useEffect[code] code size of ${code.length} bytes sent to iframe`);
     }
   }, [code, isIframeInitialized, iteration]);
 
