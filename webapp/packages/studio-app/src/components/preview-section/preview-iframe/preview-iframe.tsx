@@ -15,7 +15,7 @@ interface PreviewIframeProps {
 }
 
 const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html, code, err}) => {
-  const debugComponent = true;
+  // const debugComponent = true;
   const iframeRef = useRef<any>();
   const enableReloadRef = useRef<boolean>(false);
 
@@ -25,12 +25,14 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     return `PreviewIframe[${title.padStart(20)}]`;
   }, [title]);
 
-  if (debugComponent || true) {
+  if (debugComponent) {
     console.log(`${debugName} id:${id} iteration:${iteration} [${html.length}, ${code.length}]`);
   }
 
   useEffect(() => {
-    console.log(`${debugName}: mounted`);
+    if (debugComponent) {
+      console.log(`${debugName}: mounted`);
+    }
 
     const handleMessage:(ev: MessageEvent<any>) => any = (event) => {
       if (!iframeRef.current) {
@@ -107,13 +109,13 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       iframeRef.current.contentWindow.location.reload(true);
     }
 
-    if (debugIframeMessages || true) {
+    if (debugIframeMessages) {
       console.log(`${debugName} useEffect[code, isIframeInitialized, iteration] iframe reload called`);
     }
   }, [code, isIframeInitialized, iteration]);
 
   const handleIframeOnLoad = (event: SyntheticEvent) => {
-    if (debugComponent || true) {
+    if (debugComponent) {
       console.log(`${debugName} handleIframeLoad`, event);
     }
 

@@ -1,7 +1,7 @@
 export const parentCommunicationJavascriptCode = (title:string) => { return `
     const window_console_log = window.console.log;
     const window_console_error = window.console.error;
-    const flagDebugIframe = true;
+    const flagDebugIframe = false;
     const debugName = \`iframe       [${title.padStart(20)}]\`;
     
     window.console.log = function(...args) {
