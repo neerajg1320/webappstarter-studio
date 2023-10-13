@@ -80,3 +80,6 @@ export const advancedFeatures = true;
 export const enableDiffForFileUpdate = true;
 export const autoSaveDebounce = 750;
 export const debugFileTree = false;
+
+// Console
+export const enableConsole = false;

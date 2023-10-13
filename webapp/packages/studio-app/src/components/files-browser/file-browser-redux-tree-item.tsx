@@ -73,7 +73,7 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
     }
   }
 
-  const [fileName, setFileName] = useState(itemNode.info.name);
+  const [fileName, setFileName] = useState<string>(itemNode.info.name);
 
 
   useEffect(() => {

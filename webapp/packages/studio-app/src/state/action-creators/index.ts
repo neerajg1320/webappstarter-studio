@@ -950,6 +950,7 @@ export const removeFile = (localId:string) => {
     const fileState = getState().files.data[localId];
     if (!fileState) {
       console.error(`Error! file id '${localId}' not found in store`)
+      return;
     }
 
     const {pkid} = fileState;

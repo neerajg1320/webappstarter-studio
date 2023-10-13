@@ -1,22 +1,26 @@
-export const parentCommunicationJavascriptCode = (title:string) => { return `
+export const parentCommunicationJavascriptCode = (title:string, consoleEnabled:boolean) => { return `
+    // We save the console.log function before we override it
     const window_console_log = window.console.log;
     const window_console_error = window.console.error;
     const flagDebugIframe = false;
     const debugName = \`iframe       [${title.padStart(20)}]\`;
+    const consoleEnabled = ${consoleEnabled};
     
     window.console.log = function(...args) {
-      // We save the console.log function before we override it
+      // invoke console log with iframe debugName prefixed      
       window_console_log(debugName, ...args);
       
-      // This is part of a string which contains javascript hence we are not using typescript
-      const logMessage = {
-        source: "iframe",
-        type: 'log',
-        content: args, // args is an array
+      if (consoleEnabled) {
+        // This is part of a string which contains javascript hence we are not using typescript
+        const logMessage = {
+          source: "iframe",
+          type: 'log',
+          content: args, // args is an array
+        }
+        
+        // This is subscribed to by the preview-console
+        window.parent.postMessage(logMessage, '*');
       }
-      
-      // This is subscribed to by the preview-console
-      window.parent.postMessage(logMessage, '*');
     }
     
     // TBD: Need to verify the flow here

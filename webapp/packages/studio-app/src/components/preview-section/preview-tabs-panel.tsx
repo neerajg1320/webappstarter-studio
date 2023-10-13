@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import './preview-tabs-panel.css';
 import TabsBulma from "../common/tabs-bulma";
 import PreviewIframe from "./preview-iframe/preview-iframe";
-import {debugComponent} from "../../config/global";
+import {debugComponent, enableConsole} from "../../config/global";
 import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
 import PreviewBuild from "./preview-build";
@@ -67,7 +67,11 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
   }, [code, err]);
 
   const previewChoices:string[] = useMemo(() => {
-    return ['Build', 'Preview', 'Console', 'Bundle'];
+    const tabs = ['Build', 'Preview', 'Bundle']
+    if (enableConsole) {
+      tabs.push('Console');
+    }
+    return tabs;
   }, []);
 
   const onTabChange = ([value, index]:[string, number]) => {
@@ -94,9 +98,12 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
           {html ? <PreviewIframe id={id} iteration={iteration} title={title} html={html} code={code} err={err} /> : <h2>html not populated</h2>}
         </div>
-        <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? "flex" : "none"}}>
-          <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
-        </div>
+        {enableConsole &&
+          <div className="preview-tab"
+               style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Console') ? "flex" : "none"}}>
+            <PreviewConsole count={count} onChange={handleConsoleTextChange}/>
+          </div>
+        }
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Bundle') ? "flex" : "none" }}>
           <PreviewBundle bundle={code}/>
         </div>

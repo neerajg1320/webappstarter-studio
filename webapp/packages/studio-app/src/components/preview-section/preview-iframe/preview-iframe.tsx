@@ -2,7 +2,7 @@ import React, {SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState
 import './preview-iframe.css';
 import {injectScriptInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
-import {debugComponent, debugIframeMessages} from "../../../config/global";
+import {debugComponent, debugIframeMessages, enableConsole} from "../../../config/global";
 import {debugWindowEvent, IframeMessage} from "../message";
 
 interface PreviewIframeProps {
@@ -95,7 +95,7 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
     if (debugComponent) {
       console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected communication script in html`);
     }
-    const hydratedHtml = injectScriptInHtml(html, parentCommunicationJavascriptCode(title));
+    const hydratedHtml = injectScriptInHtml(html, parentCommunicationJavascriptCode(title, enableConsole));
     iframeRef.current.srcdoc = hydratedHtml;
     if (debugComponent) {
       console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] set the hydratedHtml (length:${hydratedHtml.length}) in iframe.srcdoc`);

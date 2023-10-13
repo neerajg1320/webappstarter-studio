@@ -418,4 +418,4 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   )
 }
 
-export default FileBrowser;
+export default React.memo(FileBrowser);
