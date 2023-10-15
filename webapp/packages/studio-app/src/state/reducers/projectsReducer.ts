@@ -1,23 +1,13 @@
 import produce from 'immer';
 import { Action } from '../actions';
 import { ActionType } from '../action-types';
-import { ReduxProject } from '../project';
+import {ProjectsState, ReduxProject} from '../project';
 import {generateLocalId} from "../id";
 import {debugRedux} from "../../config/global";
 
 // The difference between ProjectsState and CellsState:
 //  - ProjectsState have no order
 //  - Cells do not have currentCellId
-interface ProjectsState {
-  loading: boolean;
-  loadCount: number;
-  autoBundle: boolean;
-  error: string | null;
-  currentProjectId: string|null,
-  data: {
-    [key: string]: ReduxProject
-  }
-}
 
 const initialState: ProjectsState = {
   loading: false,

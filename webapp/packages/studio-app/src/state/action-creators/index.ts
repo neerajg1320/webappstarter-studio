@@ -73,7 +73,7 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
-import {getProjectFromLocalId} from "../helpers/project-helpers";
+import {getProjectFromLocalId, getProjectFromServerId} from "../helpers/project-helpers";
 import {PackageDetectResult} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
@@ -553,7 +553,9 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
 
       // TBD: For now we will hard code the entry_html_path to 'index.html'
       dispatch(updateProject({localId, ...rest, entry_html_path: 'index.html', synced:true}));
-      await fetchFiles(rest.pkid)(dispatch, getState);
+
+      const updatedProject = getProjectFromLocalId(getState().projects, localId);
+      await fetchFiles(updatedProject)(dispatch, getState);
     } catch (err) {
       if (err instanceof AxiosError) {
         if (debugRedux ||true) {
@@ -749,15 +751,19 @@ export const deleteFile = (localId:string): DeleteFileAction => {
 }
 
 //
-export const fetchFiles = (projectPkid?:string) => {
+export const fetchFiles = (project?:ReduxProject) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     try {
-      dispatch({type: ActionType.FETCH_FILES_START, payload:{reset:true}});
+      const fetchFilesPayload = {reset:true};
+      if (project) {
+        fetchFilesPayload['projectLocalId'] = project.localId
+      }
+      dispatch({type: ActionType.FETCH_FILES_START, payload:fetchFilesPayload});
 
       // Later we can created a combined object
       let params:{[k:string]:string|number} = {};
-      if (projectPkid) {
-        params['project'] = projectPkid;
+      if (project) {
+        params['project'] = project.pkid;
       }
       const {data}:{data:ReduxFile[]} = await axiosApiInstance.get(`/files/`, {params});
 
@@ -810,13 +816,14 @@ export const fetchFiles = (projectPkid?:string) => {
         dispatch(updateProject({localId:projectLocalId, filesSynced:true}));
       })
 
-      if (!projectPkid) {
+      if (!project) {
         dispatch({type: ActionType.UPDATE_APPLICATION, payload: {filesLoaded: true}});
       } else {
-        const projectLocalId = projectsPkidToLocalIdMap[projectPkid];
+        const projectLocalId = projectsPkidToLocalIdMap[project.pkid];
         dispatch(updateProject({localId:projectLocalId, filesSynced:true}));
       }
     } catch (err) {
+      throw err;
       if (err instanceof Error) {
         dispatch({
           type: ActionType.FETCH_FILES_ERROR,

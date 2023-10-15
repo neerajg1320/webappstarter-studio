@@ -77,12 +77,16 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
       return state;
 
     case ActionType.FETCH_FILES_START:
-      const {reset} = action.payload;
+      const {reset, projectLocalId} = action.payload;
 
       state.loading = true;
       state.error = null;
       if (reset) {
-        state.data = {};
+        if (!projectLocalId) {
+          state.data = {};
+        } else {
+          console.log(`We need to delete files for project ${projectLocalId}`);
+        }
       }
       return state;
 

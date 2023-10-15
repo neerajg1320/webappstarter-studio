@@ -27,6 +27,18 @@ export enum StartConfigType {
   PROEJCT_COPY = 'project_copy'
 }
 
+export interface ProjectsState {
+  loading: boolean;
+  loadCount: number;
+  autoBundle: boolean;
+  error: string | null;
+  currentProjectId: string|null,
+  data: {
+    [key: string]: ReduxProject
+  }
+}
+
+
 // TBD: Need to add a strong documentation here as this is one of the focal points of our application
 // selectedFileLocalId: This is the selected to be shown in the editor.
 // filesSynced is set to true when the project file models are downloaded. This happens before ideReady.

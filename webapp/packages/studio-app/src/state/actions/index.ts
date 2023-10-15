@@ -171,7 +171,7 @@ export interface DeleteFileAction {
 
 export interface FetchFilesStartAction {
   type: ActionType.FETCH_FILES_START,
-  payload: { reset: boolean }
+  payload: { reset: boolean, projectLocalId?: string }
 }
 
 export interface FetchFilesCompleteAction {

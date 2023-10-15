@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ProjectListScroller from "./project-list-scroller/project-list-scroller";
 import ProjectListGrid from "./project-list-grid/project-list-grid";
@@ -19,7 +19,10 @@ const ProjectListView = () => {
   const currentUser = useTypedSelector(state => state.auth.currentUser);
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const projectsState = useTypedSelector((state) => state.projects);
-  const projectList = useTypedSelector((state) => getProjects(state.projects));
+  // const projectList = useTypedSelector((state) => getProjects(state.projects));
+  const projectList = useMemo(() => {
+    return getProjects(projectsState);
+  }, [projectsState]);
 
   const handleNewProjectClick = () => {
     const localId = generateLocalId();
