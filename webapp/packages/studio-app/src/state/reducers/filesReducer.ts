@@ -80,7 +80,7 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
         if (!projectLocalId) {
           state.data = {};
         } else {
-          console.log(`We need to delete files for project ${projectLocalId}`);
+          // console.log(`We need to delete files for project ${projectLocalId}`);
           // state.data = excludeProjectFromMap(state.data, projectLocalId);
           state.data = excludeProjectFromFileMap(state.data, projectLocalId);
         }
