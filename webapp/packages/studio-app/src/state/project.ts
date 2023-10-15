@@ -27,15 +27,17 @@ export enum StartConfigType {
   PROEJCT_COPY = 'project_copy'
 }
 
+export type ProjectMap = {
+  [key: string]: ReduxProject
+};
+
 export interface ProjectsState {
   loading: boolean;
   loadCount: number;
   autoBundle: boolean;
   error: string | null;
   currentProjectId: string|null,
-  data: {
-    [key: string]: ReduxProject
-  }
+  data: ProjectMap;
 }
 
 

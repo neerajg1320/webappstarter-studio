@@ -4,6 +4,16 @@ import {CodeLanguage} from "./language";
 
 // export type FileTypes = 'javascript' | 'python' | 'java' | 'go' | 'rust' | 'c' | 'c++';
 
+export type FileMap = {
+  [key: string]: ReduxFile
+};
+
+export interface FilesState {
+  loading: boolean;
+  error: string | null;
+  data: FileMap;
+}
+
 // localFile: the uploaded file
 // file: link sent by server
 export interface ReduxFile extends ServerObject {

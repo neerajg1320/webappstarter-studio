@@ -1,19 +1,14 @@
 import produce from 'immer';
 import {Action} from '../actions';
 import {ActionType} from '../action-types';
-import {ReduxFile} from '../file';
+import {FilesState, ReduxFile} from '../file';
 import {debugRedux} from "../../config/global";
+import {excludeProjectFromFileMap} from "../helpers/file-helpers";
 
 // The difference between FilesState and CellsState:
 //  - FilesState have no order
 //  - Cells do not have currentCellId
-interface FilesState {
-  loading: boolean;
-  error: string | null;
-  data: {
-    [key: string]: ReduxFile
-  }
-}
+
 
 const initialState: FilesState = {
   loading: false,
@@ -86,6 +81,8 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
           state.data = {};
         } else {
           console.log(`We need to delete files for project ${projectLocalId}`);
+          // state.data = excludeProjectFromMap(state.data, projectLocalId);
+          state.data = excludeProjectFromFileMap(state.data, projectLocalId);
         }
       }
       return state;

@@ -1,4 +1,4 @@
-import {ProjectsState, ReduxProject} from "../project";
+import {ProjectsState, ProjectMap, ReduxProject} from "../project";
 
 
 export const getProjects = (state:ProjectsState):ReduxProject[] => {
