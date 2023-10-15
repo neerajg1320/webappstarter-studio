@@ -11,7 +11,7 @@ const AppNavBar = () => {
   const enableUserMenu = false;
   const isAuthenticated = useTypedSelector((state) => state.auth.isAuthenticated);
   const currentUser = useTypedSelector(state => state.auth.currentUser);
-  const {logoutUser} = useActions();
+  const {logoutUser, deleteUser} = useActions();
   const navigate = useNavigate();
   const location = useLocation();
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
@@ -19,6 +19,14 @@ const AppNavBar = () => {
   const handleLogoutClick = () => {
     if (currentUser) {
       logoutUser(currentUser.localId);
+    }
+
+    navigate(RoutePath.ROOT, {replace: true});
+  };
+
+  const handleDeleteClick = () => {
+    if (currentUser) {
+      deleteUser(currentUser.localId);
     }
 
     navigate(RoutePath.ROOT, {replace: true});
@@ -109,6 +117,9 @@ const AppNavBar = () => {
                   }
                   <div className="navbar-item" onClick={() => handleLogoutClick()}>
                     Logout
+                  </div>
+                  <div className="navbar-item" onClick={() => handleDeleteClick()}>
+                    Delete User
                   </div>
                 </div>
               </div>

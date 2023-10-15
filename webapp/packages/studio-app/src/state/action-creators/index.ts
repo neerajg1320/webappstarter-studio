@@ -1574,6 +1574,15 @@ export const logoutUser = (localId:string) => {
   };
 }
 
+export const deleteUser = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const response = await axiosApiInstance.delete(`/auth/delete/`);
+    if (response.status === 204) {
+      logoutUser(localId)(dispatch, getState);
+    }
+  };
+}
+
 // export const updateUser = (userPartial: ReduxUpdateUserPartial): UpdateUserAction => {
 //   // console.log(`updateUser: ${JSON.stringify(userPartial)}`);
 //   return {
