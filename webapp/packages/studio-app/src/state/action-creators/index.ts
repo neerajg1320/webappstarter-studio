@@ -14,7 +14,7 @@ import {
   MoveCellAction,
   ResetApplicationAction,
   ResetBundlesAction,
-  ResetFilesAction,
+  DeleteFilesAction,
   ResetProjectsAction,
   SetCurrentProjectAction,
   UpdateApplicationAction,
@@ -834,7 +834,7 @@ export const fetchFiles = (project?:ReduxProject) => {
   };
 }
 
-export const deleteFiles = (projectLocalId?:string):ResetFilesAction => {
+export const deleteFiles = (projectLocalId?:string):DeleteFilesAction => {
   return {
     type: ActionType.DELETE_FILES,
     payload: {
