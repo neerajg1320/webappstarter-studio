@@ -4,21 +4,19 @@ import ProjectListItemCard from "./project-list-item-card";
 import {debugComponent, debugProject} from "../../../../config/global";
 import {useActions} from "../../../../hooks/use-actions";
 import './project-list-grid.css';
+import {getProjects} from "../../../../state/helpers/project-helpers";
+import {ReduxProject} from "../../../../state";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
 
 interface ProjectListGridProps {
+  projects: ReduxProject[];
   visibility:boolean;
 }
 
-const ProjectListGrid:React.FC<ProjectListGridProps> = ({visibility:propVisibility}) => {
+const ProjectListGrid:React.FC<ProjectListGridProps> = ({projects, visibility:propVisibility}) => {
   // const debugComponent = true;
-  const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
-  const projectsState = useTypedSelector((state) => state.projects);
-  const projectList = useMemo(() => {
-    return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
-  }, [projectsState.data]);
 
   // Grid Layout
   // Ref: https://codepen.io/TomckySan/pen/mxVbgR
@@ -54,8 +52,8 @@ const ProjectListGrid:React.FC<ProjectListGridProps> = ({visibility:propVisibili
           // overflowY: "auto",
           padding: "40px"
         }}>
-          {projectList &&
-              projectList.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
+          {projects &&
+              projects.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
           }
         </div>
       </div>

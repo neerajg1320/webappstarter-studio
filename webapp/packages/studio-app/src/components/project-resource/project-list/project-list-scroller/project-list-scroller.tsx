@@ -1,21 +1,16 @@
 import React, {useEffect, useMemo, useRef} from "react";
 import './project-list-scroller.css';
 
-import {useTypedSelector} from "../../../../hooks/use-typed-selector";
-
 import {debugComponent} from "../../../../config/global";
 import ProjectListScrollItem from "./project-list-scroll-item";
+import {ReduxProject} from "../../../../state";
 
 interface ProjectListScrollerProps {
+  projects: ReduxProject[];
   visibility: boolean;
 }
 
-const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:propVisibility}) => {
-  const projectsState = useTypedSelector((state) => state.projects);;
-  const projectList = useMemo(() => {
-    return Object.entries(projectsState.data).map(([k,v]) => v).filter(item => item.confirmed)
-  }, [projectsState.data]);
-
+const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({projects, visibility:propVisibility}) => {
 
   const handleProjectListScroll = () => {
     // console.log(`handleProjectListScroll():`);
@@ -29,7 +24,7 @@ const ProjectListScroller:React.FC<ProjectListScrollerProps> = ({visibility:prop
 
   return (
       <div className="project-scroll-list" onScroll={handleProjectListScroll} style={{visibility: propVisibility ? 'visible' : 'hidden'}}>
-        {projectList.map((project, index) => {
+        {projects.map((project, index) => {
           return (
             <ProjectListScrollItem key={index} index={index} reduxProject={project} />
           );
