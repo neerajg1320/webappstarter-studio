@@ -120,8 +120,12 @@ const reducer = produce((state: FilesState = initialState, action: Action): File
 
       return state;
 
-    case ActionType.RESET_FILES:
-      state = initialState;
+    case ActionType.DELETE_FILES:
+      if (action.payload.projectLocalId) {
+        state.data = excludeProjectFromFileMap(state.data, action.payload.projectLocalId);
+      } else {
+        state = initialState;
+      }
       return state;
 
     default:

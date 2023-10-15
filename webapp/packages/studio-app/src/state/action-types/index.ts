@@ -34,7 +34,7 @@ export enum ActionType {
   FETCH_FILES_START = 'fetch_files_start',
   FETCH_FILES_COMPLETE = 'fetch_files_complete',
   FETCH_FILES_ERROR = 'fetch_files_error',
-  RESET_FILES = 'reset_files',
+  DELETE_FILES = 'delete_files',
 
   // We need request set for following
   // REGISTER_USER

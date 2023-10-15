@@ -184,9 +184,11 @@ export interface FetchFilesErrorAction {
   payload: string
 }
 
-export interface ResetFilesAction {
-  type: ActionType.RESET_FILES,
-  payload?: any;
+export interface DeleteFilesAction {
+  type: ActionType.DELETE_FILES,
+  payload?: {
+    projectLocalId: string
+  }
 }
 
 export interface UserRequestStartAction {
@@ -257,7 +259,7 @@ export type Action =
     | FetchCellsAction
     | FetchCellsCompleteAction
     | FetchCellsErrorAction
-    | ResetFilesAction
+    | DeleteFilesAction
     | SaveCellsErrorAction
     | CreateProjectAction
     | UpdateProjectAction

@@ -834,9 +834,12 @@ export const fetchFiles = (project?:ReduxProject) => {
   };
 }
 
-export const resetFiles = ():ResetFilesAction => {
+export const deleteFiles = (projectLocalId?:string):ResetFilesAction => {
   return {
-    type: ActionType.RESET_FILES
+    type: ActionType.DELETE_FILES,
+    payload: {
+      projectLocalId
+    }
   }
 }
 
@@ -1560,7 +1563,7 @@ export const authenticateUser = (email:string, password:string) => {
 export const logoutUser = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     dispatch(resetBundles());
-    dispatch(resetFiles());
+    dispatch(deleteFiles());
     dispatch(resetProjects());
     removeAuthFromLocalStorage();
     dispatch(userDelete(localId));

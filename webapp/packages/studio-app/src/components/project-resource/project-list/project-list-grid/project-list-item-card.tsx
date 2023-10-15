@@ -11,7 +11,7 @@ interface ProjectCardProps {
 }
 
 const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:propOnClick}) => {
-  const { removeProject } = useActions();
+  const { deleteFiles, removeProject } = useActions();
   const navigate = useNavigate();
   const {setCurrentProjectId, updateProject} = useActions();
 
@@ -32,7 +32,8 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
 
   const handleDeleteProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    removeProject(reduxProject.localId)
+    deleteFiles(reduxProject.localId);
+    removeProject(reduxProject.localId);
   }
 
 
