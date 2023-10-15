@@ -56,7 +56,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  const { bundleProject, updateProject, downloadProjectZip, saveFile, updateFile, fetchFileContents, makeProjectIdeReady } = useActions();
+  const { bundleProject, updateProject, downloadProjectZip, saveFile, updateFile, fetchFiles, fetchFileContents, makeProjectIdeReady } = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -242,6 +242,13 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
     markProjectBundleDirty();
     setIteration((prev) => prev + 1);
+  }
+
+  const handleProjectReloadClick = () => {
+    console.log(`Reloading the project`, reduxProject.title);
+    fetchFiles(reduxProject);
+    // We would need to abstract the reset state
+    updateProject({localId: reduxProject.localId, ideReady: false, bundleDirty:true});
   }
 
   const createDownloadLinkAndClick = () => {
@@ -549,12 +556,15 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
                 Run
               </button>
+              <button className="button is-family-secondary is-small" onClick={handleProjectReloadClick}>
+                Reload
+              </button>
 
               <div className="project-download-async-button-group"
                    style={{width: "80px", display: "flex", flexDirection: "column", alignItems: "center"}}>
                 <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick}
                         disabled={reduxProject.downloadingZip}>
-                  Download
+                  Export
                 </button>
                 <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
               </div>
