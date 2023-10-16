@@ -65,7 +65,14 @@ import {AxiosError} from "axios";
 import {BundleLanguage, BundleResult, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
-import {getFileType, getFileTypeFromPath, joinFileParts} from "../../utils/path";
+import {
+  getFileBasenameParts,
+  getFileNameFromPath,
+  getFilePathParts,
+  getFileType,
+  getFileTypeFromPath,
+  joinFileParts
+} from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
 import {getLoadResult} from "../../bundler/plugins/loadFile";
 import {ApiFlowOperation, ApiFlowResource} from "../api";
@@ -223,10 +230,13 @@ export const createProjectBundle = (
         Object.entries(filesLocalIdMap)
             .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
             .map(([k, v]) => {
-              return [v.path, v]
+              const {dirname, basename} = getFilePathParts(v.path);
+              const {name, ext} = getFileBasenameParts(basename)
+              const lookupKey = joinFileParts(dirname, name);
+              return [lookupKey, v]
             })
     );
-    if (debugPlugin || debugRedux) {
+    if (debugPlugin || debugRedux || true) {
       console.log(`projectFileMap:`, projectFileMap);
     }
 
