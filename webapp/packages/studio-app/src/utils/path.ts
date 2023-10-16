@@ -97,6 +97,10 @@ export const getImportLookupPath = (path:string) => {
   const {name, ext} = getFileBasenameParts(basename)
 
   if (['js', 'jsx', 'ts', 'tsx'].includes(ext)) {
+    if (name === 'index') {
+      return dirname;
+    }
+
     return joinFileParts(dirname, name);
   }
 
