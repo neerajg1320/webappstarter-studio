@@ -42,6 +42,9 @@ export interface ReduxFile extends ServerObject {
   // It can give us better idea than contentSynced for the contents being in syncß
   prevContent: string|null;
   modifiedKeys: string[];
+
+  // This is the value we get upon response from server
+  resolveDir?: string;
 }
 
 export interface ReduxCreateFilePartial extends ServerObjectPartial {
@@ -91,6 +94,8 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
 
   prevContent?: string|null;
   modifiedKeys?: string[];
+
+  resolveDir?: string;
 }
 
 
