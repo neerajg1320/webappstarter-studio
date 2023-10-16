@@ -143,6 +143,8 @@ const bundleCode = async (
       esbuildPlugins.push(pluginCells(codeOrFilePath));
     }
 
+    const jsxAuto = (inputType === 'cell' && combineCellsCode) || true;
+
     try {
         const builderServiceOptions: esbuild.BuildOptions = {
             // The following will be replaced by pluginLoadFromServer to code for a cell
@@ -163,9 +165,11 @@ const bundleCode = async (
             },
         };
 
-        if (inputType === 'cell' && combineCellsCode) {
-            builderServiceOptions.jsxFactory = '_React.createElement';
-            builderServiceOptions.jsxFragment = '_React.Fragment';
+        if (jsxAuto) {
+          builderServiceOptions.jsx = 'automatic';
+          // The following has been kept for refernece. It was used earlier to support jsx automatic import.
+          // builderServiceOptions.jsxFactory = '_React.createElement';
+          // builderServiceOptions.jsxFragment = '_React.Fragment';
         }
 
         // The esbuild.initialize should have been already invoked
