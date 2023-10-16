@@ -22,7 +22,7 @@ export const getLoadResult = (data:string, contentType:string|null):esbuild.OnLo
   }
 
   const result: esbuild.OnLoadResult = {
-    loader: (contentType === "css") ? 'jsx' : (contentType === "ts") ? 'tsx' : 'jsx',
+    loader: (contentType === "css") ? 'jsx' : (['ts', 'tsx'].includes(contentType)) ? 'tsx' : 'jsx',
     contents,
   }
   return result;

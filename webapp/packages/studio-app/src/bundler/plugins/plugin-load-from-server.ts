@@ -49,7 +49,7 @@ export const pluginLoadFromServer = ({onPackageLoad}: PlugingLoadFromServerArgs)
 
       build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
         if (debugPlugin || false) {
-          console.log('onLoad', args);
+          console.log('pluginLoadFromServer: onLoad', args);
         }
 
         let result: esbuild.OnLoadResult;

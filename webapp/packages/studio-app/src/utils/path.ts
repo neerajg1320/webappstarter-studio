@@ -56,6 +56,7 @@ export const hasTrailingSlash = (path:string):boolean => {
   return isRegexMatch(/^.*\/$/, path);
 }
 
+// The ext contains the extension without preceding dot (.)
 export const getFileBasenameParts = (inputName:string): {name:string, ext:string} => {
   const parts = inputName.split('.');
   let name:string;
@@ -82,6 +83,24 @@ export const getFileBasenameFromPath = (path:string) => {
 export const getFileTypeFromPath = (path:string) => {
   const {name, ext} = getFileBasenameParts(getFileNameFromPath(path));
   return ext;
+}
+
+export const getPathWithoutExtension = (path:string) => {
+  const {dirname, basename} = getFilePathParts(path);
+  const {name} = getFileBasenameParts(basename)
+
+  return joinFileParts(dirname, name);
+}
+
+export const getImportLookupPath = (path:string) => {
+  const {dirname, basename} = getFilePathParts(path);
+  const {name, ext} = getFileBasenameParts(basename)
+
+  if (['js', 'jsx', 'ts', 'tsx'].includes(ext)) {
+    return joinFileParts(dirname, name);
+  }
+
+  return path;
 }
 
 export const getCopyPath = (inputPath:string): string => {
