@@ -11,3 +11,7 @@ export const selectProjectFromFileMap = (map:FileMap, projectLocalId:string):Fil
 export const excludeProjectFromFileMap = (map:FileMap, projectLocalId:string):FileMap => {
   return Object.fromEntries(Object.entries(map).filter(([k,v]) => v.projectLocalId !== projectLocalId));
 }
+
+export const getProjectFiles = (state, projectLocalId) => {
+
+}

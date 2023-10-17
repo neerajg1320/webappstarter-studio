@@ -779,11 +779,12 @@ export const downloadProjectSourceZip = (localId:string, zipLocal:boolean = fals
         }
 
         // Create filepathContentPath where key in file.path and value is file.content
+        const projectFiles = Object.entries(getState().files.data).filter(([k,v]) =>
+            v.projectLocalId === localId
+        );
         const projectFilepathContentMap = Object.fromEntries(
             // Get files that belong to project and then provide [file.path, file.content] item
-            Object.entries(getState().files.data).filter(([k,v]) =>
-                v.projectLocalId === localId
-            ).map(([k,v]) => {
+            projectFiles.map(([k,v]) => {
               // if (!v.content) {
               //   console.log(`file ${k} contents are`, v);
               // }
