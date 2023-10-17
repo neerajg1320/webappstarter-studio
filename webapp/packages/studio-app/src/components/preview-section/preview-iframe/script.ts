@@ -32,7 +32,10 @@ export const parentCommunicationJavascriptCode = (title:string, consoleEnabled:b
       }
       if (err) {
         // This is causing problem
-        window_console_error(err);
+        // Error: @vitejs/plugin-react can't detect preamble. Something is wrong. 
+        // See https://github.com/vitejs/vite-plugin-react/pull/11#discussion_r430879201
+        // window_console_error(err);
+        console.log(err);
       }
       
       const errorMessage = {

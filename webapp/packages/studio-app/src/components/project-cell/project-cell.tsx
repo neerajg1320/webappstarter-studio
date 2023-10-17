@@ -56,7 +56,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  const { bundleProject, updateProject, downloadProjectZip, saveFile, updateFile, fetchFiles, fetchFileContents, makeProjectIdeReady } = useActions();
+  const { bundleProject, updateProject,  saveFile, updateFile, fetchFiles, fetchFileContents, makeProjectIdeReady,
+    downloadProjectSourceZip, downloadProjectBuildZip} = useActions();
 
   const projectsState = useTypedSelector((state) => state.projects);
   const filesState = useTypedSelector((state) => state.files);
@@ -74,7 +75,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const autoSave = useTypedSelector(state => state.application.autoSave);
   // Kept due to the behaviour of the editor onChange callback
   const autoSaveRef = useRef<boolean>(hotReload);
-  const downloadClickedRef = useRef<boolean>(false);
+  const downloadProjectSourceClickedRef = useRef<boolean>(false);
+  const downloadProjectBuildClickedRef = useRef<boolean>(false);
   // The following is used for forcing the re-rendering the PreviewTabsPanel component
   const [iteration, setIteration] = useState<number>(0);
 
@@ -87,7 +89,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, [autoSave])
 
   const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
-  const  reduxProject = useMemo<ReduxProject>(() => {
+  const  reduxProject:ReduxProject = useMemo<ReduxProject>(() => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);
 
@@ -271,14 +273,24 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // console.log(`handleProjectDownloadClick: reduxProject.downloadingZip:`, reduxProject.downloadingZip);
     if (!reduxProject.downloadingZip) {
       // console.log(`handleProjectDownloadClick: initiating download`);
-      downloadClickedRef.current = true;
-      downloadProjectZip(reduxProject.localId, true);
+      downloadProjectSourceClickedRef.current = true;
+      downloadProjectSourceZip(reduxProject.localId, true);
+    }
+  }
+
+  const handleProjectDeployClick = () => {
+    // TBD: Add the condition of project sync and some time limit :) to avoid misuse
+    // console.log(`handleProjectDownloadClick: reduxProject.downloadingZip:`, reduxProject.downloadingZip);
+    if (!reduxProject.downloadingZip) {
+      // console.log(`handleProjectDeployClick: initiating download`);
+      downloadProjectBuildClickedRef.current = true;
+      downloadProjectBuildZip(reduxProject.localId);
     }
   }
 
   // We can put reduxProject.zipBlob from dependency array. In synchronous mode this won't see downloadingZip
-  // as true as that true to false will happen in downloadProjectZip only.
-  // Right now we have forced the action-creator downloadProjectZip to be asynchronous.
+  // as true as that true to false will happen in downloadProjectSourceZip only.
+  // Right now we have forced the action-creator downloadProjectSourceZip to be asynchronous.
   useEffect(() => {
     // console.log(`useEffect[reduxProject.downloadingZip]: `, reduxProject.downloadingZip);
 
@@ -287,9 +299,14 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       // In the initial state the we are not downloading and zipBlob is null
       if (reduxProject.zipBlob) {
         // console.log(`[reduxProject.downloadingZip]: Project available to download`);
-        if (downloadClickedRef.current) {
+        if (downloadProjectSourceClickedRef.current) {
           createDownloadLinkAndClick();
-          downloadClickedRef.current = false;
+          downloadProjectSourceClickedRef.current = false;
+        }
+
+        if (downloadProjectBuildClickedRef.current) {
+          createDownloadLinkAndClick();
+          downloadProjectBuildClickedRef.current = false;
         }
       }
     }
@@ -561,10 +578,14 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               </button>
 
               <div className="project-download-async-button-group"
-                   style={{width: "80px", display: "flex", flexDirection: "column", alignItems: "center"}}>
+                   style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "10px"}}>
                 <button className="button is-family-secondary is-small" onClick={handleProjectDownloadClick}
                         disabled={reduxProject.downloadingZip}>
                   Export
+                </button>
+                <button className="button is-family-secondary is-small" onClick={handleProjectDeployClick}
+                        disabled={reduxProject.downloadingZip}>
+                  Deploy
                 </button>
                 <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
               </div>

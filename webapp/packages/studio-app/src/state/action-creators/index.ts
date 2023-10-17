@@ -683,8 +683,52 @@ export const removeProject = (localId:string) => {
   }
 }
 
+export const downloadProjectBuildZip = (localId:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    dispatch(updateProject({localId, downloadingZip: true, zipBlob: null}));
 
-export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => {
+    if (apiForceDelay) {
+      await delayTimer(apiDelayMs);
+    }
+
+
+
+    // Here we need to build the projectBuildMap
+    // We need a list of files that is to be bundled. This is typically specified in package.json
+    // So there is going to be a shadow package.json
+    // So now we would be using package.json[files] apart from package.json[dependencies]
+    // If the files is not specified then the default would be
+    // For create-react-app:
+    // build/*
+    // The static files are in build/static and they are hashed
+    // For vite react:
+    // dist/*
+    // The static files are in dist/assets and they are hashed
+
+    // So it becomes important for us that we detect the template.
+    // In case we can't detect the template then we ask the user to select.
+    // In case the user doesn't adhere to the template then we inform him about the faced errors.
+
+    // There is different html that is used for the source and the build
+    // The one used with build has the hashes.
+
+    // We shall have a common and well accepted layout for the files
+    const indexHtmlContent = "<html>Need HTML here</html>";
+    const indexJsContent = "// Need to put the bundled javascript here";
+    const buildFiles = [
+      ['index.html', convertStrToUint8(indexHtmlContent)],
+      ['dist/index-hash.js', convertStrToUint8(indexJsContent)]
+    ];
+
+    const projectBuildFilepathContentMap = Object.fromEntries(buildFiles);
+    const compressed = getZipBlobSync(projectBuildFilepathContentMap);
+    const zipBlob = new Blob([compressed.buffer], { type: 'application/octet-stream' });
+
+    dispatch(updateProject({localId, downloadingZip: false, zipBlob}));
+  }
+}
+
+export const downloadProjectSourceZip = (localId:string, zipLocal:boolean = false) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const projectState = getState().projects.data[localId];
     if (!projectState) {
@@ -707,7 +751,9 @@ export const downloadProjectZip = (localId:string, zipLocal:boolean = false) => 
         }
         zipBlob = response.data;
       } else {
-        await delayTimer(0);
+        if (apiForceDelay) {
+          await delayTimer(apiDelayMs);
+        }
 
         // Create filepathContentPath where key in file.path and value is file.content
         const projectFilepathContentMap = Object.fromEntries(

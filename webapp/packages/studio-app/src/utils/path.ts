@@ -210,5 +210,9 @@ export const getFileContentType = (path:string):FileContentType => {
     return FileContentType.CODE;
   }
 
+  if (['svg'].includes(fileExtn)) {
+    return FileContentType.CODE;
+  }
+
   return FileContentType.UNKNOWN
 }
