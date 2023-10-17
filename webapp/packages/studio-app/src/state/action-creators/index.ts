@@ -685,13 +685,16 @@ export const removeProject = (localId:string) => {
 
 export const downloadProjectBuildZip = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const projectState = getState().projects.data[localId];
+    if (!projectState) {
+      console.error(`Error! project id '${localId}' not found in store`)
+    }
+
     dispatch(updateProject({localId, downloadingZip: true, zipBlob: null}));
 
     if (apiForceDelay) {
       await delayTimer(apiDelayMs);
     }
-
-
 
     // Here we need to build the projectBuildMap
     // We need a list of files that is to be bundled. This is typically specified in package.json
@@ -726,7 +729,8 @@ export const downloadProjectBuildZip = (localId:string) => {
     const fileHash = generateLocalId();
     const indexJsPath = `dist/index-${fileHash}.js`;
     const indexHtmlContent = getHtmlContent(indexJsPath);
-    const indexJsContent = `console.log('${indexJsPath}: hello world')`;
+    const indexJsContent = projectState.bundleResult.code;
+
     const buildFiles = [
       ['index.html', convertStrToUint8(indexHtmlContent)],
       [indexJsPath, convertStrToUint8(indexJsContent)]
