@@ -85,6 +85,7 @@ import {PackageDetectResult} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
 import {htmlNoScript} from "../../components/preview-section/preview-iframe/markup";
+import {getProjectFiles} from "../helpers/file-helpers";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -779,12 +780,9 @@ export const downloadProjectSourceZip = (localId:string, zipLocal:boolean = fals
         }
 
         // Create filepathContentPath where key in file.path and value is file.content
-        const projectFiles = Object.entries(getState().files.data).filter(([k,v]) =>
-            v.projectLocalId === localId
-        );
         const projectFilepathContentMap = Object.fromEntries(
             // Get files that belong to project and then provide [file.path, file.content] item
-            projectFiles.map(([k,v]) => {
+            getProjectFiles(getState().files, localId).map(([k,v]) => {
               // if (!v.content) {
               //   console.log(`file ${k} contents are`, v);
               // }
