@@ -725,10 +725,17 @@ export const downloadProjectBuildZip = (localId:string) => {
 </html>`;
     }
 
+    const getModifiedHtmlContent = (htmlContent, indexJsPath) => {
+      return htmlContent.replace('</body>', `  <script src="${indexJsPath}"></script>\n</body>`);
+    }
+
     // We shall have a common and well accepted layout for the files
     const fileHash = generateLocalId();
     const indexJsPath = `dist/index-${fileHash}.js`;
-    const indexHtmlContent = getHtmlContent(indexJsPath);
+
+    // We should be taking the specified html file and injecting the line to add the script.
+    // const indexHtmlContent = getHtmlContent(indexJsPath);
+    const indexHtmlContent = getModifiedHtmlContent(projectState.htmlContent, indexJsPath);
     const indexJsContent = projectState.bundleResult.code;
 
     const buildFiles = [
