@@ -711,13 +711,25 @@ export const downloadProjectBuildZip = (localId:string) => {
 
     // There is different html that is used for the source and the build
     // The one used with build has the hashes.
+    const getHtmlContent = (indexJsPath) => {
+      return `
+<html>
+  <head></head>
+  <body>
+    <div id="root"></div>
+    <script src="${indexJsPath}"></script>
+  </body>
+</html>`;
+    }
 
     // We shall have a common and well accepted layout for the files
-    const indexHtmlContent = "<html>Need HTML here</html>";
-    const indexJsContent = "// Need to put the bundled javascript here";
+    const fileHash = generateLocalId();
+    const indexJsPath = `dist/index-${fileHash}.js`;
+    const indexHtmlContent = getHtmlContent(indexJsPath);
+    const indexJsContent = `console.log('${indexJsPath}: hello world')`;
     const buildFiles = [
       ['index.html', convertStrToUint8(indexHtmlContent)],
-      ['dist/index-hash.js', convertStrToUint8(indexJsContent)]
+      [indexJsPath, convertStrToUint8(indexJsContent)]
     ];
 
     const projectBuildFilepathContentMap = Object.fromEntries(buildFiles);
