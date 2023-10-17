@@ -8,13 +8,13 @@ import {
   CreateProjectAction,
   DeleteCellAction,
   DeleteFileAction,
+  DeleteFilesAction,
   DeleteProjectAction,
   Direction,
   InsertCellAfterAction,
   MoveCellAction,
   ResetApplicationAction,
   ResetBundlesAction,
-  DeleteFilesAction,
   ResetProjectsAction,
   SetCurrentProjectAction,
   UpdateApplicationAction,
@@ -66,11 +66,11 @@ import {BundleLanguage, BundleResult, pathToBundleLanguage} from "../bundle";
 import {pathToCodeLanguage} from "../language";
 import {axiosErrorToErrorList, axiosResponseToStringList} from "../../api/api";
 import {
-  getFileBasenameParts,
-  getFileNameFromPath,
-  getFilePathParts,
+  FileContentType,
+  getFileContentType,
   getFileType,
-  getFileTypeFromPath, getImportLookupPath, getPathWithoutExtension,
+  getFileTypeFromPath,
+  getImportLookupPath,
   joinFileParts
 } from "../../utils/path";
 import * as esbuild from "esbuild-wasm";
@@ -80,12 +80,12 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
-import {getProjectFromLocalId, getProjectFromServerId} from "../helpers/project-helpers";
+import {getProjectFromLocalId} from "../helpers/project-helpers";
 import {PackageDetectResult} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
 import {htmlNoScript} from "../../components/preview-section/preview-iframe/markup";
-import {getProjectFiles} from "../helpers/file-helpers";
+import {getProjectFiles, getProjectFilesForPath} from "../helpers/file-helpers";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -739,10 +739,25 @@ export const downloadProjectBuildZip = (localId:string) => {
     const indexHtmlContent = getModifiedHtmlContent(projectState.htmlContent, indexJsPath);
     const indexJsContent = projectState.bundleResult.code;
 
-    const buildFiles = [
+    let buildFiles = [
       ['index.html', convertStrToUint8(indexHtmlContent)],
       [indexJsPath, convertStrToUint8(indexJsContent)]
     ];
+
+    const includePaths = ['public/'];
+
+    for (const incPath of includePaths) {
+      const publicFolderFiles = getProjectFilesForPath(getState().files, localId, incPath);
+      console.log(`publicFolderFiles:`, publicFolderFiles);
+      publicFolderFiles.forEach(([k,v]) => {
+        let fileContent = v.content || '';
+        if (getFileContentType(v.path) === FileContentType.CODE) {
+          buildFiles.push([v.path.substring(incPath.length), convertStrToUint8(fileContent)])
+        } else {
+          buildFiles.push([v.path.substring(incPath.length), convertStrToUint8(fileContent)])
+        }
+      });
+    }
 
     const projectBuildFilepathContentMap = Object.fromEntries(buildFiles);
     const compressed = getZipBlobSync(projectBuildFilepathContentMap);
@@ -1062,7 +1077,11 @@ export const removeFile = (localId:string) => {
 
 const fetchContent = (reduxFile) => {
   return new Promise((resolve, reject) => {
-    axiosApiInstance.get(reduxFile.file!.replace('localhost', 'localhost:8080'))
+    const options = {};
+    if (getFileContentType(reduxFile.path) === FileContentType.IMAGE) {
+      options['responseType'] = 'arraybuffer';
+    }
+    axiosApiInstance.get(reduxFile.file!.replace('localhost', 'localhost:8080'), options)
         .then(response => resolve({response, reduxFile}))
         .catch(reject);
   })
@@ -1103,11 +1122,22 @@ export const fetchFileContents = (localIds: string[]) => {
       responses.forEach(({response, reduxFile}, index) => {
         const {request, data} = response;
 
-        if (debugRedux) {
+        if (debugRedux || true) {
           console.log(`fetchFileContents: `, response, response.headers['content-type']);
         }
 
-        let content = request.responseText;
+
+        let content;
+        if (getFileContentType(reduxFile.path) === FileContentType.IMAGE) {
+          content = new Uint8Array(data);
+        } else {
+          content = request.responseText;
+        }
+
+        if (debugRedux || true) {
+          console.log(`fetchFileContents: ${reduxFile.path}`, typeof(content), content.length);
+        }
+
 
         dispatch({
           type: ActionType.UPDATE_FILE,

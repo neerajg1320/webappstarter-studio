@@ -8,6 +8,7 @@ interface ImageViewerProps  {
 
 
 const ImageViewer:React.FC<ImageViewerProps> = ({imageFile}) => {
+  // console.log(`ImageViewer:`, imageFile);
   return (
     <div className="image-viewer">
       <span>{imageFile.file}</span>
