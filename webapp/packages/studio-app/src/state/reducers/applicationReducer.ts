@@ -8,7 +8,7 @@ import {ApplicatonState} from "../application";
 
 const initialState: ApplicatonState = {
   hotReload: true,
-  autoSave: true,
+  autoSync: true,
   advanceFeatures: false,
   projectsLoaded: false, // This should be moved to user
   filesLoaded: false, // This should be moved to user

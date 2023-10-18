@@ -72,7 +72,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   const hotReload = useTypedSelector(state => state.application.hotReload);
   // Kept due to the behaviour of the editor onChange callback
   const hotReloadRef = useRef<boolean>(hotReload);
-  const autoSave = useTypedSelector(state => state.application.autoSave);
+  const autoSync = useTypedSelector(state => state.application.autoSync);
   // Kept due to the behaviour of the editor onChange callback
   const autoSaveRef = useRef<boolean>(hotReload);
   const downloadProjectSourceClickedRef = useRef<boolean>(false);
@@ -85,8 +85,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, [hotReload])
 
   useEffect(() => {
-    autoSaveRef.current = autoSave;
-  }, [autoSave])
+    autoSaveRef.current = autoSync;
+  }, [autoSync])
 
   const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
   const  reduxProject:ReduxProject = useMemo<ReduxProject>(() => {

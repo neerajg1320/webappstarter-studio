@@ -1,6 +1,6 @@
 export interface ApplicatonState {
   hotReload: boolean;
-  autoSave: boolean;
+  autoSync: boolean;
   advanceFeatures: boolean;
   projectsLoaded: boolean;
   filesLoaded: boolean;
@@ -9,7 +9,7 @@ export interface ApplicatonState {
 
 export interface ApplicatonStatePartial {
   hotReload?: boolean;
-  autoSave?: boolean;
+  autoSync?: boolean;
   advanceFeatures?: boolean;
   projectsLoaded?: boolean;
   filesLoaded?: boolean;

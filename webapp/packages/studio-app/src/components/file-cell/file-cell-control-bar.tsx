@@ -29,7 +29,7 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, red
   const { updateFile, saveFile, createCellBundle, updateProject, updateApplication } = useActions();
   const [isAdmin, setAdmin] = useState(false);
   const hotReload = useTypedSelector(state => state.application.hotReload);
-  const autoSave = useTypedSelector(state => state.application.autoSave);
+  const autoSync = useTypedSelector(state => state.application.autoSync);
   const advanceFeatures = useTypedSelector(state => state.application.advanceFeatures);
 
   // Function to bundle a single file. Not used anymore. Kept for possible use in single file syntax checking.
@@ -84,7 +84,7 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, red
   }
 
 
-  const handleSaveClick = () => {
+  const handleSyncClick = () => {
     if (!reduxFile.path) {
       console.error(`Error! path not specified`)
       return;
@@ -147,11 +147,11 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, red
                 </div>
             }
             <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
-              <label>Auto-Save</label>
+              <label>Auto-Sync</label>
               <input
                   type="checkbox"
-                  checked={autoSave}
-                  onChange={(e) => updateApplication({autoSave: e.target.checked})}
+                  checked={autoSync}
+                  onChange={(e) => updateApplication({autoSync: e.target.checked})}
               />
             </div>
             <div style={{display:"flex", flexDirection:"row", gap:"5px", alignItems:"center"}}>
@@ -176,15 +176,15 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, red
 
           <div style={{
             display: "flex", flexDirection:"row", gap:"20px", alignItems:"center",
-            visibility: autoSave ? "hidden" : "visible"
+            visibility: autoSync ? "hidden" : "visible"
           }}
           >
             <button
                 className="button is-primary is-small"
-                onClick={() => handleSaveClick()}
+                onClick={() => handleSyncClick()}
                 disabled={!reduxFile.contentSynced}
             >
-              Save
+              Sync
             </button>
             {isAdmin &&
                 <button
