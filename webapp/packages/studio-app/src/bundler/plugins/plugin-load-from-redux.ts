@@ -8,7 +8,7 @@ export const pluginLoadFromRedux = (resultFetcher: (path:string) => Promise<esbu
       // Load the files which are being fetched from api server
       build.onLoad({filter: /.*/}, async (args: any) => {
         if (args.path.includes(`${serverMediaBaseUrl}`)) {
-          if (debugPlugin || true) {
+          if (debugPlugin || false) {
             console.log(`pluginLoadFromRedux.onLoad path:${args.path.padEnd(70)}  namespace:${args.namespace.padEnd(80)}`);
           }
 

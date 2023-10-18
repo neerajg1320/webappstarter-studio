@@ -35,6 +35,7 @@ import {bundleCodeStr, bundleFilePath, initializeEsbuildBundler} from "../../bun
 import {RootState} from "../reducers";
 import {
   PackageConfig,
+  ReactToolchains,
   ReduxCreateProjectPartial,
   ReduxDeleteProjectPartial,
   ReduxProject,
@@ -298,7 +299,7 @@ export const createProjectBundle = (
           result.resolveDir = resolveDir;
         }
 
-        if (debugPlugin || true) {
+        if (debugPlugin || false) {
           console.log(`[lookupPath:${lookupPath}] [${reduxFilePath}] result:`, result);
         }
       } else {
@@ -911,7 +912,9 @@ export const fetchFiles = (project?:ReduxProject) => {
 
           // TBD: Hardcoding to be removed entry_html_path hardcoding
           if (file.path === 'index.html') {
-            dispatch(updateProject({localId: file.projectLocalId, entryHtmlFileLocalId: file.localId}));
+            dispatch(updateProject({localId: file.projectLocalId, entryHtmlFileLocalId: file.localId, toolchain: ReactToolchains.VITE}));
+          } else if (file.path === "public/index.html") {
+            dispatch(updateProject({localId: file.projectLocalId, entryHtmlFileLocalId: file.localId, toolchain: ReactToolchains.CREATE_REACT_APP}));
           } else if (file.path === 'webapp.json') {
             dispatch(updateProject({localId: file.projectLocalId, packageFileLocalId: file.localId}));
           }
@@ -1187,7 +1190,7 @@ const projectLocalUpdate = false;
 // This action is dispatched from the persistMiddleware.
 export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
-    if (debugRedux || true) {
+    if (debugRedux) {
       console.log(`fileCreatePartial:`, fileCreatePartial);
     }
 
@@ -1626,7 +1629,7 @@ export const authenticateUserFromLocalStorage = () => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     if (enableLocalStorageAuth) {
       const user = fetchAuthFromLocalStorage();
-      if (debugAuth || true) {
+      if (debugAuth) {
         console.log(user);
       }
       if (user) {
