@@ -294,7 +294,7 @@ export const createProjectBundle = (
 
         const fileType = getFileType(reduxFile.path);
         if (content) {
-          result = getLoadResult(content, fileType);
+          result = getLoadResult(content, fileType, reduxFile);
           result.resolveDir = resolveDir;
         }
 
@@ -807,7 +807,12 @@ export const downloadProjectSourceZip = (localId:string, zipLocal:boolean = fals
               // if (!v.content) {
               //   console.log(`file ${k} contents are`, v);
               // }
-              return [v.path, convertStrToUint8(v.content || '')];
+              let fileContent:any = v.content || '';
+              if (getFileContentType(v.path) !== FileContentType.IMAGE) {
+                fileContent = convertStrToUint8(fileContent);
+              }
+
+              return [v.path, fileContent];
             })
         );
 

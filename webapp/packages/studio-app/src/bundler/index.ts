@@ -167,6 +167,7 @@ const bundleCode = async (
             write: false,
             // TBVE: Check if we can create an in-memory file and pass path to it
             plugins: esbuildPlugins,
+            loader: { '.svg': 'dataurl' },
             define: {
                 // Do not change this. We have done this to prevent vite from replacing this to mode
                 [import.meta.env.VITE_MODE_ENVIRONMENT_VAR]: '"production"',

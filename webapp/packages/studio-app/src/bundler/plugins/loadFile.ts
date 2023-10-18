@@ -1,5 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {axiosInstance} from "../../api/axiosApi";
+import {createUrlFromContent} from "../../utils/blob";
+import {ReduxFile} from "../../state";
 
 export const wrapScriptOnCssContent = (cssStr:string):string => {
   // start: The custom part for css
@@ -28,22 +30,27 @@ export const createReactComponentFromSvg = (svg:string):string => {
   return componentCode;
 }
 
-export const getLoadResult = (data:string, contentType:string|null):esbuild.OnLoadResult => {
-  if (contentType === "svg") {
-    console.log(`getLoadResult: got svg`);
-  }
+export const createUrlFromSvg = (data:string):string => {
+  return createUrlFromContent(data);
+}
 
+export const getLoadResult = (data:string, contentType:string|null, reduxFile?:ReduxFile):esbuild.OnLoadResult => {
   let contents = data;
+
   if (contentType === "css") {
     contents = wrapScriptOnCssContent(data);
   }
 
-  if (contentType === "svg") {
-    contents = createReactComponentFromSvg(data);
-  }
+  // if (contentType === "svg") {
+  //   if (reduxFile) {
+  //     contents = reduxFile.file;
+  //   } else {
+  //     contents = createUrlFromSvg(data);
+  //   }
+  // }
 
   const result: esbuild.OnLoadResult = {
-    loader: (contentType === "css") ? 'jsx' : (['ts', 'tsx'].includes(contentType)) ? 'tsx' : 'jsx',
+    loader: (contentType === "svg") ? 'dataurl' : (['ts', 'tsx'].includes(contentType)) ? 'tsx' : 'jsx',
     contents,
   }
   return result;
