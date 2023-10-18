@@ -8,7 +8,7 @@ import {
   HTML_REGEX,
   HTM_REGEX,
   JSON_REGEX,
-  TEXT_REGEX
+  TEXT_REGEX, SVG_REGEX
 } from "./patterns";
 
 export const replaceFilePart = (inputPath:string, fileName:string): string => {
@@ -154,11 +154,19 @@ export const isPathHtm = (path: string): boolean => {
   return isRegexMatch(HTM_REGEX, path);
 }
 
+export const isPathSvg = (path: string): boolean => {
+  return isRegexMatch(SVG_REGEX, path);
+}
 
 export const isPathScss = (path: string): boolean => {
   return isRegexMatch(SCSS_REGEX, path);
 }
+
 export const getFileType = (path:string): string|null => {
+  if (isPathSvg(path)) {
+    return "svg";
+  }
+
   if (isPathScss(path)) {
     return "scss";
   }

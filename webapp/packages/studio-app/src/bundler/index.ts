@@ -134,7 +134,7 @@ const bundleCode = async (
     }
 
     if (enableSvgr) {
-      esbuildPlugins.push(pluginSvgr(resultFetcher));
+      // esbuildPlugins.push(pluginSvgr(resultFetcher));
     }
 
     esbuildPlugins.push(pluginResolve({pkgServer:getPkgServer(), onPackageDetect}));

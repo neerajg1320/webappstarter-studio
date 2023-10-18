@@ -15,10 +15,23 @@ export const wrapScriptOnCssContent = (cssStr:string):string => {
             `;
 }
 
+export const createReactComponentFromSvg = (svg:string):string => {
+  console.log(`createReactComponentFromSvg: svg:`, svg);
+  return svg;
+}
+
 export const getLoadResult = (data:string, contentType:string|null):esbuild.OnLoadResult => {
+  if (contentType === "svg") {
+    console.log(`getLoadResult: got svg`);
+  }
+
   let contents = data;
   if (contentType === "css") {
     contents = wrapScriptOnCssContent(data);
+  }
+
+  if (contentType === "svg") {
+    contents = createReactComponentFromSvg(data);
   }
 
   const result: esbuild.OnLoadResult = {
