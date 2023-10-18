@@ -750,11 +750,16 @@ export const downloadProjectBuildZip = (localId:string) => {
       const publicFolderFiles = getProjectFilesForPath(getState().files, localId, incPath);
       console.log(`publicFolderFiles:`, publicFolderFiles);
       publicFolderFiles.forEach(([k,v]) => {
+        const filePath = v.path.substring(incPath.length);
         let fileContent = v.content || '';
+
         if (getFileContentType(v.path) === FileContentType.IMAGE) {
-          buildFiles.push([v.path.substring(incPath.length), fileContent])
+          buildFiles.push([filePath, fileContent])
         } else {
-          buildFiles.push([v.path.substring(incPath.length), convertStrToUint8(fileContent)])
+          // We have already put the index.html
+          if (filePath !== 'index.html') {
+            buildFiles.push([filePath, convertStrToUint8(fileContent)])
+          }
         }
       });
     }
