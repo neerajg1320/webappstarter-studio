@@ -16,8 +16,16 @@ export const wrapScriptOnCssContent = (cssStr:string):string => {
 }
 
 export const createReactComponentFromSvg = (svg:string):string => {
-  console.log(`createReactComponentFromSvg: svg:`, svg);
-  return svg;
+  // console.log(`createReactComponentFromSvg: svg:`, svg);
+
+  const componentCode = `
+  const SvgComponent = () => {
+    return (${svg});
+  };
+  export default SvgComponent;
+  `;
+
+  return componentCode;
 }
 
 export const getLoadResult = (data:string, contentType:string|null):esbuild.OnLoadResult => {

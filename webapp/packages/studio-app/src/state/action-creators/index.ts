@@ -292,12 +292,13 @@ export const createProjectBundle = (
           }
         }
 
+        const fileType = getFileType(reduxFile.path);
         if (content) {
-          result = getLoadResult(content, getFileType(reduxFile.path));
+          result = getLoadResult(content, fileType);
           result.resolveDir = resolveDir;
         }
 
-        if (debugPlugin || false) {
+        if (debugPlugin || true) {
           console.log(`[lookupPath:${lookupPath}] [${reduxFilePath}] result:`, result);
         }
       } else {
