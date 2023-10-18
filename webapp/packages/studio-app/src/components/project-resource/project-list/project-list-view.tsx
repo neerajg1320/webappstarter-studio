@@ -25,6 +25,8 @@ const ProjectListView = () => {
   }, [projectsState]);
 
   const handleNewProjectClick = () => {
+    console.log(`handleNewProjectClick()`);
+
     const localId = generateLocalId();
     createAndSetProject({
       localId,

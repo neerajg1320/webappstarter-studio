@@ -1045,21 +1045,25 @@ export const makeProjectIdeReady = (localId: string) => {
     }
 
     const responses = await fetchFileContents(ideFiles)(dispatch, getState);
-    responses.forEach(({response, reduxFile}) => {
-      // console.log(response, reduxFile);
+    if (responses) {
+      responses.forEach(({response, reduxFile}) => {
+        // console.log(response, reduxFile);
 
-      if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
-        projectUpdatePartial.htmlContent = response.data;
-      }
-      if (reduxProject.packageFileLocalId === reduxFile.localId) {
-        const pkgConfig = JSON.parse(response.request.responseText) as PackageConfig;
-        // console.log(JSON.stringify(pkgConfig, null, 2));
-        projectUpdatePartial.packageConfig = pkgConfig;
-      }
-      projectUpdatePartial.ideReady = true;
+        if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
+          projectUpdatePartial.htmlContent = response.data;
+        }
+        if (reduxProject.packageFileLocalId === reduxFile.localId) {
+          const pkgConfig = JSON.parse(response.request.responseText) as PackageConfig;
+          // console.log(JSON.stringify(pkgConfig, null, 2));
+          projectUpdatePartial.packageConfig = pkgConfig;
+        }
+        projectUpdatePartial.ideReady = true;
 
-      dispatch(updateProject(projectUpdatePartial));
-    });
+        dispatch(updateProject(projectUpdatePartial));
+      });
+    } else {
+      console.error(`Error downloading files`);
+    }
   }
 }
 
