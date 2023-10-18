@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild-wasm";
 import {debugPlugin, serverMediaBaseUrl} from "../../config/global";
 
-export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>) => {
+export const pluginLoadFromRedux = (resultFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>) => {
   return {
     name: 'plugin-load-from-redux',
     setup(build: esbuild.PluginBuild) {
@@ -12,7 +12,7 @@ export const pluginLoadFromRedux = (fileFetcher: (path:string) => Promise<esbuil
             console.log(`redux.onLoad(): path:${args.path.padEnd(70)}  namespace:${args.namespace.padEnd(80)}`);
           }
 
-          const result = await fileFetcher(args.path);
+          const result = await resultFetcher(args.path);
           if (debugPlugin) {
             console.log(`pluginLoadFromRedux: result:`, result);
           }

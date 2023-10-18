@@ -1127,7 +1127,7 @@ export const fetchFileContents = (localIds: string[]) => {
       responses.forEach(({response, reduxFile}, index) => {
         const {request, data} = response;
 
-        if (debugRedux || true) {
+        if (debugRedux || false) {
           console.log(`fetchFileContents: `, response, response.headers['content-type']);
         }
 
@@ -1139,7 +1139,7 @@ export const fetchFileContents = (localIds: string[]) => {
           content = request.responseText;
         }
 
-        if (debugRedux || true) {
+        if (debugRedux || false) {
           console.log(`fetchFileContents: ${reduxFile.path}`, typeof(content), content.length);
         }
 

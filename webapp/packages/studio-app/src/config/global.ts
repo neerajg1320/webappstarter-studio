@@ -32,6 +32,7 @@ export const enableLoadFromIndexDBCache = true;
 export const enableLoadFromServer = true;
 export const enableLoadCells = true;
 export const enableProfilerPlugin = true;
+export const enableSvgr = true;
 
 
 

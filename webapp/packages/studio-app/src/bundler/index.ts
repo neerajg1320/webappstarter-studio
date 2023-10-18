@@ -6,7 +6,13 @@ import {
   cellJsxFileName,
   cellTsxFileName,
   combineCellsCode,
-  debugBundler, enableLoadCells, enableLoadFromIndexDBCache, enableLoadFromRedux, enableLoadFromServer, enableProfilerPlugin,
+  debugBundler,
+  enableLoadCells,
+  enableLoadFromIndexDBCache,
+  enableLoadFromRedux,
+  enableLoadFromServer,
+  enableProfilerPlugin,
+  enableSvgr,
   esbuildVersion,
   pkgServerUrl
 } from "../config/global";
@@ -17,6 +23,7 @@ import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
 import {PackageDependency, PackageDetectResult, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
 import {getRegexMatches} from "../utils/regex";
+import {pluginSvgr} from "./plugins/plugin-svgr";
 
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
@@ -49,11 +56,11 @@ export const bundleFilePath =  async (
     title: string,
     filePath: string,
     bundleLanguage: BundleLanguage,
-    fileFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
+    resultFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
     getPackageVersion?: (name:string) => PackageDetectResult,
     setPackageVersion?: (name:string, pkgDependency:string) => void
 ):Promise<BundleResult> => {
-  return bundleCode(title, filePath, 'project', bundleLanguage, fileFetcher, getPackageVersion, setPackageVersion);
+  return bundleCode(title, filePath, 'project', bundleLanguage, resultFetcher, getPackageVersion, setPackageVersion);
 }
 
 // The bundleCodeStr takes a string as input.
@@ -63,7 +70,7 @@ const bundleCode = async (
     codeOrFilePath: string,
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
-    fileFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
+    resultFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
     getPackageVersion?: (name:string) => PackageDetectResult,
     setPackageVersion?: (name:string, version:string) => void
 ):Promise<BundleResult> => {
@@ -126,13 +133,15 @@ const bundleCode = async (
       esbuildPlugins.push(pluginProfiler(title));
     }
 
+    if (enableSvgr) {
+      esbuildPlugins.push(pluginSvgr(resultFetcher));
+    }
+
     esbuildPlugins.push(pluginResolve({pkgServer:getPkgServer(), onPackageDetect}));
 
     if (enableLoadFromRedux) {
-      // fileFetcher would be null in case of call from bundleCodeStr
-      if (fileFetcher) {
-        esbuildPlugins.push(pluginLoadFromRedux(fileFetcher));
-      }
+      // resultFetcher would be null in case of call from bundleCodeStr
+      esbuildPlugins.push(pluginLoadFromRedux(resultFetcher));
     }
 
     if (enableLoadFromServer) {
