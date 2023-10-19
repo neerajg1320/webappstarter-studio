@@ -154,6 +154,8 @@ const bundleCode = async (
       esbuildPlugins.push(pluginCells(codeOrFilePath));
     }
 
+    // console.log(`import.meta.env.VITE_MODE_ENVIRONMENT_VAR:`, import.meta.env.VITE_MODE_ENVIRONMENT_VAR);
+
     const jsxAuto = (inputType === 'cell' && combineCellsCode) || true;
 
     try {
@@ -163,7 +165,10 @@ const bundleCode = async (
             entryPoints: inputType === 'cell' ?
                 [inputLanguage === BundleLanguage.TYPESCRIPT ? cellTsxFileName : cellJsxFileName] :
                 [codeOrFilePath],
+
             bundle: true,
+            treeShaking: true,
+            minify: true,
 
             // This prevents the write to disk
             write: false,
