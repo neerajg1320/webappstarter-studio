@@ -1,9 +1,7 @@
-export const injectScriptInHtml = (markupStr:string, javscriptCodeStr:string):string => {
-  let resultMarkupStr = "Not processed";
-
+export const injectScriptWithCodeInHtml = (htmlStr:string, javscriptCodeStr:string):string => {
   // https://stackoverflow.com/questions/10585029/parse-an-html-string-with-js
   var detachedHtml = document.createElement( 'html' );
-  detachedHtml.innerHTML = markupStr;
+  detachedHtml.innerHTML = htmlStr;
 
   const bodyEl = detachedHtml.getElementsByTagName('body');
   if (bodyEl.length > 0) {
@@ -13,7 +11,28 @@ export const injectScriptInHtml = (markupStr:string, javscriptCodeStr:string):st
     bodyEl[0].appendChild(scriptEl);
   }
 
-  resultMarkupStr = detachedHtml.innerHTML;
+  return detachedHtml.outerHTML;
+}
 
-  return resultMarkupStr;
+export const deleteScriptEntryPathFromHtml = (htmlStr:string, entryPath:string) => {
+  // https://stackoverflow.com/questions/10585029/parse-an-html-string-with-js
+  var detachedHtml = document.createElement( 'html' );
+  detachedHtml.innerHTML = htmlStr;
+
+  // console.log(`htmlStr:`, htmlStr);
+
+  const bodyEls = detachedHtml.getElementsByTagName('body');
+  if (bodyEls.length > 0) {
+    const bodyEl = bodyEls[0]
+
+    // We need to delete script tag here
+    const scriptEls = bodyEl.getElementsByTagName("script");
+    for (const scriptEl of scriptEls) {
+      if (scriptEl.getAttribute("src") === entryPath) {
+        bodyEl.removeChild(scriptEl);
+      }
+    }
+  }
+
+  return detachedHtml.outerHTML;
 }

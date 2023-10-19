@@ -1,6 +1,6 @@
 import React, {SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import './preview-iframe.css';
-import {injectScriptInHtml} from "../../../utils/markup";
+import {deleteScriptEntryPathFromHtml, injectScriptWithCodeInHtml} from "../../../utils/markup";
 import {parentCommunicationJavascriptCode} from "./script";
 import {debugComponent, debugIframeMessages, enableConsole} from "../../../config/global";
 import {debugWindowEvent, IframeMessage} from "../message";
@@ -90,12 +90,25 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       return;
     }
 
+    if (!html) {
+      return;
+    }
+
+    // console.log(`PreviewIframe: html`, html);
+
+    // We need to remove the line which has script tag and entry_file_path
+    // We need to get the path entryPath from the project
+    const resultHtml = deleteScriptEntryPathFromHtml(html, '/src/entry.tsx');
+
     // Updating the srcdoc is necessary to reset the code in the iframe.
     // However it still does not reset the style information present in the iframe.
     if (debugComponent) {
       console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected communication script in html`);
     }
-    const hydratedHtml = injectScriptInHtml(html, parentCommunicationJavascriptCode(title, enableConsole));
+    const hydratedHtml = injectScriptWithCodeInHtml(resultHtml, parentCommunicationJavascriptCode(title, enableConsole));
+
+    // console.log(`hydratedHtml:`, hydratedHtml);
+
     iframeRef.current.srcdoc = hydratedHtml;
     if (debugComponent) {
       console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] set the hydratedHtml (length:${hydratedHtml.length}) in iframe.srcdoc`);
