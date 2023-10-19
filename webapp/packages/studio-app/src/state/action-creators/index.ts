@@ -87,6 +87,7 @@ import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
 import {htmlNoScript} from "../../components/preview-section/preview-iframe/markup";
 import {getProjectFiles, getProjectFilesForPath} from "../helpers/file-helpers";
+import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
 
 const apiForceDelay = false;
 const apiDelayMs = 1000;
@@ -745,7 +746,8 @@ export const downloadProjectBuildZip = (localId:string) => {
 
     // We should be taking the specified html file and injecting the line to add the script.
     // const indexHtmlContent = getHtmlContent(indexJsPath);
-    const indexHtmlContent = getBuildHtmlContent(projectState.htmlContent, indexJsPath);
+    const resultHtml = deleteScriptEntryPathFromHtml(projectState.htmlContent, "/src/entry.tsx");
+    const indexHtmlContent = getBuildHtmlContent(resultHtml, indexJsPath);
     const indexJsContent = projectState.bundleResult.code;
 
     let buildFiles = [
