@@ -735,7 +735,7 @@ export const downloadProjectBuildZip = (localId:string) => {
 </html>`;
     }
 
-    const getModifiedHtmlContent = (htmlContent, indexJsPath) => {
+    const getBuildHtmlContent = (htmlContent, indexJsPath) => {
       return htmlContent.replace('</body>', `  <script src="${indexJsPath}"></script>\n</body>`);
     }
 
@@ -745,7 +745,7 @@ export const downloadProjectBuildZip = (localId:string) => {
 
     // We should be taking the specified html file and injecting the line to add the script.
     // const indexHtmlContent = getHtmlContent(indexJsPath);
-    const indexHtmlContent = getModifiedHtmlContent(projectState.htmlContent, indexJsPath);
+    const indexHtmlContent = getBuildHtmlContent(projectState.htmlContent, indexJsPath);
     const indexJsContent = projectState.bundleResult.code;
 
     let buildFiles = [
