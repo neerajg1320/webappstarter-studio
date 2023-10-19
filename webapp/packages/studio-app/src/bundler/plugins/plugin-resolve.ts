@@ -18,7 +18,7 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
 
       // Handle only the entry point
       build.onResolve({filter: /.*/}, (args: any) => {
-        if (debugPlugin) {
+        if (debugPlugin || false) {
           console.log('onResolve', args);
         }
 
@@ -40,12 +40,20 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
       });
 
       // For relative paths like ./abc, ../abc/def etc we get the server from importer
-      build.onResolve({filter: /^\.{1,2}\//}, (args: any) => {
-        // let server = getServerFromArgs(args, true);
-        let server = (new URL(args.importer)).origin;
+      build.onResolve({filter: /^\.{0,2}\//}, (args: any) => {
+        console.log(`pluginResolve:onResolve args:`, args);
+
+        let lookupPath = args.path;
+        // If it is an absolute path then we also include the /public folder
+        if (args.path[0] == "/") {
+
+        }
+
+        const server = (new URL(args.importer)).origin;
+        const url = new URL(lookupPath, server + args.resolveDir + '/').href
 
         return {
-          path: new URL(args.path, server + args.resolveDir + '/').href,
+          path: url,
           namespace: 'a',
         };
       });

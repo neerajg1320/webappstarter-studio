@@ -242,7 +242,7 @@ export const createProjectBundle = (
 
     // We define a function closure as it needs getState() from getting files for project
     const getLoadResultFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-      if (debugPlugin || debugRedux || false) {
+      if (debugPlugin || debugRedux || true) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
 

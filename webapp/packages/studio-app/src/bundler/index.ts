@@ -21,10 +21,8 @@ import {pluginLoadFromRedux} from "./plugins/plugin-load-from-redux";
 import {pluginProfiler} from "./plugins/plugin-profiler";
 import {pluginCells} from "./plugins/plugin-cells";
 import {getPkgServer} from "../api/servers";
-import {PackageDependency, PackageDetectResult, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
+import {PackageDetectResult, PackageEntry, PackageInfo, PackageMap} from "./plugins/package";
 import {getRegexMatches} from "../utils/regex";
-import {pluginSvgr} from "./plugins/plugin-svgr";
-
 
 export const initializeEsbuildBundler = async (): Promise<void> => {
   await esbuild.initialize({
