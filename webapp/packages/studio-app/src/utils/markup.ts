@@ -18,9 +18,7 @@ export const deleteScriptEntryPathFromHtml = (htmlStr:string, entryPath:string) 
   // https://stackoverflow.com/questions/10585029/parse-an-html-string-with-js
   var detachedHtml = document.createElement( 'html' );
   detachedHtml.innerHTML = htmlStr;
-
-  // console.log(`htmlStr:`, htmlStr);
-
+  
   const bodyEls = detachedHtml.getElementsByTagName('body');
   if (bodyEls.length > 0) {
     const bodyEl = bodyEls[0]
