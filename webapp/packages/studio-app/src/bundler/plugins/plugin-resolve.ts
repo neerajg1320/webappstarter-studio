@@ -1,15 +1,17 @@
 import * as esbuild from 'esbuild-wasm';
 import {debugPlugin} from '../../config/global';
 import {PackageDetectResult, PackageInfo} from "./package";
+import {joinFileParts} from "../../utils/path";
 
 export interface PluginResolveArgs {
   pkgServer: string,
+  projectServer: string,
   onPackageDetect?: (PackageInfo) => PackageDetectResult,
 }
 
 // The plugins are created for each bundle request
 // Hence we can use the closures for deciding the server to be contacted
-export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) => {
+export const pluginResolve = ({pkgServer, projectServer, onPackageDetect}:PluginResolveArgs) => {
 
   return {
     name: 'plugin-resolve',
@@ -41,16 +43,28 @@ export const pluginResolve = ({pkgServer, onPackageDetect}:PluginResolveArgs) =>
 
       // For relative paths like ./abc, ../abc/def etc we get the server from importer
       build.onResolve({filter: /^\.{0,2}\//}, (args: any) => {
-        console.log(`pluginResolve:onResolve args:`, args);
-
-        let lookupPath = args.path;
-        // If it is an absolute path then we also include the /public folder
-        if (args.path[0] == "/") {
-
+        if (debugPlugin || false) {
+          console.log(`pluginResolve:onResolve args:`, args);
         }
 
-        const server = (new URL(args.importer)).origin;
-        const url = new URL(lookupPath, server + args.resolveDir + '/').href
+        let lookupPath = args.path;
+
+        // If it is an absolute path then we also include the /public folder
+        // We need the root path here
+        let url: string;
+        if (args.path[0] == "/") {
+          lookupPath = "public" + args.path;
+          // console.log(`projectServer:`, projectServer, `lookupPath:`, lookupPath);
+          url = new URL(lookupPath, projectServer + '/').href
+
+        } else {
+          const server = (new URL(args.importer)).origin;
+          url = new URL(lookupPath, server + args.resolveDir + '/').href
+        }
+
+        if (debugPlugin) {
+          console.log(`url:`, url);
+        }
 
         return {
           path: url,

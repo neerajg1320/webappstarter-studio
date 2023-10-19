@@ -56,9 +56,10 @@ export const bundleFilePath =  async (
     bundleLanguage: BundleLanguage,
     resultFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
     getPackageVersion?: (name:string) => PackageDetectResult,
-    setPackageVersion?: (name:string, pkgDependency:string) => void
+    setPackageVersion?: (name:string, pkgDependency:string) => void,
+    projectRootUrl?: string,
 ):Promise<BundleResult> => {
-  return bundleCode(title, filePath, 'project', bundleLanguage, resultFetcher, getPackageVersion, setPackageVersion);
+  return bundleCode(title, filePath, 'project', bundleLanguage, resultFetcher, getPackageVersion, setPackageVersion, projectRootUrl);
 }
 
 // The bundleCodeStr takes a string as input.
@@ -70,7 +71,8 @@ const bundleCode = async (
     inputLanguage: BundleLanguage,
     resultFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
     getPackageVersion?: (name:string) => PackageDetectResult,
-    setPackageVersion?: (name:string, version:string) => void
+    setPackageVersion?: (name:string, version:string) => void,
+    projectRootUrl?: string,
 ):Promise<BundleResult> => {
     if (debugBundler) {
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
@@ -135,7 +137,9 @@ const bundleCode = async (
       // esbuildPlugins.push(pluginSvgr(resultFetcher));
     }
 
-    esbuildPlugins.push(pluginResolve({pkgServer:getPkgServer(), onPackageDetect}));
+    esbuildPlugins.push(pluginResolve({
+      pkgServer:getPkgServer(), projectServer: projectRootUrl, onPackageDetect
+    }));
 
     if (enableLoadFromRedux) {
       // resultFetcher would be null in case of call from bundleCodeStr

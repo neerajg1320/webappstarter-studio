@@ -242,7 +242,7 @@ export const createProjectBundle = (
 
     // We define a function closure as it needs getState() from getting files for project
     const getLoadResultFromRedux = async (url:string):Promise<esbuild.OnLoadResult|null> => {
-      if (debugPlugin || debugRedux || true) {
+      if (debugPlugin || debugRedux || false) {
         console.log(`getFileContentsFromRedux: url:`, url);
       }
 
@@ -374,13 +374,20 @@ export const createProjectBundle = (
         }
     });
 
+    // console.log(`serverMediaBaseUrl:`, serverMediaBaseUrl);
+    const projectRootUrl = (new URL(projectDirPath, serverMediaBaseUrl)).toString();
+    // console.log(`projectUrl:`, projectRootUrl);
+    const entryUrl = (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString();
+    // console.log(`entryUrl:`, entryUrl);
+
     const result:BundleResult = await bundleFilePath(
         reduxProject.title,
-        (new URL(joinFileParts(projectDirPath, entryFile), serverMediaBaseUrl)).toString(),
+        entryUrl,
         bundleLanguage,
         getLoadResultFromRedux,
         getPackageVersion,
-        setPackageVersion
+        setPackageVersion,
+        projectRootUrl
     );
 
     dispatch({
