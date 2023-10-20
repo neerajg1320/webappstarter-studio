@@ -746,7 +746,7 @@ export const downloadProjectBuildZip = (localId:string) => {
 
     // We should be taking the specified html file and injecting the line to add the script.
     // const indexHtmlContent = getHtmlContent(indexJsPath);
-    const resultHtml = deleteScriptEntryPathFromHtml(projectState.htmlContent, "/src/entry.tsx");
+    const resultHtml = deleteScriptEntryPathFromHtml(projectState.htmlContent, "/src/entry.tsx", 'build-zip');
     const indexHtmlContent = getBuildHtmlContent(resultHtml, indexJsPath);
     const indexJsContent = projectState.bundleResult.code;
 

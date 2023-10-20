@@ -14,7 +14,7 @@ export const injectScriptWithCodeInHtml = (htmlStr:string, javscriptCodeStr:stri
   return detachedHtml.outerHTML;
 }
 
-export const deleteScriptEntryPathFromHtml = (htmlStr:string, entryPath:string) => {
+export const deleteScriptEntryPathFromHtml = (htmlStr:string, entryPath:string, caller:string) => {
   // https://stackoverflow.com/questions/10585029/parse-an-html-string-with-js
   var detachedHtml = document.createElement( 'html' );
   detachedHtml.innerHTML = htmlStr;
@@ -27,6 +27,7 @@ export const deleteScriptEntryPathFromHtml = (htmlStr:string, entryPath:string) 
     const scriptEls = bodyEl.getElementsByTagName("script");
     for (const scriptEl of scriptEls) {
       if (scriptEl.getAttribute("src") === entryPath) {
+        console.log(`caller:${caller} deleteScriptEntryPathFromHtml: script tag deleted for src='${entryPath}'`);
         bodyEl.removeChild(scriptEl);
       }
     }

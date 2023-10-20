@@ -94,18 +94,13 @@ const PreviewIframe:React.FC<PreviewIframeProps> = ({id, iteration, title, html,
       return;
     }
 
-    // console.log(`PreviewIframe: html`, html);
-
-    // We need to remove the line which has script tag and entry_file_path
-    // We need to get the path entryPath from the project
-    const resultHtml = deleteScriptEntryPathFromHtml(html, '/src/entry.tsx');
 
     // Updating the srcdoc is necessary to reset the code in the iframe.
-    // However it still does not reset the style information present in the iframe.
+    // However it still does not reset the style information present in the iframe. For that we call reload in the next useEffect
     if (debugComponent) {
       console.log(`PreviewIframe[${title.padStart(20)}] useEffect[html] injected communication script in html`);
     }
-    const hydratedHtml = injectScriptWithCodeInHtml(resultHtml, parentCommunicationJavascriptCode(title, enableConsole));
+    const hydratedHtml = injectScriptWithCodeInHtml(html, parentCommunicationJavascriptCode(title, enableConsole));
 
     // console.log(`hydratedHtml:`, hydratedHtml);
 

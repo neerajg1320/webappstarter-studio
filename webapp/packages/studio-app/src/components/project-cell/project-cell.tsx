@@ -29,6 +29,7 @@ import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
 import CodeFallbackEditor from "../file-cell/code-fallback-editor";
 import FileViewer from "./file-viewer";
+import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -121,6 +122,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         updateFile({localId: _editedFile.localId, content: value});
         let needBundling = true;
         if (reduxProject.entryHtmlFileLocalId === _editedFile.localId) {
+          // TBD: We need to fix path here
           updateProject({localId: reduxProject.localId, htmlContent: value});
           needBundling = false;
         } else if (reduxProject.packageFileLocalId === _editedFile.localId) {
@@ -622,6 +624,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
               html={reduxProject.htmlContent}
               code={reduxProject.bundleResult.code}
               err={reduxProject.bundleResult.err}
+              reduxProject={reduxProject}
           />
       }
     </div>

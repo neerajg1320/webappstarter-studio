@@ -9,6 +9,7 @@ import {useTypedSelector} from "../../../../hooks/use-typed-selector";
 
 import {useActions} from "../../../../hooks/use-actions";
 import PreviewTabsPanel from "../../../preview-section/preview-tabs-panel";
+import {deleteScriptEntryPathFromHtml} from "../../../../utils/markup";
 
 interface ProjectListScrollItemProps {
   index: number;
@@ -37,6 +38,7 @@ const RemainingBox = ({data:reduxProject}:{data:ReduxProject}) => {
                   html={reduxProject.htmlContent}
                   code={reduxProject.bundleResult.code}
                   err={reduxProject.bundleResult.err}
+                  reduxProject={reduxProject}
               />
             </div>
             :

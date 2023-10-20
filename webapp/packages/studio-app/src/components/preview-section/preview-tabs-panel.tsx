@@ -7,6 +7,8 @@ import PreviewConsole from "./preview-console";
 import PreviewBundle from "./preview-bundle";
 import PreviewBuild from "./preview-build";
 import {ElementLifeCycleInfo, getInitialLifecycleInfo} from "../common/lifecycle/info";
+import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
+import {ReduxProject} from "../../state";
 
 interface PreviewTabsProps {
   id: string;
@@ -15,10 +17,11 @@ interface PreviewTabsProps {
   html: string;
   code: string;
   err: string;
+  reduxProject: ReduxProject
 }
 
 // We have to pass the height here
-const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html, code, err}) => {
+const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html, code, err, reduxProject}) => {
   const debugComponentLifecycle = false;
   const lifecyleInfo = useRef<ElementLifeCycleInfo>();
   const [selectedTabIndex, setSelectedTabIndex] = useState<number>(1);
@@ -89,6 +92,17 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
     }
   }, []);
 
+  const bundlerEntryFile = useMemo<string>(() => {
+    return '/src/entry.tsx';
+  }, [reduxProject.entryFileLocalId]);
+
+  const modifiedHtml = useMemo<string|null>(() => {
+    if (html) {
+      return deleteScriptEntryPathFromHtml(html, bundlerEntryFile, 'preview-tabs');
+    }
+    return null;
+  }, [html, reduxProject]);
+
   return (
     <div className="preview-tabs-wrapper">
       <div className="preview-tabs-bar">
@@ -96,7 +110,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
       </div>
       <div className="preview-tabs-panel" >
         <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
-          {html ? <PreviewIframe id={id} iteration={iteration} title={title} html={html} code={code} err={err} /> : <h2>html not populated</h2>}
+          {modifiedHtml ? <PreviewIframe id={id} iteration={iteration} title={title} html={modifiedHtml} code={code} err={err} /> : <h2>html not populated</h2>}
         </div>
         {enableConsole &&
           <div className="preview-tab"
