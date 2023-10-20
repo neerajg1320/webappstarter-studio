@@ -27,7 +27,7 @@ export const deleteScriptEntryPathFromHtml = (htmlStr:string, entryPath:string, 
     const scriptEls = bodyEl.getElementsByTagName("script");
     for (const scriptEl of scriptEls) {
       if (scriptEl.getAttribute("src") === entryPath) {
-        console.log(`caller:${caller} deleteScriptEntryPathFromHtml: script tag deleted for src='${entryPath}'`);
+        // console.log(`caller:${caller} deleteScriptEntryPathFromHtml: script tag deleted for src='${entryPath}'`);
         bodyEl.removeChild(scriptEl);
       }
     }

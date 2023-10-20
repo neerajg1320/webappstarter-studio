@@ -93,7 +93,13 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
   }, []);
 
   const bundlerEntryFile = useMemo<string>(() => {
-    return '/src/entry.tsx';
+    // console.log(reduxProject.entry_path);
+    let projectEntryPath = reduxProject.entry_path;
+    if (projectEntryPath[0] !== "/") {
+      projectEntryPath = "/" + reduxProject.entry_path;
+    }
+
+    return projectEntryPath;
   }, [reduxProject.entryFileLocalId]);
 
   const modifiedHtml = useMemo<string|null>(() => {
