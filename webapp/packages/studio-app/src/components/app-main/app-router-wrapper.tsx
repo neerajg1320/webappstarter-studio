@@ -14,7 +14,7 @@ import UserActivate from "../page-user/user-activate";
 import ProtectedRoute from "../common/protected-route";
 import LoadingIndicator from "../common/loading-indicator";
 import ProjectPlayground from "../project-resource/project-playground";
-import UserPasswordResetConfirm from "../page-user/user-password-reset-confirm";
+import UserPasswordChange from "../page-user/user-password-change";
 
 
 const ProjectListView = lazy(() => import("../project-resource/project-list/project-list-view"));
@@ -35,7 +35,8 @@ const AppRouterWrapper = () => {
             <Route path={RoutePath.USER_REGISTER} element={<UserRegister />} />
             <Route path={RoutePath.USER_LOGIN} element={<UserLogin />} />
             <Route path={`${RoutePath.USER_ACTIVATE}/:key`} element={<UserActivate />} />
-            <Route path={`${RoutePath.USER_PASSWORD_RESET_CONFIRM}/:uid/:token`} element={<UserPasswordResetConfirm />} />
+            <Route path={`${RoutePath.USER_PASSWORD_RESET_CONFIRM}/:uid/:token`} element={<UserPasswordChange resetConfirm={true} />} />
+            <Route path={`${RoutePath.USER_PASSWORD_CHANGE}`} element={<UserPasswordChange resetConfirm={false} />} />
 
             <Route path={RoutePath.PROJECTS} element={
                      <ProtectedRoute>

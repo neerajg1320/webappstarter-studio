@@ -17,7 +17,9 @@ interface Action {
   payload: any
 }
 
-const reducer = (state:ResetPasswordUser, action: Action) => {
+type Reducer = (ResetPasswordUser, Action) => ResetPasswordUser;
+
+const reducer = (state:ResetPasswordUser, action: Action):ResetPasswordUser => {
   switch (action.type) {
 
     case "PASSWORD1":
@@ -30,22 +32,29 @@ const reducer = (state:ResetPasswordUser, action: Action) => {
   }
 };
 
+interface UserPasswordChangeProps {
+  resetConfirm: boolean;
+};
 
-const UserActivate = () => {
-  const [user, dispatch] = useReducer(reducer, {} as ResetPasswordUser);
+const UserPasswordChange:React.FC<UserPasswordChangeProps> = ({resetConfirm=true}) => {
+  const [user, dispatch] = useReducer<Reducer, ResetPasswordUser>(reducer, {} as ResetPasswordUser);
   // const key = "MjM:1qUKq0:M87nAd1mq9mV_ly2rNLN1sxoYFEHUQfh00YrhIRuqFA";
   const navigate = useNavigate();
-  const { passwordResetConfirmUser } = useActions();
+  const { passwordResetConfirmUser, passwordChange } = useActions();
   const { uid, token } = useParams();
   const apiState = useTypedSelector(state => state.auth.api);
 
   console.log(`UserActivate:render uid=${uid} token=${token}`);
 
   const handleSetClick = () => {
-    if (uid && token) {
-      passwordResetConfirmUser(uid, token, user.password1, user.password2);
+    if (resetConfirm) {
+      if (uid && token) {
+        passwordResetConfirmUser(uid, token, user.password1, user.password2);
+      } else {
+        console.error(`Error! uid and token are required`);
+      }
     } else {
-      console.error(`Error! uid and token are required`);
+      passwordChange(user.password1, user.password2);
     }
   }
 
@@ -62,11 +71,11 @@ const UserActivate = () => {
         padding: "20px",
         width: "100%",
         height: "100%",
-        display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"
+        display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"
       }}
       >
+        <span className="title">{resetConfirm ? "Reset Password" : "Change Password"}</span>
         <div className="user-value-list">
-
           <div className="user-value" style={{display: "flex"}}>
             <label>Password</label>
             <input
@@ -112,4 +121,4 @@ const UserActivate = () => {
   );
 }
 
-export default UserActivate;
+export default UserPasswordChange;

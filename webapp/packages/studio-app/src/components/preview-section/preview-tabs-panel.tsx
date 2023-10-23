@@ -8,7 +8,8 @@ import PreviewBundle from "./preview-bundle";
 import PreviewBuild from "./preview-build";
 import {ElementLifeCycleInfo, getInitialLifecycleInfo} from "../common/lifecycle/info";
 import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
-import {ReduxProject} from "../../state";
+import {ReduxProject} from "../../state/project";
+import {getProjectEntryPath} from "../../state/helpers/project-helpers";
 
 interface PreviewTabsProps {
   id: string;
@@ -94,12 +95,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
 
   const bundlerEntryFile = useMemo<string>(() => {
     // console.log(reduxProject.entry_path);
-    let projectEntryPath = reduxProject.entry_path;
-    if (projectEntryPath[0] !== "/") {
-      projectEntryPath = "/" + reduxProject.entry_path;
-    }
-
-    return projectEntryPath;
+    return getProjectEntryPath(reduxProject);
   }, [reduxProject.entryFileLocalId]);
 
   const modifiedHtml = useMemo<string|null>(() => {

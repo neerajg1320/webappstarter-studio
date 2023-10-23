@@ -16,3 +16,12 @@ export const getProjectFromServerId = (state:ProjectsState, serverId:number):Red
   }
   return null;
 }
+
+export const getProjectEntryPath = (reduxProject:ReduxProject):string => {
+  let projectEntryPath = reduxProject.entry_path;
+  if (projectEntryPath[0] !== "/") {
+    projectEntryPath = "/" + reduxProject.entry_path;
+  }
+
+  return projectEntryPath;
+}

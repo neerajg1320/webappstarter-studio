@@ -54,6 +54,10 @@ const AppNavBar = () => {
     });
   }
 
+  const handlePasswordChangeClick = () => {
+    navigate(RoutePath.USER_PASSWORD_CHANGE, {replace: true});
+  }
+
   return (
       <nav className="navbar">
         <div className="navbar-brand">
@@ -115,6 +119,9 @@ const AppNavBar = () => {
                       </div>
                     </>
                   }
+                  <div className="navbar-item" onClick={() => handlePasswordChangeClick()}>
+                    Change Password
+                  </div>
                   <div className="navbar-item" onClick={() => handleLogoutClick()}>
                     Logout
                   </div>

@@ -81,7 +81,7 @@ import {ApplicatonStatePartial} from "../application";
 import {delayTimer} from "../../utils/delay";
 import {convertStrToUint8, getZipBlobSync} from "../../utils/zip";
 import {createDiff} from "../../utils/diff";
-import {getProjectFromLocalId} from "../helpers/project-helpers";
+import {getProjectEntryPath, getProjectFromLocalId} from "../helpers/project-helpers";
 import {PackageDetectResult} from "../../bundler/plugins/package";
 import {getPkgServer} from "../../api/servers";
 import {getRegexMatches} from "../../utils/regex";
@@ -746,7 +746,8 @@ export const downloadProjectBuildZip = (localId:string) => {
 
     // We should be taking the specified html file and injecting the line to add the script.
     // const indexHtmlContent = getHtmlContent(indexJsPath);
-    const resultHtml = deleteScriptEntryPathFromHtml(projectState.htmlContent, "/src/entry.tsx", 'build-zip');
+    const projectEntryPath = getProjectEntryPath(projectState);
+    const resultHtml = deleteScriptEntryPathFromHtml(projectState.htmlContent, projectEntryPath, 'build-zip');
     const indexHtmlContent = getBuildHtmlContent(resultHtml, indexJsPath);
     const indexJsContent = projectState.bundleResult.code;
 
@@ -1498,6 +1499,47 @@ export const passwordResetUser = (email:string) => {
           }
         }
         dispatch(userRequestFailed(reqId, errors))
+      } else {
+        console.error(err);
+      }
+    }
+  };
+}
+
+export const passwordChange = (new_password1:string, new_password2:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    // dispatch(activateRequestStart(key));
+    const reqId = generateLocalId();
+    dispatch(userRequestStart(reqId, UserFlowType.PASSWORD_RESET_CONFIRM));
+
+    try {
+      const response = await axiosApiInstance.post(
+          `/auth/password/change/`,
+          {new_password1, new_password2}
+      );
+
+      if (debugAxios) {
+        console.log(response.data);
+      }
+      const messages = [response.data.detail];
+      console.log(messages);
+
+      // dispatch(activateRequestSuccess(messages));
+      dispatch(userRequestSuccess(reqId, messages));
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (debugRedux || true) {
+          console.error(`Error! activate unsuccessful err:`, err);
+        }
+        let errors = ['Activation Failed']
+        if (err.response) {
+          errors = axiosErrorToErrorList(err, true);
+          if (debugRedux || true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        // dispatch(activateRequestFailed(errors));
+        dispatch(userRequestFailed(reqId, errors));
       } else {
         console.error(err);
       }

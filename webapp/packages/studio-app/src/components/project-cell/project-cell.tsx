@@ -587,7 +587,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
                 </button>
                 <button className="button is-family-secondary is-small" onClick={handleProjectDeployClick}
                         disabled={reduxProject.downloadingZip}>
-                  Deploy
+                  Release
                 </button>
                 <progress style={{width: "90%", visibility: reduxProject.downloadingZip ? "visible" : "hidden"}}/>
               </div>

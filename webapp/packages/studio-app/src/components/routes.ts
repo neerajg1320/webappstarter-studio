@@ -14,6 +14,7 @@ export enum RoutePath {
   USER_LOGIN = '/user/login',
   USER_ACTIVATE = '/user/activate',
   USER_PASSWORD_RESET_CONFIRM = '/user/password/reset/confirm',
+  USER_PASSWORD_CHANGE = '/user/password/change',
 
   LOGIN_SUCCESS = PROJECTS,
 }
