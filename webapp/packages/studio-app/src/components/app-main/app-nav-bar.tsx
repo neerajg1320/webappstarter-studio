@@ -30,12 +30,13 @@ const AppNavBar = () => {
     );
     console.log(`choice:`, choice);
 
-    if (currentUser) {
-      console.log(`User account delete called`);
-      // deleteUser(currentUser.localId);
+    if (choice) {
+      if (currentUser) {
+        console.log(`User account delete called`);
+        deleteUser(currentUser.localId);
+      }
+      navigate(RoutePath.ROOT, {replace: true});
     }
-
-    navigate(RoutePath.ROOT, {replace: true});
   };
 
   const handleBackClick = () => {
@@ -128,11 +129,11 @@ const AppNavBar = () => {
                   <div className="navbar-item" onClick={() => handlePasswordChangeClick()}>
                     Change Password
                   </div>
+                  <div className="navbar-item" onClick={() => handleDeleteClick()}>
+                    Delete Account
+                  </div>
                   <div className="navbar-item" onClick={() => handleLogoutClick()}>
                     Logout
-                  </div>
-                  <div className="navbar-item" onClick={() => handleDeleteClick()}>
-                    Delete User
                   </div>
                 </div>
               </div>
