@@ -27,7 +27,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   }, []);
 
   const navigate = useNavigate();
-  const { updateProject, saveProject } = useActions();
+  const { updateProject, saveProject, deleteProject, setCurrentProjectId } = useActions();
   const isFrameworkEnabled = useMemo(() => false, []);
   const inputFileRef = useRef<HTMLInputElement>();
   const [selectedZipFile, setSelectedZipFile] = useState<File>();
@@ -152,6 +152,14 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
     }
   }
 
+  const handleCancelClick = () => {
+    if (!currentProject.confirmed) {
+      deleteProject(currentProject.localId);
+      setCurrentProjectId(null);
+    }
+    navigate(RoutePath.BACK);
+  }
+
   return (
       <div style={{
           // border: "2px solid yellow",
@@ -260,6 +268,13 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
                 disabled={currentProject?.synced}
             >
               Save
+            </button>
+            <button
+                className="button is-family-secondary is-small"
+                onClick={handleCancelClick}
+                disabled={currentProject?.synced}
+            >
+              Cancel
             </button>
           </div>
         </div>
