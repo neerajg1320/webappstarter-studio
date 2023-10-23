@@ -79,6 +79,8 @@ const UserLogin = () => {
   const handleForgotPasswordClick = () => {
     if (user.email) {
       passwordResetUser(user.email);
+    } else {
+      window.alert("Please type the email");
     }
   }
 
