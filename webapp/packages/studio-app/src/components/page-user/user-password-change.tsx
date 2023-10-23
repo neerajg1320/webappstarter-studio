@@ -5,21 +5,21 @@ import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import UserFlowStatus from "./user-flow-status";
 
-interface ResetPasswordUser {
+interface UserState {
   id: string;
   taken: string;
   password1: string;
   password2: string;
 };
 
-interface Action {
+interface UserAction {
   type: string,
   payload: any
 }
 
-type Reducer = (ResetPasswordUser, Action) => ResetPasswordUser;
+type Reducer = (ResetPasswordUser, Action) => UserState;
 
-const reducer = (state:ResetPasswordUser, action: Action):ResetPasswordUser => {
+const reducer = (state:UserState, action: UserAction):UserState => {
   switch (action.type) {
 
     case "PASSWORD1":
@@ -37,7 +37,7 @@ interface UserPasswordChangeProps {
 };
 
 const UserPasswordChange:React.FC<UserPasswordChangeProps> = ({resetConfirm=true}) => {
-  const [user, dispatch] = useReducer<Reducer, ResetPasswordUser>(reducer, {} as ResetPasswordUser);
+  const [user, dispatch] = useReducer(reducer, {} as UserState);
   // const key = "MjM:1qUKq0:M87nAd1mq9mV_ly2rNLN1sxoYFEHUQfh00YrhIRuqFA";
   const navigate = useNavigate();
   const { passwordResetConfirmUser, passwordChange } = useActions();
