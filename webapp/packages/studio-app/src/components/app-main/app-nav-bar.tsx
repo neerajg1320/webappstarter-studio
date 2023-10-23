@@ -25,8 +25,14 @@ const AppNavBar = () => {
   };
 
   const handleDeleteClick = () => {
+    const choice = window.confirm(
+        'Are you sure you want to delete your account? You will lose all the projects.'
+    );
+    console.log(`choice:`, choice);
+
     if (currentUser) {
-      deleteUser(currentUser.localId);
+      console.log(`User account delete called`);
+      // deleteUser(currentUser.localId);
     }
 
     navigate(RoutePath.ROOT, {replace: true});
