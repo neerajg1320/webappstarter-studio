@@ -32,8 +32,15 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
 
   const handleDeleteProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    deleteFiles(reduxProject.localId);
-    removeProject(reduxProject.localId);
+    const choice = window.confirm(
+        'Are you sure you want to delete your project? You will lose all the files.'
+    );
+    console.log(`choice:`, choice);
+
+    if (choice) {
+      deleteFiles(reduxProject.localId);
+      removeProject(reduxProject.localId);
+    }
   }
 
 
