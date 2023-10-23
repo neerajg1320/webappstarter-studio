@@ -116,13 +116,20 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
   const handleSaveClick = async () => {
     saveClickRef.current = true;
 
-    if (currentProject) {
-      // TBD: Here we should add the checks for validation
-      // We confirm the creation locally
-
-      updateProject({localId: currentProject.localId, confirmed: true});
-      saveProject(currentProject.localId);
+    if (!currentProject) {
+      window.alert(`Please select or create a project`);
+      return;
     }
+
+    if (isImport) {
+      if (!selectedZipFile) {
+        window.alert(`Please select a zip file`);
+        return
+      }
+    }
+
+    updateProject({localId: currentProject.localId, confirmed: true});
+    saveProject(currentProject.localId);
   }
 
   useEffect(() => {
