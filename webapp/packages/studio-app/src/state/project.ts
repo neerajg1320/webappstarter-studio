@@ -72,6 +72,7 @@ export interface ReduxProject extends ServerObject {
 
   // Below are server fields
   folder?: string;
+  size?: number;
   entry_file?: number;
   entry_path?: string;
   entry_html_path?: string;

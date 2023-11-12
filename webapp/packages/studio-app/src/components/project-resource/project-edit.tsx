@@ -2,7 +2,7 @@ import './project-edit.css';
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useActions} from "../../hooks/use-actions";
 import Select, {SingleValue} from "react-select";
-import {ReduxProject, ReduxUpdateProjectPartial, StartConfigType} from "../../state";
+import {ReduxProject, ReduxUpdateProjectPartial, StartConfigType} from "../../state/project";
 import {useNavigate} from "react-router-dom";
 import {RouteDepth, RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
@@ -128,7 +128,6 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       }
     }
 
-    updateProject({localId: currentProject.localId, confirmed: true});
     saveProject(currentProject.localId);
   }
 

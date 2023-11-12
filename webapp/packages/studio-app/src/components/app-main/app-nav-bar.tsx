@@ -129,9 +129,11 @@ const AppNavBar = () => {
                   <div className="navbar-item" onClick={() => handlePasswordChangeClick()}>
                     Change Password
                   </div>
-                  <div className="navbar-item" onClick={() => handleDeleteClick()}>
-                    Delete Account
-                  </div>
+                  {/*
+                    <div className="navbar-item" onClick={() => handleDeleteClick()}>
+                      Delete Account
+                    </div>
+                  */}
                   <div className="navbar-item" onClick={() => handleLogoutClick()}>
                     Logout
                   </div>

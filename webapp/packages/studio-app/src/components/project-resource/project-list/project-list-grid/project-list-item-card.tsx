@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import './project-list-item-card.css';
-import {ReduxProject} from "../../../../state";
+import {ReduxProject} from "../../../../state/project";
 import {useActions} from "../../../../hooks/use-actions";
 import {RoutePath} from "../../../routes";
 
@@ -59,13 +59,17 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
         selectAndNavigateToProject();
       }}
     >
-      <div className="card-header" style={{padding: "0 10px", margin: "0"}}>
+      <div className="card-header" style={{padding: "0 10px", margin: "0",
+        display: "flex" , flexDirection: "row", justifyContent: "space-between"
+      }}>
         <div>
           {reduxProject.title}
         </div>
-        <div>
-          <img />
-        </div>
+        {(reduxProject.size !== undefined && reduxProject.size > 0) &&
+          <div>
+            {reduxProject.size + " Bytes"}
+          </div>
+        }
       </div>
       <div className="card-content" style={{flexGrow: 1}}>
         <div className="card-item" >

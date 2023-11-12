@@ -68,6 +68,10 @@ const reducer = produce((state:ApiState = initialState, action: Action): ApiStat
       assignShortcutProperty(action.payload.id, state);
       return state;
 
+    case ActionType.API_FLOW_RESET:
+      state.apiFlowState = initialApiFlowState;
+      return state;
+
     default:
       return state;
   }

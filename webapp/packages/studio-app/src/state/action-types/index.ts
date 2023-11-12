@@ -91,6 +91,7 @@ export enum ActionType {
   API_REQUEST_START = 'api_request_start',
   API_REQUEST_SUCCESS = 'api_request_success',
   API_REQUEST_FAILED = 'api_request_failed',
+  API_FLOW_RESET = 'api_flow_reset',
 
   // There is no need of CREATE_APP and DELETE_APP as they are linked to lifecycle of App.
   UPDATE_APPLICATION = 'update_application',

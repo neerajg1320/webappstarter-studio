@@ -4,6 +4,7 @@ import {
   ApiRequestFailedAction,
   ApiRequestStartAction,
   ApiRequestSuccessAction,
+  ApiFlowReset,
   CreateFileAction,
   CreateProjectAction,
   DeleteCellAction,
@@ -581,7 +582,7 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
       dispatch(apiRequestSuccess(reqId, messages));
 
       // TBD: For now we will hard code the entry_html_path to 'index.html'
-      dispatch(updateProject({localId, ...rest, entry_html_path: 'index.html', synced:true}));
+      dispatch(updateProject({localId, ...rest, entry_html_path: 'index.html', synced:true, confirmed: true}));
 
       const updatedProject = getProjectFromLocalId(getState().projects, localId);
       await fetchFiles(updatedProject)(dispatch, getState);
@@ -590,7 +591,7 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
         if (debugRedux ||true) {
           console.error(`Error! activate unsuccessful err:`, err);
         }
-        let errors = ['Activation Failed']
+        let errors = ['API Failed']
         if (err.response) {
           errors = axiosResponseToStringList(err.response);
           if (debugRedux||true) {
@@ -1222,6 +1223,9 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
       }
     }
 
+    const reqId = generateLocalId();
+    dispatch(apiRequestStart(reqId, ApiFlowResource.FILE, ApiFlowOperation.POST));
+
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/files/`, formData, {headers: __rm__gHeaders});
       if (debugRedux) {
@@ -1241,6 +1245,9 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
         language: pathToCodeLanguage(response.data.path), // Need to be fixed
         ...response.data
       })); //
+
+      const messages = ["File created"];
+      dispatch(apiRequestSuccess(reqId, messages));
 
       const {projectLocalId, isEntryPoint, path}  = fileCreatePartial;
       if (projectLocalId) {
@@ -1269,6 +1276,16 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
         //   type: ActionType.SAVE_CELLS_ERROR,
         //   payload: err.message
         // });
+        dispatch(deleteFile(localId))
+
+        let errors = ['API Failed'];
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(apiRequestFailed(reqId, errors));
       }
     }
   }
@@ -1816,6 +1833,12 @@ export const registerUser = (
         console.error(err);
       }
     }
+  }
+}
+
+export const apiFlowReset = (): ApiFlowReset => {
+  return {
+    type: ActionType.API_FLOW_RESET
   }
 }
 

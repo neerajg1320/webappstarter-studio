@@ -236,6 +236,11 @@ export interface ApiRequestFailedAction {
   payload: ApiRequestFailed
 }
 
+export interface ApiFlowReset {
+  type: ActionType.API_FLOW_RESET
+}
+
+
 export interface UpdateApplicationAction {
   type: ActionType.UPDATE_APPLICATION,
   payload: ApplicatonStatePartial
@@ -286,6 +291,7 @@ export type Action =
     | ApiRequestStartAction
     | ApiRequestSuccessAction
     | ApiRequestFailedAction
+    | ApiFlowReset
     | UpdateApplicationAction
     | ResetApplicationAction
     ;

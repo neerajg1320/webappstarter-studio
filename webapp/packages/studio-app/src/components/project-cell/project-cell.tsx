@@ -30,6 +30,7 @@ import {ResizeCallbackData} from 'react-resizable';
 import CodeFallbackEditor from "../file-cell/code-fallback-editor";
 import FileViewer from "./file-viewer";
 import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
+import ApiFlowStatus from "../api-status/api-flow-status";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -74,6 +75,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   // Kept due to the behaviour of the editor onChange callback
   const hotReloadRef = useRef<boolean>(hotReload);
   const autoSync = useTypedSelector(state => state.application.autoSync);
+  const apiState = useTypedSelector(state => state.api.apiFlowState);
+
   // Kept due to the behaviour of the editor onChange callback
   const autoSaveRef = useRef<boolean>(hotReload);
   const downloadProjectSourceClickedRef = useRef<boolean>(false);
@@ -614,6 +617,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
         </div>
       </ResizableDiv>
       }
+
+      <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
 
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
       {(reduxProject.htmlContent && reduxProject.bundleLocalId && reduxProject.bundleResult) &&
