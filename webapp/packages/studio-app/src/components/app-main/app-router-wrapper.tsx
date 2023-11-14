@@ -21,6 +21,7 @@ const ProjectListView = lazy(() => import("../project-resource/project-list/proj
 const ProjectCell = lazy(() => import("../project-resource/project-cell/project-cell"));
 const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
 import {withLifecyleLogger} from "../../hoc/logger";
+import ProjectFetch from "../project-resource/project-fetch";
 
 const AppRouterWrapper = () => {
   const currentProjectLocalId = useTypedSelector((state) => state.projects.currentProjectId);
@@ -43,6 +44,11 @@ const AppRouterWrapper = () => {
                        <ProjectListView />
                      </ProtectedRoute>
                    }
+            />
+
+            <Route path={`${RoutePath.PROJECTS}/:idType/:idValue`} element={
+                <ProjectFetch />
+            }
             />
 
             <Route path={`${RoutePath.PROJECT_CELL}/:localId`}

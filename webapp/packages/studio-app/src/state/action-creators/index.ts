@@ -1213,8 +1213,9 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
     formData.append("language", fileCreatePartial.language);
     formData.append("is_entry_point", fileCreatePartial.isEntryPoint! as unknown as string);
 
+    const project = getState().projects.data[fileCreatePartial.projectLocalId];
+
     if (fileCreatePartial.projectLocalId) {
-      const project = getState().projects.data[fileCreatePartial.projectLocalId];
       if (debugRedux && false) {
         console.log(project)
       }
@@ -1266,7 +1267,8 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
           }
 
           // This will ensure the dispatch from middleware
-          await fetchProjectFromServer(projectLocalId)(dispatch,getState);
+          // await fetchProjectFromServer(projectLocalId)(dispatch,getState); Saved
+          await fetchProjectFromServer(project.pkid)(dispatch,getState);
         }
       }
     } catch (err) {

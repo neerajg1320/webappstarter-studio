@@ -60,6 +60,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }, []);
 
   const {localId:projectLocalId} = useParams();
+  // const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
 
   const { bundleProject, updateProject,  saveFile, updateFile, fetchFiles, fetchFileContents, makeProjectIdeReady,
     downloadProjectSourceZip, downloadProjectBuildZip} = useActions();
@@ -95,7 +96,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     autoSaveRef.current = autoSync;
   }, [autoSync])
 
-  // const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
+
   const  reduxProject:ReduxProject = useMemo<ReduxProject>(() => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);
