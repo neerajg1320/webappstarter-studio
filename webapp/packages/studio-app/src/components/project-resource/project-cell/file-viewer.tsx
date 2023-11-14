@@ -1,12 +1,12 @@
 import './file-viewer.css';
-import FileCellControlBar from "../file-cell/file-cell-control-bar";
+import FileCellControlBar from "../../file-cell/file-cell-control-bar";
 import React, {Suspense, useMemo} from "react";
-import CodeFallbackEditor from "../file-cell/code-fallback-editor";
-import {CodeLanguage} from "../../state/language";
-import {ReduxFile} from "../../state/file";
-import {ReduxProject} from "../../state/project";
-import CodeEditor from "../file-cell/code-editor";
-import {FileContentType, getFileContentType} from "../../utils/path";
+import CodeFallbackEditor from "../../file-cell/code-fallback-editor";
+import {CodeLanguage} from "../../../state/language";
+import {ReduxFile} from "../../../state/file";
+import {ReduxProject} from "../../../state/project";
+import CodeEditor from "../../file-cell/code-editor";
+import {FileContentType, getFileContentType} from "../../../utils/path";
 import ImageViewer from "./image-viewer";
 
 

@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import './image-viewer.css';
-import {ReduxFile} from "../../state";
+import {ReduxFile} from "../../../state";
 
 interface ImageViewerProps  {
   imageFile: ReduxFile

@@ -11,34 +11,35 @@ import React, {
   Suspense,
   lazy
 } from 'react';
-import {useActions} from "../../hooks/use-actions";
-import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {useParams} from 'react-router-dom';
+import {useActions} from "../../../hooks/use-actions";
+import {useTypedSelector} from "../../../hooks/use-typed-selector";
 
 // import CodeEditor from "../file-cell/code-editor";
-import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser";
-import {PackageConfig, ReduxProject} from "../../state/project";
-import {ReduxFile} from "../../state/file";
-import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
+import FilesBrowser, {FileBrowserEventFunc} from "../../files-browser/file-browser";
+import {PackageConfig, ReduxProject} from "../../../state/project";
+import {ReduxFile} from "../../../state/file";
+import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../../config/global";
 
-import FileCellControlBar from "../file-cell/file-cell-control-bar";
-import PreviewTabsPanel from "../preview-section/preview-tabs-panel";
-import {pathToBundleLanguage} from "../../state/bundle";
-import {CodeLanguage, pathToCodeLanguage} from "../../state/language";
-import useDebouncedCallback from "../../hooks/use-debounced-callback";
-import useWindowSize from "../../hooks/use-window-size";
-import ResizableDiv, {ElementSize} from "../common/resizable-div/resizable-div";
+import FileCellControlBar from "../../file-cell/file-cell-control-bar";
+import PreviewTabsPanel from "../../preview-section/preview-tabs-panel";
+import {pathToBundleLanguage} from "../../../state/bundle";
+import {CodeLanguage, pathToCodeLanguage} from "../../../state/language";
+import useDebouncedCallback from "../../../hooks/use-debounced-callback";
+import useWindowSize from "../../../hooks/use-window-size";
+import ResizableDiv, {ElementSize} from "../../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
-import CodeFallbackEditor from "../file-cell/code-fallback-editor";
+import CodeFallbackEditor from "../../file-cell/code-fallback-editor";
 import FileViewer from "./file-viewer";
-import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
-import ApiFlowStatus from "../api-status/api-flow-status";
-import {getProjectFilePaths, getProjectFilesForPath} from "../../state/helpers/file-helpers";
+import {deleteScriptEntryPathFromHtml} from "../../../utils/markup";
+import ApiFlowStatus from "../../api-status/api-flow-status";
+import {getProjectFilePaths, getProjectFilesForPath} from "../../../state/helpers/file-helpers";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
   // projectLocalId: string;
 }
-const CodeEditor = lazy(() => import("../file-cell/code-editor"));
+const CodeEditor = lazy(() => import("../../file-cell/code-editor"));
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
@@ -58,7 +59,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }, []);
 
-
+  const {localId:projectLocalId} = useParams();
 
   const { bundleProject, updateProject,  saveFile, updateFile, fetchFiles, fetchFileContents, makeProjectIdeReady,
     downloadProjectSourceZip, downloadProjectBuildZip} = useActions();
@@ -94,7 +95,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     autoSaveRef.current = autoSync;
   }, [autoSync])
 
-  const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
+  // const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
   const  reduxProject:ReduxProject = useMemo<ReduxProject>(() => {
     return projectsState.data[projectLocalId];
   }, [projectLocalId, projectsState]);

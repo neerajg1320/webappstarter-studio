@@ -18,7 +18,7 @@ import UserPasswordChange from "../page-user/user-password-change";
 
 
 const ProjectListView = lazy(() => import("../project-resource/project-list/project-list-view"));
-const ProjectCell = lazy(() => import("../project-cell/project-cell"));
+const ProjectCell = lazy(() => import("../project-resource/project-cell/project-cell"));
 const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
 import {withLifecyleLogger} from "../../hoc/logger";
 
@@ -45,7 +45,7 @@ const AppRouterWrapper = () => {
                    }
             />
 
-            <Route path={`${RoutePath.PROJECT_CELL}/`}
+            <Route path={`${RoutePath.PROJECT_CELL}/:localId`}
                    element={
                      <ProtectedRoute>
                        {currentProjectLocalId && <ProjectCell />}
