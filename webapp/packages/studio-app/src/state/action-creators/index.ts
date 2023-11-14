@@ -38,7 +38,7 @@ import {
   PackageConfig,
   ReactToolchains,
   ReduxCreateProjectPartial,
-  ReduxDeleteProjectPartial,
+  ReduxDeleteProjectPartial, ReduxFetchProjectPartial,
   ReduxProject,
   ReduxUpdateProjectPartial,
   StartConfigType
@@ -452,7 +452,7 @@ export const saveCells = () => {
     }
 }
 
-export const createProject = (projectPartial: ReduxCreateProjectPartial): CreateProjectAction => {
+export const createProject = (projectPartial: ReduxCreateProjectPartial|ReduxFetchProjectPartial): CreateProjectAction => {
     return {
         type: ActionType.CREATE_PROJECT,
         payload: projectPartial
@@ -631,13 +631,13 @@ export const updateProjectOnServer = (pkid: number, projectPartial: ReduxCreateP
 }
 
 // This is invoked when we create a file with is_entry_point set
-export const fetchProjectFromServer = (localId:string) => {
+export const syncProjectFromServer = (localId:string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const project = getState().projects.data[localId];
     try {
       const response = await axiosApiInstance.get(`${gApiUri}/projects/${project.pkid}/`,{headers: __rm__gHeaders});
       if (debugRedux) {
-        console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
+        console.log(`syncProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
       }
 
       const {entry_file, entry_path} = response.data;
@@ -649,6 +649,37 @@ export const fetchProjectFromServer = (localId:string) => {
     }
   }
 }
+
+
+export const fetchProjectFromServer = (id:string) => {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const localId = generateLocalId();
+    const fetchProjectPartial = {localId, id} as ReduxFetchProjectPartial;
+
+    dispatch(createProject(fetchProjectPartial));
+
+    try {
+      const response = await axiosApiInstance.get(`${gApiUri}/projects/?id=${id}`,{headers: __rm__gHeaders});
+      if (debugRedux) {
+        console.log(`fetchProjectFromServer:${JSON.stringify(response.data, null, 2)}`);
+      }
+      if (response.data.length > 0) {
+        const projectResponse = response.data[0];
+        dispatch(updateProject({localId, ...projectResponse}));
+
+        const project = getState().projects.data[localId];
+        await fetchFiles(project)(dispatch, getState);
+        dispatch(setCurrentProjectId(localId))
+      }
+
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error(`Error! ${err.message}`);
+      }
+    }
+  }
+}
+
 
 export const deleteProjectFromServer = (pkid:number, deleteProjectPartial: ReduxDeleteProjectPartial) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
@@ -1213,9 +1244,8 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
     formData.append("language", fileCreatePartial.language);
     formData.append("is_entry_point", fileCreatePartial.isEntryPoint! as unknown as string);
 
-    const project = getState().projects.data[fileCreatePartial.projectLocalId];
-
     if (fileCreatePartial.projectLocalId) {
+      const project = getState().projects.data[fileCreatePartial.projectLocalId];
       if (debugRedux && false) {
         console.log(project)
       }
@@ -1267,8 +1297,7 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
           }
 
           // This will ensure the dispatch from middleware
-          // await fetchProjectFromServer(projectLocalId)(dispatch,getState); Saved
-          await fetchProjectFromServer(project.pkid)(dispatch,getState);
+          await syncProjectFromServer(projectLocalId)(dispatch,getState);
         }
       }
     } catch (err) {
@@ -1376,7 +1405,7 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
           }
 
           // This will make sure that the project is in sync with server
-          await fetchProjectFromServer(fileState.projectLocalId)(dispatch,getState);
+          await syncProjectFromServer(fileState.projectLocalId)(dispatch,getState);
 
         } else {
           console.log(`File state not found for localId '${localId}'`);

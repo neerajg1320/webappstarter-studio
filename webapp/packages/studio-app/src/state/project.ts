@@ -127,6 +127,11 @@ export interface ReduxDeleteProjectPartial {
   pkid?:string;
 }
 
+export interface ReduxFetchProjectPartial {
+  localId: string;
+  id:string;
+}
+
 export type DependencyMap = {[k:string]: string};
 
 export interface PackageConfig {

@@ -53,10 +53,10 @@ const AppRouterWrapper = () => {
 
             <Route path={`${RoutePath.PROJECT_CELL}/:localId`}
                    element={
-                     <ProtectedRoute>
+                     <>
                        {currentProjectLocalId && <ProjectCell />}
                        {!currentProjectLocalId && <h1>Select a project</h1>}
-                     </ProtectedRoute>
+                     </>
                    }
             />
             <Route path={RoutePath.PROJECT_EDIT}
