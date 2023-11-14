@@ -8,6 +8,7 @@ import {debugComponent} from "./config/global";
 
 
 const App = () => {
+  const debugComponent = true;
   const { initializeBundler } = useActions();
   const isAuthenticated = useTypedSelector(state => state.auth.isAuthenticated);
   const currentUser = useTypedSelector(state => state.auth.currentUser);

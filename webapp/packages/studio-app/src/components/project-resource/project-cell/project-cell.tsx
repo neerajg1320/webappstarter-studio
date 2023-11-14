@@ -44,7 +44,7 @@ const CodeEditor = lazy(() => import("../../file-cell/code-editor"));
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
 const ProjectCell:React.FC<ProjectCellProps> = () => {
-  const debugComponent = false;
+  const debugComponent = true;
   const debugComponentLifecycle = debugComponent || false;
 
   useEffect(() => {

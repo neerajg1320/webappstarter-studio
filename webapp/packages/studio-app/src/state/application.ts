@@ -4,6 +4,7 @@ export interface ApplicatonState {
   advanceFeatures: boolean;
   projectsLoaded: boolean;
   filesLoaded: boolean;
+  bundlerInitiated: boolean;
   bundlerReady: boolean;
 }
 
@@ -13,5 +14,6 @@ export interface ApplicatonStatePartial {
   advanceFeatures?: boolean;
   projectsLoaded?: boolean;
   filesLoaded?: boolean;
+  bundlerInitiated?: boolean;
   bundlerReady?: boolean;
 }

@@ -6,9 +6,10 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 const ProjectFetch = () => {
   const {idType, idValue} = useParams();
-  const {fetchProjectFromServer} = useActions();
+  const {fetchProjectFromServer, initializeBundler} = useActions();
   const navigate = useNavigate();
   const currentProjectLocalId = useTypedSelector((state) => state.projects.currentProjectId);
+  const bundlerInitiated = useTypedSelector(state => state.application.bundlerInitiated)
 
   useEffect(() => {
     if (idType !== "pkid") {
@@ -21,6 +22,10 @@ const ProjectFetch = () => {
   useEffect(() => {
     console.log(`currentProjectLocalId: ${currentProjectLocalId}`);
     if (currentProjectLocalId) {
+      if (!bundlerInitiated) {
+        initializeBundler();
+      }
+
       navigate(`${RoutePath.PROJECT_CELL}/${currentProjectLocalId}`);
     }
   }, [currentProjectLocalId]);

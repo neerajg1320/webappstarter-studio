@@ -12,6 +12,7 @@ const initialState: ApplicatonState = {
   advanceFeatures: false,
   projectsLoaded: false, // This should be moved to user
   filesLoaded: false, // This should be moved to user
+  bundlerInitiated: false,
   bundlerReady: false,
 }
 

@@ -6,7 +6,7 @@ export const debugCache = false;
 
 // Redux
 export const reduxManualTest = false;
-export const debugRedux = false;
+export const debugRedux = true;
 ;
 
 

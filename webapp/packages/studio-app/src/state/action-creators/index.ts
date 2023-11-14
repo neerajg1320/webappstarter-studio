@@ -162,6 +162,7 @@ export const resetBundles = ():ResetBundlesAction => {
 
 export const initializeBundler = () => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
+    dispatch(updateApplication({bundlerInitiated: true}));
     await initializeEsbuildBundler();
     dispatch(updateApplication({bundlerReady: true}));
   }
@@ -197,6 +198,7 @@ export const bundleProject = (localId:string) => {
     const bundleLanguage = pathToBundleLanguage(entryPath)
 
     if (bundleLanguage !== BundleLanguage.UNKNOWN) {
+      // TBD: We have to find a solution here as the currentUser is not 
       if (currentUser) {
         // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
         // TBD: Remove the hardcoding of the project path
@@ -1089,10 +1091,16 @@ export const makeProjectIdeReady = (localId: string) => {
       ideFiles.push(reduxProject.packageFileLocalId);
     }
 
+    if (debugRedux) {
+      console.log(`ideFiles:`, ideFiles);
+    }
+
     const responses = await fetchFileContents(ideFiles)(dispatch, getState);
     if (responses) {
       responses.forEach(({response, reduxFile}) => {
-        // console.log(response, reduxFile);
+        if (debugRedux) {
+          console.log(response, reduxFile);
+        }
 
         if (reduxProject.entryHtmlFileLocalId === reduxFile.localId) {
           projectUpdatePartial.htmlContent = response.data;
@@ -1104,6 +1112,9 @@ export const makeProjectIdeReady = (localId: string) => {
         }
         projectUpdatePartial.ideReady = true;
 
+        if (debugRedux) {
+          console.log(`setting ideReady:`, projectUpdatePartial);
+        }
         dispatch(updateProject(projectUpdatePartial));
       });
     } else {
@@ -1182,10 +1193,9 @@ export const fetchFileContents = (localIds: string[]) => {
       responses.forEach(({response, reduxFile}, index) => {
         const {request, data} = response;
 
-        if (debugRedux || false) {
+        if (debugRedux) {
           console.log(`fetchFileContents: `, response, response.headers['content-type']);
         }
-
 
         let content;
         if (getFileContentType(reduxFile.path) === FileContentType.IMAGE) {
@@ -1194,10 +1204,9 @@ export const fetchFileContents = (localIds: string[]) => {
           content = request.responseText;
         }
 
-        if (debugRedux || false) {
+        if (debugRedux) {
           console.log(`fetchFileContents: ${reduxFile.path}`, typeof(content), content.length);
         }
-
 
         dispatch({
           type: ActionType.UPDATE_FILE,
