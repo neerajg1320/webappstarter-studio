@@ -1270,12 +1270,8 @@ export const createFileOnServer = (fileCreatePartial: ReduxCreateFilePartial) =>
         }
       }
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof AxiosError) {
         console.error(`Error! ${err.message}`);
-        // dispatch({
-        //   type: ActionType.SAVE_CELLS_ERROR,
-        //   payload: err.message
-        // });
         dispatch(deleteFile(localId))
 
         let errors = ['API Failed'];
@@ -1317,11 +1313,17 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
 
     const {localId} = updateFilePartial;
 
+    const reqId = generateLocalId();
+    dispatch(apiRequestStart(reqId, ApiFlowResource.FILE, ApiFlowOperation.PATCH));
+
     try {
       const response = await axiosApiInstance.patch(`${gApiUri}/files/${pkid}/`, formData, {headers: __rm__gHeaders});
       if (debugRedux) {
         console.log(response);
       }
+
+      const messages = ["File updated"];
+      dispatch(apiRequestSuccess(reqId, messages));
 
       const fileState = getState().files.data[localId] as ReduxFile;
 
@@ -1379,12 +1381,17 @@ export const updateFileOnServer = (pkid:number, updateFilePartial: ReduxUpdateFi
         }
       }
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof AxiosError) {
         console.error(`Error! ${err.message}`);
-        // dispatch({
-        //   type: ActionType.SAVE_CELLS_ERROR,
-        //   payload: err.message
-        // });
+
+        let errors = ['API Failed'];
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(apiRequestFailed(reqId, errors));
       }
     }
   }
@@ -1397,6 +1404,8 @@ export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDelete
     }
 
     const {localId} = deleteFilePartial;
+    const reqId = generateLocalId();
+    dispatch(apiRequestStart(reqId, ApiFlowResource.FILE, ApiFlowOperation.DELETE));
 
     try {
       const response = await axiosApiInstance.delete(`${gApiUri}/files/${pkid}/`,{headers: __rm__gHeaders});
@@ -1404,18 +1413,26 @@ export const deleteFileFromServer = (pkid:number, deleteFilePartial: ReduxDelete
         console.log(response);
       }
 
+      const messages = ["File updated"];
+      dispatch(apiRequestSuccess(reqId, messages));
+      
       // const {id, pkid} = response.data
       // We are putting pkid in the id
       // We can put a field here response t
       dispatch(deleteFile(localId)); //
 
     } catch (err) {
-      if (err instanceof Error) {
+      if (err instanceof AxiosError) {
         console.error(`Error! ${err.message}`);
-        // dispatch({
-        //   type: ActionType.SAVE_CELLS_ERROR,
-        //   payload: err.message
-        // });
+
+        let errors = ['API Failed'];
+        if (err.response) {
+          errors = axiosResponseToStringList(err.response);
+          if (debugRedux||true) {
+            console.error(`Error! activate unsuccessful errors:`, errors);
+          }
+        }
+        dispatch(apiRequestFailed(reqId, errors));
       }
     }
   }

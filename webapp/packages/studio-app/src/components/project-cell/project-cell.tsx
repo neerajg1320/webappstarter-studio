@@ -16,7 +16,8 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 
 // import CodeEditor from "../file-cell/code-editor";
 import FilesBrowser, {FileBrowserEventFunc} from "../files-browser/file-browser";
-import {PackageConfig, ReduxFile, ReduxProject} from "../../state";
+import {PackageConfig, ReduxProject} from "../../state/project";
+import {ReduxFile} from "../../state/file";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../config/global";
 
 import FileCellControlBar from "../file-cell/file-cell-control-bar";
@@ -31,6 +32,7 @@ import CodeFallbackEditor from "../file-cell/code-fallback-editor";
 import FileViewer from "./file-viewer";
 import {deleteScriptEntryPathFromHtml} from "../../utils/markup";
 import ApiFlowStatus from "../api-status/api-flow-status";
+import {getProjectFilePaths, getProjectFilesForPath} from "../../state/helpers/file-helpers";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -349,10 +351,19 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
   const handleFilePathChange = (localId:string, value:string) => {
+    // TBD: Check the path duplicate here itself
+    const filePaths = getProjectFilePaths(filesState, projectLocalId);
+
+    if (filePaths.indexOf(value) > -1) {
+      console.log(`Error! file ${value} already present`);
+      // setFileName("error.js");
+      return;
+    }
+
     const bundleLanguage = pathToBundleLanguage(value);
     const language = pathToCodeLanguage(value);
 
-    if (debugComponent) {
+    if (debugComponent || true) {
       console.log(`handleFilePathChange: ${localId}: value=${value} bundleLanguage=${bundleLanguage}`);
     }
 
@@ -361,6 +372,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     // TBD: Combine this with above when we are not depended on filesList component anymore
     updateFile({localId, isPathEditing:false});
     saveFile(localId);
+
+    // TBD: We have to do the same in case of file delete.
+    markProjectBundleDirty();
   }
 
 
@@ -376,9 +390,6 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
       case "path-change":
         const {localId, newPath} = data;
         handleFilePathChange(localId, newPath);
-
-        // TBD: We have to do the same in case of file delete.
-        markProjectBundleDirty();
         break;
 
       case "file-delete":

@@ -59,7 +59,6 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
   const reduxFile = itemInfo.value.info.reduxFile;
   const isFolder = itemInfo.value.info.type === "folder";
 
-
   const draggable = useMemo(() => {
     if (propDraggable) {
       return itemInfo.value.info.type === "file";
@@ -81,7 +80,7 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
   }, [itemNode.info.name]);
 
   const handleOnChange = (value:string) => {
-    // console.log(`handleOnChange(): value=${value}`);
+    console.log(`handleOnChange(): value=${value}`);
     setFileName(value);
   }
 
@@ -90,6 +89,10 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
       // console.log(`handleOnChange(): value=${fileName} and event`);
       propOnEvent("change", {keyName, itemInfo, value:fileName});
     }
+  }
+
+  const handleFileNameValidate = (value:string): boolean => {
+    return false;
   }
 
   const handleModeChange = () => {
@@ -154,6 +157,7 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
             mode={reduxFile && reduxFile.isPathEditing}
             onModeChange={handleModeChange}
             onBlur={handleFileNameBlur}
+            onValidate={handleFileNameValidate}
         />
       </div>
   );

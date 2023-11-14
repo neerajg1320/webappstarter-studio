@@ -14,6 +14,7 @@ interface EditableSpanProps {
   opts?: EditableSpanPropsOptions;
   renderCount ?: number;
   onBlur ?: FocusEventHandler<HTMLInputElement> ;
+  onValidate ?: (string) => boolean;
 }
 
 const defaultOpts:EditableSpanPropsOptions = {
@@ -21,21 +22,21 @@ const defaultOpts:EditableSpanPropsOptions = {
 }
 
 const EditableSpan:React.FC<EditableSpanProps> = ({
-                                                    value:editedValue,
+                                                    value:propValue,
                                                     onChange:propOnChange,
                                                     mode=false,
                                                     onModeChange,
                                                     opts=defaultOpts,
                                                     renderCount,
                                                     onBlur: propOnBlur,
-
+                                                    onValidate: propOnValidate,
 }) => {
   const [editEnabled, setEditEnabled] = useState(mode);
   const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
   const targetRef = useRef<EventTarget & HTMLInputElement>();
 
   if (debugComponent) {
-    console.log(`EditableSpan: rendered: value=${editedValue} mode:${mode} editEnabled:${editEnabled}`, opts);
+    console.log(`EditableSpan: rendered: value=${propValue} mode:${mode} editEnabled:${editEnabled}`, opts);
   }
 
   useEffect(() => {
@@ -48,6 +49,10 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
   }
 
   const handleInputKeyPress:KeyboardEventHandler<HTMLInputElement> = (e) => {
+    // if (propOnValidate && !propOnValidate(propValue)) {
+    //   return;
+    // }
+
     if (debugComponent) {
       console.log(e.key);
     }
@@ -71,7 +76,10 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
   }
 
   const handleInputBlur:FocusEventHandler<HTMLInputElement> = (e) => {
-    // console.log(`EditableSpanProps:handleInputBlur() editedValue:${editedValue}`);
+    // console.log(`EditableSpanProps:handleInputBlur() propValue:${propValue}`);
+    // if (propOnValidate && !propOnValidate(propValue)) {
+    //   return;
+    // }
 
     if(opts?.blurOnEnterPressOnly) {
       if (blurCauseKeyDown) {
@@ -107,14 +115,14 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
         {editEnabled ?
             <input
                 autoFocus
-                value={editedValue}
+                value={propValue}
                 onChange={(e:any) => propOnChange(e.target.value)}
                 onKeyDownCapture={handleInputKeyPress}
                 onBlur={handleInputBlur}
                 onFocus={handleInputFocus}
             />
             :
-            <span>{editedValue}</span>
+            <span>{propValue}</span>
         }
       </div>
   );

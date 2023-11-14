@@ -19,6 +19,10 @@ export const getProjectFiles = (state:FilesState, projectLocalId:string): [strin
   );
 }
 
+export const getProjectFilePaths = (state:FilesState, projectLocalId:string): string[] => {
+  return getProjectFiles(state, projectLocalId).map(([k,v]) => v.path);
+}
+
 export const getProjectFilesForPath = (state:FilesState, projectLocalId:string, path:string): [string, ReduxFile][] => {
   const projectFiles = getProjectFiles(state, projectLocalId);
   const pathRegex = new RegExp(`^${path}`)

@@ -45,7 +45,7 @@ const AppRouterWrapper = () => {
                    }
             />
 
-            <Route path={RoutePath.PROJECT_CELL}
+            <Route path={`${RoutePath.PROJECT_CELL}`}
                    element={
                      <ProtectedRoute>
                        {currentProjectLocalId && <ProjectCell />}
