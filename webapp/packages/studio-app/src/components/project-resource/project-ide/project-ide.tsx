@@ -1,6 +1,5 @@
 import "./project-ide.css";
 import React, {
-  ReactNode,
   SyntheticEvent,
   useCallback,
   useEffect,
@@ -8,30 +7,24 @@ import React, {
   useMemo,
   useRef,
   useState,
-  Suspense,
-  lazy
 } from 'react';
-import {useParams} from 'react-router-dom';
+
 import {useActions} from "../../../hooks/use-actions";
 import {useTypedSelector} from "../../../hooks/use-typed-selector";
 
-// import CodeEditor from "../file-cell/code-editor";
 import FilesBrowser, {FileBrowserEventFunc} from "../../files-browser/file-browser";
 import {PackageConfig, ReduxProject} from "../../../state/project";
 import {ReduxFile} from "../../../state/file";
 import {autoBundleDebounce, autoSaveDebounce, debugComponent} from "../../../config/global";
 
-import FileCellControlBar from "../../file-cell/file-cell-control-bar";
 import PreviewTabsPanel from "../../preview-section/preview-tabs-panel";
 import {pathToBundleLanguage} from "../../../state/bundle";
-import {CodeLanguage, pathToCodeLanguage} from "../../../state/language";
+import {pathToCodeLanguage} from "../../../state/language";
 import useDebouncedCallback from "../../../hooks/use-debounced-callback";
 import useWindowSize from "../../../hooks/use-window-size";
 import ResizableDiv, {ElementSize} from "../../common/resizable-div/resizable-div";
 import {ResizeCallbackData} from 'react-resizable';
-import CodeFallbackEditor from "../../file-cell/code-fallback-editor";
 import FileViewer from "./file-viewer";
-import {deleteScriptEntryPathFromHtml} from "../../../utils/markup";
 import ApiFlowStatus from "../../api-status/api-flow-status";
 import {getProjectFilePaths, getProjectFilesForPath} from "../../../state/helpers/file-helpers";
 
@@ -39,7 +32,7 @@ interface ProjectCellProps {
   // reduxProject: ReduxProject;
   // projectLocalId: string;
 }
-const CodeEditor = lazy(() => import("../../file-cell/code-editor"));
+
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
@@ -73,6 +66,7 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
 
   // TBD: 2023-09-08 This is same as reduxProject.selectFileLocalId
   const [editedFileLocalId, setEditedFileLocalId] = useState<string|null>(null);
+
   // Kept for usage with CodeEditor as it keeps only the first instance of handleEditorChange
   const editedFileRef = useRef<ReduxFile|null>(null);
   const hotReload = useTypedSelector(state => state.application.hotReload);
@@ -255,7 +249,7 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
     setIteration((prev) => prev + 1);
   }
 
-  const handleProjectReloadClick = () => {
+  const handleProjectRefreshClick = () => {
     console.log(`Reloading the project`, reduxProject.title);
     fetchFiles(reduxProject);
     // We would need to abstract the reset state
@@ -588,12 +582,16 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
             {/* These  are here becaused they are project level operations */}
             <div className="project-control-panel"
                  style={{display: "flex", flexDirection: "row", padding: "5px", justifyContent: "space-between"}}>
-              <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
-                Run
-              </button>
-              <button className="button is-family-secondary is-small" onClick={handleProjectReloadClick}>
-                Reload
-              </button>
+
+              <div className="project-download-async-button-group"
+                   style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "10px"}}>
+                <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
+                  Run
+                </button>
+                <button className="button is-family-secondary is-small" onClick={handleProjectRefreshClick}>
+                  Refresh
+                </button>
+              </div>
 
               <div className="project-download-async-button-group"
                    style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "10px"}}>
