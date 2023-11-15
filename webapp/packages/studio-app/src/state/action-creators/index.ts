@@ -198,17 +198,19 @@ export const bundleProject = (localId:string) => {
     const bundleLanguage = pathToBundleLanguage(entryPath)
 
     if (bundleLanguage !== BundleLanguage.UNKNOWN) {
-      // TBD: We have to find a solution here as the currentUser is not 
-      if (currentUser) {
-        // The project entry path is hard coded for media folder. Need to make it more flexible when need arises.
-        // TBD: Remove the hardcoding of the project path
-        const projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
-        // TBD: The entry_path should come from the front-end as now it lags behind
-
-        // In case the bundling has been initiated due to file name change of entry file then we need local.
-
-        createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage)(dispatch, getState);
+      let projectPath;
+      if (reduxProject.url_path) {
+        projectPath = reduxProject.url_path;
+      } else {
+        if (!currentUser) {
+          console.log(`currentUser is not valid`);
+          return;
+        }
+        projectPath = `mediafiles/user_${currentUser.pkid}/${reduxProject.folder}`;
       }
+
+      // In case the bundling has been initiated due to file name change of entry file then we need local.
+      createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage)(dispatch, getState);
     } else {
       console.error(`Error! file type ${getFileTypeFromPath(entryPath)} not supported`)
     }

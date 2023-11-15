@@ -3,6 +3,7 @@ import {useActions} from "../../hooks/use-actions";
 import {useEffect} from "react";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import ProjectCell from "./project-cell/project-cell";
 
 const ProjectFetch = () => {
   const {idType, idValue} = useParams();
@@ -25,15 +26,19 @@ const ProjectFetch = () => {
       if (!bundlerInitiated) {
         initializeBundler();
       }
-
-      navigate(`${RoutePath.PROJECT_CELL}/${currentProjectLocalId}`);
     }
   }, [currentProjectLocalId]);
 
   return (
-      <div>
-        Fetch Project for {`${idType} ${idValue}`}
-      </div>
+      <>
+        {currentProjectLocalId ?
+        <ProjectCell />
+        :
+        <div>
+          Fetching Project for {`${idType} ${idValue}`}
+        </div>
+        }
+      </>
   )
 }
 

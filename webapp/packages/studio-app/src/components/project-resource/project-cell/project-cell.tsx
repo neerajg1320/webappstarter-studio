@@ -59,8 +59,8 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
     }
   }, []);
 
-  const {localId:projectLocalId} = useParams();
-  // const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
+  // const {localId:projectLocalId} = useParams();
+  const projectLocalId = useTypedSelector(state => state.projects.currentProjectId) || "";
 
   const { bundleProject, updateProject,  saveFile, updateFile, fetchFiles, fetchFileContents, makeProjectIdeReady,
     downloadProjectSourceZip, downloadProjectBuildZip} = useActions();

@@ -108,6 +108,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   entry_file?: number;
   entry_path?: string;
   entry_html_path?: string;
+  url_path?: string;
   entryPath?: string|null;
 }
 
