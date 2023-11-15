@@ -6,7 +6,7 @@ export enum RoutePath {
   PROJECTS = '/projects',
   PROJECT_NEW = '/projects/new',
   PROJECT_EDIT = '/projects/edit',
-  PROJECT_CELL = '/projects/cell',
+  PROJECT_IDE = '/projects/ide',
 
   PROJECT_PLAYGROUND = '/playground',
 

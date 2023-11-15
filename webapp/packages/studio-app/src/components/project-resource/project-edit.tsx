@@ -140,7 +140,7 @@ const ProjectEdit:React.FC<ProjectEditProps> = ({isEdit}) => {
       if (isEdit) {
         navigate(RouteDepth.ONE_UP);
       } else {
-        navigate(`${RoutePath.PROJECT_CELL}/${currentProject.localId}`, {replace: true});
+        navigate(`${RoutePath.PROJECT_IDE}/${currentProject.id}`, {replace: true});
       }
 
       saveClickRef.current = false;

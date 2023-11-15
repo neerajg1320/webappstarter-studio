@@ -44,7 +44,7 @@ const AppNavBar = () => {
       console.log(`location: `, location);
     }
 
-    if (location.pathname.includes(RoutePath.PROJECT_CELL)) {
+    if (location.pathname.includes(RoutePath.PROJECT_IDE)) {
       navigate(RouteDepth.ONE_UP);
     } else {
       navigate(RoutePath.BACK);

@@ -6,18 +6,14 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import ProjectCell from "./project-cell/project-cell";
 
 const ProjectFetch = () => {
-  const {idType, idValue} = useParams();
+  const {projectId} = useParams();
   const {fetchProjectFromServer, initializeBundler} = useActions();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const currentProjectLocalId = useTypedSelector((state) => state.projects.currentProjectId);
   const bundlerInitiated = useTypedSelector(state => state.application.bundlerInitiated)
 
   useEffect(() => {
-    if (idType !== "pkid") {
-      console.error(`id type ${idType} is not supported`);
-    }
-
-    fetchProjectFromServer(idValue);
+    fetchProjectFromServer(projectId);
   }, [])
 
   useEffect(() => {
@@ -35,7 +31,7 @@ const ProjectFetch = () => {
         <ProjectCell />
         :
         <div>
-          Fetching Project for {`${idType} ${idValue}`}
+          {`Fetching Project id: ${projectId}`}
         </div>
         }
       </>

@@ -20,7 +20,7 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
       propOnClick(reduxProject.localId);
     }
     setCurrentProjectId(reduxProject.localId);
-    navigate(`${RoutePath.PROJECT_CELL}/${reduxProject.localId}`);
+    navigate(`${RoutePath.PROJECT_IDE}/${reduxProject.id}`);
   }
 
   const handleEditProjectClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, localId:string) => {
