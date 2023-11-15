@@ -3,10 +3,10 @@ import {useActions} from "../../hooks/use-actions";
 import {lazy, useEffect, Suspense} from "react";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-// import ProjectCell from "./project-cell/project-cell";
+// import ProjectIde from "./project-cell/project-cell";
 import {debugComponent} from "../../config/global";
 
-const ProjectCell = lazy(() => import("./project-cell/project-cell"));
+const ProjectIde = lazy(() => import("./project-ide/project-ide"));
 
 const ProjectFetch = () => {
   const {projectId} = useParams();
@@ -36,7 +36,7 @@ const ProjectFetch = () => {
         {currentProjectLocalId ?
         <>
           <Suspense fallback={<div>{`Loading Project IDE`}</div>}>
-            <ProjectCell />
+            <ProjectIde />
           </Suspense>
         </>
         :

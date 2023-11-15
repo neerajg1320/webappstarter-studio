@@ -1,4 +1,4 @@
-import "./project-cell.css";
+import "./project-ide.css";
 import React, {
   ReactNode,
   SyntheticEvent,
@@ -43,18 +43,18 @@ const CodeEditor = lazy(() => import("../../file-cell/code-editor"));
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
 // is rendered.
-const ProjectCell:React.FC<ProjectCellProps> = () => {
+const ProjectIde:React.FC<ProjectCellProps> = () => {
   const debugComponent = false;
   const debugComponentLifecycle = debugComponent || false;
 
   useEffect(() => {
     if (debugComponentLifecycle) {
-      console.log('ProjectCell: useEffect[] firstRender');
+      console.log('ProjectIde: useEffect[] firstRender');
     }
 
     return () => {
       if (debugComponentLifecycle) {
-        console.log('ProjectCell: destroyed');
+        console.log('ProjectIde: destroyed');
       }
     }
   }, []);
@@ -409,9 +409,9 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   }
 
   // Resizing Logic:
-  // When the windowSize changes the ProjectCell size changes
-  // When ProjectCell size changes the useLayoutEffect
-  // When ProjectCell size changes the useLayoutEffect[windowSize] will cause the FileSectionHeight to change
+  // When the windowSize changes the ProjectIde size changes
+  // When ProjectIde size changes the useLayoutEffect
+  // When ProjectIde size changes the useLayoutEffect[windowSize] will cause the FileSectionHeight to change
   // When the FileSectionHeight changes due to windowsSize or Resize handle then this will cause the height
   // of the Editor to change as well.
   // Also, we should be storing the ratios  along with the ElementSize for FilesSection and Editor.
@@ -447,7 +447,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
   const windowSize = useWindowSize();
 
-  // We calculate the ProjectCell size whenever window size changes
+  // We calculate the ProjectIde size whenever window size changes
   useLayoutEffect(() => {
     if (projectRef.current) {
       if (debugComponent) {
@@ -486,7 +486,7 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
 
 
 
-  // console.log(`ProjectCell: windowSize:${JSON.stringify(windowSize)}`);
+  // console.log(`ProjectIde: windowSize:${JSON.stringify(windowSize)}`);
   // We need to provide the editorSize from here as the height will be affected by the outer ResizableDiv
   const [editorSize, setEditorSize] = useState<ElementSize|undefined>();
   const handleEditorResize:(e: SyntheticEvent, data: ResizeCallbackData) => void = (event, {node, size, handle}) => {
@@ -649,4 +649,4 @@ const ProjectCell:React.FC<ProjectCellProps> = () => {
   );
 }
 
-export default ProjectCell;
+export default ProjectIde;

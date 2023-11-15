@@ -18,7 +18,7 @@ import UserPasswordChange from "../page-user/user-password-change";
 
 
 const ProjectListView = lazy(() => import("../project-resource/project-list/project-list-view"));
-const ProjectCell = lazy(() => import("../project-resource/project-cell/project-cell"));
+const ProjectCell = lazy(() => import("../project-resource/project-ide/project-ide"));
 const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
 import {withLifecyleLogger} from "../../hoc/logger";
 import ProjectFetch from "../project-resource/project-fetch";
@@ -50,7 +50,7 @@ const AppRouterWrapper = () => {
               <>
                 <ProjectFetch />
                 {/*<>*/}
-                {/*  {currentProjectLocalId && <ProjectCell />}*/}
+                {/*  {currentProjectLocalId && <ProjectIde />}*/}
                 {/*  {!currentProjectLocalId && <h1>Select a project</h1>}*/}
                 {/*</>*/}
               </>
