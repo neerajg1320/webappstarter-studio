@@ -25,12 +25,12 @@ import {
 import useDifferentialCallback from "../../hooks/use-differential-callback";
 import {getFileFromLocalId} from "../../state/helpers/file-helpers";
 
-export type FileBrowserEventType = "select" | "path-change" | "file-delete";
+export type FileBrowserEventType = "select" | "path-change" | "file-delete" | "files-reload";
 export type FileBrowserEventData = {
   localId?: string;
   newPath?: string;
 }
-export type FileBrowserEventFunc = (type: FileBrowserEventType, data:FileBrowserEventData) => void;
+export type FileBrowserEventFunc = (type: FileBrowserEventType, data?:FileBrowserEventData) => void;
 
 interface FilesTreeProps {
   reduxProject: ReduxProject;
@@ -216,6 +216,12 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
           if (propOnEvent) {
             propOnEvent("file-delete", {localId: event.localId});
           }
+        }
+        break;
+
+      case FileBrowserControlBarEventType.RELOAD_FILES:
+        if (propOnEvent) {
+          propOnEvent("files-reload");
         }
         break;
     }

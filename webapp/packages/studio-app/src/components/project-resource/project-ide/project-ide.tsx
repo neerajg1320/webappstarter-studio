@@ -249,7 +249,7 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
     setIteration((prev) => prev + 1);
   }
 
-  const handleProjectRefreshClick = () => {
+  const handleProjectRefresh = () => {
     console.log(`Reloading the project`, reduxProject.title);
     fetchFiles(reduxProject);
     // We would need to abstract the reset state
@@ -390,6 +390,10 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
 
       case "file-delete":
         setEditedFileLocalId(null);
+        break;
+
+      case "files-reload":
+        handleProjectRefresh();
         break;
 
       default:
@@ -581,16 +585,16 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
 
             {/* These  are here becaused they are project level operations */}
             <div className="project-control-panel"
-                 style={{display: "flex", flexDirection: "row", padding: "5px", justifyContent: "space-between"}}>
+                 style={{display: "flex", flexDirection: "row", padding: "5px", justifyContent: "space-between", gap:"20px"}}>
 
               <div className="project-download-async-button-group"
                    style={{display: "flex", flexDirection: "row", alignItems: "center", gap: "10px"}}>
                 <button className="button is-family-secondary is-small" onClick={handleProjectBundleClick}>
                   Run
                 </button>
-                <button className="button is-family-secondary is-small" onClick={handleProjectRefreshClick}>
-                  Refresh
-                </button>
+                {/*<button className="button is-family-secondary is-small" onClick={handleProjectRefresh}>*/}
+                {/*  Refresh*/}
+                {/*</button>*/}
               </div>
 
               <div className="project-download-async-button-group"

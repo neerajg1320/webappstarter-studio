@@ -8,6 +8,7 @@ export enum FileBrowserControlBarEventType {
   COPY_FILE = 'copy_file',
   UPLOAD_FILES = 'upload_files',
   DELETE_FILE = 'delete_file',
+  RELOAD_FILES = 'reload_files',
 }
 
 export interface FileBrowserControlBarEvent {
@@ -53,33 +54,49 @@ const FileBrowserControlBar:React.FC<FileBrowserControlBarProps> = ({reduxProjec
     }
   }
 
+  const handleRefresh: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (selectedFileLocalId) {
+      onEvent({name: FileBrowserControlBarEventType.RELOAD_FILES, localId: selectedFileLocalId});
+    }
+  }
+
+
   return (
       <div className="file-browser-control-bar">
-        <button className="button is-family-secondary is-small" onClick={handleCreateFile}>
-          <span className="icon">
-              <i className="fas fa-file-circle-plus" />
-          </span>
-        </button>
-        <button className="button is-family-secondary is-small" onClick={handleCopyFile}>
-          <span className="icon">
-              <i className="fas fa-copy" />
-          </span>
-        </button>
-        <button className="button is-family-secondary is-small" onClick={e => {
-          if (uploadFileRef.current) {
-            uploadFileRef.current.click();
-          }
-        }}>
-          <span className="icon">
-              <i className="fas fa-upload" />
-          </span>
-          <input ref={uploadFileRef} type="file" style={{display:"none"}} onChange={handleUploadFile} multiple />
-        </button>
-        <button className="button is-family-secondary is-small" onClick={handleDeleteFile}>
-          <span className="icon">
-              <i className="fas fa-trash" />
-          </span>
-        </button>
+        <div style={{display: "flex", flexDirection:"row", alignItems:"center"}}>
+          <button className="button is-family-secondary is-small" onClick={handleRefresh}>
+            <span className="icon">
+                <i className="fas fa-refresh" />
+            </span>
+          </button>
+        </div>
+        <div style={{display: "flex", flexDirection:"row", alignItems:"center"}}>
+          <button className="button is-family-secondary is-small" onClick={handleCreateFile}>
+            <span className="icon">
+                <i className="fas fa-file-circle-plus" />
+            </span>
+          </button>
+          <button className="button is-family-secondary is-small" onClick={handleCopyFile}>
+            <span className="icon">
+                <i className="fas fa-copy" />
+            </span>
+          </button>
+          <button className="button is-family-secondary is-small" onClick={e => {
+            if (uploadFileRef.current) {
+              uploadFileRef.current.click();
+            }
+          }}>
+            <span className="icon">
+                <i className="fas fa-upload" />
+            </span>
+            <input ref={uploadFileRef} type="file" style={{display:"none"}} onChange={handleUploadFile} multiple />
+          </button>
+          <button className="button is-family-secondary is-small" onClick={handleDeleteFile}>
+            <span className="icon">
+                <i className="fas fa-trash" />
+            </span>
+          </button>
+        </div>
       </div>
   );
 }
