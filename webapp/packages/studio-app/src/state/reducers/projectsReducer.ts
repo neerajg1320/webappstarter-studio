@@ -1,7 +1,7 @@
 import produce from 'immer';
-import { Action } from '../actions';
-import { ActionType } from '../action-types';
-import {ProjectsState, ReduxProject} from '../project';
+import {Action} from '../actions';
+import {ActionType} from '../action-types';
+import {ProjectsState, ReduxProject, StartConfigType} from '../project';
 import {generateLocalId} from "../id";
 import {debugRedux} from "../../config/global";
 
@@ -35,6 +35,9 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         reduxType: 'project',
         ...action.payload,
         id: '',
+        title: '',
+        description: '',
+        startConfigType: StartConfigType.PROJECT_UNKNOWN,
         pkid: -1,
         confirmed: false,
         filesSynced: false,

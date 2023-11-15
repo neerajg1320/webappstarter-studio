@@ -24,7 +24,8 @@ export enum ReactToolchains {
 export enum StartConfigType {
   PROJECT_TEMPLATE = 'project_template',
   PROJECT_ZIP = 'project_zip',
-  PROEJCT_COPY = 'project_copy'
+  PROEJECT_COPY = 'project_copy',
+  PROJECT_UNKNOWN = 'project_unknown',
 }
 
 export type ProjectMap = {
@@ -76,6 +77,7 @@ export interface ReduxProject extends ServerObject {
   entry_file?: number;
   entry_path?: string;
   entry_html_path?: string;
+  url_path?: string;
   entryPath?: string|null;
 }
 
@@ -114,9 +116,9 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
 
 export interface ReduxCreateProjectPartial {
   localId: string;
-  title: string;
-  description: string;
-  startConfigType: StartConfigType;
+  title?: string;
+  description?: string;
+  startConfigType?: StartConfigType;
   file?: Blob|null;
   template?: ProjectTemplates;
   framework?: ProjectFrameworks;
