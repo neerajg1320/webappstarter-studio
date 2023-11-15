@@ -13,17 +13,16 @@ const ProjectFetch = () => {
   const bundlerInitiated = useTypedSelector(state => state.application.bundlerInitiated)
 
   useEffect(() => {
-    fetchProjectFromServer(projectId);
-  }, [])
-
-  useEffect(() => {
     console.log(`currentProjectLocalId: ${currentProjectLocalId}`);
-    if (currentProjectLocalId) {
+    if (!currentProjectLocalId) {
+      fetchProjectFromServer(projectId);
+    }
+    else {
       if (!bundlerInitiated) {
         initializeBundler();
       }
     }
-  }, [currentProjectLocalId]);
+  }, [currentProjectLocalId, bundlerInitiated]);
 
   return (
       <>

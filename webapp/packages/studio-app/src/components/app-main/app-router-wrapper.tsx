@@ -47,18 +47,16 @@ const AppRouterWrapper = () => {
             />
 
             <Route path={`${RoutePath.PROJECT_IDE}/:projectId`} element={
+              <>
                 <ProjectFetch />
+                {/*<>*/}
+                {/*  {currentProjectLocalId && <ProjectCell />}*/}
+                {/*  {!currentProjectLocalId && <h1>Select a project</h1>}*/}
+                {/*</>*/}
+              </>
             }
             />
 
-            {/*<Route path={`${RoutePath.PROJECT_IDE}`}*/}
-            {/*       element={*/}
-            {/*         <>*/}
-            {/*           {currentProjectLocalId && <ProjectCell />}*/}
-            {/*           {!currentProjectLocalId && <h1>Select a project</h1>}*/}
-            {/*         </>*/}
-            {/*       }*/}
-            {/*/>*/}
             <Route path={RoutePath.PROJECT_EDIT}
                    element={
                      <ProtectedRoute>
