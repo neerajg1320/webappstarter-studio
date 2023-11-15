@@ -1,9 +1,12 @@
 import {useParams, useNavigate} from 'react-router-dom';
 import {useActions} from "../../hooks/use-actions";
-import {useEffect} from "react";
+import {lazy, useEffect, Suspense} from "react";
 import {RoutePath} from "../routes";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
-import ProjectCell from "./project-cell/project-cell";
+// import ProjectCell from "./project-cell/project-cell";
+import {debugComponent} from "../../config/global";
+
+const ProjectCell = lazy(() => import("./project-cell/project-cell"));
 
 const ProjectFetch = () => {
   const {projectId} = useParams();
@@ -13,27 +16,34 @@ const ProjectFetch = () => {
   const bundlerInitiated = useTypedSelector(state => state.application.bundlerInitiated)
 
   useEffect(() => {
-    console.log(`currentProjectLocalId: ${currentProjectLocalId}`);
+    if (!bundlerInitiated) {
+      initializeBundler();
+    }
+  }, [bundlerInitiated])
+
+  useEffect(() => {
+    if (debugComponent) {
+      console.log(`currentProjectLocalId: ${currentProjectLocalId}`);
+    }
+
     if (!currentProjectLocalId) {
       fetchProjectFromServer(projectId);
     }
-    else {
-      if (!bundlerInitiated) {
-        initializeBundler();
-      }
-    }
-  }, [currentProjectLocalId, bundlerInitiated]);
+  }, [currentProjectLocalId]);
 
   return (
       <>
         {currentProjectLocalId ?
-        <ProjectCell />
+        <>
+          <Suspense fallback={<div>{`Loading Project IDE`}</div>}>
+            <ProjectCell />
+          </Suspense>
+        </>
         :
-        <div>
-          {`Fetching Project id: ${projectId}`}
-        </div>
+        <div>{`Fetching Project details id:${projectId}`}</div>
         }
       </>
+
   )
 }
 

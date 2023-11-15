@@ -8,7 +8,7 @@
 
 .image-container {
   /*max-height: 100%;*/
-  pading: 2px;
+  /*padding: 2px;*/
   width: 100%;
   overflow: auto;
 }
