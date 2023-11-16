@@ -8,7 +8,6 @@ import {withLifecyleLogger} from "../../hoc/logger";
 interface UserFlowStatusProps {
   reqMsg:string
   email:string;
-  flowState: UserFlowState;
 };
 
 const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email}) => {

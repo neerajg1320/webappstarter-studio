@@ -353,7 +353,9 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
     if (filePaths.indexOf(value) > -1) {
       console.log(`Error! file ${value} already present`);
       // setFileName("error.js");
-      return;
+
+      // To stop processing we should return from here
+      // return;
     }
 
     const bundleLanguage = pathToBundleLanguage(value);

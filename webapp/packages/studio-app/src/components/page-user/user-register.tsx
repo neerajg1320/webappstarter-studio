@@ -160,7 +160,7 @@ const UserRegister = () => {
             Already registered? <span className="inverse-action">Login</span>
           </Link>
 
-          <UserFlowStatus reqMsg="Registering User ..." email={user.email} flowState={apiState} />
+          <UserFlowStatus reqMsg="Registering User ..." email={user.email} />
         </div>
       </div>
   );

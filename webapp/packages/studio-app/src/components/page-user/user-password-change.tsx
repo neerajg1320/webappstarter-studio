@@ -115,7 +115,7 @@ const UserPasswordChange:React.FC<UserPasswordChangeProps> = ({resetConfirm=true
 
           </div>
 
-          <UserFlowStatus reqMsg="Resetting Password ..." email="" flowState={apiState} />
+          <UserFlowStatus reqMsg="Resetting Password ..." email="" />
         </div>
       </div>
   );

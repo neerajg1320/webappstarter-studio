@@ -6,8 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 interface ToastMakerProps {
   message: string;
-  onOpen: () => void;
-  onClose: () => void;
+  onOpen?: () => void;
+  onClose?: () => void;
 }
 
 
@@ -22,7 +22,6 @@ const ToastMaker:React.FC<ToastMakerProps> = ({message, onOpen:propOnOpen, onClo
 
   return (
       <div>
-        {/*<button className="toast-maker-button" onClick={showToastMessage}>Notify</button>*/}
         <ToastContainer />
       </div>
   );

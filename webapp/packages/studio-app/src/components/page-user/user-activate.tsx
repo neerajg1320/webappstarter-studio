@@ -74,7 +74,7 @@ const UserActivate = () => {
           </div>
 
           {/* Status section */}
-          <UserFlowStatus reqMsg="Activating User ..." email="" flowState={apiState} />
+          <UserFlowStatus reqMsg="Activating User ..." email="" />
         </div>
       </div>
   );
