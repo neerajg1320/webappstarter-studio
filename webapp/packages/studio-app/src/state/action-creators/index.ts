@@ -132,7 +132,7 @@ export const insertCellAfter = (id: string | null, cellType: CellTypes): InsertC
   }
 };
 
-export const createCellBundle = (cellId:string, input:string, bundleLanguage: BundleLanguage) => {
+export const createCellBundle = (cellId:string, input:string, bundleLanguage: BundleLanguage, minify:boolean) => {
   return async (dispatch:Dispatch<Action>) => {
       dispatch({
           type: ActionType.CELL_BUNDLE_START,
@@ -141,7 +141,7 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
           }
       });
 
-      const result = await bundleCodeStr(cellId, input, bundleLanguage);
+      const result = await bundleCodeStr(cellId, input, bundleLanguage, minify);
 
       dispatch({
           type: ActionType.CELL_BUNDLE_COMPLETE,

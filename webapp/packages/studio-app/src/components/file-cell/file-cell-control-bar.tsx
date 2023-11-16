@@ -1,6 +1,7 @@
 import "./file-cell-control-bar.css";
 import React, {useRef, useState} from "react";
-import {ReduxFile, ReduxProject, ReduxUpdateFilePartial,} from "../../state";
+import {ReduxProject} from "../../state/project";
+import {ReduxFile, ReduxUpdateFilePartial,} from "../../state/file";
 import {replaceFilePart} from "../../utils/path";
 import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
@@ -25,6 +26,7 @@ interface FileCellControlBarProps {
 }
 
 const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, reduxFile}) => {
+  const minify = false;
   const selectFileInputRef = useRef<HTMLInputElement | null>(null);
   const { updateFile, saveFile, createCellBundle, updateProject, updateApplication } = useActions();
   const [isAdmin, setAdmin] = useState(false);
@@ -47,7 +49,7 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, red
       updateProject({localId:reduxFile.projectLocalId, bundleLocalId: reduxFile.localId});
     }
 
-    createCellBundle(reduxFile.localId, reduxFile.content, reduxFile.bundleLanguage);
+    createCellBundle(reduxFile.localId, reduxFile.content, reduxFile.bundleLanguage, minify);
   }
 
   // Function to modify filename from the FileCellControlBar. Not used anymore. Kept for possible use in tabs
