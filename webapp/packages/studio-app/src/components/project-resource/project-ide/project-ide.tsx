@@ -435,7 +435,7 @@ const ProjectIde:React.FC<ProjectCellProps> = () => {
     width: {min:0.3, current:0.8, max:0.9}
   }
   const defaultFileSectionProportions:ElementProportions = {
-    height: {min:0.1, current:0.6, max:0.9}
+    height: {min:0.1, current:0.4, max:0.9}
   }
 
   const [editorProportions, setEditorProportions] = useState<ElementProportions>(defaultEditorProportions);
