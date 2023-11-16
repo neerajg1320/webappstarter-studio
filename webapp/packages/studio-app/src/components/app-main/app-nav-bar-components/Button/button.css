@@ -1,0 +1,43 @@
+
+.loginButton {
+  border: 2px solid var(--blue);
+  background-color: var(--white);
+  color: var(--blue);
+  padding: 0.8rem 0rem;
+}
+
+.signupButton {
+  background-color: var(--blue);
+  color: var(--white);
+  border: none;
+  padding: 0.9rem 0rem;
+
+}
+
+.loginButton,
+.signupButton {
+  width: 8rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+   /* padding: 0.8rem 0rem; */
+}
+
+@media (max-width: 600px) {
+
+  .loginButton,
+  .signupButton {
+    width: 4rem;
+    font-size: 0.8rem;
+  }
+
+  .loginButton {
+    padding: 0.5rem 0rem;
+  }
+
+  .signupButton {
+    padding: 0.6rem 0rem;
+
+  }
+
+}

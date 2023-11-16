@@ -1,21 +1,163 @@
 .navbar {
-  /*border: 1px solid lightblue;*/
-  height: 60px;
-  width: 100%;
-  padding: 0 20px;
+  background-color: var(--white);
+  height: 5rem;
+  font-size: 1.5rem;
+  padding: 0 3rem;
+  color: var(--blue);
   position: sticky;
-  top: 0px;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 4;
+  box-shadow: 2px 2px 10px rgb(115 115 115 / 14%);
 }
 
-.navbar-menu {
-  background-color: #2b3e50!important;
+.menu {
+  font-size: 30px;
+  display: none;
 }
 
-.navbar .navbar-end {
-  padding: 0 40px;
+.logo {
+  color: var(--blue);
+  font-size: 1.3rem;
+  /* font-family: $poppins; */
+  text-decoration: none;
+  /* font-family: $poppins; */
+  font-style: italic;
+  position: relative;
 }
 
-.navbar .navbar-item {
-  cursor: pointer;
-  /*border: 1px solid lightblue;*/
+.list {
+  display: flex;
+}
+
+.listItem {
+  list-style-type: none;
+}
+
+.navItem {
+  display: block;
+  padding: 10px;
+  color: var(--blue);
+  font-size: 16px;
+  /* font-family: $poppins; */
+  text-decoration: none;
+}
+
+.cta {
+  padding: 13px 25px;
+  border-radius: 5px;
+  color: var(--blue);
+  background-color: var(--white);
+  font-size: 16px;
+  /* font-family: $poppins; */
+  display: inline-block;
+  text-decoration: none;
+}
+
+.loginSignupButtons {
+  gap: 1.5rem;
+  display: flex;
+}
+
+.logoMenu {
+  gap: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-over-dropdown{
+  padding: 0.5rem 0;
+  position: absolute;
+  top: 5rem;
+  right: 2.5rem;
+  background-color: var(--white);
+  color: var(--blue);
+  box-shadow: 1px 1px 10px 0px rgba(97, 97, 97, 0.281);
+  z-index: 5;
+}
+
+.profile-over-dropdown li{
+  list-style: none;
+  padding: 0.5rem 3rem;
+}
+.profile-over-dropdown li:hover{
+  background-color: var(--blue);
+  color: var(--white);
+}
+@media (max-width: 900px) {
+  .list {
+    flex-direction: column;
+    position: fixed;
+    top: 5rem;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    left: 0;
+    width: 50%;
+    padding-top: 10px;
+    box-shadow: 0px 5px 10px 0px #00000052;
+    transition: 1s;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .listItem {
+    padding: 5px 30px;
+  }
+
+  .listItem:hover {
+    background-color: var(--blue);
+  }
+  .listItem:hover .navItem {
+    color: var(--white);
+  }
+
+  .moveLeft {
+    display: block;
+    left: -999px !important;
+  }
+}
+
+.login-profile {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  gap: 4px;
+  border: 1px solid var(--blue);
+  padding: 10px 15px;
+  border-radius: 100px;
+}
+
+.profile{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .loginSignupButtons {
+    gap: 0.5rem;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
+  .menu {
+    font-size: 20px;
+  }
+
+  .logoMenu {
+    gap: 0.5rem;
+  }
 }

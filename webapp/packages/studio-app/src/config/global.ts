@@ -84,3 +84,8 @@ export const debugFileTree = false;
 
 // Console
 export const enableConsole = false;
+
+
+// Web App Starter Url
+export const faqUrl = "https://webappstarter.com/faq/";
+export const teamUrl = "https://webappstarter.com/team/";
