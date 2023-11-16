@@ -84,6 +84,7 @@ export enum ActionType {
   USER_REQUEST_START = 'user_request_start',
   USER_REQUEST_SUCCESS = 'user_request_success',
   USER_REQUEST_FAILED = 'user_request_failed',
+  USER_REQUEST_RESET = 'user_request_reset',
   USER_ADD = 'user_add',
   USER_UPDATE = 'user_update',
   USER_DELETE= 'user_delete',

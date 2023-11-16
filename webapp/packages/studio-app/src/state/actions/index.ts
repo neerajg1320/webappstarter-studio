@@ -212,6 +212,10 @@ export interface UserRequestFailedAction {
   payload: UserRequestFailed
 }
 
+export interface UserRequestResetAction {
+  type: ActionType.USER_REQUEST_RESET
+}
+
 export interface UserAddAction {
   type: ActionType.USER_ADD,
   payload: ReduxUser
@@ -242,7 +246,7 @@ export interface ApiRequestFailedAction {
   payload: ApiRequestFailed
 }
 
-export interface ApiFlowReset {
+export interface ApiFlowResetAction {
   type: ActionType.API_FLOW_RESET
 }
 
@@ -291,13 +295,14 @@ export type Action =
     | UserRequestStartAction
     | UserRequestSuccessAction
     | UserRequestFailedAction
+    | UserRequestResetAction
     | UserAddAction
     | UserUpdateAction
     | UserDeleteAction
     | ApiRequestStartAction
     | ApiRequestSuccessAction
     | ApiRequestFailedAction
-    | ApiFlowReset
+    | ApiFlowResetAction
     | UpdateApplicationAction
     | ResetApplicationAction
     ;

@@ -43,8 +43,6 @@ const UserLogin = () => {
   const [user, dispatch] = useReducer(reducer, blankUser);
   const { authenticateUser, resendActivationEmail, passwordResetUser } = useActions();
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
-  const apiState = useTypedSelector(state => state.auth.api);
-
 
   useEffect( () => {
     if (isAuthenticated) {
@@ -144,7 +142,7 @@ const UserLogin = () => {
           </Link>
 
           {/* Status section */}
-          <UserFlowStatus reqMsg="Authenticating User ..." email={user.email} flowState={apiState} />
+          <UserFlowStatus reqMsg="Authenticating User ..." email={user.email} />
         </div>
       </div>
   );

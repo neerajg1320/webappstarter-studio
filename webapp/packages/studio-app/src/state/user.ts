@@ -69,4 +69,5 @@ export interface UserFlowState {
   requestCompleted: boolean;
   message: string|null;
   error: string|null;
+  displayed: boolean;
 }

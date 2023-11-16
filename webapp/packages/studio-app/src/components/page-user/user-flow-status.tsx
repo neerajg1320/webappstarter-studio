@@ -1,6 +1,9 @@
 import {ReduxUser, UserFlowState} from "../../state/user";
-import React from "react";
+import React, {useEffect} from "react";
 import {useActions} from "../../hooks/use-actions";
+import ToastMaker from "../common/toasts/toast-maker";
+import {useTypedSelector} from "../../hooks/use-typed-selector";
+import {withLifecyleLogger} from "../../hoc/logger";
 
 interface UserFlowStatusProps {
   reqMsg:string
@@ -8,11 +11,17 @@ interface UserFlowStatusProps {
   flowState: UserFlowState;
 };
 
-const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}) => {
-  const {resendActivationEmail} = useActions();
+const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email}) => {
+  const {resendActivationEmail, userRequestReset} = useActions();
+  const flowState = useTypedSelector(state => state.auth.api);
 
   const handleResendActivationClick = () => {
     resendActivationEmail(email);
+  }
+
+  const handleOnToastClose = () => {
+    console.log(`Toast Closed`);
+    userRequestReset();
   }
 
   return (
@@ -21,16 +30,17 @@ const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}
       }
       {flowState.requestCompleted &&
           <>
-            {flowState.error ?
-                <div>{flowState.error}
+            {flowState.error &&
+                <div>
                   {flowState.error === "E-mail is not verified." &&
-                      <span className="inverse-action" onClick={handleResendActivationClick} >
+                      <span className="inverse-action" onClick={handleResendActivationClick}>
                         Resend Activation
                       </span>
                   }
                 </div>
-                :
-                <div>{flowState.message}</div>
+            }
+            {(flowState.error && !flowState.displayed) &&
+                <ToastMaker message={flowState.error} onClose={handleOnToastClose}/>
             }
           </>
       }
@@ -38,4 +48,4 @@ const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}
   )
 };
 
-export default UserFlowStatus;
+export default withLifecyleLogger(UserFlowStatus);

@@ -43,6 +43,7 @@ const initialFlowState:UserFlowState = {
   requestCompleted: false,
   message: null,
   error: null,
+  displayed: false,
 };
 
 const initialUserState = {
@@ -155,6 +156,10 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
       // Solution would be to put requestId in the UI component
       assignShortcutProperty(state.flowStateMap[action.payload.id].type, action.payload.id, state);
 
+      return state;
+
+    case ActionType.USER_REQUEST_RESET:
+      state.api = initialFlowState;
       return state;
 
     case ActionType.USER_ADD:

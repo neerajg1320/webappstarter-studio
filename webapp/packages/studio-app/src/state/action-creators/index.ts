@@ -4,7 +4,7 @@ import {
   ApiRequestFailedAction,
   ApiRequestStartAction,
   ApiRequestSuccessAction,
-  ApiFlowReset,
+  ApiFlowResetAction,
   CreateFileAction,
   CreateProjectAction,
   DeleteCellAction,
@@ -28,6 +28,7 @@ import {
   UserRequestStartAction,
   UserRequestSuccessAction,
   UserUpdateAction,
+  UserRequestResetAction,
 } from '../actions';
 import {Cell, CellTypes} from '../cell';
 import {Dispatch} from "react";
@@ -1539,6 +1540,12 @@ export const userDelete = (localId:string): UserDeleteAction => {
   }
 }
 
+export const userRequestReset = (): UserRequestResetAction => {
+  return {
+    type: ActionType.USER_REQUEST_RESET
+  }
+}
+
 export const reAuthenticateUserNotSupported = () => {
   console.log(`reAuthenticateUser(): `);
   // We need to fix this via a callback
@@ -1896,7 +1903,9 @@ export const registerUser = (
   }
 }
 
-export const apiFlowReset = (): ApiFlowReset => {
+
+
+export const apiFlowReset = (): ApiFlowResetAction => {
   return {
     type: ActionType.API_FLOW_RESET
   }
