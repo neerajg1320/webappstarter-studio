@@ -390,6 +390,7 @@ export const createProjectBundle = (
         reduxProject.title,
         entryUrl,
         bundleLanguage,
+        reduxProject.minify,
         getLoadResultFromRedux,
         getPackageVersion,
         setPackageVersion,

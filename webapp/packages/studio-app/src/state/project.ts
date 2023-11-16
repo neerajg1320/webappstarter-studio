@@ -52,6 +52,7 @@ export interface ReduxProject extends ServerObject {
   localId: string;
   title: string;
   description: string;
+  minify: boolean;
   startConfigType: StartConfigType;
   file?: Blob|null;
   template?: ProjectTemplates;
@@ -85,6 +86,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   localId: string;
   title?: string;
   description?: string;
+  minify?: boolean;
   startConfigType?: StartConfigType;
   file?: Blob|null;
   template?: ProjectTemplates;
@@ -118,6 +120,7 @@ export interface ReduxCreateProjectPartial {
   localId: string;
   title?: string;
   description?: string;
+  minify?: boolean;
   startConfigType?: StartConfigType;
   file?: Blob|null;
   template?: ProjectTemplates;

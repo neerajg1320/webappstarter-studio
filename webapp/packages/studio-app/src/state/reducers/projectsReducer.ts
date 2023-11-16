@@ -37,6 +37,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         id: '',
         title: '',
         description: '',
+        minify: false,
         startConfigType: StartConfigType.PROJECT_UNKNOWN,
         pkid: -1,
         confirmed: false,
