@@ -3,14 +3,15 @@ import "./button.css";
 type propTypes = {
   title: string;
   buttonClass: string;
+  children ?: React.ReactNode
 };
 
-const Button = ({ title, buttonClass }: propTypes) => {
+const Button = ({ title, buttonClass, children }: propTypes) => {
   return (
     <button
       className={`font-bold ${buttonClass}`}
     >
-      {title}
+      {title} {children}
     </button>
   );
 };

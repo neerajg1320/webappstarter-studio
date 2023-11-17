@@ -10,10 +10,10 @@ import {
   teamUrl,
 } from "../../config/global";
 import { useState } from "react";
-import { FaBarsStaggered } from "react-icons/fa6";
+import { FaBarsStaggered, FaPlus } from "react-icons/fa6";
 import Button from "./app-nav-bar-components/Button/index";
 import { FaUserCircle } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io"
+import { IoIosArrowDown } from "react-icons/io";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -78,9 +78,8 @@ const AppNavBar = () => {
   };
 
   const handleProfileClick = () => {
-    setIsProfileDropDown( !isProfileDropDown);
+    setIsProfileDropDown(!isProfileDropDown);
   };
-
 
   // console.log("isAuthenticated: ", isAuthenticated);
   // console.log("currentUser: ", currentUser);
@@ -97,28 +96,38 @@ const AppNavBar = () => {
           </Link>
         </div>
 
-        <ul className={`list  ${isToggleMenu ? " " : "moveLeft"}`}>
-          <li className="listItem">
-            <a className="navItem" href={`${RoutePath.PROJECT_PLAYGROUND}`}>
-              Playground
-            </a>
-          </li>
-          {/* <li className={styles.listItem}>
+        {!isAuthenticated && !currentUser?.is_anonymous? (
+          <ul className={`list  ${isToggleMenu ? " " : "moveLeft"}`}>
+            <li className="listItem">
+              <a className="navItem" href={`${RoutePath.PROJECT_PLAYGROUND}`}>
+                Playground
+              </a>
+            </li>
+            {/* <li className={styles.listItem}>
         <a className={styles.navItem} href={`${urlStudio}`}>
           Studio
         </a>
       </li> */}
-          <li className="listItem">
-            <Link className="navItem" to={faqUrl}>
-              FAQ
-            </Link>
-          </li>
-          <li className="listItem">
-            <Link className="navItem" to={teamUrl}>
-              Team
-            </Link>
-          </li>
-        </ul>
+            <li className="listItem">
+              <Link className="navItem" to={faqUrl}>
+                FAQ
+              </Link>
+            </li>
+            <li className="listItem">
+              <Link className="navItem" to={teamUrl}>
+                Team
+              </Link>
+            </li>
+          </ul>
+        ) : (
+          <ul className={`list  ${isToggleMenu ? " " : "moveLeft"}`}>
+            <li className="listItem">
+              <Link className="navItem" to={RoutePath.PROJECTS}>
+                Projects
+              </Link>
+            </li>
+          </ul>
+        )}
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
@@ -130,23 +139,29 @@ const AppNavBar = () => {
             </Link>
           </div>
         ) : (
-          <div className="login-profile" onClick={handleProfileClick} >
-            <div className="profile">
-            <span>{currentUser?.first_name}</span>
-            <FaUserCircle size="23"/>
+          <div className="create-btn-profile">
+            <Link to={RoutePath.PROJECT_NEW} className="cta">
+              <Button title="Create" buttonClass="nav-create">
+                <FaPlus />
+              </Button>
+            </Link>
+
+            <div className="login-profile" onClick={handleProfileClick}>
+              <div className="profile">
+                <span>{currentUser?.first_name}</span>
+                <FaUserCircle size="23" />
+              </div>
+              <IoIosArrowDown size="15" />
             </div>
-            <IoIosArrowDown size="15"/>
           </div>
         )}
       </div>
-      {isProfileDropDown && <ul className="profile-over-dropdown" >
-        <li onClick={() => handlePasswordChangeClick()}>
-          Change Password
-        </li>
-        <li onClick={() => handleLogoutClick()}>
-          Logout
-        </li>
-        </ul>}
+      {isProfileDropDown && (
+        <ul className="profile-over-dropdown">
+          <li onClick={() => handlePasswordChangeClick()}>Change Password</li>
+          <li onClick={() => handleLogoutClick()}>Logout</li>
+        </ul>
+      )}
     </>
   );
 };

@@ -47,7 +47,7 @@
 }
 
 .cta {
-  padding: 13px 25px;
+  /* padding: 13px 25px; */
   border-radius: 5px;
   color: var(--blue);
   background-color: var(--white);
@@ -67,6 +67,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.nav-create{
+  background-color: var(--white);
+  border: 2px solid var(--blue);
+  color: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:5px;
+  padding: 5px 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.create-btn-profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:20px;
 }
 
 .profile-over-dropdown{
