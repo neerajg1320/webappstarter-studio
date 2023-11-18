@@ -1,6 +1,7 @@
 import {ReduxUser, UserFlowState} from "../../state/user";
 import React from "react";
 import {useActions} from "../../hooks/use-actions";
+import { BsFillExclamationCircleFill } from "react-icons/bs";
 
 interface UserFlowStatusProps {
   reqMsg:string
@@ -15,6 +16,8 @@ const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}
     resendActivationEmail(email);
   }
 
+  console.log("flowState: ", flowState)
+
   return (
     <div>
       {(flowState.requestStarted && !flowState.requestCompleted) && <div>{reqMsg}</div>
@@ -22,7 +25,7 @@ const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}
       {flowState.requestCompleted &&
           <>
             {flowState.error ?
-                <div>{flowState.error}
+                <div style={{ display:'flex', gap: '10px', alignItems: 'center', color:'rgb(239 68 68)', fontSize: '1rem'}}><BsFillExclamationCircleFill color="EF4444" size="22" />{flowState.error}
                   {flowState.error === "E-mail is not verified." &&
                       <span className="inverse-action" onClick={handleResendActivationClick} >
                         Resend Activation
@@ -30,7 +33,7 @@ const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}
                   }
                 </div>
                 :
-                <div>{flowState.message}</div>
+                <div style={{display:'flex', gap: '10px', alignItems: 'center', fontSize: '1rem'}}><BsFillExclamationCircleFill color="#00a86b" size="22" />{flowState.message}</div>
             }
           </>
       }
