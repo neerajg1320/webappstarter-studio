@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useActions } from "../../hooks/use-actions";
 import { useNavigate, useParams } from "react-router-dom";
 import { RoutePath } from "../routes";
@@ -11,6 +11,7 @@ const UserActivate = () => {
   const { activateUser } = useActions();
   const { key } = useParams();
   const apiState = useTypedSelector((state) => state.auth.api);
+  const [apiStateDuration, setApiStateDuration] = useState(false);
 
   console.log(`UserActivate:render key=`, key);
 
@@ -20,6 +21,11 @@ const UserActivate = () => {
     } else {
       console.error(`Error! key not defined in activation url`);
     }
+
+    setApiStateDuration(true);
+    setTimeout(() => {
+      setApiStateDuration(false);
+    }, 30000);
   };
 
   const handleCancelClick = () => {
@@ -51,6 +57,13 @@ const UserActivate = () => {
             Login
           </button>
         )}
+         {apiStateDuration && (
+            <UserFlowStatus
+              reqMsg="Authenticating User ..."
+              email=""
+              flowState={apiState}
+            />
+          )}
       </div>
     </div>
   );
