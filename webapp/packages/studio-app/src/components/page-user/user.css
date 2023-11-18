@@ -32,7 +32,7 @@
   margin-left: 10px;
 }
 
-.signup-background {
+.form-wrapper {
   min-height: 88vh;
   display: flex;
   align-items: center;
@@ -74,7 +74,7 @@
 
 }
 
-.register-cancel-btn{
+.register-cancel-btn, .login-cancel-btn{
   /* flex w-9/12 justify-between mt-7  */
   display: flex;
   width: 75%;
@@ -96,7 +96,7 @@
   color: var(--blue)
 }
 
-.register-btn{
+.register-btn, .login-btn{
   /* px-5 py-1 rounded-3xl register-form-bg-color text-white */
   font-size: 100%;
   padding: 0.4rem 1.25rem;
@@ -121,6 +121,18 @@
 
 .register-btn:active, .cancel-btn:active{
   transform: translate(-3px, 4px);
+}
+
+.forgot-password{
+  /* text-end w-9/12 hover:underline hover:underline-offset-2 cursor-default */
+  text-align: end;
+  width: 75%;
+
+}
+
+.forgot-password:hover{
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .border{

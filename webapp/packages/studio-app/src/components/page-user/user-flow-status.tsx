@@ -1,5 +1,5 @@
 import {ReduxUser, UserFlowState} from "../../state/user";
-import React from "react";
+import React, { useEffect } from "react";
 import {useActions} from "../../hooks/use-actions";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 
@@ -15,7 +15,12 @@ const UserFlowStatus:React.FC<UserFlowStatusProps> = ({reqMsg, email, flowState}
   const handleResendActivationClick = () => {
     resendActivationEmail(email);
   }
-
+  // useEffect(()=>{
+  //   setTimeout(()=>{
+  //     flowState.error = "";
+  //     flowState.message = ""
+  //   }, 1000)
+  // })
   console.log("flowState: ", flowState)
 
   return (

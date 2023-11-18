@@ -1,5 +1,5 @@
 import "./user.css";
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import { useActions } from "../../hooks/use-actions";
 import { Link, useNavigate } from "react-router-dom";
 import { RoutePath } from "../routes";
@@ -77,6 +77,7 @@ const UserRegister = () => {
   const navigate = useNavigate();
   const [user, dispatch] = useReducer(reducer, blankUser);
   const { registerUser } = useActions();
+  const [apiStateDuration, setApiStateDuration] = useState(false);
   // const registerState = useTypedSelector(state => state.auth.register);
   const apiState = useTypedSelector((state) => state.auth.api);
 
@@ -105,6 +106,16 @@ const UserRegister = () => {
     } else {
       console.error(`Error! currentUser not defined in redux`);
     }
+    user.email = "";
+    user.first_name = "";
+    user.last_name = "";
+    user.password1 = "";
+    user.password2 = "";
+
+    setApiStateDuration(true);
+    setTimeout(() => {
+      setApiStateDuration(false);
+    }, 30000);
   };
 
   const handleInputChange = (actionType: string, actionPayload: string)=>{
@@ -117,7 +128,7 @@ const UserRegister = () => {
   };
 
   return (
-    <div className="signup-background">
+    <div className="form-wrapper">
       <form
         className="form"
         method="POST"
@@ -187,7 +198,13 @@ const UserRegister = () => {
             <span className="not-member-register">Login</span>
           </Link>
           
-        <UserFlowStatus reqMsg="Registering User ..." email={user.email} flowState={apiState} />
+          {apiStateDuration && (
+            <UserFlowStatus
+              reqMsg="Authenticating User ..."
+              email={user.email}
+              flowState={apiState}
+            />
+          )}
         </div>
       </form>
     </div>

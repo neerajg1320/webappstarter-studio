@@ -31,7 +31,23 @@ const UserActivate = () => {
   }
 
   return (
-      <div style={{
+      <></>
+  );
+}
+
+export default UserActivate;
+
+
+
+
+
+
+
+
+
+
+
+{/* <div style={{
         padding: "20px",
         width: "100%",
         height: "100%",
@@ -74,10 +90,6 @@ const UserActivate = () => {
           </div>
 
           {/* Status section */}
-          <UserFlowStatus reqMsg="Activating User ..." email="" flowState={apiState} />
-        </div>
-      </div>
-  );
-}
-
-export default UserActivate;
+      //     <UserFlowStatus reqMsg="Activating User ..." email="" flowState={apiState} />
+      //   </div>
+      // </div> */}
