@@ -1,16 +1,16 @@
 import React from "react";
-import {useActions} from "../../hooks/use-actions";
-import {useNavigate, useParams} from "react-router-dom";
-import {RoutePath} from "../routes";
-import {useTypedSelector} from "../../hooks/use-typed-selector";
+import { useActions } from "../../hooks/use-actions";
+import { useNavigate, useParams } from "react-router-dom";
+import { RoutePath } from "../routes";
+import { useTypedSelector } from "../../hooks/use-typed-selector";
 import UserFlowStatus from "./user-flow-status";
-import './user.css';
+import "./user.css";
 
 const UserActivate = () => {
   const navigate = useNavigate();
   const { activateUser } = useActions();
   const { key } = useParams();
-  const apiState = useTypedSelector(state => state.auth.api);
+  const apiState = useTypedSelector((state) => state.auth.api);
 
   console.log(`UserActivate:render key=`, key);
 
@@ -20,34 +20,46 @@ const UserActivate = () => {
     } else {
       console.error(`Error! key not defined in activation url`);
     }
-  }
+  };
 
   const handleCancelClick = () => {
     navigate(RoutePath.BACK);
-  }
+  };
 
   const handleLoginClick = () => {
-    navigate(RoutePath.USER_LOGIN, {replace:true});
-  }
+    navigate(RoutePath.USER_LOGIN, { replace: true });
+  };
 
   return (
-      <></>
+    <div className="form-wrapper">
+      <div className="form">
+        <h2>User Key</h2>
+        <span>{key}</span>
+        {!apiState.requestCompleted || apiState.error ? (
+          <div className="activate-cancel-btn" >
+            <button
+              className="register-btn"
+              onClick={handleActivateClick}
+            >
+              Activate
+            </button>
+            {/* </Link> */}
+            <button className="cancel-btn" onClick={() => {handleCancelClick()}}>Cancel</button>
+          </div>
+        ) : (
+          <button className="login-btn" onClick={handleLoginClick}>
+            Login
+          </button>
+        )}
+      </div>
+    </div>
   );
-}
+};
 
 export default UserActivate;
 
-
-
-
-
-
-
-
-
-
-
-{/* <div style={{
+{
+  /* <div style={{
         padding: "20px",
         width: "100%",
         height: "100%",
@@ -89,7 +101,8 @@ export default UserActivate;
 
           </div>
 
-          {/* Status section */}
-      //     <UserFlowStatus reqMsg="Activating User ..." email="" flowState={apiState} />
-      //   </div>
-      // </div> */}
+          {/* Status section */
+}
+//     <UserFlowStatus reqMsg="Activating User ..." email="" flowState={apiState} />
+//   </div>
+// </div> */}

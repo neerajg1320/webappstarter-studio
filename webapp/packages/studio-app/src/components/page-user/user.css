@@ -74,7 +74,7 @@
 
 }
 
-.register-cancel-btn, .login-cancel-btn{
+.register-cancel-btn, .login-cancel-btn, .activate-cancel-btn{
   /* flex w-9/12 justify-between mt-7  */
   display: flex;
   width: 75%;
