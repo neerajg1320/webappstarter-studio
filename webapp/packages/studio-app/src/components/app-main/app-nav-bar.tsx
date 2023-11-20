@@ -132,16 +132,16 @@ const AppNavBar = () => {
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
             <Link to={RoutePath.USER_LOGIN}>
-              <Button title="Login" buttonClass="loginButton" />
+              <Button title="Login" buttonClass="loginButton" buttonType="button"/>
             </Link>
             <Link to={RoutePath.USER_REGISTER}>
-              <Button title="Sign Up" buttonClass="signupButton" />
+              <Button title="Sign Up" buttonClass="signupButton" buttonType="button" />
             </Link>
           </div>
         ) : (
           <div className="create-btn-profile">
             <Link to={RoutePath.PROJECT_NEW} className="cta">
-              <Button title="Create" buttonClass="nav-create">
+              <Button title="Create" buttonClass="nav-create" buttonType="button">
                 <FaPlus />
               </Button>
             </Link>

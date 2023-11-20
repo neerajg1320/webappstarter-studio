@@ -5,6 +5,7 @@ import { RoutePath } from "../routes";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import UserFlowStatus from "./user-flow-status";
 import "./user.css";
+import Button from "../app-main/app-nav-bar-components/Button";
 
 const UserActivate = () => {
   const navigate = useNavigate();
@@ -42,20 +43,28 @@ const UserActivate = () => {
         <h2>User Key</h2>
         <span>{key}</span>
         {!apiState.requestCompleted || apiState.error ? (
-          <div className="activate-cancel-btn" >
-            <button
-              className="register-btn"
-              onClick={handleActivateClick}
-            >
-              Activate
-            </button>
+          <div className="form-submit-cancel-btn" >
+            <Button
+            buttonClass="form-submit-btn"
+            title="Activate"
+            buttonType="submit"
+            handleButtonClick={handleActivateClick}
+          />
             {/* </Link> */}
-            <button className="cancel-btn" onClick={() => {handleCancelClick()}}>Cancel</button>
+            <Button
+            buttonClass="cancel-btn"
+            handleButtonClick={handleCancelClick}
+            buttonType="button"
+            title="Cancel"
+          />
           </div>
         ) : (
-          <button className="login-btn" onClick={handleLoginClick}>
-            Login
-          </button>
+          <Button
+            buttonClass="form-submit-btn"
+            title="Login"
+            buttonType="submit"
+            handleButtonClick={handleLoginClick}
+          />
         )}
          {apiStateDuration && (
             <UserFlowStatus

@@ -22,6 +22,7 @@ const FormField = ({
     "password2",
     "new_Password1",
     "new_Password2",
+    "old_Password"
   ];
 
   const [fieldPassword, setFieldPassword] = useState("password");
@@ -65,11 +66,11 @@ const FormField = ({
         />
         {passwordFieldName.includes(fieldName) &&
           (fieldPassword === "text" ? (
-            <span onClick={handlePasswordField}>
+            <span onClick={handlePasswordField} style={{display: 'flex', height: '15px'}}>
               <FaEye size="22" />
             </span>
           ) : (
-            <span onClick={handlePasswordField}>
+            <span onClick={handlePasswordField}  style={{display: 'flex', height: '15px'}}>
               <FaEyeSlash size="22" />
             </span>
           ))}

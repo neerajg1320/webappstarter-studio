@@ -1,15 +1,20 @@
 // import * as React from "react";
 import "./button.css";
+
 type propTypes = {
   title: string;
   buttonClass: string;
-  children ?: React.ReactNode
+  children ?: React.ReactNode;
+  handleButtonClick ?: (e?:any)=>void;
+  buttonType: "button" | "submit" | "reset"
 };
 
-const Button = ({ title, buttonClass, children }: propTypes) => {
+const Button = ({ title, buttonClass, children, handleButtonClick, buttonType }: propTypes) => {
   return (
     <button
-      className={`font-bold ${buttonClass}`}
+      className={`${buttonClass}`}
+      onClick={handleButtonClick}
+      type= {buttonType}
     >
       {title} {children}
     </button>

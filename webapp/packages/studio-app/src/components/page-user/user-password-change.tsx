@@ -1,16 +1,18 @@
-import React, { useReducer , useState} from "react";
+import React, { useReducer, useState } from "react";
 import { useActions } from "../../hooks/use-actions";
 import { useNavigate, useParams } from "react-router-dom";
 import { RoutePath } from "../routes";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import FormField from "./app-user-components/FormField";
 import UserFlowStatus from "./user-flow-status";
+import Button from "../app-main/app-nav-bar-components/Button";
 
 interface UserState {
   id: string;
   taken: string;
   password1: string;
   password2: string;
+  old_password: string;
 }
 
 interface UserAction {
@@ -22,10 +24,12 @@ type Reducer = (ResetPasswordUser, Action) => UserState;
 
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
-    case "PASSWORD1":
+    case "new_Password1":
       return { ...state, password1: action.payload };
-    case "PASSWORD2":
+    case "new_Password2":
       return { ...state, password2: action.payload };
+    case "old_Password":
+      return { ...state, old_password: action.payload };
 
     default:
       return state;
@@ -54,11 +58,13 @@ const UserPasswordChange: React.FC<UserPasswordChangeProps> = ({
     if (resetConfirm) {
       if (uid && token) {
         passwordResetConfirmUser(uid, token, user.password1, user.password2);
+        navigate(RoutePath.USER_LOGIN, { replace: true });
+
       } else {
         console.error(`Error! uid and token are required`);
       }
     } else {
-      passwordChange(user.password1, user.password2);
+      passwordChange(user.password1, user.password2, user.old_password);
     }
 
     setApiStateDuration(true);
@@ -75,10 +81,11 @@ const UserPasswordChange: React.FC<UserPasswordChangeProps> = ({
     navigate(RoutePath.USER_LOGIN, { replace: true });
   };
 
-  const handleInputChange = (actionType: string, actionPayload: string)=>{
-    dispatch({type: actionType, payload: actionPayload});
+  const handleInputChange = (actionType: string, actionPayload: string) => {
+    dispatch({ type: actionType, payload: actionPayload });
+  };
 
-  }
+  console.log(user);
 
   return (
     <div className="form-wrapper">
@@ -87,11 +94,21 @@ const UserPasswordChange: React.FC<UserPasswordChangeProps> = ({
         method="POST"
         // onSubmit={handleFormSubmit}
       >
+        {!resetConfirm && (
+          <FormField
+            fieldName="old_Password"
+            fieldType="password"
+            required={true}
+            labelName="Old Password"
+            fieldValue={user.old_password}
+            handleInputChange={handleInputChange}
+          />
+        )}
         <FormField
           fieldName="new_Password1"
           fieldType="password"
           required={true}
-          labelName="Password"
+          labelName="New Password"
           fieldValue={user.password1}
           handleInputChange={handleInputChange}
           // formData={resetPasswordData}
@@ -101,31 +118,33 @@ const UserPasswordChange: React.FC<UserPasswordChangeProps> = ({
           fieldName="new_Password2"
           fieldType="password"
           required={true}
-          labelName="Confirm"
+          labelName="Confirm New Password"
           fieldValue={user.password2}
           handleInputChange={handleInputChange}
           // formData={resetPasswordData}
           // setFormData={setResetPasswordData}
         />
-        <div className="set-cancel-btn">
-          <button
-            className="set-btn"
-            type="submit"
-            onClick={handleSetClick}
-          >
-            Set
-          </button>
-          <button className="cancel-btn" onClick={() => {handleCancelClick()}}>
-            Cancel
-          </button>
+        <div className="form-submit-cancel-btn">
+          <Button
+            buttonClass="form-submit-btn"
+            title="Set"
+            buttonType="submit"
+            handleButtonClick={handleSetClick}
+          />
+          <Button
+            buttonClass="cancel-btn"
+            handleButtonClick={handleCancelClick}
+            buttonType="button"
+            title="Cancel"
+          />
         </div>
-         {apiStateDuration && (
-            <UserFlowStatus
-              reqMsg="Authenticating User ..."
-              email=""
-              flowState={apiState}
-            />
-          )}
+        {apiStateDuration && (
+          <UserFlowStatus
+            reqMsg="Authenticating User ..."
+            email=""
+            flowState={apiState}
+          />
+        )}
       </form>
     </div>
   );

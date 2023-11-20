@@ -73,7 +73,7 @@
   line-height: 1.25rem; /* 20px */
 }
 
-.register-cancel-btn,
+.form-submit-cancel-btn,
 .login-cancel-btn,
 .activate-cancel-btn,
 .set-cancel-btn {
@@ -98,7 +98,7 @@
   color: var(--blue);
 }
 
-.register-btn,
+.form-submit-btn,
 .login-btn, .set-btn {
   /* px-5 py-1 rounded-3xl register-form-bg-color text-white */
   font-size: 100%;

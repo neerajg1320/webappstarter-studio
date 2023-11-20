@@ -6,6 +6,7 @@ import { RoutePath } from "../routes";
 import { debugAuth, placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
 import FormField from "./app-user-components/FormField";
+import Button from "../app-main/app-nav-bar-components/Button";
 
 interface LoginUser {
   email: string;
@@ -100,11 +101,15 @@ const UserLogin = () => {
   };
 
   const handleForgotPasswordClick = () => {
+    setApiStateDuration(true);
     if (user.email) {
       passwordResetUser(user.email);
     } else {
       window.alert("Please type the email");
     }
+    setTimeout(() => {
+      setApiStateDuration(false);
+    }, 30000);
   };
 
   return (
@@ -149,22 +154,20 @@ const UserLogin = () => {
         <div className="forgot-password" onClick={handleForgotPasswordClick}>
           Forgot Password?
         </div>
-        <div className="login-cancel-btn">
-          <button
-            className="login-btn"
-            type="submit"
-            onClick={handleLoginClick}
-          >
-            Login
-          </button>
-          <button
-            className="cancel-btn"
-            onClick={() => {
-              handleCancelClick();
-            }}
-          >
-            Cancel
-          </button>
+        <div className="form-submit-cancel-btn">
+          <Button
+            buttonClass="form-submit-btn"
+            title="Login"
+            buttonType="submit"
+            handleButtonClick={handleLoginClick}
+          />
+
+          <Button
+            buttonClass="cancel-btn"
+            handleButtonClick={handleCancelClick}
+            buttonType="button"
+            title="Cancel"
+          />
         </div>
         <div className="text-center">
           Not Registered yet?{" "}

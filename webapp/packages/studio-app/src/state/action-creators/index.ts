@@ -1540,7 +1540,7 @@ export const passwordResetUser = (email:string) => {
   };
 }
 
-export const passwordChange = (new_password1:string, new_password2:string) => {
+export const passwordChange = (new_password1:string, new_password2:string, old_password: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     // dispatch(activateRequestStart(key));
     const reqId = generateLocalId();
@@ -1549,7 +1549,7 @@ export const passwordChange = (new_password1:string, new_password2:string) => {
     try {
       const response = await axiosApiInstance.post(
           `/auth/password/change/`,
-          {new_password1, new_password2}
+          {new_password1, new_password2, old_password}
       );
 
       if (debugAxios) {

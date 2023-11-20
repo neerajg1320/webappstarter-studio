@@ -8,6 +8,7 @@ import { placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
 import FormField from "./app-user-components/FormField";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
+import Button from "../app-main/app-nav-bar-components/Button";
 
 interface RegisterUser {
   email: string;
@@ -23,38 +24,38 @@ interface Action {
 }
 
 const reducer = (state: RegisterUser, action: Action) => {
-//   switch (action.type) {
-//     case "EMAIL":
-//       return { ...state, email: action.payload };
-//     case "PASSWORD1":
-//       return { ...state, password1: action.payload };
-//     case "PASSWORD2":
-//       return { ...state, password2: action.payload };
-//     case "FIRST_NAME":
-//       return { ...state, first_name: action.payload };
-//     case "LAST_NAME":
-//       return { ...state, last_name: action.payload };
+  //   switch (action.type) {
+  //     case "EMAIL":
+  //       return { ...state, email: action.payload };
+  //     case "PASSWORD1":
+  //       return { ...state, password1: action.payload };
+  //     case "PASSWORD2":
+  //       return { ...state, password2: action.payload };
+  //     case "FIRST_NAME":
+  //       return { ...state, first_name: action.payload };
+  //     case "LAST_NAME":
+  //       return { ...state, last_name: action.payload };
 
-//     default:
-//       return state;
-//   }
-// };
+  //     default:
+  //       return state;
+  //   }
+  // };
 
-switch (action.type) {
-  case "email":
-    return { ...state, email: action.payload };
-  case "password1":
-    return { ...state, password1: action.payload };
-  case "password2":
-    return { ...state, password2: action.payload };
-  case "first_name":
-    return { ...state, first_name: action.payload };
-  case "last_name":
-    return { ...state, last_name: action.payload };
+  switch (action.type) {
+    case "email":
+      return { ...state, email: action.payload };
+    case "password1":
+      return { ...state, password1: action.payload };
+    case "password2":
+      return { ...state, password2: action.payload };
+    case "first_name":
+      return { ...state, first_name: action.payload };
+    case "last_name":
+      return { ...state, last_name: action.payload };
 
-  default:
-    return state;
-}
+    default:
+      return state;
+  }
 };
 
 const initialUser: RegisterUser = {
@@ -118,10 +119,9 @@ const UserRegister = () => {
     }, 30000);
   };
 
-  const handleInputChange = (actionType: string, actionPayload: string)=>{
-    dispatch({type: actionType, payload: actionPayload});
-
-  }
+  const handleInputChange = (actionType: string, actionPayload: string) => {
+    dispatch({ type: actionType, payload: actionPayload });
+  };
 
   const handleCancelClick = () => {
     navigate(RoutePath.BACK, { replace: true });
@@ -134,13 +134,13 @@ const UserRegister = () => {
         method="POST"
         // onSubmit={handleRegister}
       >
-        <div className="signup-error-msg">{/* {errorMsg} */}</div>
+        <div className="signup-error-msg"></div>
         <FormField
           labelName="Email"
           fieldType="email"
           fieldName="email"
           fieldValue={user.email}
-          handleInputChange = {handleInputChange}
+          handleInputChange={handleInputChange}
           // setFormData={setData}
           // formData={data}
           required={true}
@@ -150,7 +150,7 @@ const UserRegister = () => {
           fieldType="password"
           fieldName="password1"
           fieldValue={user.password1}
-          handleInputChange = {handleInputChange}
+          handleInputChange={handleInputChange}
           // setFormData={setData}
           // formData={data}
 
@@ -161,7 +161,7 @@ const UserRegister = () => {
           fieldType="password"
           fieldName="password2"
           fieldValue={user.password2}
-          handleInputChange = {handleInputChange}
+          handleInputChange={handleInputChange}
           // setFormData={setData}
           // formData={data}
           required={true}
@@ -171,7 +171,7 @@ const UserRegister = () => {
           fieldType="text"
           fieldName="first_name"
           fieldValue={user.first_name}
-          handleInputChange = {handleInputChange}
+          handleInputChange={handleInputChange}
           // setFormData={setData}
           // formData={data}
           required={true}
@@ -181,23 +181,31 @@ const UserRegister = () => {
           fieldType="text"
           fieldName="last_name"
           fieldValue={user.last_name}
-          handleInputChange = {handleInputChange}
+          handleInputChange={handleInputChange}
           // setFormData={setData}
           // formData={data}
           required={true}
         />
-        <div className="register-cancel-btn">
-          <button className="register-btn" type="submit" onClick={handleRegisterClick}>
-            Register
-          </button>
-          <button className="cancel-btn" onClick={() => {handleCancelClick()}}>Cancel</button>
+        <div className="form-submit-cancel-btn">
+          <Button
+            buttonClass="form-submit-btn"
+            title="Register"
+            buttonType="submit"
+            handleButtonClick={handleRegisterClick}
+          />
+
+          <Button
+            buttonClass="cancel-btn"
+            handleButtonClick={handleCancelClick}
+            buttonType="button"
+            title="Cancel"
+          />
         </div>
         <div className="text-center">
           Already Registered?{" "}
           <Link to={RoutePath.USER_LOGIN} replace className="cta">
             <span className="not-member-register">Login</span>
           </Link>
-          
           {apiStateDuration && (
             <UserFlowStatus
               reqMsg="Authenticating User ..."
