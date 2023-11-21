@@ -4,6 +4,9 @@ import {RoutePath} from "../routes";
 import {debugComponent, serverStaticBaseUrl} from "../../config/global";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useEffect} from "react";
+import Typewriter from './Typewriter';
+import { Link } from 'react-router-dom';
+import Button from '../app-main/app-nav-bar-components/Button';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -31,8 +34,47 @@ const LandingPage = () => {
     navigate(RoutePath.USER_LOGIN);
   }
 
+  const reactCode = [
+    `import React from "react"`,
+    "const App = ()=>{",
+    "  return(",
+    "    <>",
+    "      Hello ✌, Friends",
+    "      <button>",
+    "        I'm a button",
+    "      </button>",
+    `    </>`,
+    ")}"
+  ];
+
+
   return (
-    <div className="landing-wrapper">
+    <div className='landing-page-studio'>
+      <div className='brand-logo'>
+        <h1>WebappStarter</h1>
+      </div>
+      <div className='middle-section'>
+        <p>Reactjs IDE on your browser</p>
+        <Typewriter text={reactCode} boxClass={'reactCode'}/>
+      </div>
+      <div className={`loginSignupButtons `}>
+            <Link to={RoutePath.USER_LOGIN}>
+              <Button title="Login" buttonClass="loginButton" buttonType="button"/>
+            </Link>
+            <Link to={RoutePath.USER_REGISTER}>
+              <Button title="Sign Up" buttonClass="signupButton" buttonType="button" />
+            </Link>
+          </div>
+    </div>
+  );
+}
+
+export default LandingPage;
+
+
+
+
+{/* <div className="landing-wrapper">
       <div className="left-side">
         <div className="brand-bar">
           <img className="logo-image" src={`${serverStaticBaseUrl}/landing/img/react-logo.png`} alt="Logo-Image"/>
@@ -59,8 +101,4 @@ const LandingPage = () => {
           <img className="main-image" src={`${serverStaticBaseUrl}/landing/img/generic-browser-logo.png`} alt="Main-Image"/>
         </div>
       </div>
-    </div>
-  );
-}
-
-export default LandingPage;
+    </div> */}

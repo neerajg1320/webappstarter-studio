@@ -166,7 +166,7 @@
     padding: 0 1rem;
   }
 
-  .loginSignupButtons {
+  .navbar .loginSignupButtons {
     gap: 0.5rem;
   }
 

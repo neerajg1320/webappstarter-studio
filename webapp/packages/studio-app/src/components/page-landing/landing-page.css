@@ -1,18 +1,18 @@
-.landing-wrapper {
-  /*border: 1px solid lightyellow;*/
+/* .landing-wrapper {
+ 
   margin: 20px;
   height: 100%;
   width: 90%;
   display: flex;
   flex-direction: row;
-  /*justify-content: space-between;*/
+ 
   justify-content: center;
   align-items: center;
-  /*padding: 40px;*/
+ 
 }
 
 .landing-wrapper .left-side {
-  /*border: 1px solid lightcyan;*/
+ 
   width: 60%;
   height: 100%;
   display: flex;
@@ -24,7 +24,7 @@
 }
 
 .landing-wrapper .brand-bar {
-  /*border: 1px solid lightyellow;*/
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -43,7 +43,6 @@
 
 
 .landing-wrapper .main-content {
-  /*border: 1px solid lightblue;*/
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -56,7 +55,6 @@
 }
 
 .landing-wrapper .auth-section-bar {
-  /*border: 1px solid lightcyan;*/
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -71,7 +69,7 @@
 
 
 .landing-wrapper .right-side {
-  /*border: 1px solid lightcyan;*/
+  
   height: 100%;
   width: 40%;
   display: flex;
@@ -80,7 +78,7 @@
 }
 
 .landing-wrapper .main-image-wrapper {
-  /*border: 1px solid lightyellow;*/
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -88,8 +86,107 @@
 }
 
 .landing-wrapper .main-image {
-  /*border: 1px solid lightcyan;*/
+
   height: 400px;
   width: 400px;
+}
+ */
+
+ .landing-page-studio{
+  height: calc(100vh - 2rem);
+  background-color: var(--white);
+  color: var(--blue);
+  padding: 4rem 3rem 0rem 3rem;
+ }
+
+ .landing-page-studio .brand-logo h1{
+  font-weight: lighter;
+  text-align: left;
+ }
+
+ .middle-section{
+  display: flex;
+  justify-content: space-between;
+ gap: 3rem;
+ /* margin-top: 2rem; */
+ align-items: center;
+ }
+
+ .middle-section p{
+  font-size: 5rem;
+  width: 50%
+ }
+
+.codeBox{
+  background-color: rgb(0, 0, 0);
+  width: 60%;
+  height: 23rem;
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
+}
+
+.typedtext{
+  background-image: linear-gradient(#C6E4FF, #2B4172);
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ text-align: left;
+ font-size: 1.2rem;
+ font-size: bold;
+}
+
+.landing-page-studio .loginSignupButtons {
+  gap: 5rem;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+.landing-page-studio .loginButton {
+  border: 2px solid var(--blue);
+  background-color: var(--white);
+  color: var(--blue);
+  padding: 1rem 0rem;
+  font-size: inherit;
+}
+
+.landing-page-studio .signupButton {
+  background-color: var(--blue);
+  color: var(--white);
+  border: none;
+  padding: 1.1rem 0rem;
+  font-size: inherit;
+
+}
+
+@media (max-width: 900px){
+  .middle-section{
+    flex-direction: column;
+    margin-top: 3rem;
+  }
+  .middle-section p{
+    width: 100%;
+  }
+  .codeBox{
+    width: 80%;
+  }
+  .landing-page-studio .loginSignupButtons {
+    margin-top: 3rem;
+  }
+}
+@media (max-width: 600px){
+ 
+  .codeBox{
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px){
+ .landing-page-studio{
+  padding: 4rem 1rem 0rem 1rem;
+ 
+ }
+  .codeBox{
+    width: 100%;
+  }
 }
 

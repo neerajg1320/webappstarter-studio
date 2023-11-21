@@ -25,17 +25,17 @@
 
 @media (max-width: 600px) {
 
-  .loginButton,
-  .signupButton {
+  .navbar .loginButton,
+  .navbar .signupButton {
     width: 4rem;
     font-size: 0.8rem;
   }
 
-  .loginButton {
+  .navbar .loginButton {
     padding: 0.5rem 0rem;
   }
 
-  .signupButton {
+  .navbar .signupButton {
     padding: 0.6rem 0rem;
 
   }
