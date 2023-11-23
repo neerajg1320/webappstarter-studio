@@ -2,6 +2,7 @@
   width: 100%;
   border: none;
   outline: none;
+  resize: none;
 }
 
 .start-config-radio {
@@ -16,10 +17,10 @@
 }
 
 .form-input-box [type="radio"] {
-  /* display: none; */
+  display: none;
 }
 
-.form-label-radio-field {
+.form-label-radio-field .form-input-box {
   position: relative;
 }
 
@@ -29,21 +30,25 @@
   height: 20px;
   position: absolute;
   border: 1px solid var(--blue);
-  left:80px;
   border-radius: 50%;
 }
-.form-label-radio-field  .form-input-box::after{
+.custom-radio{
   content: "";
   width: 15px;
   height: 15px;
   position: absolute;
  
-  left:83px;
+  left:3.3px;
   border-radius: 50%;
 }
 
-.form-label-radio-field input[type="radio"]:checked {
+.form-input-box [type="radio"]:checked + .custom-radio{
   background-color: var(--blue);
+}
+
+.template-import-radio{
+  display: flex;
+  padding-top: 5px;
 }
 /* .project-value-list {
   width: 80%;

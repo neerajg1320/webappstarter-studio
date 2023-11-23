@@ -80,6 +80,7 @@ const FormField = ({
             //  ref={inputRef}
             required={required}
           />
+          
         ) : (
           <textarea
             name={fieldName}
@@ -88,6 +89,7 @@ const FormField = ({
             rows={8}
           />
         )}
+        {fieldType=="radio" &&  <span className="custom-radio"></span>}
         {passwordFieldName.includes(fieldName) &&
           (fieldPassword === "text" ? (
             <span

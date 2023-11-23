@@ -229,7 +229,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
           <>
             <div className="start-config-radio">
               <label>Start Config<span className="form-required-field">*</span></label>
-              <div className="value">
+              <div className="template-import-radio">
                 {/* <div className="radio"> */}
                   <FormField
                   labelName="Template"
