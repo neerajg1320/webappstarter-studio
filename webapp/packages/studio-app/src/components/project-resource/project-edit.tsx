@@ -13,6 +13,7 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { debugComponent } from "../../config/global";
 import ApiFlowStatus from "../api-status/api-flow-status";
 import FormField from "../page-user/app-user-components/FormField";
+import Button from "../app-main/app-nav-bar-components/Button";
 
 interface ProjectEditProps {
   isEdit: boolean;
@@ -190,15 +191,20 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     } as ReduxUpdateProjectPartial);
   };
 
-  const handleInputClick = (labelName: string)=>{
-    if(labelName == "Import"){
+  const handleInputClick = (labelName: string) => {
+    if (labelName != "Import") {
       setImport(false);
-    }else{
+    } else {
       setImport(true);
     }
-    console.log("change: ", labelName)
+    // console.log("change: ", labelName);
+  };
+
+  const handleBrowseButton = ()=>{
+    inputFileRef.current.click();
   }
 
+  console.log(projectTemplateOption)
   return (
     <div className="form-wrapper">
       <form
@@ -228,10 +234,12 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
         {!isEdit && (
           <>
             <div className="start-config-radio">
-              <label>Start Config<span className="form-required-field">*</span></label>
+              <label>
+                Start Config<span className="form-required-field">*</span>
+              </label>
               <div className="template-import-radio">
                 {/* <div className="radio"> */}
-                  <FormField
+                <FormField
                   labelName="Template"
                   fieldType="radio"
                   fieldName="init-type"
@@ -264,12 +272,12 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                   required={false}
                 />
                 {/* </div> */}
-              {/* </div> */}
-              {/* <div> */}
+                {/* </div> */}
+                {/* <div> */}
               </div>
             </div>
 
-            <div className="project-value">
+            <div style={{width: '75%'}}>
               {!isImport ? (
                 <div className="start-config">
                   <label>Template</label>
@@ -277,11 +285,15 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                     className="value framework-select"
                     value={projectTemplateOption}
                     options={projectTemplateOptions}
-                    onChange={(selected) =>
+                    onChange={(selected) =>{
+                      console.log(selected)
+                      console.log(currentProject)
                       updateProject({
                         localId: currentProject?.localId,
                         template: selected?.value || "none",
                       } as ReduxUpdateProjectPartial)
+                    }
+                     
                     }
                   />
                 </div>
@@ -289,12 +301,18 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                 <div className="start-config">
                   <label>Project Zip</label>
                   <div className="value zip-upload">
-                    <button
+                    <Button
+                      buttonClass="form-submit-btn"
+                      title="Browse"
+                      buttonType="button"
+                      handleButtonClick={handleBrowseButton}
+                    />
+                    {/* <button
                       className="button is-info is-small is-rounded"
                       onClick={(e) => inputFileRef.current.click()}
                     >
                       Browse
-                    </button>
+                    </button> */}
                     <input
                       ref={inputFileRef}
                       type="file"
@@ -313,7 +331,23 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
             </div>
           </>
         )}
+        <div className="form-submit-cancel-btn">
+          <Button
+            buttonClass="form-submit-btn"
+            title="Save"
+            buttonType="submit"
+            handleButtonClick={handleSaveClick}
+          />
+
+          <Button
+            buttonClass="cancel-btn"
+            handleButtonClick={handleCancelClick}
+            buttonType="button"
+            title="Cancel"
+          />
+        </div>
       </form>
+      <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
     </div>
   );
 };

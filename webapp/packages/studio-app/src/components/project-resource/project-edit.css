@@ -48,8 +48,59 @@
 
 .template-import-radio{
   display: flex;
-  padding-top: 5px;
+  padding-top: 0.5rem;
 }
+
+.start-config{
+  text-align: left;
+}
+
+.zip-upload, .framework-select{
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.zip-upload .form-submit-btn{
+  box-shadow: 0 0 0 0;
+}
+.css-t3ipsp-control:hover {
+border-color: var(--blue) !important;
+}
+
+.css-t3ipsp-control{
+  box-shadow: 0 0 0 1px var(--blue) !important;
+}
+
+.css-tr4s17-option{
+  background-color: var(--blue) !important;
+}
+
+.css-1dimb5e-singleValue  {
+
+  color: var(--blue) !important;
+}
+
+@media (max-width: 940px){
+  .template-import-radio{
+    flex-direction: column;
+  }
+  .form-label-radio-field .form-input-box {
+    position: static;
+  }
+
+  .form-label-radio-field{
+    position: relative;
+  }
+
+  .form-label-radio-field .form-input-box::before {
+    left: 84px;
+  }
+  .custom-radio{
+    left: 87.3px;
+  }
+
+}
+
 /* .project-value-list {
   width: 80%;
   min-width: 500px;
