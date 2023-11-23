@@ -132,9 +132,10 @@ const UserRegister = () => {
       <form
         className="form"
         method="POST"
+        
         // onSubmit={handleRegister}
       >
-        <div className="signup-error-msg"></div>
+        {/* <div className="signup-error-msg"></div> */}
         <FormField
           labelName="Email"
           fieldType="email"

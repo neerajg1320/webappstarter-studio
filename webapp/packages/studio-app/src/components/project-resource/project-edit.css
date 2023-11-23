@@ -1,4 +1,51 @@
-.project-value-list {
+.form-wrapper textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.start-config-radio {
+  width: 75%;
+  text-align: left;
+}
+
+.form-label-radio-field {
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+
+.form-input-box [type="radio"] {
+  /* display: none; */
+}
+
+.form-label-radio-field {
+  position: relative;
+}
+
+.form-label-radio-field  .form-input-box::before{
+  content: "";
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  border: 1px solid var(--blue);
+  left:80px;
+  border-radius: 50%;
+}
+.form-label-radio-field  .form-input-box::after{
+  content: "";
+  width: 15px;
+  height: 15px;
+  position: absolute;
+ 
+  left:83px;
+  border-radius: 50%;
+}
+
+.form-label-radio-field input[type="radio"]:checked {
+  background-color: var(--blue);
+}
+/* .project-value-list {
   width: 80%;
   min-width: 500px;
   max-width: 700px;
@@ -49,7 +96,7 @@
 }
 
 .project-value .start-config {
-  /*border: 1px solid salmon;*/
+ 
   width: 100%;
   display: flex;
 }
@@ -62,4 +109,4 @@
   color: white;
   background-color: #dee5ed;
 }
-
+ */
