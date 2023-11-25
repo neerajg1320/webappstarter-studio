@@ -3,8 +3,10 @@
 
   
   .wrapper{
+    flex-direction: column;
+    align-items: center;
+    display: flex;
     position: relative;
-    /* border: 1px solid black; */
   }
   
   .tooltip{
@@ -15,8 +17,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    top:42px;
-    left: -35px;
+    top:43px;
+    font-size: 16px;
+    /* top:42px;
+    left: -35px; */
     color: white;
   }
   

@@ -150,6 +150,7 @@ const AppNavBar = () => {
             </Tooltip>
             </Link>
 
+            <Tooltip msg={"profile"} position={"bottom"}>
             <div className="login-profile" onClick={handleProfileClick}>
               <div className="profile">
                 {/* <span>{currentUser?.first_name}</span> */}
@@ -157,6 +158,7 @@ const AppNavBar = () => {
               </div>
               <IoIosArrowDown size="15" />
             </div>
+          </Tooltip>
           </div>
         )}
       </div>

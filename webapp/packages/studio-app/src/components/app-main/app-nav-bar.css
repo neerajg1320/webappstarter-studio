@@ -154,6 +154,12 @@
   border-radius: 100px;
 }
 
+/* .create-btn-profile  > .wrapper .tooltip{
+  font-size: 16px;
+  left: 0px;
+} */
+
+
 .profile{
   display: flex;
   align-items: center;
