@@ -141,14 +141,14 @@ const AppNavBar = () => {
         ) : (
           <div className="create-btn-profile">
             <Link to={RoutePath.PROJECT_NEW} className="cta">
-              <Button title="Create" buttonClass="nav-create" buttonType="button">
+              <Button title="" buttonClass="nav-create" buttonType="button">
                 <FaPlus />
               </Button>
             </Link>
 
             <div className="login-profile" onClick={handleProfileClick}>
               <div className="profile">
-                <span>{currentUser?.first_name}</span>
+                {/* <span>{currentUser?.first_name}</span> */}
                 <FaUserCircle size="23" />
               </div>
               <IoIosArrowDown size="15" />

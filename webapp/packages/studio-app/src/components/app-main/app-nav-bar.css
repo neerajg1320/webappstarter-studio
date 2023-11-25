@@ -149,7 +149,7 @@
   align-items: center;
   font-size: 20px;
   gap: 4px;
-  border: 1px solid var(--blue);
+  /* border: 1px solid var(--blue); */
   padding: 10px 15px;
   border-radius: 100px;
 }
