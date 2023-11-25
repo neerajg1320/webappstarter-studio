@@ -11,9 +11,10 @@ import {
 } from "../../config/global";
 import { useState } from "react";
 import { FaBarsStaggered, FaPlus } from "react-icons/fa6";
-import Button from "./app-nav-bar-components/Button/index";
+import Button from "./app-nav-bar-components/Button/button/index";
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import Tooltip from "./app-nav-bar-components/Button/tooltip";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -140,10 +141,13 @@ const AppNavBar = () => {
           </div>
         ) : (
           <div className="create-btn-profile">
+
             <Link to={RoutePath.PROJECT_NEW} className="cta">
+            <Tooltip msg={"Create project"} position={"bottom"}>
               <Button title="" buttonClass="nav-create" buttonType="button">
                 <FaPlus />
               </Button>
+            </Tooltip>
             </Link>
 
             <div className="login-profile" onClick={handleProfileClick}>

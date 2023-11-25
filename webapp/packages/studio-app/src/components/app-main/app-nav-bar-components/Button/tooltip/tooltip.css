@@ -1,0 +1,164 @@
+
+  
+
+  
+  .wrapper{
+    position: relative;
+    /* border: 1px solid black; */
+  }
+  
+  .tooltip{
+    position: absolute;
+    background-color: var(--blue);
+    width: 108px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top:42px;
+    left: -35px;
+    color: white;
+  }
+  
+  .tip{
+    width: 9px;
+    height: 9px;
+    background-color: var(--blue);
+    position: absolute;
+    top:-3px;
+    z-index: -1;
+    rotate: 45deg;
+  }
+  
+  /* .tooltiptop{
+    top: -55px;
+    
+  }
+  
+  .tiptop{
+    top: 25px;
+    z-index: -1;
+  
+  }
+  
+  .tipleft{
+    top: 3px;
+      left: 47px;
+      position: relative;
+      z-index: -1;
+  }
+  
+  .tooltipleft{
+    width: 61px;
+    top: -37px;
+    left: -100px;
+    height: 100px;
+  }
+  
+  .tooltipright{
+    width: 61px;
+    top: -37px;
+    left: 125px;
+    height: 100px;
+  }
+  
+  .tipright{
+    top: 3px;
+      left: -14px;
+      position: relative;
+      z-index: -1;
+  }
+  
+  .tiptopright{
+    top: -36px;
+      left: -14px;
+      position: relative;
+      z-index: -1;
+  }
+  
+  .tooltiptopright{
+  width: 61px;
+    top: -13px;
+    left: 125px;
+    height: 100px;
+  }
+  
+  .tipbottomright{
+    top: -36px;
+      left: -14px;
+      position: relative;
+      z-index: -1;
+  }
+  
+  .tooltipbottomright{
+    width: 61px;
+    top: 12px;
+    left: 125px;
+    height: 100px;
+  }
+  
+  .tooltiptopleft{
+       width: 61px;
+    top: -12px;
+    left: -100px;
+    height: 100px;
+  }
+  
+  .tiptopleft{
+     top: -35px;
+      left: 47px;
+      position: relative;
+      z-index: -1;
+  }
+  
+  .tooltipbottomleft{
+       width: 61px;
+    top: 13px;
+    left: -100px;
+    height: 100px;
+  }
+  
+  .tipbottomleft{
+     top: -35px;
+      left: 47px;
+      position: relative;
+      z-index: -1;
+  }
+  
+  .tooltiprightbottom{
+    left: -10px;
+  }
+  
+  .tiprightbottom{
+    left:6px;
+  }
+  
+  .tooltiprightbottom{
+    left: 1px;
+  }
+  
+  .tiprightbottom{
+    left: 77px;
+  }
+  
+  .tooltiplefttop{
+    left: -11px;
+     top: -55px;
+  }
+  
+  .tiplefttop{
+    top: 25px;
+    left: 4px;
+  }
+  
+  .tooltiprighttop{
+  left: 0px;
+     top: -55px;
+  }
+  
+  .tiprighttop{
+    top: 25px;
+    left: 75px;
+  }
+  
+   */

@@ -8,7 +8,7 @@ import { placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
 import FormField from "./app-user-components/FormField";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
-import Button from "../app-main/app-nav-bar-components/Button";
+import Button from "../app-main/app-nav-bar-components/Button/button";
 
 interface RegisterUser {
   email: string;

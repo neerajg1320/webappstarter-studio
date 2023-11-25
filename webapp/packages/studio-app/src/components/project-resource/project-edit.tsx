@@ -13,7 +13,7 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { debugComponent } from "../../config/global";
 import ApiFlowStatus from "../api-status/api-flow-status";
 import FormField from "../page-user/app-user-components/FormField";
-import Button from "../app-main/app-nav-bar-components/Button";
+import Button from "../app-main/app-nav-bar-components/Button/button";
 
 interface ProjectEditProps {
   isEdit: boolean;

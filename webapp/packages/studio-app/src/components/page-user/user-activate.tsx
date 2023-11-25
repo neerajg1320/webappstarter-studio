@@ -5,7 +5,7 @@ import { RoutePath } from "../routes";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import UserFlowStatus from "./user-flow-status";
 import "./user.css";
-import Button from "../app-main/app-nav-bar-components/Button";
+import Button from "../app-main/app-nav-bar-components/Button/button";
 
 const UserActivate = () => {
   const navigate = useNavigate();

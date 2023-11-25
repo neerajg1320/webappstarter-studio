@@ -5,7 +5,7 @@ import { RoutePath } from "../routes";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import FormField from "./app-user-components/FormField";
 import UserFlowStatus from "./user-flow-status";
-import Button from "../app-main/app-nav-bar-components/Button";
+import Button from "../app-main/app-nav-bar-components/Button/button";
 
 interface UserState {
   id: string;

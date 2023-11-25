@@ -6,7 +6,7 @@ import { RoutePath } from "../routes";
 import { debugAuth, placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
 import FormField from "./app-user-components/FormField";
-import Button from "../app-main/app-nav-bar-components/Button";
+import Button from "../app-main/app-nav-bar-components/Button/button";
 
 interface LoginUser {
   email: string;
