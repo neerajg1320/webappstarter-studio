@@ -15,6 +15,7 @@ import Button from "./app-nav-bar-components/Button/button/index";
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import Tooltip from "./app-nav-bar-components/Button/tooltip";
+import DropDown from "../app-components/dropdown/dropdown";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -28,6 +29,16 @@ const AppNavBar = () => {
   const location = useLocation();
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
+  const [options, setOptions] = useState([
+    {
+      label: "Grid mode",
+      value: "grid",
+    },
+    {
+      label: "Preview mode",
+      value: "preview",
+    },
+  ]);
 
   const handleLogoutClick = () => {
     if (currentUser) {
@@ -82,6 +93,9 @@ const AppNavBar = () => {
     setIsProfileDropDown(!isProfileDropDown);
   };
 
+  const handleChangeSelect = (e)=>{
+
+  }
   // console.log("isAuthenticated: ", isAuthenticated);
   // console.log("currentUser: ", currentUser);
 
@@ -97,7 +111,7 @@ const AppNavBar = () => {
           </Link>
         </div>
 
-        {!isAuthenticated && !currentUser?.is_anonymous? (
+        {!isAuthenticated && !currentUser?.is_anonymous ? (
           <ul className={`list  ${isToggleMenu ? " " : "moveLeft"}`}>
             <li className="listItem">
               <a className="navItem" href={`${RoutePath.PROJECT_PLAYGROUND}`}>
@@ -133,32 +147,48 @@ const AppNavBar = () => {
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
             <Link to={RoutePath.USER_LOGIN}>
-              <Button title="Login" buttonClass="loginButton" buttonType="button"/>
+              <Button
+                title="Login"
+                buttonClass="loginButton"
+                buttonType="button"
+              />
             </Link>
             <Link to={RoutePath.USER_REGISTER}>
-              <Button title="Sign Up" buttonClass="signupButton" buttonType="button" />
+              <Button
+                title="Sign Up"
+                buttonClass="signupButton"
+                buttonType="button"
+              />
             </Link>
           </div>
         ) : (
           <div className="create-btn-profile">
-
             <Link to={RoutePath.PROJECT_NEW} className="cta">
-            <Tooltip msg={"Create project"} position={"left"}>
-              <Button title="" buttonClass="nav-create" buttonType="button">
-                <FaPlus />
-              </Button>
-            </Tooltip>
+              <Tooltip msg={"Create project"} position={"left"}>
+                <Button title="" buttonClass="nav-create" buttonType="button">
+                  <FaPlus />
+                </Button>
+              </Tooltip>
             </Link>
 
+            <DropDown
+              options={options}
+              placeHolder="View"
+              onChange={(e) => handleChangeSelect(e)}
+              align="center"
+              // isSearchable
+              // isMulti
+            />
+
             <Tooltip msg={"profile"} position={"bottom"}>
-            <div className="login-profile" onClick={handleProfileClick}>
-              <div className="profile">
-                {/* <span>{currentUser?.first_name}</span> */}
-                <FaUserCircle size="23" />
+              <div className="login-profile" onClick={handleProfileClick}>
+                <div className="profile">
+                  {/* <span>{currentUser?.first_name}</span> */}
+                  <FaUserCircle size="23" />
+                </div>
+                <IoIosArrowDown size="15" />
               </div>
-              <IoIosArrowDown size="15" />
-            </div>
-          </Tooltip>
+            </Tooltip>
           </div>
         )}
       </div>

@@ -65,7 +65,7 @@ const ProjectListView = () => {
       <>
         {(currentUser && !currentUser.is_anonymous) ?
             <div className="project-list-view">
-              <div className="project-list-view-control-bar">
+              {/* <div className="project-list-view-control-bar">
                 <div style={{
                   borderRadius: "15px",
                   display: "flex",
@@ -79,7 +79,7 @@ const ProjectListView = () => {
                   <label>Preview Mode</label>
                   <input type="checkbox" checked={isPreviewLayout} onChange={(e) => setPreviewLayout(e.target.checked)}/>
                 </div>
-              </div>
+              </div> */}
               <div className="project-list-view-panel">
                 <ProjectListScroller projects={projectList} visibility={isPreviewLayout}/>
                 <ProjectListGrid projects={projectList} visibility={!isPreviewLayout}/>

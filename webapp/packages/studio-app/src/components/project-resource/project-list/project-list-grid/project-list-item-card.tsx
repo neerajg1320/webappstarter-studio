@@ -48,7 +48,8 @@ const ProjectListItemCard:React.FC<ProjectCardProps> = ({reduxProject, onClick:p
     <div className="card" style={{
         height: "200px",
         width: "350px",
-        borderRadius: "10px", padding: "15px 10px 5px",
+        borderRadius: "10px", 
+        // padding: "15px 10px 5px",
         backgroundColor: "cornflowerblue",
         cursor: "pointer",
         display: "flex", flexDirection: "column", justifyContent: "space-evenly"
