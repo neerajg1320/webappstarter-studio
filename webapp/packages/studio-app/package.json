@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev-local": "vite",
+    "dev-server": "VITE_APP_WEBAPPSTATER_API=https://api.webappstarter.com vite",
+    "dev-remote": "npm run dev-server",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
