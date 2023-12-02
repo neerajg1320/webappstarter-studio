@@ -18,8 +18,13 @@ const onMouseLeave = ()=>{
   setIsToolTipVisible(false);
 }
 
+const onTooltipClick = ()=>{
+  // setIsToolTipVisible(false);
+  setIsToolTipVisible(true);
+}
+
   return (
-    <div className="wrapper" onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
+    <div className="wrapper" onMouseOver={onMouseOver} onMouseLeave={onMouseLeave} onClick={onTooltipClick}>
     {children}
 
     {isToolTipVisible && position == "bottom" && <div className="tooltip">

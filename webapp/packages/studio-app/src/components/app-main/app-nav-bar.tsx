@@ -143,7 +143,7 @@ const AppNavBar = () => {
           <div className="create-btn-profile">
 
             <Link to={RoutePath.PROJECT_NEW} className="cta">
-            <Tooltip msg={"Create project"} position={"bottom"}>
+            <Tooltip msg={"Create project"} position={"left"}>
               <Button title="" buttonClass="nav-create" buttonType="button">
                 <FaPlus />
               </Button>
