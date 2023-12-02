@@ -41,7 +41,7 @@
   display: block;
   padding: 10px;
   color: var(--blue);
-  font-size: 16px;
+  font-size: 1.1rem;
   /* font-family: $poppins; */
   text-decoration: none;
 }
@@ -71,14 +71,14 @@
 
 .nav-create{
   background-color: var(--white);
-  border: 2px solid var(--blue);
+  border: none;
   color: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
   gap:5px;
   padding: 5px 10px;
-  font-size: 1rem;
+  font-size: 1.3rem;
   border-radius: 10px;
   cursor: pointer;
 }
