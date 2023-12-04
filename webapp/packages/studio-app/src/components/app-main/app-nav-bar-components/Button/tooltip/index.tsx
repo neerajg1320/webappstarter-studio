@@ -19,8 +19,8 @@ const onMouseLeave = ()=>{
 }
 
 const onTooltipClick = ()=>{
-  // setIsToolTipVisible(false);
-  setIsToolTipVisible(true);
+  setIsToolTipVisible(false);
+  // setIsToolTipVisible(true);
 }
 
   return (
