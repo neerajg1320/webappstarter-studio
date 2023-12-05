@@ -9,6 +9,8 @@ import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
 import {debugComponent} from "../../config/global";
 import {KeyValueHOComponentProps} from "../common/expandable-args/component-tree";
+import { FaFolder, FaFolderOpen} from "react-icons/fa";
+import { FaFile } from "react-icons/fa6";
 
 
 // The main purpose of this file is to pass back getFileTreeItemInfo function
@@ -140,9 +142,10 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
           onDrop={handleDrop}
       >
         {isFolder ?
-            <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
+            // <i className={"fas" +  (expanded ? " fa-folder-open" : " fa-folder")} />
+            expanded? <FaFolderOpen /> :<FaFolder />
             :
-            <i className="fas fa-file" />
+            <FaFile  />
         }
         {debugComponent &&
           <>

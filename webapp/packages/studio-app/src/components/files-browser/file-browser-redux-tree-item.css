@@ -1,7 +1,5 @@
 .file-tree {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 }
 
 .file-item {
@@ -10,9 +8,10 @@
   gap: 5px;
   align-items: center;
   padding: 0 4px 0 6px;
-  width: fit-content;
+  width: 100%;
 }
 
 .file-item.selected {
-  background-color: rgba(128, 128, 128, 60%);
+  background-color: var(--blue);
+  color: var(--white);
 }
