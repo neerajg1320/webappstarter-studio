@@ -22,29 +22,43 @@ const ProjectListGrid:React.FC<ProjectListGridProps> = ({projects, visibility:pr
   // Ref: https://codepen.io/TomckySan/pen/mxVbgR
   return (
       <div className="project-list-grid" style={{
-        width: "100%",
-        height: "100%",
+        // width: "100%",
+        // height: "100%",
         // padding: "0 40px",
-        display:"flex",
-        flexDirection: "column", 
-        alignItems: "center", 
+        // display:"flex",
+        // flexDirection: "column", 
+        // alignItems: "center", 
         // gap: "20px", 
-        justifyContent: "center",
+        // justifyContent: "center",
         visibility: propVisibility ? 'visible' : 'hidden',
       }}
       >
-        <div style={{
-          height: "100%",
-          width: "100%",
+        
+          {projects &&
+              projects.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
+          }
+       
+      </div>
+  );
+}
+
+export default ProjectListGrid;
+
+
+
+
+{/* <div style={{ */}
+          // height: "100%",
+          // width: "100%",
 
           // border: "1px solid lightblue",
           // borderRadius: "15px",
 
-          display: "grid",
+          // display: "grid",
           // gridTemplateColumns: "repeat(auto-fit, 350px)",
-          gridRowGap: "40px",
-          gridColumnGap: "40px",
-          justifyContent: "space-evenly",
+          // gridRowGap: "40px",
+          // gridColumnGap: "40px",
+          // justifyContent: "space-evenly",
 
           // display: "flex",
           // justifyContent: "space-evenly",
@@ -54,13 +68,4 @@ const ProjectListGrid:React.FC<ProjectListGridProps> = ({projects, visibility:pr
           // gap: "40px",
           // overflowY: "auto",
           // padding: "40px"
-        }}>
-          {projects &&
-              projects.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
-          }
-        </div>
-      </div>
-  );
-}
-
-export default ProjectListGrid;
+        {/* // }}> */}

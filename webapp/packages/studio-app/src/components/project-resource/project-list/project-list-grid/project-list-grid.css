@@ -1,6 +1,8 @@
 .project-list-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: auto;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 2fr));
+  grid-auto-rows: minmax(260px, 1fr);
+  width: 90%;
+  margin: 100px auto 0 auto;
+  display: grid;
 }

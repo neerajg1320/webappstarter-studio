@@ -81,7 +81,7 @@ const ProjectListView = () => {
                 </div>
               </div> */}
               <div className="project-list-view-panel">
-                <ProjectListScroller projects={projectList} visibility={isPreviewLayout}/>
+                {/* <ProjectListScroller projects={projectList} visibility={isPreviewLayout}/> */}
                 <ProjectListGrid projects={projectList} visibility={!isPreviewLayout}/>
               </div>
             </div>

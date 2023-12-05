@@ -17,3 +17,60 @@
   background: transparent;
   border: transparent;
 }
+
+.card {
+  height: 200px;
+  width: 350px;
+  position: relative;
+  color: var(--blue);
+  box-shadow: 0px 0px 10px 2px #0000001a;
+  transition: 0.25s;
+}
+
+.card:hover {
+  /* border: 1.5px solid var(--blue); */
+  transition: 0.25s;
+  box-shadow: 2px 2px 10px 5px #0000001c;
+}
+
+.card-actions-icon {
+  position: absolute;
+  top: 1rem;
+  right: 21px;
+  display: flex;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+}
+
+.card-actions{
+  list-style: none;
+  position: absolute;
+  right: 2px;
+  top: 3rem;
+  background-color: white;
+  width: 10rem;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.21);
+}
+
+.card-actions-item{
+  background-color: var(--white);
+  z-index: 1;
+}
+
+.card-actions-item button{
+  width: 10rem;
+  padding: 5px;
+  background-color: var(--white);
+  border: none;
+}
+
+.card-actions-item button:hover{
+  color: var(--white);
+  background-color: var(--blue);
+}
+
+
+
