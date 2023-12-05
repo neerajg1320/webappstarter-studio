@@ -78,13 +78,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
     >
       <div
         className="card-header"
-        style={{
-          padding: "0 10px",
-          margin: "0",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
+        
       >
         <button className="card-actions-icon" onClick={handleOpenCardMenu}>
           <CiMenuKebab size={18}/>
@@ -104,10 +98,10 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
             </li>
           </ul>
         )}
-        <div>{reduxProject.title}</div>
-        {reduxProject.size !== undefined && reduxProject.size > 0 && (
+        <div className="card-title">{reduxProject.title}</div>
+        {/* {reduxProject.size !== undefined && reduxProject.size > 0 && (
           <div>{reduxProject.size + " Bytes"}</div>
-        )}
+        )} */}
       </div>
       <div className="card-content" style={{ flexGrow: 1 }}>
         <div className="card-item">

@@ -3,10 +3,17 @@
   display: flex;
   flex-direction: row;
   gap: 10px;
+  padding-bottom: 3px;
+}
+
+.card-content {
+  padding: 10px 0 10px 20px;
 }
 
 .card-content label {
   width: 40%;
+  /* width: 50%; */
+  text-align: start;
 }
 
 /*.card-content .value {*/
@@ -22,9 +29,12 @@
   height: 200px;
   width: 350px;
   position: relative;
+  padding: 1.5em;
+  font-size: 1em;
   color: var(--blue);
   box-shadow: 0px 0px 10px 2px #0000001a;
   transition: 0.25s;
+  border-radius: 2px;
 }
 
 .card:hover {
@@ -34,18 +44,15 @@
 }
 
 .card-actions-icon {
-  position: absolute;
-  top: 1rem;
-  right: 21px;
   display: flex;
-  padding: 5px;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-start;
   background-color: transparent;
   border: none;
+  padding: 4px;
 }
 
-.card-actions{
+.card-actions {
   list-style: none;
   position: absolute;
   right: 2px;
@@ -55,22 +62,39 @@
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.21);
 }
 
-.card-actions-item{
+.card-actions-item {
   background-color: var(--white);
   z-index: 1;
 }
 
-.card-actions-item button{
+.card-actions-item button {
   width: 10rem;
   padding: 5px;
   background-color: var(--white);
   border: none;
 }
 
-.card-actions-item button:hover{
+.card-actions-item button:hover {
   color: var(--white);
   background-color: var(--blue);
 }
 
+.card-title {
+  /* padding-top: 1rem; */
+  font-size: 1.2em;
+}
 
+.card-header {
+  padding: 0 0px 6px 0px;
+  margin: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
 
+.card-actions-icon:hover {
+  padding: 4px;
+  background-color: var(--blue);
+  color: var(--white);
+  transition: 0.25s;
+}
