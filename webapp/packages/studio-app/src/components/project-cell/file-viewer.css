@@ -1,7 +1,8 @@
 .file-cell-control-bar-wrapper {
-  height: 60px;
-  padding: 0 10px;
+  height: 50px;
+  /* padding: 0 10px; */
   display: flex;
+  color: var(--blue);
   overflow: hidden;
   margin: 5px 0;
 }
@@ -9,8 +10,8 @@
 .file-content-panel-wrapper {
   /*border: 1px solid salmon;*/
   width: 100%;
-  height: calc(100% - 60px);
-  max-height: calc(100% - 60px);
+  height: calc(100% );
+  max-height: calc(100% );
 }
 
 .file-content-panel-empty {

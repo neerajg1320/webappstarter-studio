@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import "./dropdown.css";
 import { BsCheck2 } from "react-icons/bs";
+import { IoMdGrid } from "react-icons/io";
+import { MdPreview } from "react-icons/md";
 
 interface Option {
   value: string;
   label: string;
+  icon?: string;
 }
 
 interface DropDownProps {
@@ -146,6 +149,7 @@ const DropDown: React.FC<DropDownProps> = ({
     } else {
       newValue = option;
     }
+    console.log("newValue: ", newValue);
     setSelectedValue(newValue);
     onChange(newValue);
   };
@@ -191,7 +195,12 @@ const DropDown: React.FC<DropDownProps> = ({
               : ""
           }`}
         >
-          {getDisplay()}
+          {getDisplay() === "Grid mode" || getDisplay() === "Preview mode" ? (
+            getDisplay() =="Grid mode" ?
+            <IoMdGrid />: <MdPreview/>
+          ) : (
+            getDisplay()
+          )}
         </div>
         <div className="dropdown-tools">
           <div className="dropdown-tool">
@@ -217,8 +226,11 @@ const DropDown: React.FC<DropDownProps> = ({
               onClick={() => onItemClick(option)}
               key={option.value}
               className={`dropdown-item ${isSelected(option) && "selected"}`}
-            >{isSelected(option) && placeHolder === "View" ? <BsCheck2 />:''}
+            >
+              {isSelected(option) && placeHolder === "View" ? <BsCheck2 /> : ""}
               {option.label}
+              {option.value === "grid" ? <IoMdGrid /> : ""}
+              {option.value === "preview" ? <MdPreview /> : ""}
             </div>
           ))}
         </div>

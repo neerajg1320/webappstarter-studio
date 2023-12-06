@@ -4,7 +4,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 98%;
 }
 
 .file-cell-control-bar-left {
@@ -29,5 +29,9 @@
   gap: 60px;
   align-items: center;
   margin-top: 5px;
-  padding-right: 20px;
+  /* padding-right: 20px; */
+}
+
+.sync-btn{
+  font-size: 1.4em;
 }

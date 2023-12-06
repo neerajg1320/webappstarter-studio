@@ -1,10 +1,10 @@
 .project-cell-wrapper {
-  border: 1px solid gray;
+  border: 1px solid var(--blue);
 
   height: 90vh;
   width: 100%;
-
-  padding: 10px;
+  margin: 10px;
+  /* padding: 10px; */
 
   display: flex;
   flex-direction: column;
@@ -14,4 +14,13 @@
 .project-download-async-button-group progress {
   /*border: 1px solid lightsalmon;*/
   font-size: .6em;
+}
+
+.project-control-panel{
+  display: flex;
+  flex-direction: row;
+  padding: 5px 10px 10px 0px;
+  gap: 8px;
+  background-color: var(--white);
+  justify-content: flex-end;
 }

@@ -3,6 +3,7 @@
   padding: 5px;
   overflow: scroll;
   display: flex;
+  color: var(--blue);
 }
 
 .preview-bundle pre {

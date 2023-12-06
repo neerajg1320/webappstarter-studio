@@ -17,6 +17,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import Tooltip from "./app-nav-bar-components/Button/tooltip";
 import DropDown from "../app-components/dropdown/dropdown";
 
+
 const AppNavBar = () => {
   const enableProjectsList = false;
   const enableUserMenu = false;
@@ -33,10 +34,12 @@ const AppNavBar = () => {
     {
       label: "Grid mode",
       value: "grid",
+      icon: '<IoMdGrid/>'
     },
     {
       label: "Preview mode",
       value: "preview",
+      icon: "<MdPreview/>"
     },
   ]);
 

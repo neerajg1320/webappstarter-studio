@@ -6,6 +6,7 @@ import {readFileContent} from "../../utils/file";
 import {useActions} from "../../hooks/use-actions";
 import {debugComponent} from "../../config/global";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
+import { LuFolderSync } from "react-icons/lu";
 
 export enum FileCellEventType {
   NEW_FILE = 'new_file',
@@ -180,11 +181,11 @@ const FileCellControlBar:React.FC<FileCellControlBarProps> = ({reduxProject, red
           }}
           >
             <button
-                className="button is-primary is-small"
+                className="sync-btn"
                 onClick={() => handleSyncClick()}
                 disabled={!reduxFile.contentSynced}
             >
-              Sync
+              <LuFolderSync />
             </button>
             {isAdmin &&
                 <button

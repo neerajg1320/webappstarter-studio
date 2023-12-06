@@ -71,7 +71,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
   }, [code, err]);
 
   const previewChoices:string[] = useMemo(() => {
-    const tabs = ['Build', 'Preview', 'Bundle']
+    const tabs = ['Build', 'Browser', 'Bundle']
     if (enableConsole) {
       tabs.push('Console');
     }
@@ -111,7 +111,7 @@ const PreviewTabsPanel:React.FC<PreviewTabsProps> = ({id, iteration, title, html
         <TabsBulma choices={previewChoices} value={selectedTabIndex} onChange={onTabChange} />
       </div>
       <div className="preview-tabs-panel" >
-        <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Preview') ? "flex" : "none"}}>
+        <div className="preview-tab" style={{display: (bundleSuccess && previewChoices[selectedTabIndex] === 'Browser') ? "flex" : "none"}}>
           {modifiedHtml ? <PreviewIframe id={id} iteration={iteration} title={title} html={modifiedHtml} code={code} err={err} /> : <h2>html not populated</h2>}
         </div>
         {enableConsole &&

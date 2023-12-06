@@ -6,7 +6,7 @@ interface PreviewBundleProps {
 const PreviewBundle:React.FC<PreviewBundleProps> = ({bundle}) => {
   return (
     <div className="preview-bundle">
-      <pre style={{width: "100%", backgroundColor: "white", color: "black"}}>
+      <pre style={{width: "100%", backgroundColor: "white"}}>
         {bundle}
       </pre>
     </div>

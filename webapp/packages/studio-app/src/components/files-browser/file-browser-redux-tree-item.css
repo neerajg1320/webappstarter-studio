@@ -9,9 +9,16 @@
   align-items: center;
   padding: 0 4px 0 6px;
   width: 100%;
+  transition: 0.25s;
+  padding: 2px 5px;
 }
 
-.file-item.selected {
+.file-item.selected, .file-item:hover {
   background-color: var(--blue);
   color: var(--white);
+}
+
+.file-item:hover{
+  transition: 0.25s;
+  cursor: pointer;
 }

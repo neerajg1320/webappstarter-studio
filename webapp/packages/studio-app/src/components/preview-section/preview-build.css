@@ -1,6 +1,6 @@
 .preview-build {
   flex-grow: 1;
-  padding: 5px;
+  padding: 10px;
   overflow: scroll;
   display: flex;
   flex-direction: column;
@@ -13,6 +13,6 @@
 }
 
 .preview-build .success {
-  color: black;
+  color: var(--blue);
   text-align: left;
 }

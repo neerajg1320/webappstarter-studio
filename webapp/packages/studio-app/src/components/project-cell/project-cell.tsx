@@ -13,6 +13,9 @@ import React, {
 } from "react";
 import { useActions } from "../../hooks/use-actions";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
+import { FaPlay } from "react-icons/fa";
+import { RxReload } from "react-icons/rx";
+import { FaFileExport } from "react-icons/fa6";
 
 // import CodeEditor from "../file-cell/code-editor";
 import FilesBrowser, {
@@ -685,29 +688,21 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
               />
 
               {/* These  are here becaused they are project level operations */}
-              <div
-                className="project-control-panel"
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  padding: "5px",
-                  justifyContent: "space-between",
-                }}
-              >
+              <div className="project-control-panel">
                 <button
                   className="button is-family-secondary is-small"
                   onClick={handleProjectBundleClick}
                 >
-                  Run
+                  <FaPlay />
                 </button>
                 <button
                   className="button is-family-secondary is-small"
                   onClick={handleProjectReloadClick}
                 >
-                  Reload
+                  <RxReload />
                 </button>
 
-                <div
+                {/* <div
                   className="project-download-async-button-group"
                   style={{
                     display: "flex",
@@ -715,30 +710,31 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
                     alignItems: "center",
                     gap: "10px",
                   }}
+                > */}
+                <button
+                  className="button is-family-secondary is-small"
+                  onClick={handleProjectDownloadClick}
+                  disabled={reduxProject.downloadingZip}
                 >
-                  <button
-                    className="button is-family-secondary is-small"
-                    onClick={handleProjectDownloadClick}
-                    disabled={reduxProject.downloadingZip}
-                  >
-                    Export
-                  </button>
-                  <button
-                    className="button is-family-secondary is-small"
-                    onClick={handleProjectDeployClick}
-                    disabled={reduxProject.downloadingZip}
-                  >
-                    Release
-                  </button>
-                  <progress
+                  <FaFileExport />
+                </button>
+                {/* <button
+                  className="button is-family-secondary is-small"
+                  onClick={handleProjectDeployClick}
+                  style={{visibility: "hidden"}}
+                  disabled={reduxProject.downloadingZip}
+                >
+                  Release
+                </button> */}
+                {/* <progress
                     style={{
                       width: "90%",
                       visibility: reduxProject.downloadingZip
                         ? "visible"
                         : "hidden",
                     }}
-                  />
-                </div>
+                  /> */}
+                {/* </div> */}
               </div>
             </div>
 
@@ -752,12 +748,12 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
               <div
                 style={{
                   width: "calc(100% - 10px)",
-                  height: "calc(100% - 10px)",
+                  height: "100%",
                   marginLeft: "10px",
                   overflow: "hidden",
                   display: "flex",
                   flexDirection: "column",
-                  border: "3px solid lightblue",
+                  // border: "3px solid lightblue",
                 }}
               >
                 {editedFile ? (
