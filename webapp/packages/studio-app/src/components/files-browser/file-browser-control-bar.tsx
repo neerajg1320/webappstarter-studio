@@ -73,7 +73,7 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
 
   return (
     <div className="file-browser-control-bar">
-      <Tooltip msg={"refresh"} position={"left"} tip={false}>
+      <Tooltip msg={"refresh"} position={"bottom"} tip={false}>
         <button
           className="button is-family-secondary is-small"
           onClick={handleCreateFile}

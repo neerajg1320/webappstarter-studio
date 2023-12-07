@@ -21,6 +21,7 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
   const onMouseOver = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { offsetWidth, offsetHeight } = e.currentTarget;
     setIsToolTipVisible(true);
+
     console.log("hello");
     setDimension({
       ...dimension,

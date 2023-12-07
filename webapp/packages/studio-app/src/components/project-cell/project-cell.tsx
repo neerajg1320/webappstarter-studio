@@ -690,7 +690,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
 
               {/* These  are here becaused they are project level operations */}
               <div className="project-control-panel">
-                <Tooltip msg={"run code"} position={"left"} tip={false}>
+                <Tooltip msg={"run code"} position={"top"} tip={false}>
                   <button
                     className="button is-family-secondary is-small"
                     onClick={handleProjectBundleClick}
@@ -699,7 +699,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
                   </button>
                 </Tooltip>
 
-                <Tooltip msg={"reload"} position={"bottom"} tip={false}>
+                <Tooltip msg={"reload"} position={"top"} tip={false}>
                   <button
                     className="button is-family-secondary is-small"
                     onClick={handleProjectReloadClick}
@@ -717,7 +717,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
                     gap: "10px",
                   }}
                 > */}
-                <Tooltip msg={"export"} position={"bottom"} tip={false}>
+                <Tooltip msg={"export"} position={"top"} tip={false}>
                   <button
                     className="button is-family-secondary is-small"
                     onClick={handleProjectDownloadClick}
