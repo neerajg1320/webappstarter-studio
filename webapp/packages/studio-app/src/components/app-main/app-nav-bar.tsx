@@ -18,7 +18,6 @@ import Tooltip from "./app-nav-bar-components/Button/tooltip";
 import DropDown from "../app-components/dropdown/dropdown";
 import { FaList } from "react-icons/fa";
 
-
 const AppNavBar = () => {
   const enableProjectsList = false;
   const enableUserMenu = false;
@@ -35,12 +34,12 @@ const AppNavBar = () => {
     {
       label: "Grid mode",
       value: "grid",
-      icon: '<IoMdGrid/>'
+      icon: "<IoMdGrid/>",
     },
     {
       label: "Preview mode",
       value: "preview",
-      icon: "<MdPreview/>"
+      icon: "<MdPreview/>",
     },
   ]);
 
@@ -97,9 +96,7 @@ const AppNavBar = () => {
     setIsProfileDropDown(!isProfileDropDown);
   };
 
-  const handleChangeSelect = (e)=>{
-
-  }
+  const handleChangeSelect = (e) => {};
   // console.log("isAuthenticated: ", isAuthenticated);
   // console.log("currentUser: ", currentUser);
 
@@ -168,23 +165,25 @@ const AppNavBar = () => {
         ) : (
           <div className="create-btn-profile">
             <Link to={RoutePath.PROJECT_NEW} className="cta">
-              <Tooltip msg={"Create project"} position={"left"}>
+              <Tooltip msg={"Create project"} position={"left"} tip={true}>
                 <Button title="" buttonClass="nav-create" buttonType="button">
                   <FaPlus />
                 </Button>
               </Tooltip>
             </Link>
 
-            <DropDown
-              options={options}
-              placeHolder={<FaList />}
-              onChange={(e) => handleChangeSelect(e)}
-              align="center"
-              // isSearchable
-              // isMulti
-            />
+            <Tooltip msg={"view"} position={"bottom"} tip={true}>
+              <DropDown
+                options={options}
+                placeHolder={<FaList />}
+                onChange={(e) => handleChangeSelect(e)}
+                align="center"
+                // isSearchable
+                // isMulti
+              />
+            </Tooltip>
 
-            <Tooltip msg={"profile"} position={"bottom"}>
+            <Tooltip msg={"profile"} position={"bottom"} tip={true}>
               <div className="login-profile" onClick={handleProfileClick}>
                 <div className="profile">
                   {/* <span>{currentUser?.first_name}</span> */}

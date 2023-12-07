@@ -1,56 +1,90 @@
-import React, {useState} from 'react';
-import "./tooltip.css"
+import React, { useState } from "react";
+import "./tooltip.css";
 
 type propTypes = {
-    children: React.ReactNode;
-    position: string;
-    msg: string;
-}
+  children: React.ReactNode;
+  position: string;
+  msg: string;
+  tip: boolean;
+};
 
-const Tooltip = ({children, position, msg}:propTypes) => {
-  const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false)
+const Tooltip = ({ children, position, msg, tip }: propTypes) => {
+  const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
+  const [dimension, setDimension] = useState<{
+    width: number;
+    height: number;
+  }>({
+    width: 0,
+    height: 0,
+  });
 
-  const onMouseOver = ()=>{
-  setIsToolTipVisible(true);
-}
+  const onMouseOver = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { offsetWidth, offsetHeight } = e.currentTarget;
+    setIsToolTipVisible(true);
+    console.log("hello");
+    setDimension({
+      ...dimension,
+      width: offsetWidth + 20,
+      height: offsetHeight + 20,
+    });
+    console.log(offsetHeight, offsetWidth);
+  };
 
-const onMouseLeave = ()=>{
-  setIsToolTipVisible(false);
-}
+  const onMouseLeave = () => {
+    setIsToolTipVisible(false);
+  };
 
-const onTooltipClick = ()=>{
-  setIsToolTipVisible(false);
-  // setIsToolTipVisible(true);
-}
+  const onTooltipClick = () => {
+    setIsToolTipVisible(false);
+    // setIsToolTipVisible(true);
+  };
 
   return (
-    <div className="wrapper" onMouseOver={onMouseOver} onMouseLeave={onMouseLeave} onClick={onTooltipClick}>
-    {children}
+    <div
+      className="wrapper"
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+      onClick={onTooltipClick}
+    >
+      {children}
 
-    {isToolTipVisible && position == "bottom" && <div className="tooltip">
-    <div className="tip">
-    </div>
-    {msg}
-    </div>}
-    {isToolTipVisible && position == "top" && <div className="tooltip tooltiptop">
-    <div className="tip tiptop">
-    </div>
-    {msg}
-    </div>}
+      {isToolTipVisible && position == "bottom" && (
+        <div className="tooltip" style={{ top: `${dimension.height}px` }}>
+          {tip && <div className="tip tipbottom"></div>}
+          {msg}
+        </div>
+      )}
+      {isToolTipVisible && position == "top" && (
+        <div
+          className="tooltip tooltiptop"
+          style={{ top: `-${dimension.height}px` }}
+        >
+          {tip && <div className="tip tiptop"></div>}
+          {msg}
+        </div>
+      )}
 
-    {isToolTipVisible && position === "left" && <div className="tooltip tooltipleft">
-    <div className="tip tipleft">
-    </div>
-    {msg}
-    </div>}
+      {isToolTipVisible && position === "left" && (
+        <div
+          className="tooltip tooltipleft"
+          style={{ right: `${dimension.width}px` }}
+        >
+          {tip && <div className="tip tipleft"></div>}
+          {msg}
+        </div>
+      )}
 
-    {isToolTipVisible && position == "right" && <div className="tooltip tooltipright">
-    <div className="tip tipright">
-    </div>
-    {msg}
-    </div>}
+      {isToolTipVisible && position == "right" && (
+        <div
+          className="tooltip tooltipright"
+          style={{ right: `-${dimension.width}px` }}
+        >
+          {tip && <div className="tip tipright"></div>}
+          {msg}
+        </div>
+      )}
 
-     {isToolTipVisible && position == "top-right" && <div className="tooltip tooltiptopright">
+      {/* {isToolTipVisible && position == "top-right" && <div className="tooltip tooltiptopright">
     <div className="tip tiptopright">
     </div>
     {msg}
@@ -96,7 +130,7 @@ const onTooltipClick = ()=>{
     <div className="tip tiprightbottom">
     </div>
     {msg}
-    </div>}
+    </div>} */}
     </div>
   );
 };

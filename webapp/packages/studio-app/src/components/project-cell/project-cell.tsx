@@ -47,6 +47,7 @@ import {
   getProjectFilePaths,
   getProjectFilesForPath,
 } from "../../state/helpers/file-helpers";
+import Tooltip from "../app-main/app-nav-bar-components/Button/tooltip";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -689,18 +690,23 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
 
               {/* These  are here becaused they are project level operations */}
               <div className="project-control-panel">
-                <button
-                  className="button is-family-secondary is-small"
-                  onClick={handleProjectBundleClick}
-                >
-                  <FaPlay />
-                </button>
-                <button
-                  className="button is-family-secondary is-small"
-                  onClick={handleProjectReloadClick}
-                >
-                  <RxReload />
-                </button>
+                <Tooltip msg={"run code"} position={"left"} tip={false}>
+                  <button
+                    className="button is-family-secondary is-small"
+                    onClick={handleProjectBundleClick}
+                  >
+                    <FaPlay />
+                  </button>
+                </Tooltip>
+
+                <Tooltip msg={"reload"} position={"bottom"} tip={false}>
+                  <button
+                    className="button is-family-secondary is-small"
+                    onClick={handleProjectReloadClick}
+                  >
+                    <RxReload />
+                  </button>
+                </Tooltip>
 
                 {/* <div
                   className="project-download-async-button-group"
@@ -711,13 +717,16 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
                     gap: "10px",
                   }}
                 > */}
-                <button
-                  className="button is-family-secondary is-small"
-                  onClick={handleProjectDownloadClick}
-                  disabled={reduxProject.downloadingZip}
-                >
-                  <FaFileExport />
-                </button>
+                <Tooltip msg={"export"} position={"bottom"} tip={false}>
+                  <button
+                    className="button is-family-secondary is-small"
+                    onClick={handleProjectDownloadClick}
+                    disabled={reduxProject.downloadingZip}
+                  >
+                    <FaFileExport />
+                  </button>
+                </Tooltip>
+
                 {/* <button
                   className="button is-family-secondary is-small"
                   onClick={handleProjectDeployClick}
