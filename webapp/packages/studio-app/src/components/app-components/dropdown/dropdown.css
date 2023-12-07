@@ -167,3 +167,8 @@
 .dropdown-selected-value{
     display: flex;
 }
+
+.dropdown-item-left{
+    width: 80%;
+    text-align: left;
+}

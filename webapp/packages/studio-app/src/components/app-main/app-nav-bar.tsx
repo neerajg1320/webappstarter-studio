@@ -190,7 +190,7 @@ const AppNavBar = () => {
                   {/* <span>{currentUser?.first_name}</span> */}
                   <FaUserCircle size="23" />
                 </div>
-                <IoIosArrowDown size="15" />
+                {/* <IoIosArrowDown size="15" /> */}
               </div>
             </Tooltip>
           </div>

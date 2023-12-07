@@ -196,15 +196,18 @@ const DropDown: React.FC<DropDownProps> = ({
           }`}
         >
           {getDisplay() === "Grid mode" || getDisplay() === "Preview mode" ? (
-            getDisplay() =="Grid mode" ?
-            <IoMdGrid />: <MdPreview/>
+            getDisplay() == "Grid mode" ? (
+              <IoMdGrid />
+            ) : (
+              <MdPreview />
+            )
           ) : (
             getDisplay()
           )}
         </div>
         <div className="dropdown-tools">
           <div className="dropdown-tool">
-            <Icon isOpen={showMenu} />
+            {/* <Icon isOpen={showMenu} /> */}
           </div>
         </div>
       </div>
@@ -228,7 +231,7 @@ const DropDown: React.FC<DropDownProps> = ({
               className={`dropdown-item ${isSelected(option) && "selected"}`}
             >
               {isSelected(option) && placeHolder === "View" ? <BsCheck2 /> : ""}
-              {option.label}
+              <p className="dropdown-item-left">{option.label}</p>
               {option.value === "grid" ? <IoMdGrid /> : ""}
               {option.value === "preview" ? <MdPreview /> : ""}
             </div>

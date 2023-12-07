@@ -93,8 +93,8 @@
 .profile-over-dropdown{
   padding: 0.5rem 0;
   position: absolute;
-  top: 5rem;
-  right: 2.5rem;
+  top: 4rem;
+  right: 0.5rem;
   background-color: var(--white);
   color: var(--blue);
   box-shadow: 1px 1px 10px 0px rgba(97, 97, 97, 0.281);
