@@ -29,7 +29,7 @@
 }
 
 .custom--dropdown-container .dropdown-input .dropdown-selected-value.placeholder {
-    color: #82868b;
+    color: var(--blue);
 }
 
 .custom--dropdown-container .dropdown-tool svg {

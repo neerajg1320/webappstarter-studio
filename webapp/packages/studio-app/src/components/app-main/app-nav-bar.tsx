@@ -16,6 +16,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import Tooltip from "./app-nav-bar-components/Button/tooltip";
 import DropDown from "../app-components/dropdown/dropdown";
+import { FaList } from "react-icons/fa";
 
 
 const AppNavBar = () => {
@@ -176,7 +177,7 @@ const AppNavBar = () => {
 
             <DropDown
               options={options}
-              placeHolder="View"
+              placeHolder={<FaList />}
               onChange={(e) => handleChangeSelect(e)}
               align="center"
               // isSearchable

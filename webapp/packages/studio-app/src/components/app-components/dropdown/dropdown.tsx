@@ -11,7 +11,7 @@ interface Option {
 }
 
 interface DropDownProps {
-  placeHolder: string;
+  placeHolder: React.ReactNode;
   options: Option[];
   isMulti?: boolean;
   isSearchable?: boolean;
