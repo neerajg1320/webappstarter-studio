@@ -22,7 +22,7 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
     const { offsetWidth, offsetHeight } = e.currentTarget;
     setIsToolTipVisible(true);
 
-    console.log("hello");
+    // console.log("hello");
     setDimension({
       ...dimension,
       width: offsetWidth + 20,

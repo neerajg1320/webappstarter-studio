@@ -7,6 +7,8 @@ import { RoutePath } from "../../../routes";
 import { CiMenuKebab } from "react-icons/ci";
 import { FiEdit3 } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import Button from "../../../app-components/button";
+import Tooltip from "../../../app-components/tooltip";
 
 interface ProjectCardProps {
   reduxProject: ReduxProject;
@@ -76,25 +78,46 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
         selectAndNavigateToProject();
       }}
     >
-      <div
-        className="card-header"
-        
-      >
-        <button className="card-actions-icon" onClick={handleOpenCardMenu}>
+      <div className="card-header">
+        {/* <button className="card-actions-icon" onClick={handleOpenCardMenu}>
           <CiMenuKebab size={18}/>
-        </button>
+        </button> */}
+        <Tooltip msg={"card menu"} position="bottom" tip={false}>
+          <Button
+            buttonClass={"card-actions-icon"}
+            handleButtonClick={handleOpenCardMenu}
+            buttonType="button"
+            title=""
+          >
+            <CiMenuKebab size={18} />
+          </Button>
+        </Tooltip>
+
         {openCardMenu && (
           <ul className="card-actions">
             <li className="card-actions-item">
-              <button onClick={(e) => handleEditProjectClick(e, reduxProject.localId)}>
+              <Button
+                handleButtonClick={(e) =>
+                  handleEditProjectClick(e, reduxProject.localId)
+                }
+                title=""
+                buttonType="button"
+                buttonClass=""
+              >
+                {" "}
                 <FiEdit3 />
-              </button>
+              </Button>
             </li>
             <li className="card-actions-item">
-              <button onClick={handleDeleteProjectClick}>
-
-              <MdOutlineDeleteOutline />
-              </button>
+              <Button
+                handleButtonClick={handleDeleteProjectClick}
+                title=""
+                buttonType="button"
+                buttonClass=""
+              >
+                {" "}
+                <MdOutlineDeleteOutline />
+              </Button>
             </li>
           </ul>
         )}
@@ -155,26 +178,21 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
           justifyContent: "flex-end",
           alignItems: "center",
         }}
-      >
-      
-      </div>
+      ></div>
     </div>
   );
 };
 
 export default ProjectListItemCard;
 
-
-
-
-
-
-{/* <button
+{
+  /* <button
 className="button is-family-secondary is-small"
 onClick={(e) => handleEditProjectClick(e, reduxProject.localId)}
 >
 <span className="icon">
-  {/* hello */}
+  {/* hello */
+}
 //   <i className="fas fa-pen" />
 // </span>
 // </button>
