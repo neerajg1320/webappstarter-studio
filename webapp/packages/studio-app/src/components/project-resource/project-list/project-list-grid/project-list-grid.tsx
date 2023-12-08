@@ -1,71 +1,68 @@
-import React, {useMemo} from "react";
-import {useTypedSelector} from "../../../../hooks/use-typed-selector";
+import React, { useMemo } from "react";
+import { useTypedSelector } from "../../../../hooks/use-typed-selector";
 import ProjectListItemCard from "./project-list-item-card";
-import {debugComponent, debugProject} from "../../../../config/global";
-import {useActions} from "../../../../hooks/use-actions";
-import './project-list-grid.css';
-import {getProjects} from "../../../../state/helpers/project-helpers";
-import {ReduxProject} from "../../../../state";
+import { debugComponent, debugProject } from "../../../../config/global";
+import { useActions } from "../../../../hooks/use-actions";
+import "./project-list-grid.css";
+import { getProjects } from "../../../../state/helpers/project-helpers";
+import { ReduxProject } from "../../../../state";
 
 // This component shows us the projects available for a user
 // It also allows us to select a project for working
 
 interface ProjectListGridProps {
   projects: ReduxProject[];
-  visibility:boolean;
+  visibility: boolean;
 }
 
-const ProjectListGrid:React.FC<ProjectListGridProps> = ({projects, visibility:propVisibility}) => {
+const ProjectListGrid: React.FC<ProjectListGridProps> = ({
+  projects,
+  visibility: propVisibility,
+}) => {
   // const debugComponent = true;
 
   // Grid Layout
   // Ref: https://codepen.io/TomckySan/pen/mxVbgR
   return (
-      <div className="project-list-grid" style={{
-        // width: "100%",
-        // height: "100%",
-        // padding: "0 40px",
-        // display:"flex",
-        // flexDirection: "column", 
-        // alignItems: "center", 
-        // gap: "20px", 
-        // justifyContent: "center",
-        visibility: propVisibility ? 'visible' : 'hidden',
+    <div
+      className="project-list-grid"
+      style={{
+        visibility: propVisibility ? "visible" : "hidden",
       }}
-      >
-        
-          {projects &&
-              projects.map(prj => <ProjectListItemCard key={prj.localId} reduxProject={prj} />)
-          }
-       
-      </div>
+    >
+      {projects &&
+        projects.map((prj) => (
+          <ProjectListItemCard key={prj.localId} reduxProject={prj} />
+        ))}
+    </div>
   );
-}
+};
 
 export default ProjectListGrid;
 
+{
+  /* <div style={{ */
+}
+// height: "100%",
+// width: "100%",
 
+// border: "1px solid lightblue",
+// borderRadius: "15px",
 
+// display: "grid",
+// gridTemplateColumns: "repeat(auto-fit, 350px)",
+// gridRowGap: "40px",
+// gridColumnGap: "40px",
+// justifyContent: "space-evenly",
 
-{/* <div style={{ */}
-          // height: "100%",
-          // width: "100%",
+// display: "flex",
+// justifyContent: "space-evenly",
+// alignItems: "flex-start",
+// flexWrap: "wrap",
 
-          // border: "1px solid lightblue",
-          // borderRadius: "15px",
-
-          // display: "grid",
-          // gridTemplateColumns: "repeat(auto-fit, 350px)",
-          // gridRowGap: "40px",
-          // gridColumnGap: "40px",
-          // justifyContent: "space-evenly",
-
-          // display: "flex",
-          // justifyContent: "space-evenly",
-          // alignItems: "flex-start",
-          // flexWrap: "wrap",
-
-          // gap: "40px",
-          // overflowY: "auto",
-          // padding: "40px"
-        {/* // }}> */}
+// gap: "40px",
+// overflowY: "auto",
+// padding: "40px"
+{
+  /* // }}> */
+}

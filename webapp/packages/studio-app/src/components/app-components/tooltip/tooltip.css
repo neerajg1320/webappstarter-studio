@@ -9,7 +9,7 @@
     position: absolute;
     background-color: var(--blue);
     width: max-content;
-    padding: 5px;
+    padding: 2px 3px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,8 +30,8 @@
   }
   
   .tip{
-    width: 9px;
-    height: 9px;
+    width: 5px;
+    height: 5px;
     background-color: var(--blue);
     position: absolute;
     display: flex;

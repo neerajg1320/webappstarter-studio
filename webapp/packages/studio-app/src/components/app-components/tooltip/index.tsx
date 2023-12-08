@@ -25,10 +25,10 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
     // console.log("hello");
     setDimension({
       ...dimension,
-      width: offsetWidth + 20,
-      height: offsetHeight + 20,
+      width: offsetWidth + 10,
+      height: offsetHeight + 10,
     });
-    console.log(offsetHeight, offsetWidth);
+    // console.log(offsetHeight, offsetWidth);
   };
 
   const onMouseLeave = () => {
@@ -36,6 +36,8 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
   };
 
   const onTooltipClick = () => {
+    
+    console.log("click tooltip")
     setIsToolTipVisible(false);
     // setIsToolTipVisible(true);
   };

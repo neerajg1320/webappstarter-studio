@@ -82,7 +82,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
         {/* <button className="card-actions-icon" onClick={handleOpenCardMenu}>
           <CiMenuKebab size={18}/>
         </button> */}
-        <Tooltip msg={"card menu"} position="bottom" tip={false}>
+        <Tooltip msg={"card actions"} position="bottom" tip={false}>
           <Button
             buttonClass={"card-actions-icon"}
             handleButtonClick={handleOpenCardMenu}
