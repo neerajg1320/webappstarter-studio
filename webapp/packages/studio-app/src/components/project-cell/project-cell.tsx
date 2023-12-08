@@ -48,6 +48,7 @@ import {
   getProjectFilesForPath,
 } from "../../state/helpers/file-helpers";
 import Tooltip from "../app-components/tooltip";
+import Button from "../app-components/button";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -691,21 +692,25 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
               {/* These  are here becaused they are project level operations */}
               <div className="project-control-panel">
                 <Tooltip msg={"run code"} position={"top"} tip={false}>
-                  <button
-                    className="button is-family-secondary is-small"
-                    onClick={handleProjectBundleClick}
+                  <Button
+                    buttonClass={"project-control-panel-btn"}
+                    handleButtonClick={handleProjectBundleClick}
+                    buttonType={"button"}
+                    title=""
                   >
                     <FaPlay />
-                  </button>
+                  </Button>
                 </Tooltip>
 
                 <Tooltip msg={"reload"} position={"top"} tip={false}>
-                  <button
-                    className="button is-family-secondary is-small"
-                    onClick={handleProjectReloadClick}
+                  <Button
+                    buttonClass={"project-control-panel-btn"}
+                    handleButtonClick={handleProjectReloadClick}
+                    buttonType={"button"}
+                    title=""
                   >
                     <RxReload />
-                  </button>
+                  </Button>
                 </Tooltip>
 
                 {/* <div
@@ -718,13 +723,15 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
                   }}
                 > */}
                 <Tooltip msg={"export"} position={"top"} tip={false}>
-                  <button
-                    className="button is-family-secondary is-small"
-                    onClick={handleProjectDownloadClick}
-                    disabled={reduxProject.downloadingZip}
+                  <Button
+                    buttonClass={"project-control-panel-btn"}
+                    handleButtonClick={handleProjectDownloadClick}
+                    buttonType={"button"}
+                    disable={reduxProject.downloadingZip}
+                    title=""
                   >
                     <FaFileExport />
-                  </button>
+                  </Button>
                 </Tooltip>
 
                 {/* <button

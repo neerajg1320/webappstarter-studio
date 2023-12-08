@@ -8,7 +8,7 @@
   color: var(--blue);
 }
 
-.file-browser-control-bar-btn, .project-control-panel button, .sync-btn {
+.file-browser-control-bar-btn, .project-control-panel-btn, .sync-btn {
   /* margin: 0px 5px; */
   background: white;
   border: none;
@@ -23,7 +23,7 @@
   border-radius: 3px;
 }
 
-.file-browser-control-bar-btn:hover, .project-control-panel button:hover, .sync-btn:hover{
+.file-browser-control-bar-btn:hover, .project-control-panel-btn:hover, .sync-btn:hover{
   background-color: var(--blue);
   color: white;
 }
