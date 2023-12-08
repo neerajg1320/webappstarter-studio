@@ -6,7 +6,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {useEffect} from "react";
 import Typewriter from './Typewriter';
 import { Link } from 'react-router-dom';
-import Button from '../app-main/app-nav-bar-components/Button/button';
+import Button from '../app-components/button';
 
 const LandingPage = () => {
   const navigate = useNavigate();

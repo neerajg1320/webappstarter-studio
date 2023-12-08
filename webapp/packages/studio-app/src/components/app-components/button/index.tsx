@@ -6,15 +6,17 @@ type propTypes = {
   buttonClass: string;
   children ?: React.ReactNode;
   handleButtonClick ?: (e?:any)=>void;
-  buttonType: "button" | "submit" | "reset"
+  buttonType: "button" | "submit" | "reset";
+  disable?: boolean;
 };
 
-const Button = ({ title, buttonClass, children, handleButtonClick, buttonType }: propTypes) => {
+const Button = ({ title, buttonClass, children, handleButtonClick, buttonType, disable }: propTypes) => {
   return (
     <button
       className={`${buttonClass}`}
       onClick={handleButtonClick}
       type= {buttonType}
+      disabled={disable}
     >
       {title} {children}
     </button>

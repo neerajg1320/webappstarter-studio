@@ -11,11 +11,11 @@ import {
 } from "../../config/global";
 import { useState } from "react";
 import { FaBarsStaggered, FaPlus } from "react-icons/fa6";
-import Button from "./app-nav-bar-components/Button/button/index";
+import Button from "../app-components/button/index";
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
-import Tooltip from "./app-nav-bar-components/Button/tooltip";
-import DropDown from "../app-components/dropdown/dropdown";
+import Tooltip from "../app-components/tooltip";
+import DropDown from "../app-components/dropdown";
 import { FaList } from "react-icons/fa";
 
 const AppNavBar = () => {

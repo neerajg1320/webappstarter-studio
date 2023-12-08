@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { RoutePath } from "../routes";
 import { debugAuth, placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
-import FormField from "./app-user-components/FormField";
-import Button from "../app-main/app-nav-bar-components/Button/button";
+import FormField from "../app-components/FormField";
+import Button from "../app-components/button";
 
 interface LoginUser {
   email: string;

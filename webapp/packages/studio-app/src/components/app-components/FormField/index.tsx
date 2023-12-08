@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { formFieldPropTypes } from "../../../../types/types";
+import { formFieldPropTypes } from "../../../types/types";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const FormField = ({

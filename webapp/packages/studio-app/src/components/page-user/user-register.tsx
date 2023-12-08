@@ -6,9 +6,9 @@ import { RoutePath } from "../routes";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
-import FormField from "./app-user-components/FormField";
+import FormField from "../app-components/FormField";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
-import Button from "../app-main/app-nav-bar-components/Button/button";
+import Button from "../app-components/button";
 
 interface RegisterUser {
   email: string;

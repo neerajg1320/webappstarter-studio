@@ -5,7 +5,8 @@ import { RiRefreshLine } from "react-icons/ri";
 import { MdFileCopy } from "react-icons/md";
 import { RiFileUploadFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
-import Tooltip from "../app-main/app-nav-bar-components/Button/tooltip";
+import Tooltip from "../app-components/tooltip";
+import Button from "../app-components/button";
 
 export enum FileBrowserControlBarEventType {
   NEW_FILE = "new_file",
@@ -74,35 +75,37 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
   return (
     <div className="file-browser-control-bar">
       <Tooltip msg={"refresh"} position={"bottom"} tip={false}>
-        <button
-          className="button is-family-secondary is-small"
-          onClick={handleCreateFile}
+        <Button
+          title=""
+          handleButtonClick={handleCreateFile}
+          buttonType="button"
+          buttonClass="file-browser-control-bar-btn"
         >
-          {/* <span className="icon"> */}
           <RiRefreshLine />
-          {/* </span> */}
-        </button>
+        </Button>
       </Tooltip>
       <Tooltip msg={"copy file"} position={"bottom"} tip={false}>
-        <button
-          className="button is-family-secondary is-small"
-          onClick={handleCopyFile}
+        <Button
+          title=""
+          handleButtonClick={handleCopyFile}
+          buttonType="button"
+          buttonClass="file-browser-control-bar-btn"
         >
-          {/* <span className="icon"> */}
           <MdFileCopy />
-          {/* </span> */}
-        </button>
+        </Button>
       </Tooltip>
       <Tooltip msg={"upload image"} position={"bottom"} tip={false}>
-        <button
-          className="button is-family-secondary is-small"
-          onClick={(e) => {
+        <Button
+          title=""
+          handleButtonClick={(e) => {
             if (uploadFileRef.current) {
               uploadFileRef.current.click();
             }
           }}
+          buttonType="button"
+          buttonClass="file-browser-control-bar-btn"
         >
-          {/* <span className="icon"> */}
+          {" "}
           <RiFileUploadFill />
           {/* </span> */}
           <input
@@ -112,17 +115,17 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
             onChange={handleUploadFile}
             multiple
           />
-        </button>
+        </Button>
       </Tooltip>
       <Tooltip msg={"delete"} position={"bottom"} tip={false}>
-        <button
-          className="button is-family-secondary is-small"
-          onClick={handleDeleteFile}
+        <Button
+          title=""
+          handleButtonClick={handleDeleteFile}
+          buttonType="button"
+          buttonClass="file-browser-control-bar-btn"
         >
-          {/* <span className="icon"> */}
           <FaTrash />
-          {/* </span> */}
-        </button>
+        </Button>
       </Tooltip>
     </div>
   );

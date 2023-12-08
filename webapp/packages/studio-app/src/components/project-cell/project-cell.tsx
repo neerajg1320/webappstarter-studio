@@ -47,7 +47,7 @@ import {
   getProjectFilePaths,
   getProjectFilesForPath,
 } from "../../state/helpers/file-helpers";
-import Tooltip from "../app-main/app-nav-bar-components/Button/tooltip";
+import Tooltip from "../app-components/tooltip";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;

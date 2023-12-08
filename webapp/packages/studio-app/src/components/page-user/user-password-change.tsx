@@ -3,9 +3,9 @@ import { useActions } from "../../hooks/use-actions";
 import { useNavigate, useParams } from "react-router-dom";
 import { RoutePath } from "../routes";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
-import FormField from "./app-user-components/FormField";
+import FormField from "../app-components/FormField";
 import UserFlowStatus from "./user-flow-status";
-import Button from "../app-main/app-nav-bar-components/Button/button";
+import Button from "../app-components/button";
 
 interface UserState {
   id: string;
