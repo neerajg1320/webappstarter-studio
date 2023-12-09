@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./project-list-item-card.css";
 import { ReduxProject } from "../../../../state/project";
@@ -9,6 +9,10 @@ import { FiEdit3 } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import Button from "../../../app-components/button";
 import Tooltip from "../../../app-components/tooltip";
+import { FaReact } from "react-icons/fa";
+import { FaHtml5 } from "react-icons/fa";
+import { RiJavascriptFill } from "react-icons/ri";
+import react_js_css from "../../../app-components/images/react-js-css.png";
 
 interface ProjectCardProps {
   reduxProject: ReduxProject;
@@ -78,6 +82,8 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
         selectAndNavigateToProject();
       }}
     >
+      <div className="card-circle-design"></div>
+
       <div className="card-header">
         {/* <button className="card-actions-icon" onClick={handleOpenCardMenu}>
           <CiMenuKebab size={18}/>
@@ -121,18 +127,32 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
             </li>
           </ul>
         )}
-        <div className="card-title">{reduxProject.title}</div>
+        <div className="card-header-left-side">
+          <span className="card-main-icon">
+            <FaReact />
+          </span>
+          <span className="card-title">{reduxProject.title}</span>
+        </div>
+
         {/* {reduxProject.size !== undefined && reduxProject.size > 0 && (
           <div>{reduxProject.size + " Bytes"}</div>
         )} */}
       </div>
       <div className="card-content" style={{ flexGrow: 1 }}>
         <div className="card-item">
-          <label>Template:</label>
+          <label>
+            <span className="card-content-image-icon ">
+              <img src={react_js_css} />
+            </span>
+          </label>
           <span className="value">{reduxProject.template}</span>
         </div>
         <div className="card-item">
-          <label>Entry File:</label>
+          <label>
+            <span className="card-content-icon">
+              <RiJavascriptFill />
+            </span>
+          </label>
           <span
             className="value"
             onClick={(e) => {
@@ -150,7 +170,11 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
         </div>
         {reduxProject.entryHtmlFileLocalId && (
           <div className="card-item">
-            <label>Entry HTML:</label>
+            <label>
+              <span className="card-content-icon">
+                <FaHtml5 />
+              </span>
+            </label>
             <span
               className="value"
               onClick={(e) => {
