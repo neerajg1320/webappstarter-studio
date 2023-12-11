@@ -14,7 +14,7 @@
   flex-direction: row;
   gap: 10px;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 20px;
 }
 
 .file-cell-control-bar-left span {
@@ -32,6 +32,40 @@
   /* padding-right: 20px; */
 }
 
-.sync-btn{
+.sync-btn {
   font-size: 1.4em;
+}
+
+.project-menu-btn {
+  transform: rotate(90deg);
+}
+
+.file-cell-control-bar-btn {
+  font-size: 1.1em;
+}
+
+.project-menu-list {
+  position: absolute;
+  top: 35px;
+  z-index: 99;
+  background: white;
+  padding: 10px 0;
+  width: 11rem;
+  box-shadow: 0 0 5px 0px #000000b0;
+  right: 7px;
+}
+
+.project-menu-list ul {
+  list-style: none;
+}
+
+.project-menu-list li {
+  padding: 5px 10px;
+  text-align: center;
+  /* width: max-content; */
+}
+
+.project-menu-list li:hover {
+  color: white;
+  background-color: var(--blue);
 }

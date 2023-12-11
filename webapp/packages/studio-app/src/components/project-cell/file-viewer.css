@@ -1,9 +1,9 @@
 .file-cell-control-bar-wrapper {
-  height: 50px;
+  height: 40px;
   /* padding: 0 10px; */
   display: flex;
   color: var(--blue);
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 5px 0;
 }
 

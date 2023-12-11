@@ -10,6 +10,8 @@ import { LuFolderSync } from "react-icons/lu";
 import Button from "../app-components/button";
 import { IoChevronBackCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { CiMenuKebab } from "react-icons/ci";
+import Tooltip from "../app-components/tooltip";
 
 export enum FileCellEventType {
   NEW_FILE = "new_file",
@@ -41,6 +43,8 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
     updateApplication,
   } = useActions();
   const [isAdmin, setAdmin] = useState(false);
+  const [isVisibleProjectList, setIsVisibleProjectList] =
+    useState<boolean>(false);
   const hotReload = useTypedSelector((state) => state.application.hotReload);
   const autoSync = useTypedSelector((state) => state.application.autoSync);
   const advanceFeatures = useTypedSelector(
@@ -118,21 +122,28 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
     saveFile(reduxFile.localId);
   };
 
-  const handleBackButton = ()=>{
+  const handleBackButton = () => {
     navigate(-1);
-  }
+  };
+
+  const handleProjectMenuButton = () => {
+    setIsVisibleProjectList(!isVisibleProjectList);
+  };
 
   return (
     <div className="file-cell-control-bar">
       <div className="file-cell-control-bar-left">
-        <Button
-          buttonClass="file-cell-control-bar-btn"
-          title=""
-          handleButtonClick={handleBackButton}
-          buttonType="button"
-        >
-          <IoChevronBackCircle />
-        </Button>
+        <Tooltip msg={"back button"} tip={false} position="bottom">
+          <Button
+            buttonClass="file-cell-control-bar-btn"
+            title=""
+            handleButtonClick={handleBackButton}
+            buttonType="button"
+          >
+            <IoChevronBackCircle />
+          </Button>
+        </Tooltip>
+
         {reduxProject && (
           <span style={{ fontSize: "1.2em" }}>{reduxProject.title}</span>
         )}
@@ -221,6 +232,45 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
               />
             </div>
           )}
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: "20px",
+              alignItems: "center",
+              visibility: autoSync ? "hidden" : "visible",
+              // display: "none",
+            }}
+          >
+            <Button
+              buttonClass="file-cell-control-bar-btn sync-btn"
+              disable={!reduxFile.contentSynced}
+              title=""
+              handleButtonClick={() => handleSyncClick()}
+              buttonType="button"
+            >
+              <LuFolderSync />
+            </Button>
+            {/* <button
+            className="sync-btn"
+            onClick={() => handleSyncClick()}
+            disabled={!reduxFile.contentSynced}
+          >
+            <LuFolderSync />
+          </button> */}
+
+            {isAdmin && (
+              <button
+                className="button is-family-secondary is-small"
+                onClick={() => handleBundleClick()}
+                disabled={!(reduxFile.content && reduxFile.content.length > 0)}
+              >
+                Bundle
+              </button>
+            )}
+          </div>
+
           <div
             style={{
               display: "flex",
@@ -229,32 +279,63 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
               alignItems: "center",
             }}
           >
-            <label>Auto-Sync</label>
-            <input
-              type="checkbox"
-              checked={autoSync}
-              onChange={(e) =>
-                updateApplication({ autoSync: e.target.checked })
-              }
-            />
+            <Button
+              buttonClass="file-cell-control-bar-btn project-menu-btn"
+              title=""
+              handleButtonClick={handleProjectMenuButton}
+              buttonType="button"
+            >
+              <CiMenuKebab />
+            </Button>
+
+            {isVisibleProjectList && (
+              <div className="project-menu-list">
+                <ul>
+                  <li>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "5px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <label>Auto-Sync</label>
+                      <input
+                        type="checkbox"
+                        checked={autoSync}
+                        onChange={(e) =>
+                          updateApplication({ autoSync: e.target.checked })
+                        }
+                      />
+                    </div>
+                  </li>
+                  <li>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "5px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <label>Hot-Reload</label>
+                      <input
+                        type="checkbox"
+                        checked={hotReload}
+                        onChange={(e) =>
+                          updateApplication({ hotReload: e.target.checked })
+                        }
+                      />
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "5px",
-              alignItems: "center",
-            }}
-          >
-            <label>Hot-Reload</label>
-            <input
-              type="checkbox"
-              checked={hotReload}
-              onChange={(e) =>
-                updateApplication({ hotReload: e.target.checked })
-              }
-            />
-          </div>
+
           {advanceFeatures && (
             <div
               style={{
@@ -271,43 +352,6 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
                 onChange={(e) => handleEntryPointChange(e.target.checked)}
               />
             </div>
-          )}
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "20px",
-            alignItems: "center",
-            visibility: autoSync ? "hidden" : "visible",
-          }}
-        >
-          {/* <button
-            className="sync-btn"
-            onClick={() => handleSyncClick()}
-            disabled={!reduxFile.contentSynced}
-          >
-            <LuFolderSync />
-          </button> */}
-
-          <Button
-            buttonClass="file-cell-control-bar-btn sync-btn"
-            disable={!reduxFile.contentSynced}
-            title=""
-            handleButtonClick={() => handleSyncClick()}
-            buttonType="button"
-          >
-            <LuFolderSync />
-          </Button>
-          {isAdmin && (
-            <button
-              className="button is-family-secondary is-small"
-              onClick={() => handleBundleClick()}
-              disabled={!(reduxFile.content && reduxFile.content.length > 0)}
-            >
-              Bundle
-            </button>
           )}
         </div>
       </div>
