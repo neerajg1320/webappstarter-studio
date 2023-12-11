@@ -271,70 +271,72 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
             )}
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "5px",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              buttonClass="file-cell-control-bar-btn project-menu-btn"
-              title=""
-              handleButtonClick={handleProjectMenuButton}
-              buttonType="button"
+          <Tooltip msg={"project menu"} position={"bottom"} tip={false}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "5px",
+                alignItems: "center",
+              }}
             >
-              <CiMenuKebab />
-            </Button>
+              <Button
+                buttonClass="file-cell-control-bar-btn project-menu-btn"
+                title=""
+                handleButtonClick={handleProjectMenuButton}
+                buttonType="button"
+              >
+                <CiMenuKebab />
+              </Button>
 
-            {isVisibleProjectList && (
-              <div className="project-menu-list">
-                <ul>
-                  <li>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "5px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <label>Auto-Sync</label>
-                      <input
-                        type="checkbox"
-                        checked={autoSync}
-                        onChange={(e) =>
-                          updateApplication({ autoSync: e.target.checked })
-                        }
-                      />
-                    </div>
-                  </li>
-                  <li>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "5px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <label>Hot-Reload</label>
-                      <input
-                        type="checkbox"
-                        checked={hotReload}
-                        onChange={(e) =>
-                          updateApplication({ hotReload: e.target.checked })
-                        }
-                      />
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+              {isVisibleProjectList && (
+                <div className="project-menu-list">
+                  <ul>
+                    <li>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          gap: "5px",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <label>Auto-Sync</label>
+                        <input
+                          type="checkbox"
+                          checked={autoSync}
+                          onChange={(e) =>
+                            updateApplication({ autoSync: e.target.checked })
+                          }
+                        />
+                      </div>
+                    </li>
+                    <li>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          gap: "5px",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <label>Hot-Reload</label>
+                        <input
+                          type="checkbox"
+                          checked={hotReload}
+                          onChange={(e) =>
+                            updateApplication({ hotReload: e.target.checked })
+                          }
+                        />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          </Tooltip>
 
           {advanceFeatures && (
             <div
