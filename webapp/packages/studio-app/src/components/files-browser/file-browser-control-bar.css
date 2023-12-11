@@ -8,24 +8,4 @@
   color: var(--blue);
 }
 
-.file-browser-control-bar-btn, .project-control-panel-btn, .sync-btn {
-  /* margin: 0px 5px; */
-  background: white;
-  border: none;
-  color: var(--blue);
-  font-size: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  /* background-color: red; */
-  padding: 5px;
-  border-radius: 3px;
-}
-
-.file-browser-control-bar-btn:hover, .project-control-panel-btn:hover, .sync-btn:hover{
-  background-color: var(--blue);
-  color: white;
-}
-
 

@@ -8,6 +8,8 @@ import { debugComponent } from "../../config/global";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { LuFolderSync } from "react-icons/lu";
 import Button from "../app-components/button";
+import { IoChevronBackCircle } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 export enum FileCellEventType {
   NEW_FILE = "new_file",
@@ -44,6 +46,7 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
   const advanceFeatures = useTypedSelector(
     (state) => state.application.advanceFeatures
   );
+  const navigate = useNavigate();
 
   // Function to bundle a single file. Not used anymore. Kept for possible use in single file syntax checking.
   const handleBundleClick = () => {
@@ -115,9 +118,21 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
     saveFile(reduxFile.localId);
   };
 
+  const handleBackButton = ()=>{
+    navigate(-1);
+  }
+
   return (
     <div className="file-cell-control-bar">
       <div className="file-cell-control-bar-left">
+        <Button
+          buttonClass="file-cell-control-bar-btn"
+          title=""
+          handleButtonClick={handleBackButton}
+          buttonType="button"
+        >
+          <IoChevronBackCircle />
+        </Button>
         {reduxProject && (
           <span style={{ fontSize: "1.2em" }}>{reduxProject.title}</span>
         )}
@@ -277,7 +292,7 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
           </button> */}
 
           <Button
-            buttonClass="sync-btn"
+            buttonClass="file-cell-control-bar-btn sync-btn"
             disable={!reduxFile.contentSynced}
             title=""
             handleButtonClick={() => handleSyncClick()}

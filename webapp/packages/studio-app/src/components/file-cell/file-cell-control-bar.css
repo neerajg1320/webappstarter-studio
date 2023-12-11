@@ -12,9 +12,9 @@
   width: fit-content;
   display: flex;
   flex-direction: row;
-  gap: 5px;
+  gap: 10px;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 10px;
 }
 
 .file-cell-control-bar-left span {
