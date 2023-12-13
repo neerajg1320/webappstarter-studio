@@ -83,10 +83,14 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
     console.log(`Created rootFileNode:`, JSON.stringify(rootFileNode, safeFileNodeTraveral, 2));
   }
 
+  console.log("reduxFiles: ", reduxFiles)
+
+  
   reduxFiles.forEach((reduxFile) => {
     const pathParts = reduxFile.path.split("/");
     let currentNode = rootFileNode;
 
+    
     pathParts.forEach((part, index) => {
       if (!currentNode.childrenFileNodeMap) {
         console.log(`Error we should not be here part:${part} index:${index}`)
@@ -114,6 +118,8 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
 
     });
   });
+
+  // console.log("rootFileNode: ", rootFileNode);
 
   return rootFileNode;
 }

@@ -49,6 +49,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
   // eslint-disable-next-line
   const projectFiles:ReduxFile[] = useMemo(() => {
     if (reduxProject) {
+      // console.log("filesState: ",filesState)
       const files = Object.entries(filesState.data)
           .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
           .map(([k, v]) => v);
@@ -79,9 +80,9 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
         console.log(`rootNode:`, rootNode);
       }
 
-      setTimeout(() => {
+      // setTimeout(() => {
         setFileTree(rootNode);
-      }, 5)
+      // }, 5)
     }
   }, [reduxProject.title, projectFiles]);
 
@@ -375,6 +376,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({reduxProject, onSelect:propOnSel
       {(projectFiles && projectFiles.length>0) ?
       <>
       <div className="file-browser-panel">
+        
         {(fileTree) ?
             // We need to support onEvent here as we might support multiple events like onClick, onDoubleClick etc
             <ComponentTree

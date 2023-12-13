@@ -86,6 +86,7 @@ const ComponentTree: React.FC<ComponentTreeProps> = ({
 
   // TBD: check if we can use useMemo here
   const itemInfo = getItemInfoFunc(itemNode);
+  console.log("itemInfo: ", itemInfo);
 
   if (level < 5) {
     if (debugComponent) {

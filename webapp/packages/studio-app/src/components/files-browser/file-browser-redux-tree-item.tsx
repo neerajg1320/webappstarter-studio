@@ -134,6 +134,7 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
   return (
       <div
           className={"file-item " + ((reduxFile && reduxFile.isSelected) ? " selected" : "")}
+
           onClick={handleFileClick}
           draggable={draggable}
           onDragStart={handleDragStart}

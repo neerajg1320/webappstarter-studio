@@ -17,7 +17,7 @@
     z-index: 99;
     font-size: 14px;
     color: white;
-    animation: fadeIn linear 0.5s 1;
+    animation: fadeIn linear 0.75s 1;
   }
   
   @keyframes fadeIn {
