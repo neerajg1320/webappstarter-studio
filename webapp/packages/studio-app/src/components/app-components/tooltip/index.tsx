@@ -18,11 +18,14 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
     height: 0,
   });
 
+  let timeOut;
+
   const onMouseOver = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { offsetWidth, offsetHeight } = e.currentTarget;
-    setIsToolTipVisible(true);
-
-    // console.log("hello");
+    timeOut = setTimeout(() => {
+      setIsToolTipVisible(true);
+      console.log("hello");
+    }, 200);
     setDimension({
       ...dimension,
       width: offsetWidth + 10,
@@ -32,12 +35,14 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
   };
 
   const onMouseLeave = () => {
-    setIsToolTipVisible(false);
+    setTimeout(() => {
+      setIsToolTipVisible(false);
+    }, 200);
   };
+  console.log(isToolTipVisible);
 
   const onTooltipClick = () => {
-    
-    console.log("click tooltip")
+    console.log("click tooltip");
     setIsToolTipVisible(false);
     // setIsToolTipVisible(true);
   };
