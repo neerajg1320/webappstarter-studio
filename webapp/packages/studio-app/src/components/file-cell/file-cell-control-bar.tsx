@@ -12,6 +12,7 @@ import { IoChevronBackCircle } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { CiMenuKebab } from "react-icons/ci";
 import Tooltip from "../app-components/tooltip";
+import CheckOutSide from "../app-components/onBlurLogic";
 
 export enum FileCellEventType {
   NEW_FILE = "new_file",
@@ -51,6 +52,7 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
     (state) => state.application.advanceFeatures
   );
   const navigate = useNavigate();
+  const projectMenuListRef = useRef<HTMLDivElement>(null);
 
   // Function to bundle a single file. Not used anymore. Kept for possible use in single file syntax checking.
   const handleBundleClick = () => {
@@ -290,50 +292,55 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
               </Button>
             </Tooltip>
             {isVisibleProjectList && (
-              <div className="project-menu-list">
-                <ul>
-                  <li>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "5px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <label>Auto-Sync</label>
-                      <input
-                        type="checkbox"
-                        checked={autoSync}
-                        onChange={(e) =>
-                          updateApplication({ autoSync: e.target.checked })
-                        }
-                      />
-                    </div>
-                  </li>
-                  <li>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        gap: "5px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <label>Hot-Reload</label>
-                      <input
-                        type="checkbox"
-                        checked={hotReload}
-                        onChange={(e) =>
-                          updateApplication({ hotReload: e.target.checked })
-                        }
-                      />
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              <CheckOutSide
+                onClickOutside={setIsVisibleProjectList}
+                ref={projectMenuListRef}
+              >
+                <div className="project-menu-list" ref={projectMenuListRef}>
+                  <ul>
+                    <li>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          gap: "5px",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <label>Auto-Sync</label>
+                        <input
+                          type="checkbox"
+                          checked={autoSync}
+                          onChange={(e) =>
+                            updateApplication({ autoSync: e.target.checked })
+                          }
+                        />
+                      </div>
+                    </li>
+                    <li>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          gap: "5px",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <label>Hot-Reload</label>
+                        <input
+                          type="checkbox"
+                          checked={hotReload}
+                          onChange={(e) =>
+                            updateApplication({ hotReload: e.target.checked })
+                          }
+                        />
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </CheckOutSide>
             )}
           </div>
 

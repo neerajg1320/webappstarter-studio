@@ -13,6 +13,7 @@ import { FaReact } from "react-icons/fa";
 import { FaHtml5 } from "react-icons/fa";
 import { RiJavascriptFill } from "react-icons/ri";
 import react_js_css from "../../../app-components/images/react-js-css.png";
+import CheckOutSide from "../../../app-components/onBlurLogic";
 
 interface ProjectCardProps {
   reduxProject: ReduxProject;
@@ -27,6 +28,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
   const navigate = useNavigate();
   const { setCurrentProjectId, updateProject } = useActions();
   const [openCardMenu, setOpenCardMenu] = useState(false);
+  const cardActionListRef = useRef<HTMLDivElement>(null);
 
   const selectAndNavigateToProject = () => {
     if (propOnClick) {
@@ -100,32 +102,39 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
         </Tooltip>
 
         {openCardMenu && (
-          <ul className="card-actions">
-            <li className="card-actions-item">
-              <Button
-                handleButtonClick={(e) =>
-                  handleEditProjectClick(e, reduxProject.localId)
-                }
-                title=""
-                buttonType="button"
-                buttonClass=""
-              >
-                {" "}
-                <FiEdit3 />
-              </Button>
-            </li>
-            <li className="card-actions-item">
-              <Button
-                handleButtonClick={handleDeleteProjectClick}
-                title=""
-                buttonType="button"
-                buttonClass=""
-              >
-                {" "}
-                <MdOutlineDeleteOutline />
-              </Button>
-            </li>
-          </ul>
+          <CheckOutSide
+            onClickOutside={setOpenCardMenu}
+            ref={cardActionListRef}
+          >
+            <div ref={cardActionListRef}>
+              <ul className="card-actions" >
+                <li className="card-actions-item">
+                  <Button
+                    handleButtonClick={(e) =>
+                      handleEditProjectClick(e, reduxProject.localId)
+                    }
+                    title=""
+                    buttonType="button"
+                    buttonClass=""
+                  >
+                    {" "}
+                    <FiEdit3 />
+                  </Button>
+                </li>
+                <li className="card-actions-item">
+                  <Button
+                    handleButtonClick={handleDeleteProjectClick}
+                    title=""
+                    buttonType="button"
+                    buttonClass=""
+                  >
+                    {" "}
+                    <MdOutlineDeleteOutline />
+                  </Button>
+                </li>
+              </ul>
+            </div>
+          </CheckOutSide>
         )}
         <div className="card-header-left-side">
           <span className="card-main-icon">
