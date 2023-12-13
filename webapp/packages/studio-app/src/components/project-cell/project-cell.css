@@ -23,4 +23,5 @@
   gap: 8px;
   background-color: var(--white);
   justify-content: flex-end;
+  box-shadow: 0px -1px 4px 0 #0000002e;
 }
