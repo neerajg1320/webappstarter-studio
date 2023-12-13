@@ -261,7 +261,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                   // formData={data}
                   required={false}
                 />
-                <FormField
+                {/* <FormField
                   labelName="Copy"
                   fieldType="radio"
                   fieldName="init-type"
@@ -270,7 +270,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                   // setFormData={setData}
                   // formData={data}
                   required={false}
-                />
+                /> */}
                 {/* </div> */}
                 {/* </div> */}
                 {/* <div> */}
@@ -280,7 +280,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
             <div style={{width: '75%'}}>
               {!isImport ? (
                 <div className="start-config">
-                  <label>Template</label>
+                  {/* <label>Template</label> */}
                   <Select
                     className="value framework-select"
                     value={projectTemplateOption}
@@ -299,7 +299,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                 </div>
               ) : (
                 <div className="start-config">
-                  <label>Project Zip</label>
+                  {/* <label>Project Zip</label> */}
                   <div className="value zip-upload">
                     <Button
                       buttonClass="form-submit-btn"
