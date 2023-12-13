@@ -9,7 +9,7 @@ import {
   faqUrl,
   teamUrl,
 } from "../../config/global";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaBarsStaggered, FaPlus } from "react-icons/fa6";
 import Button from "../app-components/button/index";
 import { FaUserCircle } from "react-icons/fa";
@@ -17,6 +17,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import Tooltip from "../app-components/tooltip";
 import DropDown from "../app-components/dropdown";
 import { FaList } from "react-icons/fa";
+import CheckOutSide from "../app-components/onBlurLogic";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -30,6 +31,7 @@ const AppNavBar = () => {
   const location = useLocation();
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
+  const profileDropDownRef = useRef<HTMLDivElement>(null);
   const [options, setOptions] = useState([
     {
       label: "Grid mode",
@@ -196,10 +198,12 @@ const AppNavBar = () => {
         )}
       </div>
       {isProfileDropDown && (
-        <ul className="profile-over-dropdown">
-          <li onClick={() => handlePasswordChangeClick()}>Change Password</li>
-          <li onClick={() => handleLogoutClick()}>Logout</li>
-        </ul>
+        <CheckOutSide onClickOutside={setIsProfileDropDown} ref={profileDropDownRef}>
+          <ul className="profile-over-dropdown" >
+            <li onClick={() => handlePasswordChangeClick()}>Change Password</li>
+            <li onClick={() => handleLogoutClick()}>Logout</li>
+          </ul>
+        </CheckOutSide>
       )}
     </>
   );
