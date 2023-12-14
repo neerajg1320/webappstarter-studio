@@ -18,6 +18,13 @@ import Tooltip from "../app-components/tooltip";
 import DropDown from "../app-components/dropdown";
 import { FaList } from "react-icons/fa";
 import CheckOutSide from "../app-components/onBlurLogic";
+import { generateLocalId } from "../../state/id";
+import {
+  ProjectFrameworks,
+  ProjectTemplates,
+  ReactToolchains,
+  StartConfigType,
+} from "../../state";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -26,7 +33,7 @@ const AppNavBar = () => {
     (state) => state.auth.isAuthenticated
   );
   const currentUser = useTypedSelector((state) => state.auth.currentUser);
-  const { logoutUser, deleteUser } = useActions();
+  const { logoutUser, deleteUser, createAndSetProject } = useActions();
   const navigate = useNavigate();
   const location = useLocation();
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
@@ -96,6 +103,24 @@ const AppNavBar = () => {
 
   const handleProfileClick = () => {
     setIsProfileDropDown(!isProfileDropDown);
+  };
+
+  const handleNewProjectClick = () => {
+    if (debugComponent) {
+      console.log(`handleNewProjectClick()`);
+    }
+
+    const localId = generateLocalId();
+    createAndSetProject({
+      localId,
+      title: `Project-${localId}`,
+      description: "This is a web application",
+      startConfigType: StartConfigType.PROJECT_TEMPLATE,
+      template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
+      framework: ProjectFrameworks.NONE,
+      toolchain: ReactToolchains.NONE,
+    });
+    navigate(RoutePath.PROJECT_NEW);
   };
 
   const handleChangeSelect = (e) => {};
@@ -168,7 +193,12 @@ const AppNavBar = () => {
           <div className="create-btn-profile">
             <Link to={RoutePath.PROJECT_NEW} className="cta">
               <Tooltip msg={"Create project"} position={"bottom"} tip={true}>
-                <Button title="" buttonClass="nav-create" buttonType="button">
+                <Button
+                  title=""
+                  buttonClass="nav-create"
+                  buttonType="button"
+                  handleButtonClick={handleNewProjectClick}
+                >
                   <FaPlus />
                 </Button>
               </Tooltip>
@@ -198,8 +228,11 @@ const AppNavBar = () => {
         )}
       </div>
       {isProfileDropDown && (
-        <CheckOutSide onClickOutside={setIsProfileDropDown} ref={profileDropDownRef}>
-          <ul className="profile-over-dropdown" >
+        <CheckOutSide
+          onClickOutside={setIsProfileDropDown}
+          ref={profileDropDownRef}
+        >
+          <ul className="profile-over-dropdown">
             <li onClick={() => handlePasswordChangeClick()}>Change Password</li>
             <li onClick={() => handleLogoutClick()}>Logout</li>
           </ul>

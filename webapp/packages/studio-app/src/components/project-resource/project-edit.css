@@ -1,12 +1,11 @@
 .form-wrapper textarea {
   width: 100%;
-  border: none;
   outline: none;
   resize: none;
-  border-left: 2px solid var(--blue);
-  border-right: 2px solid var(--blue);
-  border-top: 2px solid var(--blue);
+  border: 2px solid var(--blue);
+  border-radius: 5px;
   padding: 0.5rem;
+  color: var(--blue);
   /* border-radius: 5px; */
 }
 

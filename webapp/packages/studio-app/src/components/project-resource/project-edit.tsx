@@ -14,6 +14,7 @@ import { debugComponent } from "../../config/global";
 import ApiFlowStatus from "../api-status/api-flow-status";
 import FormField from "../app-components/FormField";
 import Button from "../app-components/button";
+import { MdVisibility } from "react-icons/md";
 
 interface ProjectEditProps {
   isEdit: boolean;
@@ -50,6 +51,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     }
     return null;
   }, [projectsState]);
+  // console.log("projectsState: ", projectsState);
 
   const projectTemplateOption = useMemo<
     SingleValue<{ label: string; value: string }>
@@ -84,7 +86,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     return { label: "none", value: "none" };
   }, [currentProject?.toolchain]);
 
-  if (debugComponent) {
+  if (!debugComponent) {
     console.log(`ProjectEdit: render  projectsState:`, projectsState);
     console.log(
       `ProjectEdit: render  currentProjectId: ${projectsState.currentProjectId} currentProject:`,
@@ -124,7 +126,8 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     });
   }, []);
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (e) => {
+    e.preventDefault();
     saveClickRef.current = true;
 
     if (!currentProject) {
@@ -177,14 +180,17 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
   };
 
   const handleCancelClick = () => {
-    if (!currentProject.confirmed) {
-      deleteProject(currentProject.localId);
-      setCurrentProjectId(null);
+    if (currentProject?.synced) {
+      if (!currentProject.confirmed) {
+        deleteProject(currentProject.localId);
+        setCurrentProjectId(null);
+      }
     }
     navigate(RoutePath.BACK);
   };
 
   const handleProjectFields = (field: string, value: string) => {
+    console.log("field: ", field);
     updateProject({
       localId: currentProject?.localId,
       [field]: value,
@@ -200,22 +206,24 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     // console.log("change: ", labelName);
   };
 
-  const handleBrowseButton = ()=>{
+  const handleBrowseButton = () => {
     inputFileRef.current.click();
-  }
+  };
 
-  console.log(projectTemplateOption)
+  console.log("apiState: ", apiState);
+
+  // console.log(projectTemplateOption);
   return (
     <div className="form-wrapper">
       <form
         className="form"
         method="POST"
-        // onSubmit={handleRegister}
+        // onSubmit={handleSaveClick}
       >
         <FormField
           labelName="Title"
           fieldType="text"
-          fieldName="email"
+          fieldName="title"
           fieldValue={currentProject?.title}
           handleInputChange={handleProjectFields}
           // setFormData={setData}
@@ -225,6 +233,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
         <FormField
           labelName="Description"
           fieldType="text"
+          fieldValue={currentProject?.description}
           fieldName="description"
           handleInputChange={handleProjectFields}
           required={true}
@@ -277,7 +286,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
               </div>
             </div>
 
-            <div style={{width: '75%'}}>
+            <div style={{ width: "75%" }}>
               {!isImport ? (
                 <div className="start-config">
                   {/* <label>Template</label> */}
@@ -285,16 +294,14 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
                     className="value framework-select"
                     value={projectTemplateOption}
                     options={projectTemplateOptions}
-                    onChange={(selected) =>{
-                      console.log(selected)
-                      console.log(currentProject)
+                    onChange={(selected) => {
+                      console.log(selected);
+                      console.log(currentProject);
                       updateProject({
                         localId: currentProject?.localId,
                         template: selected?.value || "none",
-                      } as ReduxUpdateProjectPartial)
-                    }
-                     
-                    }
+                      } as ReduxUpdateProjectPartial);
+                    }}
                   />
                 </div>
               ) : (
@@ -346,8 +353,10 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
             title="Cancel"
           />
         </div>
+        <div className={`${apiState? 'visible': 'hidden'} apiStatus`}>
+          <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
+        </div>
       </form>
-      <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
     </div>
   );
 };

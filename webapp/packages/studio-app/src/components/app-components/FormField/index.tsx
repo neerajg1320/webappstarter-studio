@@ -108,7 +108,7 @@ const FormField = ({
           ))}
       </div>
 
-      {fieldType !== "radio" && <div className="border" ref={ref}></div>}
+      {(fieldType !== "radio" && box !== "textarea") && <div className="border" ref={ref}></div>}
     </label>
   );
 };

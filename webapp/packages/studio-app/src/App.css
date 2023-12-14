@@ -35,6 +35,17 @@
   color: white;
 }
 
+.visible{
+  visibility: visible;
+}
+.hidden{
+  visibility: hidden;
+}
+
+.apiStatus{
+  height: 1em;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
