@@ -24,7 +24,7 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
     const { offsetWidth, offsetHeight } = e.currentTarget;
     timeOut = setTimeout(() => {
       setIsToolTipVisible(true);
-      console.log("hello");
+      // console.log("hello");
     }, 200);
     setDimension({
       ...dimension,

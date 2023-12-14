@@ -92,47 +92,53 @@
 }
  */
 
- .landing-page-studio{
+.landing-page-studio {
   height: calc(100vh - 2rem);
   background-color: var(--white);
   color: var(--blue);
   padding: 4rem 3rem 0rem 3rem;
- }
-
- .landing-page-studio .brand-logo h1{
-  font-weight: lighter;
-  text-align: left;
- }
-
- .middle-section{
-  display: flex;
-  justify-content: space-between;
- gap: 3rem;
- /* margin-top: 2rem; */
- align-items: center;
- }
-
- .middle-section p{
-  font-size: 5rem;
-  width: 50%
- }
-
-.codeBox{
-  background-color: rgb(0, 0, 0);
-  width: 60%;
-  height: 23rem;
-  padding: 20px 30px;
-  border-radius: 5px;
-  box-shadow: 0 26px 58px 0 rgba(0, 0, 0, .22), 0 5px 14px 0 rgba(0, 0, 0, .18);
 }
 
-.typedtext{
-  background-image: linear-gradient(#C6E4FF, #2B4172);
- -webkit-background-clip: text;
- -webkit-text-fill-color: transparent;
- text-align: left;
- font-size: 1.2rem;
- font-size: bold;
+.landing-page-studio .brand-logo h1 {
+  font-weight: lighter;
+  text-align: left;
+}
+
+.middle-section {
+  grid-row-gap: 2rem;
+  grid-column-gap: 3rem;
+  justify-items: center;
+  display: grid;
+  grid-template-columns: 40% 55%;
+  grid-template-rows: auto auto;
+  /* margin-top: 2rem; */
+  align-items: center;
+}
+
+.middle-section p {
+  font-size: 5rem;
+  /* width: 50%; */
+}
+
+.codeBox {
+  background-color: rgb(0, 0, 0);
+  width: 100%;
+  height: 23rem;
+  justify-self: flex-start;
+  padding: 20px 30px;
+  border-radius: 5px;
+  box-shadow:
+    0 26px 58px 0 rgba(0, 0, 0, 0.22),
+    0 5px 14px 0 rgba(0, 0, 0, 0.18);
+}
+
+.typedtext {
+  background-image: linear-gradient(#c6e4ff, #2b4172);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: left;
+  font-size: 1.2rem;
+  font-size: bold;
 }
 
 .landing-page-studio .loginSignupButtons {
@@ -155,38 +161,29 @@
   border: none;
   padding: 1.1rem 0rem;
   font-size: inherit;
-
 }
 
-@media (max-width: 900px){
-  .middle-section{
+@media (max-width: 900px) {
+  .middle-section {
+    display: flex;
     flex-direction: column;
     margin-top: 3rem;
   }
-  .middle-section p{
+  .middle-section p {
     width: 100%;
-  }
-  .codeBox{
-    width: 80%;
   }
   .landing-page-studio .loginSignupButtons {
     margin-top: 3rem;
   }
 }
-@media (max-width: 600px){
- 
-  .codeBox{
+@media (max-width: 600px) {
+  .codeBox {
     width: 100%;
   }
 }
 
-@media (max-width: 430px){
- .landing-page-studio{
-  padding: 4rem 1rem 0rem 1rem;
- 
- }
-  .codeBox{
-    width: 100%;
+@media (max-width: 430px) {
+  .landing-page-studio {
+    padding: 4rem 1rem 0rem 1rem;
   }
 }
-

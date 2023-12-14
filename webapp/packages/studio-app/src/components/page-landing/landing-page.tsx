@@ -1,21 +1,23 @@
-import './landing-page.css';
-import {useNavigate} from "react-router-dom";
-import {RoutePath} from "../routes";
-import {debugComponent, serverStaticBaseUrl} from "../../config/global";
-import {useTypedSelector} from "../../hooks/use-typed-selector";
-import {useEffect} from "react";
-import Typewriter from './Typewriter';
-import { Link } from 'react-router-dom';
-import Button from '../app-components/button';
+import "./landing-page.css";
+import { useNavigate } from "react-router-dom";
+import { RoutePath } from "../routes";
+import { debugComponent, serverStaticBaseUrl } from "../../config/global";
+import { useTypedSelector } from "../../hooks/use-typed-selector";
+import { useEffect } from "react";
+import Typewriter from "./Typewriter";
+import { Link } from "react-router-dom";
+import Button from "../app-components/button";
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const isAuthenticated = useTypedSelector(state => state.auth.isAuthenticated);
-  const currentUser = useTypedSelector(state => state.auth.currentUser);
+  const isAuthenticated = useTypedSelector(
+    (state) => state.auth.isAuthenticated
+  );
+  const currentUser = useTypedSelector((state) => state.auth.currentUser);
 
   useEffect(() => {
     if (isAuthenticated && !currentUser?.is_anonymous) {
-      navigate(RoutePath.PROJECTS, {replace:true});
+      navigate(RoutePath.PROJECTS, { replace: true });
     }
   }, [isAuthenticated]);
 
@@ -25,14 +27,14 @@ const LandingPage = () => {
     }
 
     navigate(RoutePath.USER_REGISTER);
-  }
+  };
 
   const handleLoginClick = () => {
     if (debugComponent) {
       console.log(`handleLoginClick()`);
     }
     navigate(RoutePath.USER_LOGIN);
-  }
+  };
 
   const reactCode = [
     `import React from "react"`,
@@ -44,37 +46,45 @@ const LandingPage = () => {
     "        I'm a button",
     "      </button>",
     `    </>`,
-    ")}"
+    ")}",
   ];
 
-
   return (
-    <div className='landing-page-studio'>
-      <div className='brand-logo'>
+    <div className="landing-page-studio">
+      <div className="brand-logo">
         <h1>WebappStarter</h1>
       </div>
-      <div className='middle-section'>
-        <p>Reactjs IDE on your browser</p>
-        <Typewriter text={reactCode} boxClass={'reactCode'}/>
-      </div>
-      <div className={`loginSignupButtons `}>
+      <div className="middle-section">
+        {/* <div> */}
+          <p>Reactjs IDE on your browser</p>
+        {/* </div> */}
+
+        <Typewriter text={reactCode} boxClass={"reactCode"} />
+          <div className={`loginSignupButtons `}>
             <Link to={RoutePath.USER_LOGIN}>
-              <Button title="Login" buttonClass="loginButton" buttonType="button"/>
+              <Button
+                title="Login"
+                buttonClass="loginButton"
+                buttonType="button"
+              />
             </Link>
             <Link to={RoutePath.USER_REGISTER}>
-              <Button title="Sign Up" buttonClass="signupButton" buttonType="button" />
+              <Button
+                title="Sign Up"
+                buttonClass="signupButton"
+                buttonType="button"
+              />
             </Link>
           </div>
+      </div>
     </div>
   );
-}
+};
 
 export default LandingPage;
 
-
-
-
-{/* <div className="landing-wrapper">
+{
+  /* <div className="landing-wrapper">
       <div className="left-side">
         <div className="brand-bar">
           <img className="logo-image" src={`${serverStaticBaseUrl}/landing/img/react-logo.png`} alt="Logo-Image"/>
@@ -101,4 +111,5 @@ export default LandingPage;
           <img className="main-image" src={`${serverStaticBaseUrl}/landing/img/generic-browser-logo.png`} alt="Main-Image"/>
         </div>
       </div>
-    </div> */}
+    </div> */
+}
