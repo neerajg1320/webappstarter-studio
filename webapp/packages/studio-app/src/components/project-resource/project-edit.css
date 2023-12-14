@@ -3,6 +3,11 @@
   border: none;
   outline: none;
   resize: none;
+  border-left: 2px solid var(--blue);
+  border-right: 2px solid var(--blue);
+  border-top: 2px solid var(--blue);
+  padding: 0.5rem;
+  /* border-radius: 5px; */
 }
 
 .start-config-radio {
@@ -13,6 +18,7 @@
 .form-label-radio-field {
   flex-direction: row;
   gap: 20px;
+  justify-content: center;
   align-items: center;
 }
 
@@ -83,6 +89,7 @@ border-color: var(--blue) !important;
 @media (max-width: 940px){
   .template-import-radio{
     flex-direction: column;
+    align-items: flex-end;
   }
   .form-label-radio-field .form-input-box {
     position: static;
@@ -90,6 +97,7 @@ border-color: var(--blue) !important;
 
   .form-label-radio-field{
     position: relative;
+    justify-content: flex-start;
   }
 
   .form-label-radio-field .form-input-box::before {
