@@ -20,12 +20,12 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
 
   let timeOut;
 
-  const onMouseOver = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onMouseEnter = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { offsetWidth, offsetHeight } = e.currentTarget;
     timeOut = setTimeout(() => {
       setIsToolTipVisible(true);
-      // console.log("hello");
-    }, 200);
+      console.log("mouse Enter");
+    }, 400);
     setDimension({
       ...dimension,
       width: offsetWidth + 10,
@@ -37,9 +37,12 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
   const onMouseLeave = () => {
     setTimeout(() => {
       setIsToolTipVisible(false);
-    }, 200);
+      }, 400);
+      console.log("mouse leave")
+      clearTimeout(timeOut);
+      setIsToolTipVisible(false);
   };
-  console.log(isToolTipVisible);
+  // console.log(isToolTipVisible);
 
   const onTooltipClick = () => {
     console.log("click tooltip");
@@ -50,7 +53,7 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
   return (
     <div
       className="wrapper"
-      onMouseOver={onMouseOver}
+      onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onTooltipClick}
     >
