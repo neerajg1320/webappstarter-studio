@@ -24,8 +24,8 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
     const { offsetWidth, offsetHeight } = e.currentTarget;
     timeOut = setTimeout(() => {
       setIsToolTipVisible(true);
-      console.log("mouse Enter");
-    }, 400);
+      // console.log("mouse Enter");
+    }, 600);
     setDimension({
       ...dimension,
       width: offsetWidth + 10,
@@ -37,10 +37,10 @@ const Tooltip = ({ children, position, msg, tip }: propTypes) => {
   const onMouseLeave = () => {
     setTimeout(() => {
       setIsToolTipVisible(false);
-      }, 400);
-      console.log("mouse leave")
-      clearTimeout(timeOut);
-      setIsToolTipVisible(false);
+    }, 600);
+    // console.log("mouse leave");
+    clearTimeout(timeOut);
+    setIsToolTipVisible(false);
   };
   // console.log(isToolTipVisible);
 
