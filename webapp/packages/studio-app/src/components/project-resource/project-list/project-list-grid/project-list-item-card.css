@@ -37,6 +37,7 @@
   transition: 0.25s;
   border-radius: 2px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .card:hover {
@@ -66,6 +67,7 @@
   color: inherit;
   border: none;
   padding: 4px;
+  cursor: pointer;
 }
 
 .card-actions {
@@ -89,6 +91,11 @@
   padding: 5px;
   background-color: var(--white);
   border: none;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  color: var(--blue);
 }
 
 .card-actions-item button:hover {
@@ -116,30 +123,30 @@
   transition: 0.25s;
 }
 
-.card-header-left-side{
+.card-header-left-side {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 3px;
 }
 
-.card-main-icon{
+.card-main-icon {
   display: flex;
   font-size: 1.2em;
 }
 
-.card-content-icon{
+.card-content-icon {
   font-size: 1.3em;
   display: flex;
   justify-content: center;
 }
 
-.card-content-image-icon{
+.card-content-image-icon {
   display: flex;
   justify-content: center;
 }
 
-.card-content-image-icon img{
+.card-content-image-icon img {
   width: 1.5em;
   height: 1.5em;
 }

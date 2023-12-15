@@ -118,7 +118,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
                     buttonClass=""
                   >
                     {" "}
-                    <FiEdit3 />
+                    Edit <FiEdit3 />
                   </Button>
                 </li>
                 <li className="card-actions-item">
@@ -129,7 +129,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
                     buttonClass=""
                   >
                     {" "}
-                    <MdOutlineDeleteOutline />
+                    Delete <MdOutlineDeleteOutline />
                   </Button>
                 </li>
               </ul>
