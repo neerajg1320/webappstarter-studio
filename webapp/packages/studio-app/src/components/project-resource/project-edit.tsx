@@ -286,7 +286,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
               </div>
             </div>
 
-            <div style={{ width: "75%" }}>
+            <div style={{ width: "75%", height: '3rem' }}>
               {!isImport ? (
                 <div className="start-config">
                   {/* <label>Template</label> */}

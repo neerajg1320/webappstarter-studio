@@ -5,8 +5,7 @@ import { debugComponent, serverStaticBaseUrl } from "../../config/global";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { useEffect } from "react";
 import Typewriter from "./Typewriter";
-import { Link } from "react-router-dom";
-import Button from "../app-components/button";
+import LoginSignup from "../app-components/LoginSignUpButton";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -56,26 +55,18 @@ const LandingPage = () => {
       </div>
       <div className="middle-section">
         {/* <div> */}
+        <div className="middle-section-left">
           <p>Reactjs IDE on your browser</p>
+          <div className="login-signup-desktop">
+            <LoginSignup />
+          </div>
+        </div>
         {/* </div> */}
 
         <Typewriter text={reactCode} boxClass={"reactCode"} />
-          <div className={`loginSignupButtons `}>
-            <Link to={RoutePath.USER_LOGIN}>
-              <Button
-                title="Login"
-                buttonClass="loginButton"
-                buttonType="button"
-              />
-            </Link>
-            <Link to={RoutePath.USER_REGISTER}>
-              <Button
-                title="Sign Up"
-                buttonClass="signupButton"
-                buttonType="button"
-              />
-            </Link>
-          </div>
+        <div className="login-signup-mobile">
+          <LoginSignup />
+        </div>
       </div>
     </div>
   );

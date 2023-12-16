@@ -101,7 +101,7 @@ const FormField = ({
           ) : (
             <span
               onClick={handlePasswordField}
-              style={{ display: "flex", height: "15px" }}
+              style={{ display: "flex", height: "15px", cursor: "pointer" }}
             >
               <FaEyeSlash size="22" />
             </span>

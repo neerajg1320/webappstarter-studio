@@ -49,12 +49,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 2rem;
+  padding-top: 4.5rem;
   font-size: 1.125rem; /* 18px */
   line-height: 1.75rem; /* 28px */
   gap: 1.5rem;
   width: 91%;
-  padding-bottom: 2.5rem;
+  padding-bottom: 2rem;
   background-color: var(--white);
   color: var(--blue);
 
@@ -82,6 +82,7 @@
   width: 75%;
   justify-content: space-between;
   margin-top: 1.75rem;
+  /* cursor: pointer; */
 }
 
 .form input {
@@ -108,12 +109,13 @@
   background-color: var(--blue);
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   border: none;
+  cursor: pointer;
 }
 .not-member-register {
   /* hover:underline hover:underline-offset-2 */
   text-decoration: none;
   color: var(--blue);
-  cursor: default;
+  cursor: pointer;
 }
 
 .not-member-register:hover {
@@ -128,8 +130,12 @@
 
 .forgot-password {
   /* text-end w-9/12 hover:underline hover:underline-offset-2 cursor-default */
-  text-align: end;
+  /* text-align: end;
   width: 75%;
+  display: inline; */
+  align-self: flex-end;
+  margin-right: 12%;
+  cursor: pointer;
 }
 
 .forgot-password:hover {
@@ -140,7 +146,7 @@
 .border {
   margin: auto;
   width: 100%;
-  height: 0.13rem;
+  height: 0.08rem;
   border: none;
   background-color: var(--blue);
 }
@@ -154,19 +160,20 @@
   color: var(--white);
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   border: none;
+  cursor: pointer;
 }
 
 .inputBorderAnimation {
   animation-name: borderOnFocus;
-  animation-duration: 0.75s;
+  animation-duration: 0.5s;
 }
 
 @keyframes borderOnFocus {
   0% {
-    width: 0%;
+    opacity:0;
   }
   100% {
-    width: 100%;
+    opacity: 1;
   }
 }
 

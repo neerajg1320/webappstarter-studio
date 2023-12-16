@@ -2,7 +2,7 @@
   width: 100%;
   outline: none;
   resize: none;
-  border: 2px solid var(--blue);
+  border: 0.1rem solid var(--blue);
   border-radius: 5px;
   padding: 0.5rem;
   color: var(--blue);
