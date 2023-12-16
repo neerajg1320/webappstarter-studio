@@ -83,7 +83,7 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
     console.log(`Created rootFileNode:`, JSON.stringify(rootFileNode, safeFileNodeTraveral, 2));
   }
 
-  console.log("reduxFiles: ", reduxFiles)
+  // console.log("reduxFiles: ", reduxFiles)
 
   
   reduxFiles.forEach((reduxFile) => {

@@ -49,6 +49,7 @@ import {
 } from "../../state/helpers/file-helpers";
 import Tooltip from "../app-components/tooltip";
 import Button from "../app-components/button";
+import { ToastContainer, toast } from "react-toastify";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -658,6 +659,13 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
     }
   }, [filesSectionSize]);
 
+  useEffect(() => {
+    if (apiState.error) {
+      toast.error(`${apiState.error}`, { theme: "colored" });
+    }
+    // console.log(apiState)
+  }, [apiState.error]);
+
   if (!reduxProject) {
     return <h1>reduxProject is not defined</h1>;
   }
@@ -789,7 +797,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
         </ResizableDiv>
       )}
 
-      <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
+      {/* <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} /> */}
 
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
       {reduxProject.htmlContent &&
