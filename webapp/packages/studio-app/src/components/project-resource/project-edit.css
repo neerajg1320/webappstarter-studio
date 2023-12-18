@@ -5,6 +5,7 @@
   border: 0.1rem solid var(--blue);
   border-radius: 5px;
   padding: 0.5rem;
+  font-size: 0.9rem;
   color: var(--blue);
   /* border-radius: 5px; */
 }

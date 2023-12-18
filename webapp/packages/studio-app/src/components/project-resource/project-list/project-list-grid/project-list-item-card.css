@@ -84,6 +84,8 @@
 .card-actions-item {
   background-color: var(--white);
   z-index: 1;
+  padding: 0 12px;
+  display: flex;
 }
 
 .card-actions-item button {
@@ -92,7 +94,7 @@
   background-color: var(--white);
   border: none;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 10px;
   align-items: center;
   color: var(--blue);

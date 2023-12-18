@@ -59,7 +59,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     if (currentProject && currentProject.template) {
       return { label: currentProject.template, value: currentProject.template };
     }
-    return { label: "javascript-css", value: "javascript-css" };
+    return { label: "react-javascript-css", value: "react-javascript-css" };
   }, [currentProject?.template]);
 
   const projectFrameworkOption = useMemo<
@@ -115,9 +115,9 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
   const projectTemplateOptions = useMemo(() => {
     // This we need to fetch from the API
     const templates: string[] = [
+      "react-javascript-css",
       "javascript-css",
       "typescript-css",
-      "react-javascript-css",
       "react-typescript-css",
     ];
 
