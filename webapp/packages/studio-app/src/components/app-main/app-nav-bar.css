@@ -104,6 +104,7 @@
 .profile-over-dropdown li{
   list-style: none;
   padding: 0.5rem 3rem;
+  cursor: pointer;
 }
 .profile-over-dropdown li:hover{
   background-color: var(--blue);

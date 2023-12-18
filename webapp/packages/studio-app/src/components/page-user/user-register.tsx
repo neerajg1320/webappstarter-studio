@@ -202,7 +202,7 @@ const UserRegister = () => {
             title="Cancel"
           />
         </div>
-        <div className="text-center">
+        <div className="text-center"  style={{height: 0}}>
           Already Registered?{" "}
           <Link to={RoutePath.USER_LOGIN} replace className="cta">
             <span className="not-member-register">Login</span>
