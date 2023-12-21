@@ -15,8 +15,8 @@ const AppRouterLandingLayout = () => {
 
   return (
       <div className="landing-page">
-        {(location.pathname !== RoutePath.ROOT) && <AppNavBar />}
-        {/*<AppNavBar />*/}
+        {/* {(location.pathname !== RoutePath.ROOT) && <AppNavBar />} */}
+        <AppNavBar />
         <div className="outlet">
           <Outlet />
         </div>

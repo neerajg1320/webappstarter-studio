@@ -50,9 +50,9 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page-studio">
-      <div className="brand-logo">
+      {/* <div className="brand-logo">
         <h1>WebappStarter</h1>
-      </div>
+      </div> */}
       <div className="middle-section">
         {/* <div> */}
         <div className="middle-section-left">
