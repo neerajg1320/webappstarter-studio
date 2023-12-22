@@ -26,6 +26,7 @@ import {
   StartConfigType,
 } from "../../state";
 import Slider from "../app-components/slider/slider";
+import { useThemeContext } from "../../context/ThemeContext/theme.context";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -40,6 +41,7 @@ const AppNavBar = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
   const profileDropDownRef = useRef<HTMLDivElement>(null);
+  const { theme } = useThemeContext();
   const [options, setOptions] = useState([
     {
       label: "Grid mode",
@@ -130,7 +132,7 @@ const AppNavBar = () => {
 
   return (
     <>
-      <div className="navbar">
+      <div className="navbar" style={{ ...(theme as React.CSSProperties) }}>
         <div className="logoMenu">
           <div className="menu" onClick={handleToggleClick}>
             <FaBarsStaggered />
@@ -175,7 +177,7 @@ const AppNavBar = () => {
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
-            <Slider size={1}/>
+            <Slider size={1} />
             <Link to={RoutePath.USER_LOGIN}>
               <Button
                 title="Login"

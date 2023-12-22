@@ -1,14 +1,14 @@
 
 .loginButton {
-  border: 2px solid var(--blue);
-  background-color: var(--white);
-  color: var(--blue);
+  border: 2px solid var(--primaryColor);
+  background-color: var(--secondaryColor);
+  color: var(--primaryColor);
   padding: 0.8rem 0rem;
 }
 
 .signupButton {
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--primaryColor);
+  color: var(--secondaryColor);
   border: none;
   padding: 0.9rem 0rem;
 
