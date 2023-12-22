@@ -25,6 +25,7 @@ import {
   ReactToolchains,
   StartConfigType,
 } from "../../state";
+import Slider from "../app-components/slider/slider";
 
 const AppNavBar = () => {
   const enableProjectsList = false;
@@ -174,6 +175,7 @@ const AppNavBar = () => {
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
+            <Slider size={1}/>
             <Link to={RoutePath.USER_LOGIN}>
               <Button
                 title="Login"

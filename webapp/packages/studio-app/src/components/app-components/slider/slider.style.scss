@@ -1,0 +1,43 @@
+
+.sliderBox{
+    display: flex;
+    flex-direction: column;
+    margin-right: 1.4rem;
+}
+
+.sliderIcons{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+    color: var(--primaryColor);
+}
+
+.circle {
+    background-color: var(--primaryColor);
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondaryColor);
+}
+
+.circleRight {
+    right: 2px;
+}
+
+.circleLeft {
+    left: 2px;
+}
+
+.outerBox {
+    border: 1px solid var(--primaryColor);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    background-color: var(--secondaryColor);
+}
