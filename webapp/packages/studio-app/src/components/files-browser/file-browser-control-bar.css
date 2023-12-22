@@ -5,7 +5,7 @@
   gap: 10px;
   flex-direction: row;
   justify-content: flex-end;
-  color: var(--blue);
+  color: var(--primaryColor);
   box-shadow: 0px 0px 4px 1px #0000002e;
   margin-bottom: 5px;
 }

@@ -36,7 +36,7 @@
 
 .react-resizable-handle-w {
   display: block;
-  background-color: #2b4172;
+  background-color: var(--primaryColor);
   /* background-repeat: no-repeat; */
   /* background-position: 50%; */
   width: 4px;
@@ -52,7 +52,7 @@
 
 .react-resizable-handle-s {
   display: block;
-  background-color: #2b4172;
+  background-color: var(--primaryColor);
   background-repeat: no-repeat;
   background-position: 50%;
   height: 4px;

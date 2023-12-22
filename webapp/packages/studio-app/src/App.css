@@ -15,9 +15,9 @@
 .project-control-panel-btn,
 .file-cell-control-bar-btn {
   /* margin: 0px 5px; */
-  background: white;
+  background: var(--secondaryColor);
   border: none;
-  color: var(--blue);
+  color: var(--primaryColor);
   font-size: 1rem;
   display: flex;
   justify-content: center;
@@ -31,8 +31,8 @@
 .file-browser-control-bar-btn:hover,
 .project-control-panel-btn:hover,
 .file-cell-control-bar-btn:hover {
-  background-color: var(--blue);
-  color: white;
+  background-color: var(--primaryColor);
+  color: var(--secondaryColor);
 }
 
 .visible{

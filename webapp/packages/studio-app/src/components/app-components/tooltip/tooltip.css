@@ -7,7 +7,7 @@
   
   .tooltip{
     position: absolute;
-    background-color: var(--blue);
+    background-color: var(--primaryColor);
     width: max-content;
     padding: 2px 6px;
     border-radius: 2px;
@@ -17,7 +17,7 @@
     /* top:43px; */
     z-index: 100;
     font-size: 14px;
-    color: white;
+    color: var(--secondaryColor);
     animation: fadeIn linear 0.5s;
     /* animation-delay: 15s; */
   }
@@ -34,7 +34,7 @@
   .tip{
     width: 5px;
     height: 5px;
-    background-color: var(--blue);
+    background-color: var(--primaryColor);
     position: absolute;
     display: flex;
     z-index: -1;

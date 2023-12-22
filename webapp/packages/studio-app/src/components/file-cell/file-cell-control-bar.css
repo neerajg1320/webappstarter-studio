@@ -48,7 +48,7 @@
   position: absolute;
   top: 43px;
   z-index: 99;
-  background: white;
+  background: var(--secondaryColor);
   padding: 10px 0;
   width: 11rem;
   box-shadow: 0 0 5px 0px #000000b0;
@@ -66,6 +66,6 @@
 }
 
 .project-menu-list li:hover {
-  color: white;
-  background-color: var(--blue);
+  color: var(--secondaryColor);
+  background-color: var(--primaryColor);
 }

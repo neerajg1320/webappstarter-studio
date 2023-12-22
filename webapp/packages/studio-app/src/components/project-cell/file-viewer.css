@@ -2,7 +2,7 @@
   height: 40px;
   /* padding: 0 10px; */
   display: flex;
-  color: var(--blue);
+  color: var(--primaryColor);
   /* overflow: hidden; */
   margin: 5px 0;
 }

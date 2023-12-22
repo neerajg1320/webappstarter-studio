@@ -2,11 +2,12 @@
   width: 100%;
   outline: none;
   resize: none;
-  border: 0.1rem solid var(--blue);
+  border: 0.1rem solid var(--primaryColor);
   border-radius: 5px;
   padding: 0.5rem;
   font-size: 0.9rem;
-  color: var(--blue);
+  color: var(--primaryColor);
+  background-color: var(--secondaryColor);
   /* border-radius: 5px; */
 }
 
@@ -30,64 +31,68 @@
   position: relative;
 }
 
-.form-label-radio-field  .form-input-box::before{
+.form-label-radio-field .form-input-box::before {
   content: "";
   width: 20px;
   height: 20px;
   position: absolute;
-  border: 1px solid var(--blue);
+  border: 1px solid var(--primaryColor);
   border-radius: 50%;
 }
-.custom-radio{
+.custom-radio {
   content: "";
   width: 15px;
   height: 15px;
   position: absolute;
- 
-  left:3.3px;
+
+  left: 3.3px;
   border-radius: 50%;
 }
 
-.form-input-box [type="radio"]:checked + .custom-radio{
-  background-color: var(--blue);
+.form-input-box [type="radio"]:checked + .custom-radio {
+  background-color: var(--primaryColor);
 }
 
-.template-import-radio{
+.template-import-radio {
   display: flex;
   padding-top: 0.5rem;
 }
 
-.start-config{
+.start-config {
   text-align: left;
 }
 
-.zip-upload, .framework-select{
+.zip-upload,
+.framework-select {
   text-align: center;
   margin-top: 0.5rem;
 }
 
-.zip-upload .form-submit-btn{
+.zip-upload .form-submit-btn {
   box-shadow: 0 0 0 0;
 }
+
+.css-13cymwt-control {
+  background-color: var(--secondaryColor) !important;
+}
 .css-t3ipsp-control:hover {
-border-color: var(--blue) !important;
+  border-color: var(--primaryColor) !important;
 }
 
-.css-t3ipsp-control{
-  box-shadow: 0 0 0 1px var(--blue) !important;
+.css-t3ipsp-control {
+  box-shadow: 0 0 0 1px var(--primaryColor) !important;
 }
 
-.css-tr4s17-option{
-  background-color: var(--blue) !important;
+.css-tr4s17-option {
+  background-color: var(--primaryColor) !important;
 }
 
-.css-1dimb5e-singleValue  {
-
-  color: var(--blue) !important;
+.css-1dimb5e-singleValue {
+  color: var(--primaryColor) !important;
 }
 
-@media (max-width: 940px){
-  .template-import-radio{
+@media (max-width: 940px) {
+  .template-import-radio {
     flex-direction: column;
     align-items: flex-end;
   }
@@ -95,7 +100,7 @@ border-color: var(--blue) !important;
     position: static;
   }
 
-  .form-label-radio-field{
+  .form-label-radio-field {
     position: relative;
     justify-content: flex-start;
   }
@@ -103,17 +108,16 @@ border-color: var(--blue) !important;
   .form-label-radio-field .form-input-box::before {
     left: 84px;
   }
-  .custom-radio{
+  .custom-radio {
     left: 87.3px;
   }
-
 }
 
 /* .project-value-list {
   width: 80%;
   min-width: 500px;
   max-width: 700px;
-  border: 1px solid lightblue;
+  border: 1px solid lightprimaryColor;
   border-radius: 10px;
   padding: 60px;
   display: flex;

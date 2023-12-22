@@ -31,8 +31,8 @@
   position: relative;
   padding: 1.5em;
   font-size: 1em;
-  color: var(--blue);
-  background-color: white;
+  color: var(--primaryColor);
+  background-color: var(--secondaryColor);
   box-shadow: 0px 0px 10px 2px #0000002e;
   transition: 0.25s;
   border-radius: 2px;
@@ -41,7 +41,7 @@
 }
 
 .card:hover {
-  /* border: 1.5px solid var(--blue); */
+  /* border: 1.5px solid var(--primaryColor); */
   transition: 0.25s;
   scale: 1.05;
   background-color: #2a5dcb0c;
@@ -50,7 +50,7 @@
 .card-circle-design {
   width: 30px;
   height: 30px;
-  background-color: var(--blue);
+  background-color: var(--primaryColor);
   position: absolute;
   top: 0;
   left: 0;
@@ -76,13 +76,13 @@
   right: 2px;
   top: 3rem;
   z-index: 100;
-  background-color: white;
+  background-color: var(--secondaryColor);
   width: 10rem;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.21);
 }
 
 .card-actions-item {
-  background-color: var(--white);
+  background-color: var(--secondaryColor);
   z-index: 1;
   padding: 0 12px;
   display: flex;
@@ -91,18 +91,18 @@
 .card-actions-item button {
   width: 10rem;
   padding: 5px;
-  background-color: var(--white);
+  background-color: var(--secondaryColor);
   border: none;
   display: flex;
   justify-content: space-between;
   gap: 10px;
   align-items: center;
-  color: var(--blue);
+  color: var(--primaryColor);
 }
 
 .card-actions-item button:hover {
-  color: var(--white);
-  background-color: var(--blue);
+  color: var(--secondaryColor);
+  background-color: var(--primaryColor);
 }
 
 .card-title {
@@ -120,8 +120,8 @@
 
 .card-actions-icon:hover {
   padding: 4px;
-  background-color: var(--blue);
-  color: var(--white);
+  background-color: var(--primaryColor);
+  color: var(--secondaryColor);
   transition: 0.25s;
 }
 

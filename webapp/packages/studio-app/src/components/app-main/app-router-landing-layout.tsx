@@ -4,6 +4,7 @@ import AppNavBar from "./app-nav-bar";
 import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {RoutePath} from "../routes";
 import {debugComponent} from "../../config/global";
+import { useThemeContext } from '../../context/ThemeContext/theme.context';
 
 const AppRouterLandingLayout = () => {
   const location = useLocation();
@@ -13,8 +14,9 @@ const AppRouterLandingLayout = () => {
     console.log(`location: ${JSON.stringify(location)}`);
   }
 
+  const {theme} = useThemeContext();
   return (
-      <div className="landing-page">
+      <div className="landing-page" style={{...theme as React.CSSProperties}}>
         {/* {(location.pathname !== RoutePath.ROOT) && <AppNavBar />} */}
         <AppNavBar />
         <div className="outlet">

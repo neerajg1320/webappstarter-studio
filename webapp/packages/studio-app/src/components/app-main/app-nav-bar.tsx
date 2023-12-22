@@ -195,6 +195,7 @@ const AppNavBar = () => {
           </div>
         ) : (
           <div className="create-btn-profile">
+            <Slider size={1} />
             <Link to={RoutePath.PROJECT_NEW} className="cta">
               <Tooltip msg={"Create project"} position={"bottom"} tip={true}>
                 <Button

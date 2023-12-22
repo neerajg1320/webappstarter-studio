@@ -8,10 +8,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  
 }
 
 .landing-page .outlet {
   width: 100%;
+  min-height: 100vh;
+  background-color: var(--secondaryColor);
   /* height: calc(100% - 5rem); */
   /* padding: 10px; */
   /* display: flex;

@@ -1,5 +1,5 @@
 .project-cell-wrapper {
-  border: 1px solid var(--blue);
+  border: 1px solid var(--primaryColor);
 
   height: 90vh;
   width: 100%;
@@ -21,7 +21,7 @@
   flex-direction: row;
   padding: 5px 10px 10px 0px;
   gap: 8px;
-  background-color: var(--white);
+  background-color: var(--secondaryColor);
   justify-content: flex-end;
   box-shadow: 0px -1px 4px 0 #0000002e;
 }
