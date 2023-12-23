@@ -5,6 +5,7 @@ import { RiRefreshLine } from "react-icons/ri";
 import { MdFileCopy } from "react-icons/md";
 import { RiFileUploadFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
+import { FaFileCirclePlus } from "react-icons/fa6";
 import Tooltip from "../app-components/tooltip";
 import Button from "../app-components/button";
 
@@ -14,6 +15,7 @@ export enum FileBrowserControlBarEventType {
   COPY_FILE = "copy_file",
   UPLOAD_FILES = "upload_files",
   DELETE_FILE = "delete_file",
+  RELOAD_FILES = 'reload_files',
 }
 
 export interface FileBrowserControlBarEvent {
@@ -72,12 +74,18 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
     }
   };
 
+  const handleRefresh: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (selectedFileLocalId) {
+      onEvent({name: FileBrowserControlBarEventType.RELOAD_FILES, localId: selectedFileLocalId});
+    }
+  }
+
   return (
     <div className="file-browser-control-bar">
       <Tooltip msg={"refresh"} position={"bottom"} tip={false}>
         <Button
           title=""
-          handleButtonClick={handleCreateFile}
+          handleButtonClick={handleRefresh}
           buttonType="button"
           buttonClass="file-browser-control-bar-btn"
         >
@@ -92,6 +100,16 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
           buttonClass="file-browser-control-bar-btn"
         >
           <MdFileCopy />
+        </Button>
+      </Tooltip>
+      <Tooltip msg={"create file"} position={"bottom"} tip={false}>
+        <Button
+          title=""
+          handleButtonClick={handleCreateFile}
+          buttonType="button"
+          buttonClass="file-browser-control-bar-btn"
+        >
+          <FaFileCirclePlus />
         </Button>
       </Tooltip>
       <Tooltip msg={"upload image"} position={"bottom"} tip={false}>
