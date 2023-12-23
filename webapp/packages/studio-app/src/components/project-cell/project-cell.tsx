@@ -459,6 +459,10 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
         setEditedFileLocalId(null);
         break;
 
+      case "files-reload":
+        handleProjectReloadClick();
+        break;
+
       default:
         console.error(
           `ProjectCell:handleFileBrowserEvent() event type '${type}' not supported`
