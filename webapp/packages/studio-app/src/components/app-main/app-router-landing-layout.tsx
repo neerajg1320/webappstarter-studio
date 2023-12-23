@@ -5,6 +5,7 @@ import {useTypedSelector} from "../../hooks/use-typed-selector";
 import {RoutePath} from "../routes";
 import {debugComponent} from "../../config/global";
 import { useThemeContext } from '../../context/ThemeContext/theme.context';
+import { ToastContainer } from "react-toastify";
 
 const AppRouterLandingLayout = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const AppRouterLandingLayout = () => {
         <div className="outlet">
           <Outlet />
         </div>
+        <ToastContainer />
       </div>
   );
 }

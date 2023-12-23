@@ -35,15 +35,49 @@
   color: var(--secondaryColor);
 }
 
-.visible{
+.visible {
   visibility: visible;
 }
-.hidden{
+.hidden {
   visibility: hidden;
 }
 
-.apiStatus{
+.apiStatus {
   height: 1em;
+}
+
+.Toastify__toast-container--top-center {
+  top: 6.3em !important;
+}
+
+.toast__animate__fadeIn {
+  animation: animate__fadeIn 0.3s ease-out both;
+}
+
+.toastify__toast{
+  border-radius: 8px !important;
+}
+
+
+@keyframes animate__fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.toast__animate__fadeOut {
+  animation: animate__fadeOut 0.3s ease-out both;
+}
+
+@keyframes animate__fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes logo-spin {

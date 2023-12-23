@@ -61,6 +61,7 @@ const AppNavBar = () => {
     }
 
     navigate(RoutePath.ROOT, { replace: true });
+    setIsProfileDropDown(false);
   };
 
   const handleDeleteClick = () => {
@@ -96,6 +97,7 @@ const AppNavBar = () => {
 
   const handlePasswordChangeClick = () => {
     navigate(RoutePath.USER_PASSWORD_CHANGE, { replace: true });
+    setIsProfileDropDown(false);
   };
 
   const [isToggleMenu, setIsToggleMenu] = useState(false);

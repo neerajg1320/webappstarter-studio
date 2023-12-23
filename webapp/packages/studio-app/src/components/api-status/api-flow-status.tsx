@@ -26,43 +26,44 @@ const ApiFlowStatus: React.FC<ApiFlowStatusProps> = ({
       apiFlowReset();
     }, 30000);
 
+    toast.error(`${apiFlowState.error}`, {theme: "colored"})
     return ()=>{
       clearTimeout(timeOut)
     };
-    toast.error(`${apiFlowState.error}`, {theme: "colored"})
   }, [apiFlowState.error]);
 
   return (
-    <div>
-      {apiFlowState.requestStarted && !apiFlowState.requestCompleted && (
-        <div>{reqMsg}</div>
-      )}
-      {apiFlowState.requestCompleted && apiFlowState.error && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: "10px",
-            justifyContent: "center",
-          }}
-        >
-          <span
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              color: "rgb(239 68 68)",
-              fontSize: "1rem",
-            }}
-          >
-            <BsFillExclamationCircleFill color="EF4444" size="22" />
-            {apiFlowState.error}
-          </span>
-          {/* <button onClick={handleClick}>ok</button> */}
-        </div>
-      )}
-    </div>
+    // <div>
+    //   {apiFlowState.requestStarted && !apiFlowState.requestCompleted && (
+    //     <div>{reqMsg}</div>
+    //   )}
+    //   {apiFlowState.requestCompleted && apiFlowState.error && (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         flexDirection: "row",
+    //         alignItems: "center",
+    //         gap: "10px",
+    //         justifyContent: "center",
+    //       }}
+    //     >
+    //       <span
+    //         style={{
+    //           display: "flex",
+    //           gap: "10px",
+    //           alignItems: "center",
+    //           color: "rgb(239 68 68)",
+    //           fontSize: "1rem",
+    //         }}
+    //       >
+    //         <BsFillExclamationCircleFill color="EF4444" size="22" />
+    //         {apiFlowState.error}
+    //       </span>
+    //       {/* <button onClick={handleClick}>ok</button> */}
+    //     </div>
+    //   )}
+    // </div>
+    <></>
   );
 };
 

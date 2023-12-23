@@ -22,3 +22,17 @@
   justify-content: center;
   align-items: center; */
 }
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  background: var(--toastSuccessColor) !important;
+  color: var(--secondaryColor) !important;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error{
+  background: var(--toastErrorColor) !important;
+  color: var(--secondaryColor) !important;
+}
+
+.Toastify__close-button {
+  color: var(--secondaryColor) !important;
+}
