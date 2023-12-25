@@ -42,6 +42,7 @@ const AppNavBar = () => {
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
   const profileDropDownRef = useRef<HTMLDivElement>(null);
   const { theme } = useThemeContext();
+  const listRef = useRef<HTMLDivElement | null>(null);
   const [options, setOptions] = useState([
     {
       label: "Grid mode",
@@ -168,13 +169,17 @@ const AppNavBar = () => {
             </li>
           </ul>
         ) : (
-          <ul className={`list  ${isToggleMenu ? " " : "moveLeft"}`}>
-            <li className="listItem">
-              <Link className="navItem" to={RoutePath.PROJECTS}>
-                Projects
-              </Link>
-            </li>
-          </ul>
+          <CheckOutSide onClickOutside={setIsToggleMenu} ref={listRef}>
+            <div ref={listRef}>
+              <ul className={`list  ${isToggleMenu ? " " : "moveLeft"}`}>
+                <li className="listItem">
+                  <Link className="navItem" to={RoutePath.PROJECTS}>
+                    Projects
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </CheckOutSide>
         )}
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (

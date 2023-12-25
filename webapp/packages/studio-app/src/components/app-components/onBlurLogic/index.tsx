@@ -23,11 +23,11 @@ const CheckOutSide = forwardRef(
     };
 
     useEffect(() => {
-      console.log("CheckOutside Mount");
+      // console.log("CheckOutside Mount");
       document.addEventListener("click", handleClickOutside, true);
 
       return () => {
-        console.log("CheckOutside UnMount");
+        // console.log("CheckOutside UnMount");
         document.removeEventListener("click", handleClickOutside,true);
       };
     }, []);

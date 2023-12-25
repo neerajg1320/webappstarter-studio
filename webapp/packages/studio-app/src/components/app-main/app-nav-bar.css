@@ -126,6 +126,7 @@
 
   .menu {
     display: block;
+    cursor: pointer;
   }
 
   .listItem {
