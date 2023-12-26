@@ -6,6 +6,7 @@ import { MdFileCopy } from "react-icons/md";
 import { RiFileUploadFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa";
 import { FaFileCirclePlus } from "react-icons/fa6";
+import { PiFilePlusFill } from "react-icons/pi";
 import Tooltip from "../app-components/tooltip";
 import Button from "../app-components/button";
 
@@ -92,6 +93,16 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
           <RiRefreshLine />
         </Button>
       </Tooltip>
+      <Tooltip msg={"create file"} position={"bottom"} tip={false}>
+        <Button
+          title=""
+          handleButtonClick={handleCreateFile}
+          buttonType="button"
+          buttonClass="file-browser-control-bar-btn"
+        >
+          <PiFilePlusFill />
+        </Button>
+      </Tooltip>
       <Tooltip msg={"copy file"} position={"bottom"} tip={false}>
         <Button
           title=""
@@ -100,16 +111,6 @@ const FileBrowserControlBar: React.FC<FileBrowserControlBarProps> = ({
           buttonClass="file-browser-control-bar-btn"
         >
           <MdFileCopy />
-        </Button>
-      </Tooltip>
-      <Tooltip msg={"create file"} position={"bottom"} tip={false}>
-        <Button
-          title=""
-          handleButtonClick={handleCreateFile}
-          buttonType="button"
-          buttonClass="file-browser-control-bar-btn"
-        >
-          <FaFileCirclePlus />
         </Button>
       </Tooltip>
       <Tooltip msg={"upload image"} position={"bottom"} tip={false}>
