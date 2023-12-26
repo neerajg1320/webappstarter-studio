@@ -7,7 +7,8 @@ export type ItemEventType = "change" | "click" | "double-click";
 
 export type ItemDataType = {
   keyName:ItemKeyType,
-  itemInfo:ItemInfoType
+  itemInfo:ItemInfoType,
+  target?: HTMLInputElement
 }
 
 // The ItemEventNameChangeType extends in type is achieved by intersection.

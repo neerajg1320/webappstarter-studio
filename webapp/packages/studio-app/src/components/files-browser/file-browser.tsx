@@ -41,6 +41,7 @@ export type FileBrowserEventType = "select" | "path-change" | "file-delete" | "f
 export type FileBrowserEventData = {
   localId?: string;
   newPath?: string;
+  target?: HTMLInputElement
 };
 export type FileBrowserEventFunc = (
   type: FileBrowserEventType,
@@ -316,7 +317,8 @@ const FileBrowser: React.FC<FilesTreeProps> = ({
 
           // Add event
           if (newPath && propOnEvent) {
-            propOnEvent("path-change", { localId: reduxFile.localId, newPath });
+            const {target} = data;
+            propOnEvent("path-change", { localId: reduxFile.localId, newPath, target });
           }
         } else {
           console.log(`Name change for folder not supported yet`);

@@ -21,7 +21,7 @@ interface EditableSpanProps {
   onModeChange?: (isEditing: boolean) => void;
   opts?: EditableSpanPropsOptions;
   renderCount?: number;
-  onBlur?: FocusEventHandler<HTMLInputElement>;
+  onBlur?:(target: HTMLInputElement)=>void;
   onValidate?: (string) => boolean;
   itemNode?: any;
 }
@@ -44,6 +44,7 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
   const [editEnabled, setEditEnabled] = useState(mode);
   const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
   const targetRef = useRef<EventTarget & HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>();
 
   if (debugComponent) {
     console.log(
@@ -81,9 +82,16 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
             targetRef.current.blur();
           }
         }, 0);
+
       } else {
         // Here we directly blur
-        e.currentTarget.blur();
+        
+        // e.currentTarget.blur();
+        // e.currentTarget.focus()
+        // setTimeout(()=>{
+        //   e.currentTarget.focus()
+        // }, 0)
+        propOnBlur(e.currentTarget)
       }
     }
   };
@@ -94,17 +102,17 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
     //   return;
     // }
 
-    if (opts?.blurOnEnterPressOnly) {
-      if (blurCauseKeyDown) {
-        setEditEnabled(false);
-        setBlurCauseKeyDown(false);
-      }
-    } else {
-      setEditEnabled(false);
-    }
+    // if (opts?.blurOnEnterPressOnly) {
+    //   if (blurCauseKeyDown) {
+    //     setEditEnabled(false);
+    //     setBlurCauseKeyDown(false);
+    //   }
+    // } else {
+    //   setEditEnabled(false);
+    // }
 
-    if (propOnBlur) {
-      propOnBlur(e);
+    if (propOnBlur ) {
+      propOnBlur(e.currentTarget);
     }
   };
 
@@ -133,6 +141,7 @@ const EditableSpan: React.FC<EditableSpanProps> = ({
           onKeyDownCapture={handleInputKeyPress}
           onBlur={handleInputBlur}
           onFocus={handleInputFocus}
+          ref={inputRef}
         />
       ) : (
         <span>{propValue}</span>

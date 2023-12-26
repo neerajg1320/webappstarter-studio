@@ -4,7 +4,7 @@ import {
   TraversalFunc
 } from "../common/expandable-args/component-tree-item";
 import {FileReduxNode} from "./file-redux-node";
-import React, {FocusEventHandler, useEffect, useMemo, useRef, useState} from "react";
+import React, {FocusEventHandler, useEffect, useMemo, useRef, useState, KeyboardEventHandler} from "react";
 import './file-browser-redux-tree-item.css';
 import EditableSpan from "../common/editable-span";
 import {debugComponent} from "../../config/global";
@@ -86,10 +86,10 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
     setFileName(value);
   }
 
-  const handleFileNameBlur:FocusEventHandler<HTMLInputElement>  = (e) => {
+  const handleFileNameBlur= (target: HTMLInputElement) => {
     if (propOnEvent) {
       // console.log(`handleOnChange(): value=${fileName} and event`);
-      propOnEvent("change", {keyName, itemInfo, value:fileName});
+      propOnEvent("change", {keyName, itemInfo, value:fileName, target});
     }
   }
 

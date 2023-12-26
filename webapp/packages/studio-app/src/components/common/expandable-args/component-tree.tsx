@@ -107,9 +107,12 @@ const ComponentTree: React.FC<ComponentTreeProps> = ({
 
   const handleHOComponentEvent = (
     type: ItemEventType,
-    data: ItemEventDataType
+    data: ItemEventDataType,
+    
   ) => {
     // console.log(`ComponentTree:onEvent() type:${type} data:`, data);
+    // const {target} = data;
+
     if (propOnEvent) {
       propOnEvent(type, data);
     }

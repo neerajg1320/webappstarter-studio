@@ -50,6 +50,7 @@ import {
 import Tooltip from "../app-components/tooltip";
 import Button from "../app-components/button";
 import { ToastContainer, toast, cssTransition } from "react-toastify";
+import { customToast } from "../app-components/toast/toast";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -58,7 +59,7 @@ interface ProjectCellProps {
 const CodeEditor = lazy(() => import("../file-cell/code-editor"));
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
-// is rendered. 
+// is rendered.
 const ProjectCell: React.FC<ProjectCellProps> = () => {
   const debugComponent = false;
   const debugComponentLifecycle = debugComponent || false;
@@ -410,19 +411,39 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
   };
   const bounce = cssTransition({
     enter: "toast__animate__fadeIn",
-    exit: "toast__animate__fadeOut"
+    exit: "toast__animate__fadeOut",
   });
 
-  const handleFilePathChange = (localId: string, value: string) => {
+  const handleFilePathChange = (
+    localId: string,
+    value: string,
+    target: HTMLInputElement
+  ) => {
     // TBD: Check the path duplicate here itself
     const filePaths = getProjectFilePaths(filesState, projectLocalId);
 
     if (filePaths.indexOf(value) > -1) {
-      toast.error(`Error! file ${value} already present`,  { theme: "colored", position: "top-center", hideProgressBar: true, autoClose: 3000, transition: bounce})
+      // toast.error(`Error! file ${value} already present`,  { theme: "colored", position: "top-center", hideProgressBar: true, autoClose: 3000, transition: bounce})
+      // setTimeout(() => {
+        target.focus();
+      // }, 1000);
+      console.log("target: ", target.value);
+      customToast(
+        `Error! file ${value} already present`,
+        "error",
+        "top-center",
+        3000,
+        "colored",
+        true
+      );
       console.log(`Error! file ${value} already present`);
       // setFileName("error.js");
       return;
     }
+    // else{
+    //   target.blur()
+    //   return;
+    // }
 
     const bundleLanguage = pathToBundleLanguage(value);
     const language = pathToCodeLanguage(value);
@@ -456,8 +477,8 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
         break;
 
       case "path-change":
-        const { localId, newPath } = data;
-        handleFilePathChange(localId, newPath);
+        const { localId, newPath, target } = data;
+        handleFilePathChange(localId, newPath, target);
         break;
 
       case "file-delete":
