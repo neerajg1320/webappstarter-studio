@@ -89,7 +89,7 @@ export const getFileTreeFromReduxFileList = (title:string, reduxFiles: ReduxFile
   reduxFiles.forEach((reduxFile) => {
     const pathParts = reduxFile.path.split("/");
     let currentNode = rootFileNode;
-
+    // console.log("pathParts: ", pathParts)
     
     pathParts.forEach((part, index) => {
       if (!currentNode.childrenFileNodeMap) {

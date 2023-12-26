@@ -4,6 +4,7 @@ import { useActions } from "../../hooks/use-actions";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { theme } from "../../context/ThemeContext/theme.config";
+import { customToast } from "../app-components/toast/toast";
 
 interface ApiFlowStatusProps {
   reqMsg: string;
@@ -26,9 +27,18 @@ const ApiFlowStatus: React.FC<ApiFlowStatusProps> = ({
       apiFlowReset();
     }, 30000);
 
-    toast.error(`${apiFlowState.error}`, {theme: "colored"})
-    return ()=>{
-      clearTimeout(timeOut)
+    if (apiFlowState.error) {
+      customToast(
+        `${apiFlowState.error}`,
+        "error",
+        "top-center",
+        3000,
+        "colored",
+        true
+      );
+    }
+    return () => {
+      clearTimeout(timeOut);
     };
   }, [apiFlowState.error]);
 

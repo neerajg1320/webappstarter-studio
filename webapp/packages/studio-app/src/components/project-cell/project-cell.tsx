@@ -49,7 +49,7 @@ import {
 } from "../../state/helpers/file-helpers";
 import Tooltip from "../app-components/tooltip";
 import Button from "../app-components/button";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, cssTransition } from "react-toastify";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -58,7 +58,7 @@ interface ProjectCellProps {
 const CodeEditor = lazy(() => import("../file-cell/code-editor"));
 
 // We will change back passing the projectLocalId as the project state gets changed by the time the component
-// is rendered.
+// is rendered. 
 const ProjectCell: React.FC<ProjectCellProps> = () => {
   const debugComponent = false;
   const debugComponentLifecycle = debugComponent || false;
@@ -408,12 +408,17 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
 
     setProjectSelectedFile(fileLocalId);
   };
+  const bounce = cssTransition({
+    enter: "toast__animate__fadeIn",
+    exit: "toast__animate__fadeOut"
+  });
 
   const handleFilePathChange = (localId: string, value: string) => {
     // TBD: Check the path duplicate here itself
     const filePaths = getProjectFilePaths(filesState, projectLocalId);
 
     if (filePaths.indexOf(value) > -1) {
+      toast.error(`Error! file ${value} already present`,  { theme: "colored", position: "top-center", hideProgressBar: true, autoClose: 3000, transition: bounce})
       console.log(`Error! file ${value} already present`);
       // setFileName("error.js");
       return;
@@ -664,9 +669,9 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
   }, [filesSectionSize]);
 
   useEffect(() => {
-    if (apiState.error) {
-      toast.error(`${apiState.error}`, { theme: "colored" });
-    }
+    // if (apiState.error) {
+    //   toast.error(`${apiState.error}`, { theme: "colored" });
+    // }
     // console.log(apiState)
   }, [apiState.error]);
 
@@ -801,7 +806,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
         </ResizableDiv>
       )}
 
-      {/* <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} /> */}
+      <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
 
       {/*<pre style={{textAlign: "left"}}>{JSON.stringify(reduxProject, null, 2)}</pre>*/}
       {reduxProject.htmlContent &&

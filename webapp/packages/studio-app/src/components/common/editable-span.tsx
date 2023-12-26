@@ -1,6 +1,14 @@
-import React, {KeyboardEventHandler, useEffect, useRef, useState, FocusEvent, FocusEventHandler} from "react";
-import {debugComponent} from "../../config/global";
-import {withLifecyleLogger} from "../../hoc/logger";
+import React, {
+  KeyboardEventHandler,
+  useEffect,
+  useRef,
+  useState,
+  FocusEvent,
+  FocusEventHandler,
+} from "react";
+import { debugComponent } from "../../config/global";
+import { withLifecyleLogger } from "../../hoc/logger";
+import { ItemInfoType } from "./expandable-args/component-tree-item";
 
 interface EditableSpanPropsOptions {
   blurOnEnterPressOnly?: boolean;
@@ -8,47 +16,52 @@ interface EditableSpanPropsOptions {
 
 interface EditableSpanProps {
   value: string;
-  onChange?: (v:string) => void;
+  onChange?: (v: string) => void;
   mode?: boolean;
-  onModeChange?: (isEditing:boolean) => void;
+  onModeChange?: (isEditing: boolean) => void;
   opts?: EditableSpanPropsOptions;
-  renderCount ?: number;
-  onBlur ?: FocusEventHandler<HTMLInputElement> ;
-  onValidate ?: (string) => boolean;
+  renderCount?: number;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
+  onValidate?: (string) => boolean;
+  itemNode?: any;
 }
 
-const defaultOpts:EditableSpanPropsOptions = {
+const defaultOpts: EditableSpanPropsOptions = {
   blurOnEnterPressOnly: false,
-}
+};
 
-const EditableSpan:React.FC<EditableSpanProps> = ({
-                                                    value:propValue,
-                                                    onChange:propOnChange,
-                                                    mode=false,
-                                                    onModeChange,
-                                                    opts=defaultOpts,
-                                                    renderCount,
-                                                    onBlur: propOnBlur,
-                                                    onValidate: propOnValidate,
+const EditableSpan: React.FC<EditableSpanProps> = ({
+  value: propValue,
+  onChange: propOnChange,
+  mode = false,
+  onModeChange,
+  opts = defaultOpts,
+  renderCount,
+  onBlur: propOnBlur,
+  onValidate: propOnValidate,
+  itemNode,
 }) => {
   const [editEnabled, setEditEnabled] = useState(mode);
   const [blurCauseKeyDown, setBlurCauseKeyDown] = useState<boolean>(false);
   const targetRef = useRef<EventTarget & HTMLInputElement>();
 
   if (debugComponent) {
-    console.log(`EditableSpan: rendered: value=${propValue} mode:${mode} editEnabled:${editEnabled}`, opts);
+    console.log(
+      `EditableSpan: rendered: value=${propValue} mode:${mode} editEnabled:${editEnabled}`,
+      opts
+    );
   }
 
+  
   useEffect(() => {
     setEditEnabled(mode);
   }, [mode]);
 
-
   const handleDoubleClick = () => {
     setEditEnabled(true);
-  }
+  };
 
-  const handleInputKeyPress:KeyboardEventHandler<HTMLInputElement> = (e) => {
+  const handleInputKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
     // if (propOnValidate && !propOnValidate(propValue)) {
     //   return;
     // }
@@ -73,15 +86,15 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
         e.currentTarget.blur();
       }
     }
-  }
+  };
 
-  const handleInputBlur:FocusEventHandler<HTMLInputElement> = (e) => {
+  const handleInputBlur: FocusEventHandler<HTMLInputElement> = (e) => {
     // console.log(`EditableSpanProps:handleInputBlur() propValue:${propValue}`);
     // if (propOnValidate && !propOnValidate(propValue)) {
     //   return;
     // }
 
-    if(opts?.blurOnEnterPressOnly) {
+    if (opts?.blurOnEnterPressOnly) {
       if (blurCauseKeyDown) {
         setEditEnabled(false);
         setBlurCauseKeyDown(false);
@@ -93,7 +106,7 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
     if (propOnBlur) {
       propOnBlur(e);
     }
-  }
+  };
 
   useEffect(() => {
     if (onModeChange) {
@@ -103,29 +116,29 @@ const EditableSpan:React.FC<EditableSpanProps> = ({
 
   const handleInputFocus = (e) => {
     const value = e.target.value;
-    const dotPosition = value.indexOf('.');
+    const dotPosition = value.indexOf(".");
     console.log(`handleInputFocus: value=${value} dotPosition:${dotPosition}`);
 
     e.target.selectionStart = 0;
-    e.target.selectionEnd= dotPosition;
-  }
+    e.target.selectionEnd = dotPosition;
+  };
 
   return (
-      <div onDoubleClick={handleDoubleClick} >
-        {editEnabled ?
-            <input
-                autoFocus
-                value={propValue}
-                onChange={(e:any) => propOnChange(e.target.value)}
-                onKeyDownCapture={handleInputKeyPress}
-                onBlur={handleInputBlur}
-                onFocus={handleInputFocus}
-            />
-            :
-            <span>{propValue}</span>
-        }
-      </div>
+    <div onDoubleClick={handleDoubleClick}>
+      {editEnabled ? (
+        <input
+          autoFocus
+          value={propValue}
+          onChange={(e: any) => propOnChange(e.target.value)}
+          onKeyDownCapture={handleInputKeyPress}
+          onBlur={handleInputBlur}
+          onFocus={handleInputFocus}
+        />
+      ) : (
+        <span>{propValue}</span>
+      )}
+    </div>
   );
-}
+};
 
 export default EditableSpan;

@@ -162,6 +162,7 @@ const ClickableFileItem:React.FC<KeyValueHOComponentProps> = ({
             onModeChange={handleModeChange}
             onBlur={handleFileNameBlur}
             onValidate={handleFileNameValidate}
+            itemNode={itemNode}
         />
       </div>
   );

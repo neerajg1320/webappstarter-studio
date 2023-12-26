@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useActions } from "../../hooks/use-actions";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { toast, cssTransition } from "react-toastify";
+import { customToast } from "../app-components/toast/toast";
 
 interface UserFlowStatusProps {
   reqMsg: string;
@@ -26,20 +27,16 @@ const UserFlowStatus: React.FC<UserFlowStatusProps> = ({
   //     flowState.message = ""
   //   }, 1000)
   // })
-  console.log("flowState: ", flowState);
+  // console.log("flowState: ", flowState);
 
-  const bounce = cssTransition({
-    enter: "toast__animate__fadeIn",
-    exit: "toast__animate__fadeOut"
-  });
 
   useEffect(() => {
     if (flowState.error) {
-      toast.error(`${flowState.error}`, { theme: "colored", position: "top-center", hideProgressBar: true, autoClose: 3000, transition: bounce});
+      customToast(`${flowState.error}`, 'error', 'top-center' , 3000, "colored", true);
     }
 
     if(flowState.requestCompleted && !flowState.error){
-      toast.success("Logged In Successfully!", { theme: "colored", position: "top-center", hideProgressBar: true, autoClose: 3000, transition: bounce})
+      customToast("Logged In Successfully! ", 'success', 'top-center' , 3000, "colored", true);
     }
   }, [flowState.error, flowState.requestCompleted]);
 
