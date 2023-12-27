@@ -50,7 +50,7 @@ import {
 import Tooltip from "../app-components/tooltip";
 import Button from "../app-components/button";
 import { ToastContainer, toast, cssTransition } from "react-toastify";
-import { customToast } from "../app-components/toast/toast";
+import { customToast } from "../app-components/customToast/toast";
 
 interface ProjectCellProps {
   // reduxProject: ReduxProject;
@@ -431,7 +431,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
       customToast(
         `Error! file ${value} already present`,
         "error",
-        "top-center",
+        "bottom-center",
         3000,
         "colored",
         true

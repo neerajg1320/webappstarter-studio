@@ -4,7 +4,7 @@ import { useActions } from "../../hooks/use-actions";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { theme } from "../../context/ThemeContext/theme.config";
-import { customToast } from "../app-components/toast/toast";
+import { customToast } from "../app-components/customToast/toast";
 
 interface ApiFlowStatusProps {
   reqMsg: string;
@@ -31,7 +31,7 @@ const ApiFlowStatus: React.FC<ApiFlowStatusProps> = ({
       customToast(
         `${apiFlowState.error}`,
         "error",
-        "top-center",
+        "bottom-center",
         3000,
         "colored",
         true

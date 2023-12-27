@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useActions } from "../../hooks/use-actions";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import { toast, cssTransition } from "react-toastify";
-import { customToast } from "../app-components/toast/toast";
+import { customToast } from "../app-components/customToast/toast";
 
 interface UserFlowStatusProps {
   reqMsg: string;
@@ -32,11 +32,11 @@ const UserFlowStatus: React.FC<UserFlowStatusProps> = ({
 
   useEffect(() => {
     if (flowState.error) {
-      customToast(`${flowState.error}`, 'error', 'top-center' , 3000, "colored", true);
+      customToast(`${flowState.error}`, 'error', 'bottom-center' , 3000, "colored", true);
     }
 
     if(flowState.requestCompleted && !flowState.error){
-      customToast("Logged In Successfully! ", 'success', 'top-center' , 3000, "colored", true);
+      customToast("Logged In Successfully! ", 'success', 'bottom-center' , 3000, "colored", true);
     }
   }, [flowState.error, flowState.requestCompleted]);
 
