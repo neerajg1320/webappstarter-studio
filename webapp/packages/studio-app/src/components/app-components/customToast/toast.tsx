@@ -27,7 +27,7 @@ export const customToast = (
       theme: theme,
       position: position,
       hideProgressBar: hideProgressBar,
-      autoClose: 60000,
+      autoClose: autoClose,
       transition: bounce,
     });
   } else if (status === "error") {

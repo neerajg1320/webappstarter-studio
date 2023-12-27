@@ -103,7 +103,7 @@
 
 .custom--dropdown-container .dropdown-item:hover {
     background-color: rgba(130, 134, 139, 0.05);
-    color: var(--primaryColor);
+    color: var(--secondaryColor);
     background-color: var(--primaryColor);
 
 }
