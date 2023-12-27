@@ -7,6 +7,9 @@ import { debugAuth, placeholderEmail } from "../../config/global";
 import UserFlowStatus from "./user-flow-status";
 import FormField from "../app-components/FormField";
 import Button from "../app-components/button";
+import Loader from "../app-components/loader/loader";
+import { UserFlowState } from "../../state/user";
+import { apiFlowReset } from "../../state/action-creators";
 
 interface LoginUser {
   email: string;
@@ -89,8 +92,11 @@ const UserLogin = () => {
     setApiStateDuration(true);
     setTimeout(() => {
       setApiStateDuration(false);
+      apiFlowReset();
     }, 30000);
   };
+
+  console.log("apiState in Login", apiState);
 
   const handleInputChange = (actionType: string, actionPayload: string) => {
     dispatch({ type: actionType, payload: actionPayload });
@@ -111,6 +117,10 @@ const UserLogin = () => {
       setApiStateDuration(false);
     }, 30000);
   };
+
+  if (apiState.requestStarted) {
+    return <Loader size={5} width={0.4}/>;
+  }
 
   return (
     <div className="form-wrapper">
@@ -169,7 +179,7 @@ const UserLogin = () => {
             title="Cancel"
           />
         </div>
-        <div className="text-center" style={{height: 0}}>
+        <div className="text-center" style={{ height: 0 }}>
           Not Registered yet?{" "}
           <Link to={RoutePath.USER_REGISTER} className="cta">
             <span className="not-member-register ">Register</span>
@@ -180,7 +190,7 @@ const UserLogin = () => {
               email={user.email}
               flowState={apiState}
             />
-          )}
+          )} 
         </div>
       </form>
     </div>

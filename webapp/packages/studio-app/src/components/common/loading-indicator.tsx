@@ -1,13 +1,15 @@
-import React from "react";
+import React, { CSSProperties } from "react";
+import Loader from "../app-components/loader/loader"
+import { useThemeContext } from "../../context/ThemeContext/theme.context";
 
 const LoadingIndicator = () => {
+  const {theme} = useThemeContext();
   return (
       <div style={{
-          height: "100%", width: "100%",
-          display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"
+          ...theme as CSSProperties
         }}
       >
-        <span>Loading...</span>
+        <Loader size={5} width={0.4}/>
       </div>
   );
 }

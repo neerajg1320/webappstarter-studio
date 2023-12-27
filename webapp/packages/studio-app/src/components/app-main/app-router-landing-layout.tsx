@@ -6,6 +6,7 @@ import {RoutePath} from "../routes";
 import {debugComponent} from "../../config/global";
 import { useThemeContext } from '../../context/ThemeContext/theme.context';
 import { ToastContainer } from "react-toastify";
+import Loader from "../app-components/loader/loader"
 
 const AppRouterLandingLayout = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const AppRouterLandingLayout = () => {
       <div className="landing-page" style={{...theme as React.CSSProperties}}>
         {/* {(location.pathname !== RoutePath.ROOT) && <AppNavBar />} */}
         <AppNavBar />
+        {/* <Loader size={7}/> */}
         <div className="outlet">
           <Outlet />
         </div>

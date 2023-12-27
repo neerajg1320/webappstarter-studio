@@ -52,6 +52,7 @@ const reducer = produce((state:ApiState = initialState, action: Action): ApiStat
         resource: action.payload.resource,
         operation: action.payload.operation,
         requestStarted: true,
+        // requestCompleted: false
       };
       assignShortcutProperty(action.payload.id, state);
       return state;
@@ -59,12 +60,14 @@ const reducer = produce((state:ApiState = initialState, action: Action): ApiStat
     case  ActionType.API_REQUEST_SUCCESS:
       state.apiFlowStateMap[action.payload.id].requestCompleted = true;
       state.apiFlowStateMap[action.payload.id].message = action.payload.messages.join(',\n');
+      state.apiFlowStateMap[action.payload.id].requestStarted = false;
       assignShortcutProperty(action.payload.id, state);
       return state;
 
     case  ActionType.API_REQUEST_FAILED:
       state.apiFlowStateMap[action.payload.id].requestCompleted = true;
       state.apiFlowStateMap[action.payload.id].error = action.payload.errors.join(',\n');
+      state.apiFlowStateMap[action.payload.id].requestStarted = false;
       assignShortcutProperty(action.payload.id, state);
       return state;
 

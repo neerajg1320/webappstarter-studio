@@ -40,7 +40,7 @@ interface AuthState {
 const initialFlowState:UserFlowState = {
   type: UserFlowType.UNKNOWN,
   requestStarted: false,
-  requestCompleted: false,
+  requestCompleted: true,
   message: null,
   error: null,
 };
@@ -142,7 +142,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     case ActionType.USER_REQUEST_SUCCESS:
       state.flowStateMap[action.payload.id].requestCompleted = true;
       state.flowStateMap[action.payload.id].message = action.payload.messages.join(',\n');
-
+      state.flowStateMap[action.payload.id].requestStarted = false;
       assignShortcutProperty(state.flowStateMap[action.payload.id].type, action.payload.id, state);
 
       return state;
@@ -150,7 +150,7 @@ const reducer = produce((state:AuthState = initialState, action: Action): AuthSt
     case ActionType.USER_REQUEST_FAILED:
       state.flowStateMap[action.payload.id].requestCompleted = true;
       state.flowStateMap[action.payload.id].error = action.payload.errors.join(',\n');
-
+      state.flowStateMap[action.payload.id].requestStarted = false;
       // This will work till user sends only one request per FlowType
       // Solution would be to put requestId in the UI component
       assignShortcutProperty(state.flowStateMap[action.payload.id].type, action.payload.id, state);

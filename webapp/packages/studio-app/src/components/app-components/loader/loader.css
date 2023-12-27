@@ -1,0 +1,33 @@
+.loaderBody{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loaderCircle{
+    aspect-ratio: 1;
+    background-color: transparent;
+    border-radius: 50%;
+    border-color: var(--secondaryColor);
+    border-style: solid;
+    /* border: 7px solid var(--secondaryColor); */
+    display: flex;
+    position: relative;
+    border-top-color: var(--primaryColor);
+    border-top-style: solid;
+    /* border-top: 7px solid var(--primaryColor); */
+    /* justify-content: center;
+    align-items: center; */
+    animation: rotateAnimation 1.5s linear infinite;
+  }
+  
+  @keyframes rotateAnimation{
+    0%{
+      rotate: 0deg;
+    }
+  
+    100%{
+      rotate: 360deg;
+    }
+  }

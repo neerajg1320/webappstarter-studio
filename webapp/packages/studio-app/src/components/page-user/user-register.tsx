@@ -207,13 +207,13 @@ const UserRegister = () => {
           <Link to={RoutePath.USER_LOGIN} replace className="cta">
             <span className="not-member-register">Login</span>
           </Link>
-          {apiStateDuration && (
+          {/* {apiStateDuration && ( */}
             <UserFlowStatus
               reqMsg="Authenticating User ..."
               email={user.email}
               flowState={apiState}
             />
-          )}
+          {/* )} */}
         </div>
       </form>
     </div>

@@ -35,8 +35,8 @@ const UserFlowStatus: React.FC<UserFlowStatusProps> = ({
       customToast(`${flowState.error}`, 'error', 'bottom-center' , 3000, "colored", true);
     }
 
-    if(flowState.requestCompleted && !flowState.error){
-      customToast("Logged In Successfully! ", 'success', 'bottom-center' , 3000, "colored", true);
+    else if(flowState.message){
+      customToast(`${flowState.message}`, 'success', 'bottom-center' , 3000, "colored", true);
     }
   }, [flowState.error, flowState.requestCompleted]);
 
