@@ -29,18 +29,45 @@ const UserFlowStatus: React.FC<UserFlowStatusProps> = ({
   // })
   // console.log("flowState: ", flowState);
 
-
   useEffect(() => {
     if (flowState.error) {
-      customToast(`${flowState.error}`, 'error', 'bottom-center' , 3000, "colored", true);
-    }
-
-    else if(flowState.message){
-      customToast(`${flowState.message}`, 'success', 'bottom-center' , 3000, "colored", true);
+      customToast(
+        `${flowState.error}`,
+        "error",
+        "bottom-center",
+        3000,
+        "colored",
+        true
+      );
+    } else if (flowState.message) {
+      customToast(
+        `${flowState.message}`,
+        "success",
+        "bottom-center",
+        3000,
+        "colored",
+        true
+      );
     }
   }, [flowState.error, flowState.requestCompleted]);
 
   return (
+    <div
+    style={{
+      display: "flex",
+      gap: "10px",
+      alignItems: "center",
+      color: "rgb(239 68 68)",
+      fontSize: "1rem",
+    }}
+  >
+      {flowState.error === "E-mail is not verified." && (
+        <span className="inverse-action" onClick={handleResendActivationClick} >
+          <BsFillExclamationCircleFill color="EF4444" size="22" />
+          Resend Activation
+        </span>
+      )}
+    </div>
     // <div>
     //   {flowState.requestStarted && !flowState.requestCompleted && (
     //     <div>{reqMsg}</div>
@@ -48,15 +75,15 @@ const UserFlowStatus: React.FC<UserFlowStatusProps> = ({
     //   {flowState.requestCompleted && (
     //     <>
     //       {flowState.error ? (
-    //         <div
-    //           style={{
-    //             display: "flex",
-    //             gap: "10px",
-    //             alignItems: "center",
-    //             color: "rgb(239 68 68)",
-    //             fontSize: "1rem",
-    //           }}
-    //         >
+            // <div
+            //   style={{
+            //     display: "flex",
+            //     gap: "10px",
+            //     alignItems: "center",
+            //     color: "rgb(239 68 68)",
+            //     fontSize: "1rem",
+            //   }}
+            // >
     //           <BsFillExclamationCircleFill color="EF4444" size="22" />
     //           {flowState.error}
     //           {flowState.error === "E-mail is not verified." && (
@@ -84,7 +111,6 @@ const UserFlowStatus: React.FC<UserFlowStatusProps> = ({
     //     </>
     //   )}
     // </div>
-    <></>
   );
 };
 

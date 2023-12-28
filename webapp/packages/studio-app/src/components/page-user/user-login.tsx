@@ -91,12 +91,12 @@ const UserLogin = () => {
     user.password = "";
     setApiStateDuration(true);
     setTimeout(() => {
+      // apiState.message = null;
       setApiStateDuration(false);
-      apiFlowReset();
     }, 30000);
   };
 
-  console.log("apiState in Login", apiState);
+  // console.log("apiState in Login", apiState);
 
   const handleInputChange = (actionType: string, actionPayload: string) => {
     dispatch({ type: actionType, payload: actionPayload });

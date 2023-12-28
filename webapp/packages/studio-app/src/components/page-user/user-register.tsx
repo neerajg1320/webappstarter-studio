@@ -9,6 +9,7 @@ import UserFlowStatus from "./user-flow-status";
 import FormField from "../app-components/FormField";
 import { BsFillExclamationCircleFill } from "react-icons/bs";
 import Button from "../app-components/button";
+import Loader from "../app-components/loader/loader";
 
 interface RegisterUser {
   email: string;
@@ -125,8 +126,14 @@ const UserRegister = () => {
 
   const handleCancelClick = () => {
     navigate(RoutePath.BACK, { replace: true });
+
   };
 
+  if (apiState.requestStarted) {
+    return <Loader size={5} width={0.4}/>;
+  }
+
+  console.log("apiState: ", apiState)
   return (
     <div className="form-wrapper">
       <form
@@ -207,13 +214,13 @@ const UserRegister = () => {
           <Link to={RoutePath.USER_LOGIN} replace className="cta">
             <span className="not-member-register">Login</span>
           </Link>
-          {/* {apiStateDuration && ( */}
+          {apiStateDuration && (
             <UserFlowStatus
               reqMsg="Authenticating User ..."
               email={user.email}
               flowState={apiState}
             />
-          {/* )} */}
+          )}
         </div>
       </form>
     </div>

@@ -27,6 +27,8 @@ const FileViewer:React.FC<FileViewerProps> = ({reduxProject, editedFile, onChang
     }
   }, [editedFile]);
 
+  // console.log("editedFile: ", editedFile)
+
   return (
     <>
       {/*<span>{fileContentType}</span>*/}
