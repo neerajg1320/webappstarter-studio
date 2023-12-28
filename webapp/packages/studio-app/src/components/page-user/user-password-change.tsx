@@ -6,6 +6,7 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import FormField from "../app-components/FormField";
 import UserFlowStatus from "./user-flow-status";
 import Button from "../app-components/button";
+import Loader from "../app-components/loader/loader";
 
 interface UserState {
   id: string;
@@ -59,12 +60,14 @@ const UserPasswordChange: React.FC<UserPasswordChangeProps> = ({
       if (uid && token) {
         passwordResetConfirmUser(uid, token, user.password1, user.password2);
         navigate(RoutePath.USER_LOGIN, { replace: true });
-
       } else {
         console.error(`Error! uid and token are required`);
       }
     } else {
       passwordChange(user.password1, user.password2, user.old_password);
+      user.old_password = "";
+      user.password1 = "";
+      user.password2 = "";
     }
 
     setApiStateDuration(true);
@@ -86,6 +89,10 @@ const UserPasswordChange: React.FC<UserPasswordChangeProps> = ({
   };
 
   console.log(user);
+
+  if (apiState.requestStarted) {
+    return <Loader size={5} width={0.4} />;
+  }
 
   return (
     <div className="form-wrapper">

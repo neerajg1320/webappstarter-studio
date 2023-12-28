@@ -6,6 +6,7 @@ import { useTypedSelector } from "../../hooks/use-typed-selector";
 import UserFlowStatus from "./user-flow-status";
 import "./user.css";
 import Button from "../app-components/button";
+import Loader from "../app-components/loader/loader";
 
 const UserActivate = () => {
   const navigate = useNavigate();
@@ -36,6 +37,10 @@ const UserActivate = () => {
   const handleLoginClick = () => {
     navigate(RoutePath.USER_LOGIN, { replace: true });
   };
+
+  if (apiState.requestStarted) {
+    return <Loader size={5} width={0.4} />;
+  }
 
   return (
     <div className="form-wrapper">
