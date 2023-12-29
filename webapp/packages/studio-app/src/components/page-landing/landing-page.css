@@ -96,7 +96,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--secondaryColor);
+  /* background-color: var(--secondaryColor); */
   color: var(--primaryColor);
   padding: 4rem 3rem 3rem 3rem;
 }

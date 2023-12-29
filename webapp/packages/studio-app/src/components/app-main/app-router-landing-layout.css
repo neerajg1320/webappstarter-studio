@@ -14,7 +14,7 @@
 .landing-page .outlet {
   width: 100%;
   min-height: 100vh;
-  background-color: var(--secondaryColor);
+  background-color: var(--backgroundColor);
   /* height: calc(100% - 5rem); */
   /* padding: 10px; */
   /* display: flex;
