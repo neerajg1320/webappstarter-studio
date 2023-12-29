@@ -6,6 +6,6 @@
   flex-direction: row;
   justify-content: flex-end;
   color: var(--primaryColor);
-  box-shadow: 0px 0px 4px 1px #0000002e;
+  box-shadow: 0px 0px 4px 1px var(--shadowColor);
   margin-bottom: 5px;
 }

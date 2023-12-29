@@ -11,7 +11,7 @@
   justify-content: space-between;
   align-items: center;
   z-index: 4;
-  box-shadow: 2px 2px 10px rgb(115 115 115 / 14%);
+  box-shadow: 2px 2px 10px var(--shadowColor);
 }
 
 .menu {
@@ -97,7 +97,7 @@
   right: 0.5rem;
   background-color: var(--secondaryColor);
   color: var(--primaryColor);
-  box-shadow: 1px 1px 10px 0px rgba(97, 97, 97, 0.281);
+  box-shadow: 1px 1px 10px 0px var(--shadowColor);
   z-index: 5;
 }
 
@@ -120,7 +120,7 @@
     left: 0;
     width: 50%;
     padding-top: 10px;
-    box-shadow: 0px 5px 10px 0px #00000052;
+    box-shadow: 0px 5px 10px 0px var(--shadowColor);
     transition: 1s;
   }
 

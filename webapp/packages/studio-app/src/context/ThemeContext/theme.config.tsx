@@ -8,12 +8,14 @@ export const theme: Record<ThemeType, Theme> = {
     // commonly used
     "--secondaryColor": Color.WHITE,
     "--toastErrorColor": Color.OFFRED,
-    "--toastSuccessColor": Color.OFFBLUE
+    "--toastSuccessColor": Color.OFFBLUE,
+    "--shadowColor": Color.LIGHT_SHADOW
   },
   dark: {
     "--primaryColor": Color.WHITE,
     "--secondaryColor": Color.BLACK,
     "--toastErrorColor": Color.OFFRED,
-    "--toastSuccessColor": Color.OFFWHITE
+    "--toastSuccessColor": Color.OFFWHITE,
+    "--shadowColor": Color.DARK_SHADOW
   },
 };

@@ -51,7 +51,7 @@
   background: var(--secondaryColor);
   padding: 10px 0;
   width: 11rem;
-  box-shadow: 0 0 5px 0px #000000b0;
+  box-shadow: 0 0 5px 0px var(--shadowColor);
   right: 15px;
 }
 
