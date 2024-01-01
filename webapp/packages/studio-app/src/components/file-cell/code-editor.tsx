@@ -8,6 +8,8 @@ import {CodeLanguage} from "../../state/language";
 import {debugComponent} from "../../config/global";
 import ErrorBoundary from "../common/error-boundary";
 import CodeFallbackEditor from "./code-fallback-editor";
+import { useThemeContext } from '../../context/ThemeContext/theme.context';
+import { Color } from '../../context/ThemeContext/theme.model';
 
 // Keeping this for reference: Uncommenting the following lines add 3MB of size to our bundle
 // import {editor} from "monaco-editor";
@@ -74,6 +76,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const enableFormatButton = useMemo<boolean>(() => false, []);
 
   const editorRef = useRef<any>();
+  const { currentTheme } = useThemeContext();
   const editorLanguage = useMemo(() => {
     if (language === CodeLanguage.JAVASCRIPT) {
       return 'javascript';
@@ -179,7 +182,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
                     value={propValue}
                     language={editorLanguage}
                     onMount={handleEditorMount}
-                    theme='vs-dark'
+                    theme={ currentTheme === 'light'? 'light' : 'vs-dark'}
                     height="calc(100% - 20px)"
                     options={{
                       wordWrap: "off",
