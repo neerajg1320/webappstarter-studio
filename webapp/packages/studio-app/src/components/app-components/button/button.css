@@ -1,7 +1,7 @@
 
 .loginButton {
   border: 2px solid var(--primaryColor);
-  background-color: var(--secondaryColor);
+  background-color: inherit;
   color: var(--primaryColor);
   padding: 0.8rem 0rem;
 }

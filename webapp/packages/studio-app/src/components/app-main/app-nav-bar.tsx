@@ -135,7 +135,9 @@ const AppNavBar = () => {
 
   return (
     <>
-      <div className="navbar" style={{ ...(theme as React.CSSProperties) }}>
+      <div className="navbar" 
+      // style={{ ...(theme as React.CSSProperties) }}
+      >
         <div className="logoMenu">
           <div className="menu" onClick={handleToggleClick}>
             <FaBarsStaggered />

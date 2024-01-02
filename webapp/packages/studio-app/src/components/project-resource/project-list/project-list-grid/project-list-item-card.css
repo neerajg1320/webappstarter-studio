@@ -45,7 +45,7 @@
   transition: 0.25s;
   scale: 1.05;
   color: var(--primaryColor);
-  background-color: rgb(from var(--secondaryColor) r g b / .6) ;
+  background-color: rgb(from var(--secondaryColor) r g b / .7) ;
   box-shadow: 2px 2px 10px 5px var(--shadowColor);
 }
 .card-circle-design {

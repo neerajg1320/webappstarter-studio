@@ -11,7 +11,7 @@ export interface Theme {
 }
 
 export enum Color {
-  BLACK = "#1a1919",
+  BLACK = "#262d33",
   LIGHT_BLACK = "#251f1f",
   WHITE = "#FFFFFF",
   BLUE = "#2b4172",
@@ -20,6 +20,6 @@ export enum Color {
   OFFRED = "rgb(231 76 60 / 90%)",
   LIGHT_SHADOW = "rgb(114 114 114 / 22%)",
   DARK_SHADOW = "black",
-  DARK_BACKGROUND_COLOR = "#0c1216d6"
+  DARK_BACKGROUND_COLOR = "#252f38a8"
 
 }

@@ -50,7 +50,7 @@
   /* padding: 13px 25px; */
   border-radius: 5px;
   color: var(--primaryColor);
-  background-color: var(--secondaryColor);
+  background-color: inherit;
   font-size: 16px;
   /* font-family: $poppins; */
   display: inline-block;
@@ -70,7 +70,7 @@
 }
 
 .nav-create{
-  background-color: var(--secondaryColor);
+  background-color: inherit;
   border: none;
   color: inherit;
   display: flex;
