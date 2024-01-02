@@ -68,7 +68,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({
   // eslint-disable-next-line
   const projectFiles: ReduxFile[] = useMemo(() => {
     if (reduxProject) {
-      console.log("filesState: ",filesState)
+      // console.log("filesState: ",filesState)
       const files = Object.entries(filesState.data)
         .filter(([k, v]) => v.projectLocalId === reduxProject.localId)
         .map(([k, v]) => v);
@@ -108,7 +108,7 @@ const FileBrowser: React.FC<FilesTreeProps> = ({
     }
   }, [reduxProject.title, projectFiles]);
 
-  console.log("fileTree: ", fileTree)
+  // console.log("fileTree: ", fileTree)
 
   // useEffect(() => {
   //   if (debugComponent) {

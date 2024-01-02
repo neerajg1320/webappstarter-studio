@@ -168,7 +168,7 @@ const bundleCode = async (
 
             bundle: true,
             treeShaking: true,
-            minify: true,
+            minify: false,
 
             // This prevents the write to disk
             write: false,
@@ -192,6 +192,8 @@ const bundleCode = async (
         // The esbuild.initialize should have been already invoked
         const result = await esbuild.build(builderServiceOptions);
 
+        // const hell = await esbuild.
+
         // TBD: Later we will add the functionality to specify explicit versions
         if (debugBundler) {
           console.log(`packageMap:`, packageMap);
@@ -204,10 +206,15 @@ const bundleCode = async (
         } as BundleResult;
     } catch (err) {
 
+    
+
         console.error(`Got bundler error:`, err);
+        // console.log(err);
+        
 
         if (err instanceof Error) {
             console.error(`Got bundler error message:`, err.message);
+            // console.log(err.name)
             return {
                 code: '',
                 err: err.message
