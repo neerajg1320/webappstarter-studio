@@ -8,15 +8,17 @@ const ProjectEditAdvancePopUp = () => {
 
   }
   return (
-    <div>
-      <div>
+    <div className='outer-advance-popup-box'>
+    <div className='advance-popup-box'>
+      <div className='advance-popup-field'>
         <p>Tree Shaking</p>
         <Slider size={0.8} toggle={true} onToggleClick={handleTreeShakingClick}/>
       </div>
-      <div>
+      <div className='advance-popup-field'>
         <p>Minify</p>
         <Slider size={0.8} toggle={true} onToggleClick={handleTreeShakingClick}/>
       </div>
+    </div>
     </div>
   )
 }
