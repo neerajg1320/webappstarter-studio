@@ -49,6 +49,23 @@
   border-radius: 50%;
 }
 
+.advance-btn {
+  width: max-content;
+  font-size: 1.125rem;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--primaryColor);
+  background-color: var(--secondaryColor);
+  color: var(--primaryColor);
+  cursor: pointer;
+}
+
+.advance-btn:hover{
+  background-color: var(--primaryColor);
+  color: var(--secondaryColor);
+
+}
+
 .form-input-box [type="radio"]:checked + .custom-radio {
   background-color: var(--primaryColor);
 }

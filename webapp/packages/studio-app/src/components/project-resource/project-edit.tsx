@@ -15,6 +15,7 @@ import ApiFlowStatus from "../api-status/api-flow-status";
 import FormField from "../app-components/FormField";
 import Button from "../app-components/button";
 import { MdVisibility } from "react-icons/md";
+import ProjectEditAdvancePopUp from "./project-edit-advance-popup";
 
 interface ProjectEditProps {
   isEdit: boolean;
@@ -210,154 +211,165 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     inputFileRef.current.click();
   };
 
+  const handleAdvanceButton = () =>{
+
+  }
+
   console.log("apiState: ", apiState);
 
   // console.log(projectTemplateOption);
   return (
-    <div className="form-wrapper">
-      <form
-        className="form"
-        method="POST"
-        // onSubmit={handleSaveClick}
-      >
-        <FormField
-          labelName="Title"
-          fieldType="text"
-          fieldName="title"
-          fieldValue={currentProject?.title}
-          handleInputChange={handleProjectFields}
-          // setFormData={setData}
-          // formData={data}
-          required={true}
-        />
-        <FormField
-          labelName="Description"
-          fieldType="text"
-          fieldValue={currentProject?.description}
-          fieldName="description"
-          handleInputChange={handleProjectFields}
-          required={true}
-          box="textarea"
-          rows={8}
-        />
-        {!isEdit && (
-          <>
-            <div className="start-config-radio">
-              <label>
-                Start Config<span className="form-required-field">*</span>
-              </label>
-              <div className="template-import-radio">
-                {/* <div className="radio"> */}
-                <FormField
-                  labelName="Template"
-                  fieldType="radio"
-                  fieldName="init-type"
-                  handleInputChange={handleInputClick}
-                  fieldDefaultChecked={!isImport}
-                  // setFormData={setData}
-                  // formData={data}
-                  required={false}
-                />
-                {/* </div> */}
-                {/* <div className="radio"> */}
-                <FormField
-                  labelName="Import"
-                  fieldType="radio"
-                  fieldName="init-type"
-                  handleInputChange={handleInputClick}
-                  fieldDefaultChecked={isImport}
-                  // setFormData={setData}
-                  // formData={data}
-                  required={false}
-                />
-                {/* <FormField
-                  labelName="Copy"
-                  fieldType="radio"
-                  fieldName="init-type"
-                  handleInputChange={handleInputClick}
-                  fieldDefaultChecked={!isImport}
-                  // setFormData={setData}
-                  // formData={data}
-                  required={false}
-                /> */}
-                {/* </div> */}
-                {/* </div> */}
-                {/* <div> */}
-              </div>
-            </div>
+    <ProjectEditAdvancePopUp/>
+    // <div className="form-wrapper">
+    //   <form
+    //     className="form"
+    //     method="POST"
+    //     // onSubmit={handleSaveClick}
+    //   >
+    //     <FormField
+    //       labelName="Title"
+    //       fieldType="text"
+    //       fieldName="title"
+    //       fieldValue={currentProject?.title}
+    //       handleInputChange={handleProjectFields}
+    //       // setFormData={setData}
+    //       // formData={data}
+    //       required={true}
+    //     />
+    //     <FormField
+    //       labelName="Description"
+    //       fieldType="text"
+    //       fieldValue={currentProject?.description}
+    //       fieldName="description"
+    //       handleInputChange={handleProjectFields}
+    //       required={true}
+    //       box="textarea"
+    //       rows={8}
+    //     />
+    //     {!isEdit && (
+    //       <>
+    //         <div className="start-config-radio">
+    //           <label>
+    //             Start Config<span className="form-required-field">*</span>
+    //           </label>
+    //           <div className="template-import-radio">
+    //             {/* <div className="radio"> */}
+    //             <FormField
+    //               labelName="Template"
+    //               fieldType="radio"
+    //               fieldName="init-type"
+    //               handleInputChange={handleInputClick}
+    //               fieldDefaultChecked={!isImport}
+    //               // setFormData={setData}
+    //               // formData={data}
+    //               required={false}
+    //             />
+    //             {/* </div> */}
+    //             {/* <div className="radio"> */}
+    //             <FormField
+    //               labelName="Import"
+    //               fieldType="radio"
+    //               fieldName="init-type"
+    //               handleInputChange={handleInputClick}
+    //               fieldDefaultChecked={isImport}
+    //               // setFormData={setData}
+    //               // formData={data}
+    //               required={false}
+    //             />
+    //             {/* <FormField
+    //               labelName="Copy"
+    //               fieldType="radio"
+    //               fieldName="init-type"
+    //               handleInputChange={handleInputClick}
+    //               fieldDefaultChecked={!isImport}
+    //               // setFormData={setData}
+    //               // formData={data}
+    //               required={false}
+    //             /> */}
+    //             {/* </div> */}
+    //             {/* </div> */}
+    //             {/* <div> */}
+    //           </div>
+    //         </div>
 
-            <div style={{ width: "75%", height: '3rem' }}>
-              {!isImport ? (
-                <div className="start-config">
-                  {/* <label>Template</label> */}
-                  <Select
-                    className="value framework-select"
-                    value={projectTemplateOption}
-                    options={projectTemplateOptions}
-                    onChange={(selected) => {
-                      console.log(selected);
-                      console.log(currentProject);
-                      updateProject({
-                        localId: currentProject?.localId,
-                        template: selected?.value || "none",
-                      } as ReduxUpdateProjectPartial);
-                    }}
-                  />
-                </div>
-              ) : (
-                <div className="start-config">
-                  {/* <label>Project Zip</label> */}
-                  <div className="value zip-upload">
-                    <Button
-                      buttonClass="form-submit-btn"
-                      title="Browse"
-                      buttonType="button"
-                      handleButtonClick={handleBrowseButton}
-                    />
-                    {/* <button
-                      className="button is-info is-small is-rounded"
-                      onClick={(e) => inputFileRef.current.click()}
-                    >
-                      Browse
-                    </button> */}
-                    <input
-                      ref={inputFileRef}
-                      type="file"
-                      accept=".zip"
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                    />
-                    {selectedZipFile && (
-                      <div className="selected-file">
-                        <span>{selectedZipFile.name}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-        <div className="form-submit-cancel-btn">
-          <Button
-            buttonClass="form-submit-btn"
-            title="Save"
-            buttonType="submit"
-            handleButtonClick={handleSaveClick}
-          />
+    //         <div style={{ width: "75%", height: '3rem' }}>
+    //           {!isImport ? (
+    //             <div className="start-config">
+    //               {/* <label>Template</label> */}
+    //               <Select
+    //                 className="value framework-select"
+    //                 value={projectTemplateOption}
+    //                 options={projectTemplateOptions}
+    //                 onChange={(selected) => {
+    //                   console.log(selected);
+    //                   console.log(currentProject);
+    //                   updateProject({
+    //                     localId: currentProject?.localId,
+    //                     template: selected?.value || "none",
+    //                   } as ReduxUpdateProjectPartial);
+    //                 }}
+    //               />
+    //             </div>
+    //           ) : (
+    //             <div className="start-config">
+    //               {/* <label>Project Zip</label> */}
+    //               <div className="value zip-upload">
+    //                 <Button
+    //                   buttonClass="form-submit-btn"
+    //                   title="Browse"
+    //                   buttonType="button"
+    //                   handleButtonClick={handleBrowseButton}
+    //                 />
+    //                 {/* <button
+    //                   className="button is-info is-small is-rounded"
+    //                   onClick={(e) => inputFileRef.current.click()}
+    //                 >
+    //                   Browse
+    //                 </button> */}
+    //                 <input
+    //                   ref={inputFileRef}
+    //                   type="file"
+    //                   accept=".zip"
+    //                   onChange={handleFileChange}
+    //                   style={{ display: "none" }}
+    //                 />
+    //                 {selectedZipFile && (
+    //                   <div className="selected-file">
+    //                     <span>{selectedZipFile.name}</span>
+    //                   </div>
+    //                 )}
+    //               </div>
+    //             </div>
+    //           )}
+    //         </div>
+    //       </>
+    //     )}
+    //     <Button
+    //         buttonClass="advance-btn"
+    //         title="Advance"
+    //         buttonType="button"
+    //         handleButtonClick={handleAdvanceButton}
+    //       />
+    //     <div className="form-submit-cancel-btn">
+    //       <Button
+    //         buttonClass="form-submit-btn"
+    //         title="Save"
+    //         buttonType="submit"
+    //         handleButtonClick={handleSaveClick}
+    //       />
 
-          <Button
-            buttonClass="cancel-btn"
-            handleButtonClick={handleCancelClick}
-            buttonType="button"
-            title="Cancel"
-          />
-        </div>
-        <div className={`${apiState? 'visible': 'hidden'} apiStatus`}>
-          <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
-        </div>
-      </form>
-    </div>
+    //       <Button
+    //         buttonClass="cancel-btn"
+    //         handleButtonClick={handleCancelClick}
+    //         buttonType="button"
+    //         title="Cancel"
+    //       />
+    //     </div>
+    //     <div className={`${apiState? 'visible': 'hidden'} apiStatus`}>
+    //       <ApiFlowStatus reqMsg="Saving Project ..." apiFlowState={apiState} />
+    //     </div>
+    //   </form>
+    // </div>
   );
 };
 

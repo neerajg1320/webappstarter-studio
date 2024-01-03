@@ -1,32 +1,25 @@
 import "./slider.style.scss";
-import React, { useRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import { FaMoon } from "react-icons/fa";
 import { useThemeContext } from "../../../context/ThemeContext/theme.context";
 
-const Slider = ({ size }) => {
-  const [themeIcon, setThemeIcon] = useState("sun");
-  const { setCurrentTheme, theme } = useThemeContext();
+interface SliderProps {
+  size: number;
+  toggle: boolean;
+  onToggleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, ref: React.RefObject<HTMLDivElement>)=>void;
+}
+
+const Slider: React.FC<SliderProps> = ({ size, toggle, onToggleClick}) => {
+ 
   const circleRef = useRef(null);
 
-  const onToggleClick = () => {
-    // console.log(circleRef.current.style);
-    if (circleRef.current.classList.contains("circleLeft")) {
-      circleRef.current.classList.replace("circleLeft", "circleRight");
-      setThemeIcon("moon");
-      setCurrentTheme("dark");
-    } else {
-      circleRef.current.classList.replace("circleRight", "circleLeft");
-      setThemeIcon("sun");
-      setCurrentTheme("light");
-    }
-    // console.log("click");
-  };
+ 
   return (
-    <div className={"sliderBox"} style={{ ...(theme as React.CSSProperties) }}>
-      <div className={"sliderIcons"}>
+    <div className={"sliderBox"} >
+      {!toggle && <div className={"sliderIcons"}>
         {/* <FontAwesomeIcon icon={faSun} size="1x" /> */}
         <FaMoon />
-      </div>
+      </div>}
       <button
         className={"outerBox"}
         style={{
@@ -34,7 +27,7 @@ const Slider = ({ size }) => {
           height: `calc(${size}rem + 0.2rem)`,
           //    borderColor: borderColor, backgroundColor: backgroundColor
         }}
-        onClick={onToggleClick}
+        onClick={(e)=>onToggleClick(e, circleRef)}
       >
         <div
           className={"circle circleLeft"}

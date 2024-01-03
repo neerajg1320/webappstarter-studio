@@ -9,7 +9,7 @@ import {
   faqUrl,
   teamUrl,
 } from "../../config/global";
-import { useRef, useState } from "react";
+import { MouseEventHandler, RefObject, useRef, useState } from "react";
 import { FaBarsStaggered, FaPlus } from "react-icons/fa6";
 import Button from "../app-components/button/index";
 import { FaUserCircle } from "react-icons/fa";
@@ -41,7 +41,7 @@ const AppNavBar = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
   const profileDropDownRef = useRef<HTMLDivElement>(null);
-  const { theme } = useThemeContext();
+  const {  setCurrentTheme, currentTheme } = useThemeContext();
   const listRef = useRef<HTMLDivElement | null>(null);
   const [options, setOptions] = useState([
     {
@@ -130,6 +130,20 @@ const AppNavBar = () => {
   };
 
   const handleChangeSelect = (e) => {};
+
+  // console.log(circleRef);
+  const handleThemeClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, ref: RefObject<HTMLDivElement>) => {
+
+    if (ref.current.classList.contains("circleLeft")) {
+      ref.current.classList.replace("circleLeft", "circleRight");
+      setCurrentTheme("dark");
+    } else {
+      ref.current.classList.replace("circleRight", "circleLeft");
+      setCurrentTheme("light");
+    }
+    // console.log("click");
+  };
+
   // console.log("isAuthenticated: ", isAuthenticated);
   // console.log("currentUser: ", currentUser);
 
@@ -186,7 +200,7 @@ const AppNavBar = () => {
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
-            <Slider size={1} />
+            <Slider size={1} toggle={false} onToggleClick={handleThemeClick} />
             <Link to={RoutePath.USER_LOGIN}>
               <Button
                 title="Login"
@@ -204,7 +218,7 @@ const AppNavBar = () => {
           </div>
         ) : (
           <div className="create-btn-profile">
-            <Slider size={1} />
+            <Slider size={1} toggle={false} onToggleClick={handleThemeClick}/>
             <Link to={RoutePath.PROJECT_NEW} className="cta">
               <Tooltip msg={"Create project"} position={"bottom"} tip={true}>
                 <Button
