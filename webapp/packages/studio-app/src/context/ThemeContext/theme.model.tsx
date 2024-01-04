@@ -20,6 +20,6 @@ export enum Color {
   OFFRED = "rgb(231 76 60 / 90%)",
   LIGHT_SHADOW = "rgb(114 114 114 / 22%)",
   DARK_SHADOW = "black",
-  DARK_BACKGROUND_COLOR = "#252f38a8"
+  DARK_BACKGROUND_COLOR = "#767f87"
 
 }

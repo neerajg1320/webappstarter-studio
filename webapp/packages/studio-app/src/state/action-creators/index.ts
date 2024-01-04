@@ -132,7 +132,7 @@ export const insertCellAfter = (id: string | null, cellType: CellTypes): InsertC
   }
 };
 
-export const createCellBundle = (cellId:string, input:string, bundleLanguage: BundleLanguage) => {
+export const createCellBundle = (cellId:string, input:string, bundleLanguage: BundleLanguage, treeShaking: boolean, minify: boolean) => {
   return async (dispatch:Dispatch<Action>) => {
       dispatch({
           type: ActionType.CELL_BUNDLE_START,
@@ -141,7 +141,7 @@ export const createCellBundle = (cellId:string, input:string, bundleLanguage: Bu
           }
       });
 
-      const result = await bundleCodeStr(cellId, input, bundleLanguage);
+      const result = await bundleCodeStr(cellId, input, bundleLanguage, treeShaking, minify);
 
       dispatch({
           type: ActionType.CELL_BUNDLE_COMPLETE,
@@ -205,7 +205,7 @@ export const bundleProject = (localId:string) => {
 
         // In case the bundling has been initiated due to file name change of entry file then we need local.
 
-        createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage)(dispatch, getState);
+        createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage, reduxProject.treeShaking, reduxProject.minify)(dispatch, getState);
       }
     } else {
       console.error(`Error! file type ${getFileTypeFromPath(entryPath)} not supported`)
@@ -221,7 +221,9 @@ export const createProjectBundle = (
     reduxProject: ReduxProject,
     projectDirPath:string,
     entryFile:string,
-    bundleLanguage: BundleLanguage
+    bundleLanguage: BundleLanguage,
+    treeShaking: boolean,
+    minify: boolean,
 ) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
 
@@ -386,6 +388,8 @@ export const createProjectBundle = (
         reduxProject.title,
         entryUrl,
         bundleLanguage,
+        treeShaking,
+        minify,
         getLoadResultFromRedux,
         getPackageVersion,
         setPackageVersion,

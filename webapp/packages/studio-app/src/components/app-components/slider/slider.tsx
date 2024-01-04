@@ -6,12 +6,13 @@ import { useThemeContext } from "../../../context/ThemeContext/theme.context";
 interface SliderProps {
   size: number;
   toggle: boolean;
-  onToggleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, ref: React.RefObject<HTMLDivElement>)=>void;
+  onToggleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, ref: React.RefObject<HTMLDivElement>, sliderOuterBoxRef?: React.RefObject<HTMLButtonElement>)=>void;
 }
 
 const Slider: React.FC<SliderProps> = ({ size, toggle, onToggleClick}) => {
  
   const circleRef = useRef(null);
+  const sliderOuterBoxRef = useRef(null);
 
  
   return (
@@ -27,7 +28,8 @@ const Slider: React.FC<SliderProps> = ({ size, toggle, onToggleClick}) => {
           height: `calc(${size}rem + 0.2rem)`,
           //    borderColor: borderColor, backgroundColor: backgroundColor
         }}
-        onClick={(e)=>onToggleClick(e, circleRef)}
+        onClick={(e)=>onToggleClick(e, circleRef, sliderOuterBoxRef)}
+        ref={sliderOuterBoxRef}
       >
         <div
           className={"circle circleLeft"}

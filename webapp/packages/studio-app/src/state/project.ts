@@ -77,6 +77,10 @@ export interface ReduxProject extends ServerObject {
   entry_path?: string;
   entry_html_path?: string;
   entryPath?: string|null;
+
+  //Bundle Settings
+  minify?: boolean;
+  treeShaking?: boolean
 }
 
 export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
@@ -109,6 +113,10 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
   entry_path?: string;
   entry_html_path?: string;
   entryPath?: string|null;
+
+  //Bundle Settings
+  minify?: boolean;
+  treeShaking?: boolean
 }
 
 export interface ReduxCreateProjectPartial {
@@ -120,6 +128,8 @@ export interface ReduxCreateProjectPartial {
   template?: ProjectTemplates;
   framework?: ProjectFrameworks;
   toolchain?: ReactToolchains;
+  minify?: boolean;
+  treeShaking?: boolean
 }
 
 export interface ReduxDeleteProjectPartial {

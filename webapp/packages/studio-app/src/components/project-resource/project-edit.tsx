@@ -16,6 +16,7 @@ import FormField from "../app-components/FormField";
 import Button from "../app-components/button";
 import { MdVisibility } from "react-icons/md";
 import ProjectEditAdvancePopUp from "./project-edit-advance-popup";
+import CheckOutSide from "../app-components/onBlurLogic";
 
 interface ProjectEditProps {
   isEdit: boolean;
@@ -46,6 +47,8 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
 
   const [isImport, setImport] = useState<boolean>(false);
   const [isAdvancePopUp, setIsAdvancePopUp] = useState<boolean>(false);
+  const formWrapperRef = useRef<HTMLDivElement>(null);
+  const advancePopUpRef = useRef<HTMLDivElement>(null);
 
   const currentProject = useMemo<ReduxProject | null>(() => {
     if (projectsState.currentProjectId) {
@@ -216,13 +219,21 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
     setIsAdvancePopUp(!isAdvancePopUp);
   };
 
+  useEffect(() => {
+    if (isAdvancePopUp) {
+      formWrapperRef.current.style.filter = "blur(2px) brightness(0.9)";
+    } else {
+      formWrapperRef.current.style.removeProperty("filter");
+    }
+  }, [isAdvancePopUp]);
+
   console.log("apiState: ", apiState);
 
   // console.log(projectTemplateOption);
   return (
     // <ProjectEditAdvancePopUp/>
     <>
-      <div className="form-wrapper">
+      <div className="form-wrapper" ref={formWrapperRef}>
         <form
           className="form"
           method="POST"
@@ -375,7 +386,13 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
           </div>
         </form>
       </div>
-      {isAdvancePopUp && <ProjectEditAdvancePopUp />}
+      {isAdvancePopUp && (
+        <CheckOutSide onClickOutside={setIsAdvancePopUp} ref={advancePopUpRef}>
+          <div ref={advancePopUpRef}>
+            <ProjectEditAdvancePopUp  projectLocalId={currentProject?.localId}/>
+          </div>
+        </CheckOutSide>
+      )}
     </>
   );
 };

@@ -1,13 +1,9 @@
-.outer-advance-popup-box {
-  position: relative;
-  height: 100vh;
-  /* background-color: black; */
-}
+
 
 .advance-popup-box {
   width: 40%;
   border: 1px solid var(--primaryColor);
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   padding: 2rem 1rem;
@@ -26,4 +22,12 @@
     display: grid;
     gap: 2.2rem;
     grid-template-columns: 50% 50%;
+}
+
+.toggleOff{
+    background-color: rgb(188 200 203 / 90%);
+}
+
+.toggleOffBorder{
+    border: 1px solid rgb(188 200 203 / 90%);
 }

@@ -37,7 +37,7 @@ const ProjectListView = () => {
       startConfigType: StartConfigType.PROJECT_TEMPLATE,
       template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
       framework: ProjectFrameworks.NONE,
-      toolchain: ReactToolchains.NONE
+      toolchain: ReactToolchains.NONE,
     });
     navigate(RoutePath.PROJECT_NEW);
   }

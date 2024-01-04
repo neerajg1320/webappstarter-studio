@@ -45,21 +45,23 @@ export const initializeEsbuildBundler = async (): Promise<void> => {
 export const bundleCodeStr = async (
     title: string,
     rawCode: string,
-    bundleLanguage: BundleLanguage
+    bundleLanguage: BundleLanguage, treeShaking: boolean, minify: boolean
 ) => {
-  return bundleCode(title, rawCode, 'cell', bundleLanguage, null);
+  return bundleCode(title, rawCode, 'cell', bundleLanguage, treeShaking, minify, null);
 }
 
 export const bundleFilePath =  async (
     title: string,
     filePath: string,
     bundleLanguage: BundleLanguage,
+    treeShaking: boolean,
+    minify: boolean,
     resultFetcher: (path:string) => Promise<esbuild.OnLoadResult|null>,
     getPackageVersion?: (name:string) => PackageDetectResult,
     setPackageVersion?: (name:string, pkgDependency:string) => void,
     projectRootUrl?: string,
 ):Promise<BundleResult> => {
-  return bundleCode(title, filePath, 'project', bundleLanguage, resultFetcher, getPackageVersion, setPackageVersion, projectRootUrl);
+  return bundleCode(title, filePath, 'project', bundleLanguage, treeShaking, minify,resultFetcher, getPackageVersion, setPackageVersion, projectRootUrl);
 }
 
 // The bundleCodeStr takes a string as input.
@@ -69,6 +71,8 @@ const bundleCode = async (
     codeOrFilePath: string,
     inputType: BundleInputType,
     inputLanguage: BundleLanguage,
+    treeShaking: boolean,
+    minify: boolean,
     resultFetcher: ((path:string) => Promise<esbuild.OnLoadResult|null>)|null,
     getPackageVersion?: (name:string) => PackageDetectResult,
     setPackageVersion?: (name:string, version:string) => void,
@@ -167,8 +171,8 @@ const bundleCode = async (
                 [codeOrFilePath],
 
             bundle: true,
-            treeShaking: true,
-            minify: false,
+            treeShaking: treeShaking,
+            minify: minify,
 
             // This prevents the write to disk
             write: false,

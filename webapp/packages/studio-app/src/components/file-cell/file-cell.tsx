@@ -20,6 +20,13 @@ interface FileCellProps {
 
 const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
   const hotReload = useTypedSelector(state => state.application.hotReload);
+  const projectsState = useTypedSelector((state) => state.projects);
+  const currentProject = useMemo<ReduxProject | null>(() => {
+    if (projectsState.currentProjectId) {
+      return projectsState.data[projectsState.currentProjectId];
+    }
+    return null;
+  }, [projectsState]);
 
   const {createCellBundle, updateFile} = useActions();
 
@@ -34,7 +41,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
-      createCellBundle(reduxFile.localId, reduxFile.content || '',   BundleLanguage.JAVASCRIPT);
+      createCellBundle(reduxFile.localId, reduxFile.content || '',   BundleLanguage.JAVASCRIPT, currentProject?.treeShaking, currentProject?.minify);
       return;
     }
 
@@ -47,7 +54,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
           return;
         }
 
-        createCellBundle(reduxFile.localId, reduxFile.content, BundleLanguage.JAVASCRIPT);
+        createCellBundle(reduxFile.localId, reduxFile.content, BundleLanguage.JAVASCRIPT, currentProject?.treeShaking, currentProject?.minify);
       }, 1000)
 
       return() => {

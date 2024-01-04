@@ -43,7 +43,7 @@
   justify-content: center;
   padding-top: 6rem; /* 96px */
   padding-bottom: 6rem; /* 96px */
-  /* background-color: var(--backgroundColor); */
+  background-color: var(--backgroundColor);
   width: 100%;
   /* min-h-[88vh] flex items-center justify-center py-24  */
 }
