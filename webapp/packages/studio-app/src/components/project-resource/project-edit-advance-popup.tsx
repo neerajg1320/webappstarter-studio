@@ -1,24 +1,19 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./project-edit-advance-popup.css";
 import Slider from "../app-components/slider/slider";
 import { useActions } from "../../hooks/use-actions";
-import {
-  ReduxProject,
-  ReduxUpdateProjectPartial,
-} from "../../state/project";
+import { ReduxProject, ReduxUpdateProjectPartial } from "../../state/project";
+import { advanceSettingTypes } from "../../types/types";
 
 interface ProjectEditAdvancePopUpProps {
   // projectLocalId: string;
-  currentProject: ReduxProject
+  currentProject: ReduxProject;
 }
 
-const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({ currentProject}) => {
-
-  const { updateProject} =
-    useActions();
-
-  const [treeShaking, setTreeShaking] = useState<Boolean>(false)
-
+const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({
+  currentProject
+}) => {
+  const { updateProject } = useActions();
 
   const handleTreeShakingClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -27,19 +22,21 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({ curre
   ) => {
     if (ref.current.classList.contains("circleLeft")) {
       ref.current.classList.replace("circleLeft", "circleRight");
-      sliderOuterBoxRef.current.classList.add("toggleOffBorder")
-      ref.current.classList.add("toggleOff")
+      sliderOuterBoxRef.current.classList.add("toggleOffBorder");
+      ref.current.classList.add("toggleOff");
       updateProject({
         localId: currentProject?.localId,
-        treeShaking: false
+        treeShaking: false,
       } as ReduxUpdateProjectPartial);
+      
+      
     } else {
       ref.current.classList.replace("circleRight", "circleLeft");
-      sliderOuterBoxRef.current.classList.remove("toggleOffBorder")
-      ref.current.classList.remove("toggleOff")
+      sliderOuterBoxRef.current.classList.remove("toggleOffBorder");
+      ref.current.classList.remove("toggleOff");
       updateProject({
         localId: currentProject?.localId,
-        treeShaking: true
+        treeShaking: true,
       } as ReduxUpdateProjectPartial);
     }
   };
@@ -51,26 +48,28 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({ curre
   ) => {
     if (ref.current.classList.contains("circleLeft")) {
       ref.current.classList.replace("circleLeft", "circleRight");
-      sliderOuterBoxRef.current.classList.add("toggleOffBorder")
-      ref.current.classList.add("toggleOff")
+      sliderOuterBoxRef.current.classList.add("toggleOffBorder");
+      ref.current.classList.add("toggleOff");
       updateProject({
         localId: currentProject?.localId,
-        minify: false
+        minify: false,
       } as ReduxUpdateProjectPartial);
     } else {
       ref.current.classList.replace("circleRight", "circleLeft");
-      sliderOuterBoxRef.current.classList.remove("toggleOffBorder")
-      ref.current.classList.remove("toggleOff")
+      sliderOuterBoxRef.current.classList.remove("toggleOffBorder");
+      ref.current.classList.remove("toggleOff");
       updateProject({
         localId: currentProject?.localId,
-        minify: true
+        minify: true,
       } as ReduxUpdateProjectPartial);
     }
   };
 
-
   return (
     <div className="advance-popup-box">
+      <div className="heading-advance-popup">
+        <h3>Advance setting</h3>
+      </div>
       <div className="advance-popup-field">
         <p>Tree Shaking</p>
         <Slider

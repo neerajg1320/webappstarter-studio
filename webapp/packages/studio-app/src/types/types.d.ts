@@ -11,3 +11,8 @@ export type formFieldPropTypes = {
   cols?: number;
   rows?: number;
 };
+
+export interface advanceSettingTypes {
+  treeShaking: boolean;
+  minify: boolean;
+}

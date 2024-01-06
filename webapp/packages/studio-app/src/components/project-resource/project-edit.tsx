@@ -17,6 +17,7 @@ import Button from "../app-components/button";
 import { MdVisibility } from "react-icons/md";
 import ProjectEditAdvancePopUp from "./project-edit-advance-popup";
 import CheckOutSide from "../app-components/onBlurLogic";
+import { advanceSettingTypes } from "../../types/types";
 
 interface ProjectEditProps {
   isEdit: boolean;
@@ -389,7 +390,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
       {isAdvancePopUp && (
         <CheckOutSide onClickOutside={setIsAdvancePopUp} ref={advancePopUpRef}>
           <div ref={advancePopUpRef}>
-            <ProjectEditAdvancePopUp  currentProject={currentProject}/>
+            <ProjectEditAdvancePopUp currentProject={currentProject} />
           </div>
         </CheckOutSide>
       )}

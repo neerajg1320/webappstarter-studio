@@ -1,8 +1,6 @@
-
-
 .advance-popup-box {
   width: 40%;
-  border: 1px solid var(--primaryColor);
+  /* border: 1px solid var(--primaryColor); */
   position: fixed;
   top: 50%;
   left: 50%;
@@ -13,21 +11,31 @@
   display: grid;
   grid-template-columns: 50% 50%;
   gap: 1rem;
+  border-radius: 3px;
+  box-shadow: 2px 2px var(--primaryColor);
+  font-size: inherit;
   /* display: flex;
   flex-wrap: wrap;
   justify-content: center; */
 }
 
 .advance-popup-field {
+  display: grid;
+  gap: 2.2rem;
+  grid-template-columns: 50% 50%;
+}
+
+.toggleOff {
+  background-color: rgb(188 200 203 / 90%);
+}
+
+.toggleOffBorder {
+  border: 1px solid rgb(188 200 203 / 90%);
+}
+
+.heading-advance-popup{
+    grid-column-start: 1;
+    grid-column-end: 3;
     display: grid;
-    gap: 2.2rem;
-    grid-template-columns: 50% 50%;
-}
-
-.toggleOff{
-    background-color: rgb(188 200 203 / 90%);
-}
-
-.toggleOffBorder{
-    border: 1px solid rgb(188 200 203 / 90%);
+    padding-bottom: 20px;
 }
