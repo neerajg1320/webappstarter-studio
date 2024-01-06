@@ -3,14 +3,16 @@ import "./project-edit-advance-popup.css";
 import Slider from "../app-components/slider/slider";
 import { useActions } from "../../hooks/use-actions";
 import {
+  ReduxProject,
   ReduxUpdateProjectPartial,
 } from "../../state/project";
 
 interface ProjectEditAdvancePopUpProps {
-  projectLocalId: string
+  // projectLocalId: string;
+  currentProject: ReduxProject
 }
 
-const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projectLocalId}) => {
+const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({ currentProject}) => {
 
   const { updateProject} =
     useActions();
@@ -28,7 +30,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projec
       sliderOuterBoxRef.current.classList.add("toggleOffBorder")
       ref.current.classList.add("toggleOff")
       updateProject({
-        localId: projectLocalId,
+        localId: currentProject?.localId,
         treeShaking: false
       } as ReduxUpdateProjectPartial);
     } else {
@@ -36,7 +38,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projec
       sliderOuterBoxRef.current.classList.remove("toggleOffBorder")
       ref.current.classList.remove("toggleOff")
       updateProject({
-        localId: projectLocalId,
+        localId: currentProject?.localId,
         treeShaking: true
       } as ReduxUpdateProjectPartial);
     }
@@ -52,7 +54,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projec
       sliderOuterBoxRef.current.classList.add("toggleOffBorder")
       ref.current.classList.add("toggleOff")
       updateProject({
-        localId: projectLocalId,
+        localId: currentProject?.localId,
         minify: false
       } as ReduxUpdateProjectPartial);
     } else {
@@ -60,7 +62,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projec
       sliderOuterBoxRef.current.classList.remove("toggleOffBorder")
       ref.current.classList.remove("toggleOff")
       updateProject({
-        localId: projectLocalId,
+        localId: currentProject?.localId,
         minify: true
       } as ReduxUpdateProjectPartial);
     }
@@ -75,6 +77,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projec
           size={0.8}
           toggle={true}
           onToggleClick={handleTreeShakingClick}
+          circlePosition={currentProject?.treeShaking}
         />
       </div>
       <div className="advance-popup-field">
@@ -83,6 +86,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({projec
           size={0.8}
           toggle={true}
           onToggleClick={handleMinifyClick}
+          circlePosition={currentProject?.minify}
         />
       </div>
     </div>

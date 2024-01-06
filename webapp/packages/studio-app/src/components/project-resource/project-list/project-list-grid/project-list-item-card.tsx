@@ -30,6 +30,8 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
   const [openCardMenu, setOpenCardMenu] = useState(false);
   const cardActionListRef = useRef<HTMLDivElement>(null);
 
+  // console.log("ProjectListItemCard: ", reduxProject)
+
   const selectAndNavigateToProject = () => {
     if (propOnClick) {
       propOnClick(reduxProject.localId);
@@ -66,6 +68,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
   const handleOpenCardMenu = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+   
     e.stopPropagation();
     setOpenCardMenu(!openCardMenu);
 
@@ -81,6 +84,7 @@ const ProjectListItemCard: React.FC<ProjectCardProps> = ({
           localId: reduxProject.localId,
           selectedFileLocalId: reduxProject.entryFileLocalId,
         });
+        // console.log("ProjectListItemCard: ", reduxProject)
         selectAndNavigateToProject();
       }}
     >

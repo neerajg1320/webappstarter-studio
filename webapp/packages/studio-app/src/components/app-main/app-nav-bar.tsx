@@ -56,6 +56,8 @@ const AppNavBar = () => {
     },
   ]);
 
+  
+
   const handleLogoutClick = () => {
     if (currentUser) {
       logoutUser(currentUser.localId);
@@ -85,12 +87,15 @@ const AppNavBar = () => {
       console.log(`location: `, location);
     }
 
+
     if (location.pathname === RoutePath.PROJECT_CELL) {
       navigate(RouteDepth.ONE_UP);
     } else {
       navigate(RoutePath.BACK);
     }
   };
+
+  console.log("location: ", location)
 
   const handleLogoClick = () => {
     navigate(RoutePath.ROOT, { replace: true });
@@ -125,8 +130,8 @@ const AppNavBar = () => {
       template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
       framework: ProjectFrameworks.NONE,
       toolchain: ReactToolchains.NONE,
-      treeShaking: false,
-      minify:false
+      treeShaking: true,
+      minify: true
     });
     navigate(RoutePath.PROJECT_NEW);
   };
@@ -202,7 +207,7 @@ const AppNavBar = () => {
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
-            <Slider size={1} toggle={false} onToggleClick={handleThemeClick} />
+            <Slider size={1} toggle={false} onToggleClick={handleThemeClick} circlePosition={currentTheme == 'light'? true: false} />
             <Link to={RoutePath.USER_LOGIN}>
               <Button
                 title="Login"
@@ -220,7 +225,7 @@ const AppNavBar = () => {
           </div>
         ) : (
           <div className="create-btn-profile">
-            <Slider size={1} toggle={false} onToggleClick={handleThemeClick}/>
+            <Slider size={1} toggle={false} onToggleClick={handleThemeClick} circlePosition={currentTheme == 'light'? true: false}/>
             <Link to={RoutePath.PROJECT_NEW} className="cta">
               <Tooltip msg={"Create project"} position={"bottom"} tip={true}>
                 <Button

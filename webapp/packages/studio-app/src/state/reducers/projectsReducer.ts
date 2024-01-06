@@ -45,8 +45,8 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         isServerResponse: false,
         requestInitiated: false,
         deleteMarked: false,
-        treeShaking: false,
-        minify: false
+        treeShaking: true,
+        minify: true
       };
       state.data[project.localId] = project;
       return state;
@@ -79,6 +79,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
       state.error = null;
       if (action.payload.length > 0) {
         state.data = action.payload.reduce((acc, project) => {
+          console.log("fetch_complete: ", project)
           // We need to see how this behave. We generate this to stay consistent for localId across cells
           project.reduxType = 'project'
           project.localId = generateLocalId();

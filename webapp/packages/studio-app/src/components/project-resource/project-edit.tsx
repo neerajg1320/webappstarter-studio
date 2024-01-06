@@ -389,7 +389,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
       {isAdvancePopUp && (
         <CheckOutSide onClickOutside={setIsAdvancePopUp} ref={advancePopUpRef}>
           <div ref={advancePopUpRef}>
-            <ProjectEditAdvancePopUp  projectLocalId={currentProject?.localId}/>
+            <ProjectEditAdvancePopUp  currentProject={currentProject}/>
           </div>
         </CheckOutSide>
       )}

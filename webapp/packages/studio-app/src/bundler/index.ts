@@ -47,6 +47,7 @@ export const bundleCodeStr = async (
     rawCode: string,
     bundleLanguage: BundleLanguage, treeShaking: boolean, minify: boolean
 ) => {
+  console.log("bundleCodeStr: ", treeShaking, minify)
   return bundleCode(title, rawCode, 'cell', bundleLanguage, treeShaking, minify, null);
 }
 
@@ -81,6 +82,7 @@ const bundleCode = async (
     if (debugBundler) {
       console.log(`bundleCode[${title}]: '${inputType}' '${codeOrFilePath}'`);
     }
+    console.log("bundleCode: ", treeShaking, minify)
 
     // This was a bad idea as the packageMap get copied and is not treated as a global structure
     // So we will use a callback function and see

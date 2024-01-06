@@ -204,6 +204,7 @@ export const bundleProject = (localId:string) => {
         // TBD: The entry_path should come from the front-end as now it lags behind
 
         // In case the bundling has been initiated due to file name change of entry file then we need local.
+        console.log("bundleProject: ", reduxProject)
 
         createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage, reduxProject.treeShaking, reduxProject.minify)(dispatch, getState);
       }

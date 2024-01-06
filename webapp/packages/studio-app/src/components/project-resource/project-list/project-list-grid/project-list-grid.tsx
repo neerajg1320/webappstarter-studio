@@ -32,6 +32,7 @@ const ProjectListGrid: React.FC<ProjectListGridProps> = ({
     >
       {projects &&
         projects.map((prj) => (
+          
           <ProjectListItemCard key={prj.localId} reduxProject={prj} />
         ))}
     </div>
