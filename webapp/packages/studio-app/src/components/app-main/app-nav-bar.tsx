@@ -41,7 +41,7 @@ const AppNavBar = () => {
   const [burgerMenuActive, setBurgerMenuActive] = useState(false);
   const [isProfileDropDown, setIsProfileDropDown] = useState(false);
   const profileDropDownRef = useRef<HTMLDivElement>(null);
-  const {  setCurrentTheme, currentTheme } = useThemeContext();
+  const { setCurrentTheme, currentTheme } = useThemeContext();
   const listRef = useRef<HTMLDivElement | null>(null);
   const [options, setOptions] = useState([
     {
@@ -55,8 +55,6 @@ const AppNavBar = () => {
       icon: "<MdPreview/>",
     },
   ]);
-
-  
 
   const handleLogoutClick = () => {
     if (currentUser) {
@@ -87,15 +85,12 @@ const AppNavBar = () => {
       console.log(`location: `, location);
     }
 
-
     if (location.pathname === RoutePath.PROJECT_CELL) {
       navigate(RouteDepth.ONE_UP);
     } else {
       navigate(RoutePath.BACK);
     }
   };
-
-  console.log("location: ", location)
 
   const handleLogoClick = () => {
     navigate(RoutePath.ROOT, { replace: true });
@@ -131,7 +126,7 @@ const AppNavBar = () => {
       framework: ProjectFrameworks.NONE,
       toolchain: ReactToolchains.NONE,
       treeShaking: true,
-      minify: true
+      minify: true,
     });
     navigate(RoutePath.PROJECT_NEW);
   };
@@ -139,8 +134,10 @@ const AppNavBar = () => {
   const handleChangeSelect = (e) => {};
 
   // console.log(circleRef);
-  const handleThemeClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, ref: RefObject<HTMLDivElement>) => {
-
+  const handleThemeClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    ref: RefObject<HTMLDivElement>
+  ) => {
     if (ref.current.classList.contains("circleLeft")) {
       ref.current.classList.replace("circleLeft", "circleRight");
       setCurrentTheme("dark");
@@ -156,8 +153,9 @@ const AppNavBar = () => {
 
   return (
     <>
-      <div className="navbar" 
-      // style={{ ...(theme as React.CSSProperties) }}
+      <div
+        className="navbar"
+        // style={{ ...(theme as React.CSSProperties) }}
       >
         <div className="logoMenu">
           <div className="menu" onClick={handleToggleClick}>
@@ -207,7 +205,12 @@ const AppNavBar = () => {
 
         {!isAuthenticated && !currentUser?.is_anonymous ? (
           <div className={`loginSignupButtons `}>
-            <Slider size={1} toggle={false} onToggleClick={handleThemeClick} circlePosition={currentTheme == 'light'? true: false} />
+            <Slider
+              size={1}
+              toggle={false}
+              onToggleClick={handleThemeClick}
+              circlePosition={currentTheme == "light" ? true : false}
+            />
             <Link to={RoutePath.USER_LOGIN}>
               <Button
                 title="Login"
@@ -225,7 +228,12 @@ const AppNavBar = () => {
           </div>
         ) : (
           <div className="create-btn-profile">
-            <Slider size={1} toggle={false} onToggleClick={handleThemeClick} circlePosition={currentTheme == 'light'? true: false}/>
+            <Slider
+              size={1}
+              toggle={false}
+              onToggleClick={handleThemeClick}
+              circlePosition={currentTheme == "light" ? true : false}
+            />
             <Link to={RoutePath.PROJECT_NEW} className="cta">
               <Tooltip msg={"Create project"} position={"bottom"} tip={true}>
                 <Button
@@ -239,16 +247,18 @@ const AppNavBar = () => {
               </Tooltip>
             </Link>
 
-            <Tooltip msg={"view"} position={"bottom"} tip={true}>
-              <DropDown
-                options={options}
-                placeHolder={<FaList />}
-                onChange={(e) => handleChangeSelect(e)}
-                align="center"
-                // isSearchable
-                // isMulti
-              />
-            </Tooltip>
+            {location.pathname === RoutePath.PROJECTS && (
+              <Tooltip msg={"view"} position={"bottom"} tip={true}>
+                <DropDown
+                  options={options}
+                  placeHolder={<FaList />}
+                  onChange={(e) => handleChangeSelect(e)}
+                  align="center"
+                  // isSearchable
+                  // isMulti
+                />
+              </Tooltip>
+            )}
 
             <Tooltip msg={"profile"} position={"bottom"} tip={true}>
               <div className="login-profile" onClick={handleProfileClick}>
