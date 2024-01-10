@@ -45,6 +45,9 @@ export interface ReduxFile extends ServerObject {
 
   // This is the value we get upon response from server
   resolveDir?: string;
+
+  tree_shaking?: boolean;
+  minify?: boolean;
 }
 
 export interface ReduxCreateFilePartial extends ServerObjectPartial {
@@ -67,6 +70,9 @@ export interface ReduxCreateFilePartial extends ServerObjectPartial {
   file?: string;
   project?: number;
   is_entry_point?: boolean;
+
+  tree_shaking?: boolean;
+  minify?: boolean;
 }
 
 export interface ReduxUpdateFilePartial extends ServerObjectPartial {
@@ -96,6 +102,9 @@ export interface ReduxUpdateFilePartial extends ServerObjectPartial {
   modifiedKeys?: string[];
 
   resolveDir?: string;
+
+  tree_shaking?: boolean;
+  minify?: boolean;
 }
 
 

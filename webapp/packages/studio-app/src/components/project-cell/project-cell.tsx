@@ -235,6 +235,10 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
   ]);
 
   useEffect(() => {
+    markProjectBundleDirty();
+  }, [reduxProject.minify, reduxProject.tree_shaking]);
+
+  useEffect(() => {
     if (debugComponent) {
       console.log(`ProjectCell: useEffect([reduxProject])`);
     }
@@ -425,7 +429,7 @@ const ProjectCell: React.FC<ProjectCellProps> = () => {
     if (filePaths.indexOf(value) > -1) {
       // toast.error(`Error! file ${value} already present`,  { theme: "colored", position: "top-center", hideProgressBar: true, autoClose: 3000, transition: bounce})
       // setTimeout(() => {
-        target.focus();
+      target.focus();
       // }, 1000);
       console.log("target: ", target.value);
       customToast(

@@ -80,7 +80,7 @@ export interface ReduxProject extends ServerObject {
 
   //Bundle Settings
   minify?: boolean;
-  treeShaking?: boolean
+  tree_shaking?: boolean
 }
 
 export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
@@ -116,7 +116,7 @@ export interface ReduxUpdateProjectPartial extends ServerObjectPartial {
 
   //Bundle Settings
   minify?: boolean;
-  treeShaking?: boolean
+  tree_shaking?: boolean
 }
 
 export interface ReduxCreateProjectPartial {
@@ -129,7 +129,7 @@ export interface ReduxCreateProjectPartial {
   framework?: ProjectFrameworks;
   toolchain?: ReactToolchains;
   minify?: boolean;
-  treeShaking?: boolean
+  tree_shaking?: boolean
 }
 
 export interface ReduxDeleteProjectPartial {

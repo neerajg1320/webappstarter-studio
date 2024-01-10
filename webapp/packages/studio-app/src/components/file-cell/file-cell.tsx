@@ -41,7 +41,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
     // Keep this request out of autoBundling condition.
     // First time i.e. after reload, fresh load we do instant bundling
     if (!bundle) {
-      createCellBundle(reduxFile.localId, reduxFile.content || '',   BundleLanguage.JAVASCRIPT, currentProject?.treeShaking, currentProject?.minify);
+      createCellBundle(reduxFile.localId, reduxFile.content || '',   BundleLanguage.JAVASCRIPT, currentProject?.tree_shaking, currentProject?.minify);
       return;
     }
 
@@ -54,7 +54,7 @@ const FileCell: React.FC<FileCellProps> = ({reduxFile, reduxProject=null}) => {
           return;
         }
 
-        createCellBundle(reduxFile.localId, reduxFile.content, BundleLanguage.JAVASCRIPT, currentProject?.treeShaking, currentProject?.minify);
+        createCellBundle(reduxFile.localId, reduxFile.content, BundleLanguage.JAVASCRIPT, currentProject?.tree_shaking, currentProject?.minify);
       }, 1000)
 
       return() => {

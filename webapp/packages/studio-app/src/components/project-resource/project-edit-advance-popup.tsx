@@ -26,7 +26,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({
       ref.current.classList.add("toggleOff");
       updateProject({
         localId: currentProject?.localId,
-        treeShaking: false,
+        tree_shaking: false,
       } as ReduxUpdateProjectPartial);
       
       
@@ -36,7 +36,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({
       ref.current.classList.remove("toggleOff");
       updateProject({
         localId: currentProject?.localId,
-        treeShaking: true,
+        tree_shaking: true,
       } as ReduxUpdateProjectPartial);
     }
   };
@@ -76,7 +76,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({
           size={0.8}
           toggle={true}
           onToggleClick={handleTreeShakingClick}
-          circlePosition={currentProject?.treeShaking}
+          circlePosition={currentProject?.tree_shaking}
         />
       </div>
       <div className="advance-popup-field">

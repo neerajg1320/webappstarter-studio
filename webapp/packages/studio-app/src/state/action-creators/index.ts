@@ -171,6 +171,7 @@ export const bundleProject = (localId:string) => {
   return async (dispatch:Dispatch<Action>, getState:() => RootState) => {
     const reduxProject = getProjectFromLocalId(getState().projects, localId);
 
+    // console.log("bundleProject: ", reduxProject)
     if (!getState().application.bundlerReady ) {
       console.log(`Error! could not build project '${reduxProject.title.padEnd(20)}', bundler is not ready`);
       return;
@@ -204,9 +205,8 @@ export const bundleProject = (localId:string) => {
         // TBD: The entry_path should come from the front-end as now it lags behind
 
         // In case the bundling has been initiated due to file name change of entry file then we need local.
-        console.log("bundleProject: ", reduxProject)
 
-        createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage, reduxProject.treeShaking, reduxProject.minify)(dispatch, getState);
+        createProjectBundle(reduxProject, projectPath, `${entryPath}`, bundleLanguage, reduxProject.tree_shaking, reduxProject.minify)(dispatch, getState);
       }
     } else {
       console.error(`Error! file type ${getFileTypeFromPath(entryPath)} not supported`)
@@ -232,6 +232,7 @@ export const createProjectBundle = (
       console.log(`createProjectBundle: projectDirPath:'${projectDirPath}' entryFile:'${entryFile}'`);
     }
 
+    // console.log("tree_shaking and minify : ", treeShaking)
     const filesLocalIdMap = getState().files.data;
     const projectFileMap = Object.fromEntries(
         Object.entries(filesLocalIdMap)
@@ -561,6 +562,7 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
     // We need to create form-data as we are supporting upload zip file as well
     const {localId} = projectPartial;
 
+
     const formData = new FormData();
     formData.append("title", projectPartial.title);
     formData.append("description", projectPartial.description);
@@ -575,13 +577,17 @@ export const createProjectOnServer = (projectPartial: ReduxCreateProjectPartial)
     formData.append("template", projectPartial.template);
     formData.append("framework", projectPartial.framework);
     formData.append("toolchain", projectPartial.toolchain);
+    formData.append("minify", projectPartial.minify.toString());
+    formData.append("tree_shaking", projectPartial.tree_shaking.toString())
+
+    console.log("formData and projectPartial: ",formData, projectPartial)
 
     try {
       const response = await axiosApiInstance.post(`${gApiUri}/projects/`, formData, {headers: __rm__gHeaders});
       const {files, ...rest} = response.data
 
+      console.log(response.data);
       if (debugAxios) {
-        console.log(response.data);
       }
       const messages = [response.data.detail];
       dispatch(apiRequestSuccess(reqId, messages));
@@ -977,7 +983,7 @@ export const deleteFiles = (projectLocalId?:string):DeleteFilesAction => {
 export const saveProject = (localId: string) => {
   return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
     const projectState = getState().projects.data[localId];
-
+    console.log("tree_shaking and minify in saveProject : ", projectState.tree_shaking, projectState.minify)
     if (!projectState) {
       console.error(`Error! project id '${localId}' not found in store`)
     }

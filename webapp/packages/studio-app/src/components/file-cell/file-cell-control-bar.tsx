@@ -75,7 +75,9 @@ const FileCellControlBar: React.FC<FileCellControlBarProps> = ({
     createCellBundle(
       reduxFile.localId,
       reduxFile.content,
-      reduxFile.bundleLanguage
+      reduxFile.bundleLanguage,
+      reduxFile.tree_shaking,
+      reduxFile.minify
     );
   };
 

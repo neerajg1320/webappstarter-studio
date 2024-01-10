@@ -62,6 +62,7 @@ export const bundleFilePath =  async (
     setPackageVersion?: (name:string, pkgDependency:string) => void,
     projectRootUrl?: string,
 ):Promise<BundleResult> => {
+  // console.log(" treeShaking and minify in bundleFilePath : ", treeShaking, minify)
   return bundleCode(title, filePath, 'project', bundleLanguage, treeShaking, minify,resultFetcher, getPackageVersion, setPackageVersion, projectRootUrl);
 }
 

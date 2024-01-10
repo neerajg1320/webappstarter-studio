@@ -125,7 +125,7 @@ const AppNavBar = () => {
       template: ProjectTemplates.JAVASCRIPT_WITH_CSS,
       framework: ProjectFrameworks.NONE,
       toolchain: ReactToolchains.NONE,
-      treeShaking: true,
+      tree_shaking: true,
       minify: true,
     });
     navigate(RoutePath.PROJECT_NEW);

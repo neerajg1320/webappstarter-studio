@@ -45,7 +45,7 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
         isServerResponse: false,
         requestInitiated: false,
         deleteMarked: false,
-        treeShaking: true,
+        tree_shaking: true,
         minify: true
       };
       state.data[project.localId] = project;
