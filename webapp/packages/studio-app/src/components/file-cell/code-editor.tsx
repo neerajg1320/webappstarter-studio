@@ -1,22 +1,22 @@
-import './code-editor.css';
-import './syntax.css';
-import React, {useEffect, useMemo, useRef} from 'react';
-import MonacoEditorReact, {Monaco, OnMount} from '@monaco-editor/react';
-import prettier from 'prettier';
-import parserBabel from 'prettier/parser-babel';
-import {CodeLanguage} from "../../state/language";
-import {debugComponent} from "../../config/global";
+import "./code-editor.css";
+import "./syntax.css";
+import React, { useEffect, useMemo, useRef } from "react";
+import MonacoEditorReact, { Monaco, OnMount } from "@monaco-editor/react";
+import prettier from "prettier";
+import parserBabel from "prettier/parser-babel";
+import { CodeLanguage } from "../../state/language";
+import { debugComponent } from "../../config/global";
 import ErrorBoundary from "../common/error-boundary";
 import CodeFallbackEditor from "./code-fallback-editor";
-import { useThemeContext } from '../../context/ThemeContext/theme.context';
-import { Color } from '../../context/ThemeContext/theme.model';
+import { useThemeContext } from "../../context/ThemeContext/theme.context";
+import { Color } from "../../context/ThemeContext/theme.model";
+import { editor } from "monaco-editor";
 
 // Keeping this for reference: Uncommenting the following lines add 3MB of size to our bundle
 // import {editor} from "monaco-editor";
 // import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
-
-const configTypescript = (monaco:Monaco) => {
+const configTypescript = (monaco: Monaco) => {
   // https://stackoverflow.com/questions/56954280/monaco-editor-how-to-disable-errors-typescript
   // https://blog.expo.dev/building-a-code-editor-with-monaco-f84b3a06deaf
   // We will set the language settings for typescript
@@ -32,69 +32,75 @@ const configTypescript = (monaco:Monaco) => {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 // This function is used to active the JSX syntax highlighting
 // We tried to use editor:IStandaloneCodeEditor but that caused size increase by 3MB as whole monaco library got included
-const activateMonacoJSXHighlighter = async (editor:any, monaco:Monaco) => {
-  const { default: traverse } = await import('@babel/traverse');
-  const { parse } = await import('@babel/parser');
-  const { default: MonacoJSXHighlighter } = await import( 'monaco-jsx-highlighter' );
+const activateMonacoJSXHighlighter = async (editor: any, monaco: Monaco) => {
+  const { default: traverse } = await import("@babel/traverse");
+  const { parse } = await import("@babel/parser");
+  const { default: MonacoJSXHighlighter } = await import(
+    "monaco-jsx-highlighter"
+  );
 
   const monacoJSXHighlighter = new MonacoJSXHighlighter(
-      monaco,
-      parse,
-      traverse,
-      editor
-  )
+    monaco,
+    parse,
+    traverse,
+    editor
+  );
 
-  monacoJSXHighlighter.highlightOnDidChangeModelContent()
-  monacoJSXHighlighter.addJSXCommentCommand()
+  monacoJSXHighlighter.highlightOnDidChangeModelContent();
+  monacoJSXHighlighter.addJSXCommentCommand();
 
   return {
     monacoJSXHighlighter,
-  }
-}
-
+  };
+};
 
 interface CodeEditorProps {
   modelKey: string;
   value: string;
   language: CodeLanguage;
-  onChange?: (value:string) => void | null;
+  onChange?: (value: string) => void | null;
   disabled?: boolean;
 }
 
+interface editorOptionsType {
+  wordWrap: "off" | "on" | "wordWrapColumn" | "bounded";
+}
+
 const CodeEditor: React.FC<CodeEditorProps> = ({
-                                                 modelKey,
-                                                 value:propValue,
-                                                 language,
-                                                 onChange:propOnChange,
-                                                 disabled
+  modelKey,
+  value: propValue,
+  language,
+  onChange: propOnChange,
+  disabled,
 }) => {
   // const debugComponent = true;
   const enableFormatButton = useMemo<boolean>(() => false, []);
+  const editorOptions: editorOptionsType = { wordWrap: "on" };
 
   const editorRef = useRef<any>();
   const { currentTheme } = useThemeContext();
   const editorLanguage = useMemo(() => {
     if (language === CodeLanguage.JAVASCRIPT) {
-      return 'javascript';
+      return "javascript";
     } else if (language === CodeLanguage.TYPESCRIPT) {
-      return 'typescript';
+      return "typescript";
     } else if (language === CodeLanguage.CSS) {
-      return 'css';
+      return "css";
     } else if (language === CodeLanguage.SCSS) {
-      return 'scss';
+      return "scss";
     } else if (language === CodeLanguage.HTML) {
-      return 'html';
+      return "html";
     } else if (language === CodeLanguage.TEXT) {
-      return 'txt';
+      return "txt";
     } else if (language === CodeLanguage.JSON) {
-      return 'json';
+      return "json";
     }
 
-    return 'javascript';
+    return "javascript";
   }, [language]);
 
   useEffect(() => {
@@ -104,13 +110,16 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
 
     return () => {
       if (debugComponent) {
-        console.log(`CodeEditor: destroyed`)
+        console.log(`CodeEditor: destroyed`);
       }
-    }
+    };
   }, []);
 
   if (debugComponent) {
-    console.log(`CodeEditor[${''}]:render disabled(${typeof disabled})=${disabled} modelKey=${modelKey} propValue=`, propValue);
+    console.log(
+      `CodeEditor[${""}]:render disabled(${typeof disabled})=${disabled} modelKey=${modelKey} propValue=`,
+      propValue
+    );
   }
 
   const handleEditorMount: OnMount = (editor, monaco) => {
@@ -123,7 +132,10 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
       const newValue = editorRef.current.getValue();
 
       if (debugComponent) {
-        console.log(`CodeEditor: onDidChangeModelContent() newValue=`, newValue);
+        console.log(
+          `CodeEditor: onDidChangeModelContent() newValue=`,
+          newValue
+        );
       }
 
       if (propOnChange) {
@@ -134,7 +146,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     const model = editor.getModel();
     if (model) {
       // Use two spaces for tabs
-      model.updateOptions({tabSize: 2});
+      model.updateOptions({ tabSize: 2 });
     }
 
     configTypescript(monaco);
@@ -144,63 +156,75 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
     const unformattedCode = editorRef.current.getModel().getValue();
 
     let formattedCode = await prettier.format(unformattedCode, {
-      parser: 'babel',
+      parser: "babel",
       plugins: [parserBabel],
       useTabs: false,
       semi: true,
-      singleQuote: true
-    }) //.replace(/\n$/,'');
+      singleQuote: true,
+    }); //.replace(/\n$/,'');
 
     editorRef.current.setValue(formattedCode);
   };
 
   return (
     <div className="editor-wrapper">
-      {disabled
-          ?
-          <div style={{
-              height: "100%", width:"100%",
-              display:"flex", flexDirection: "column", justifyContent:"center", alignItems: "center",
-            }}
-          >
-            <h3>Select a File</h3>
-          </div>
-          :
-          <>
-            {enableFormatButton &&
-              <button
-                  className="button button-format is-primary is-small"
-                  onClick={handleFormatClick}
-              >
-                Format {editorLanguage}
-              </button>
-            }
-            <div className="editor-main">
-              <ErrorBoundary key={modelKey} fallback={<CodeFallbackEditor value={propValue} onChange={newValue => propOnChange(newValue)} />} >
-                <MonacoEditorReact
-                    path={modelKey}
-                    value={propValue}
-                    language={editorLanguage}
-                    onMount={handleEditorMount}
-                    theme={ currentTheme === 'light'? 'light' : 'vs-dark'}
-                    height="calc(100% - 20px)"
-                    options={{
-                      wordWrap: "off",
-                      minimap: {enabled: false},
-                      showUnused: false,
-                      folding: true,
-                      lineNumbersMinChars: 3,
-                      fontSize: 16,
-                      scrollBeyondLastLine: false,
-                      automaticLayout: true,
-                    }}
+      {disabled ? (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <h3>Select a File</h3>
+        </div>
+      ) : (
+        <>
+          {enableFormatButton && (
+            <button
+              className="button button-format is-primary is-small"
+              onClick={handleFormatClick}
+            >
+              Format {editorLanguage}
+            </button>
+          )}
+          <div className="editor-main">
+            <ErrorBoundary
+              key={modelKey}
+              fallback={
+                <CodeFallbackEditor
+                  value={propValue}
+                  onChange={(newValue) => propOnChange(newValue)}
                 />
-              </ErrorBoundary>
-            </div>
-          </>
-      }
+              }
+            >
+              <MonacoEditorReact
+                path={modelKey}
+                value={propValue}
+                language={editorLanguage}
+                onMount={handleEditorMount}
+                theme={currentTheme === "light" ? "light" : "vs-dark"}
+                height="calc(100% - 20px)"
+                options={{
+                  wordWrap: editorOptions.wordWrap,
+                  minimap: { enabled: false },
+                  showUnused: false,
+                  folding: true,
+                  lineNumbersMinChars: 3,
+                  fontSize: 16,
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
+              />
+            </ErrorBoundary>
+          </div>
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default React.memo(CodeEditor);
