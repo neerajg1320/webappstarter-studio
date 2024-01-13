@@ -68,7 +68,7 @@ const ProjectEditAdvancePopUp: React.FC<ProjectEditAdvancePopUpProps> = ({
   return (
     <div className="advance-popup-box">
       <div className="heading-advance-popup">
-        <h3>Advance setting</h3>
+        <h3>Advanced setting</h3>
       </div>
       <div className="advance-popup-field">
         <p>Tree Shaking</p>
