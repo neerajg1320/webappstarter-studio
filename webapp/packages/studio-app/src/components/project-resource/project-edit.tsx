@@ -360,7 +360,7 @@ const ProjectEdit: React.FC<ProjectEditProps> = ({ isEdit }) => {
           )}
           <Button
             buttonClass="advance-btn"
-            title="Advance"
+            title="Advanced"
             buttonType="button"
             handleButtonClick={handleAdvanceButton}
           />
