@@ -9,8 +9,6 @@ const FormField = ({
   labelName,
   handleInputChange,
   box = "input",
-  // setFormData,
-  // formData,
   required,
   fieldDefaultChecked
 }: formFieldPropTypes) => {
