@@ -21,7 +21,7 @@ const ProjectListView = lazy(
 const ProjectCell = lazy(() => import("../project-cell/project-cell"));
 const ProjectEdit = lazy(() => import("../project-resource/project-edit"));
 import { withLifecyleLogger } from "../../hoc/logger";
-import ProjectSearch from "../project-resource/project-search-icon";
+import ProjectListOptions from "../project-resource/project-list-options";
 
 const AppRouterWrapper = () => {
   const currentProjectLocalId = useTypedSelector(
@@ -54,7 +54,7 @@ const AppRouterWrapper = () => {
               path={RoutePath.PROJECTS}
               element={
                 <ProtectedRoute>
-                  <ProjectSearch />
+                  <ProjectListOptions/>
                   <ProjectListView />
                 </ProtectedRoute>
               }

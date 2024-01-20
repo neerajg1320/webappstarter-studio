@@ -29,6 +29,8 @@ import {
   UserRequestSuccessAction,
   UserUpdateAction,
   UpdateProjectsSearchString,
+  UpdateProjectsSortBy,
+  UpdateProjectsSortIn,
 } from "../actions";
 import { Cell, CellTypes } from "../cell";
 import { Dispatch } from "react";
@@ -1210,6 +1212,20 @@ export const saveProject = (localId: string) => {
 
 export const updateProjectsSearchString= (searchString: string): UpdateProjectsSearchString=>{
   return { type: ActionType.UPDATE_PROJECTS_SEARCH_STRING, payload: searchString }
+}
+
+export const updateProjectsSortBy = (sortByValue: string): UpdateProjectsSortBy =>{
+  return {
+    type: ActionType.UPDATE_PROJECTS_SORT_BY,
+    payload: sortByValue
+  }
+}
+
+export const updateProjectsSortIn = (sortInValue: string): UpdateProjectsSortIn => {
+  return {
+    type: ActionType.UPDATE_PROJECTS_SORT_IN,
+    payload: sortInValue
+  }
 }
 
 

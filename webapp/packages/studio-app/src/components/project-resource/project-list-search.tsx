@@ -1,6 +1,6 @@
 import React, { useState, useMemo} from "react";
 import { CiSearch } from "react-icons/ci";
-import "./project-search-icon.css";
+import "./project-list-search.css";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { getSearchProject, getProjects } from "../../state/helpers/project-helpers";
 import { useActions } from "../../hooks/use-actions";

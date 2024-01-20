@@ -109,7 +109,7 @@
 }
 
 .custom--dropdown-container .dropdown-item.selected {
-    background-color: rgb(255, 255, 255);
+    background-color: var(--secondaryColor);
     color: var(--primaryColor);
     font-weight: 600;
     display: flex;

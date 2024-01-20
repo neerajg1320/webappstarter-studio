@@ -16,7 +16,9 @@ const initialState: ProjectsState = {
   error: null,
   currentProjectId: null,
   data: {},
-  searchString: ''
+  searchString: '',
+  projectsSortBy: 'name',
+  projectsSortIn: 'increase'
 }
 
 const reducer = produce((state: ProjectsState = initialState, action: Action): ProjectsState => {
@@ -110,9 +112,16 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
     // actiontype for update search string
     case ActionType.UPDATE_PROJECTS_SEARCH_STRING:
       // console.log("payload: ", action.payload)
-      state.searchString = action.payload
+      state.searchString = action.payload;
       return state;
 
+    case ActionType.UPDATE_PROJECTS_SORT_BY:
+      state.projectsSortBy = action.payload;
+      return state;
+    
+    case ActionType.UPDATE_PROJECTS_SORT_IN:
+      state.projectsSortIn = action.payload;
+      return state;
 
     default:
       return state;  

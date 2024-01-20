@@ -149,7 +149,7 @@ const DropDown: React.FC<DropDownProps> = ({
     } else {
       newValue = option;
     }
-    console.log("newValue: ", newValue);
+    // console.log("newValue: ", newValue);
     setSelectedValue(newValue);
     onChange(newValue);
   };
@@ -232,8 +232,8 @@ const DropDown: React.FC<DropDownProps> = ({
             >
               {isSelected(option) && placeHolder === "View" ? <BsCheck2 /> : ""}
               <p className="dropdown-item-left">{option.label}</p>
-              {option.value === "grid" ? <IoMdGrid /> : ""}
-              {option.value === "preview" ? <MdPreview /> : ""}
+              {option.value === "grid" && <IoMdGrid /> }
+              {option.value === "preview" && <MdPreview /> }
             </div>
           ))}
         </div>

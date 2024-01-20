@@ -258,6 +258,16 @@ export interface UpdateProjectsSearchString {
   payload: string
 }
 
+export interface UpdateProjectsSortBy {
+  type: ActionType.UPDATE_PROJECTS_SORT_BY,
+  payload: string
+}
+
+export interface UpdateProjectsSortIn {
+  type: ActionType.UPDATE_PROJECTS_SORT_IN,
+  payload: string
+}
+
 
 export type Action =
     | MoveCellAction
@@ -303,4 +313,6 @@ export type Action =
     | UpdateApplicationAction
     | ResetApplicationAction
     | UpdateProjectsSearchString
+    | UpdateProjectsSortBy
+    | UpdateProjectsSortIn
     ;

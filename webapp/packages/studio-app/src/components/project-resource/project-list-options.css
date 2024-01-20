@@ -1,0 +1,5 @@
+.project-search-sort{
+    display: flex;
+    justify-content: space-between;
+    margin: 4rem 5rem;
+}

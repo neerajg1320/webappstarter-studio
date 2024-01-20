@@ -39,7 +39,7 @@ export const getSearchProject = (
   projectList: ReduxProject[]
 ) => {
   // let projectList = getProjects(state);
-  console.log("searchValue: ", searchValue);
+  // console.log("searchValue: ", searchValue);
   if (!searchValue) {
     return projectList;
   } else {

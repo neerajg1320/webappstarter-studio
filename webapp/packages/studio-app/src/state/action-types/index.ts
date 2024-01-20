@@ -27,6 +27,8 @@ export enum ActionType {
   DOWNLOAD_PROJECT_START = 'download_project_start',
   DOWNLOAD_PROJECT_COMPLETE = 'download_project_complete',
   UPDATE_PROJECTS_SEARCH_STRING = "update_projects_search_string",
+  UPDATE_PROJECTS_SORT_BY = "update_projects_sort_by",
+  UPDATE_PROJECTS_SORT_IN = "update_projects_sort_in",
 
   CREATE_FILE = 'create_file',
   UPDATE_FILE = 'update_file',
