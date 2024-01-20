@@ -25,3 +25,19 @@ export const getProjectEntryPath = (reduxProject:ReduxProject):string => {
 
   return projectEntryPath;
 }
+
+
+
+//search project
+export const getSearchProject = (searchValue: string, projectList: ReduxProject[])=>{
+
+  // let projectList = getProjects(state);
+  if(!searchValue){
+    return projectList;
+  }else{
+    const searchValueRegex = new RegExp(searchValue)
+    let projectSearchResult = projectList.filter((project)=>project.title.match(searchValueRegex))
+    console.log(projectSearchResult);
+    return projectSearchResult;
+  }
+}

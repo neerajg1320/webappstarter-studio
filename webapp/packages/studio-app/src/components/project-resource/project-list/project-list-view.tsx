@@ -24,6 +24,9 @@ const ProjectListView = () => {
     return getProjects(projectsState);
   }, [projectsState]);
 
+
+  // console.log("projectList: ",projectList);
+
   const handleNewProjectClick = () => {
     if (debugComponent) {
       console.log(`handleNewProjectClick()`);

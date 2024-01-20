@@ -41,6 +41,7 @@ export interface ProjectsState {
 }
 
 
+
 // TBD: Need to add a strong documentation here as this is one of the focal points of our application
 // selectedFileLocalId: This is the selected to be shown in the editor.
 // filesSynced is set to true when the project file models are downloaded. This happens before ideReady.
