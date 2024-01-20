@@ -3,19 +3,22 @@ import { CiSearch } from "react-icons/ci";
 import "./project-search-icon.css";
 import { useTypedSelector } from "../../hooks/use-typed-selector";
 import { getSearchProject, getProjects } from "../../state/helpers/project-helpers";
+import { useActions } from "../../hooks/use-actions";
 
 const ProjectSearch = () => {
     const projectsState = useTypedSelector((state) => state.projects);
-    const [searchValue, setSearchValue] = useState<string>('');
+    const searchString = useTypedSelector((state) => state.projects.searchString);
+    const {updateProjectsSearchString} = useActions();
+    // const [searchValue, setSearchValue] = useState<string>('');
     const projectList = useMemo(() => {
         return getProjects(projectsState);
       }, [projectsState]);
 
     const handleSearchValue: React.ChangeEventHandler<HTMLInputElement> = (e)=>{
-        setSearchValue(e.target.value);
-        getSearchProject(e.target.value, projectList);
+        updateProjectsSearchString(e.target.value)
     }
-
+    
+    // console.log("searchString: ",searchString)
     const handleSearch: React.KeyboardEventHandler<HTMLDivElement> = (e)=>{
         if(e.key === "Enter"){
         }
@@ -26,7 +29,7 @@ const ProjectSearch = () => {
       <div className="search-icon">
         <CiSearch />
       </div>
-      <input type="text" placeholder="search" value={searchValue} onChange={handleSearchValue}/>
+      <input type="text" placeholder="search" value={searchString} onChange={handleSearchValue}/>
     </div>
   );
 };

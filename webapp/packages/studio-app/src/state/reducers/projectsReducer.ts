@@ -15,7 +15,8 @@ const initialState: ProjectsState = {
   autoBundle: false,
   error: null,
   currentProjectId: null,
-  data: {}
+  data: {},
+  searchString: ''
 }
 
 const reducer = produce((state: ProjectsState = initialState, action: Action): ProjectsState => {
@@ -105,6 +106,13 @@ const reducer = produce((state: ProjectsState = initialState, action: Action): P
     case ActionType.SET_CURRENT_PROJECT:
       state.currentProjectId = action.payload;
       return state;
+
+    // actiontype for update search string
+    case ActionType.UPDATE_PROJECTS_SEARCH_STRING:
+      // console.log("payload: ", action.payload)
+      state.searchString = action.payload
+      return state;
+
 
     default:
       return state;  

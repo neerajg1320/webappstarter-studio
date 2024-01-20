@@ -251,6 +251,14 @@ export interface ResetApplicationAction {
   // payload?: any,
 }
 
+
+// action type for update search string
+export interface UpdateProjectsSearchString {
+  type: ActionType.UPDATE_PROJECTS_SEARCH_STRING,
+  payload: string
+}
+
+
 export type Action =
     | MoveCellAction
     | DeleteCellAction
@@ -294,4 +302,5 @@ export type Action =
     | ApiFlowReset
     | UpdateApplicationAction
     | ResetApplicationAction
+    | UpdateProjectsSearchString
     ;

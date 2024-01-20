@@ -38,6 +38,7 @@ export interface ProjectsState {
   error: string | null;
   currentProjectId: string|null,
   data: ProjectMap;
+  searchString: string
 }
 
 

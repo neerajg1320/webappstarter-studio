@@ -26,6 +26,7 @@ export enum ActionType {
   RESET_PROJECTS = 'reset_projects',
   DOWNLOAD_PROJECT_START = 'download_project_start',
   DOWNLOAD_PROJECT_COMPLETE = 'download_project_complete',
+  UPDATE_PROJECTS_SEARCH_STRING = "update_projects_search_string",
 
   CREATE_FILE = 'create_file',
   UPDATE_FILE = 'update_file',

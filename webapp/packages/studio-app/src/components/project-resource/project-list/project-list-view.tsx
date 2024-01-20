@@ -10,7 +10,7 @@ import {ProjectFrameworks, ProjectTemplates, ReactToolchains, StartConfigType} f
 import {withLifecyleLogger} from "../../../hoc/logger";
 import {useTypedSelector} from "../../../hooks/use-typed-selector";
 import {debugComponent} from "../../../config/global";
-import {getProjects} from "../../../state/helpers/project-helpers";
+import {getProjects, getSearchProject} from "../../../state/helpers/project-helpers";
 
 const ProjectListView = () => {
   const [isPreviewLayout, setPreviewLayout] = useState<boolean>(false);
@@ -19,10 +19,13 @@ const ProjectListView = () => {
   const currentUser = useTypedSelector(state => state.auth.currentUser);
   const isAuthenticated = useTypedSelector<boolean>(state => state.auth.isAuthenticated);
   const projectsState = useTypedSelector((state) => state.projects);
+  const searchString = useTypedSelector((state) => state.projects.searchString)
   // const projectList = useTypedSelector((state) => getProjects(state.projects));
   const projectList = useMemo(() => {
     return getProjects(projectsState);
   }, [projectsState]);
+
+  const projectSearchList = getSearchProject(searchString, projectList)
 
 
   // console.log("projectList: ",projectList);
@@ -85,7 +88,7 @@ const ProjectListView = () => {
               </div> */}
               <div className="project-list-view-panel">
                 {/* <ProjectListScroller projects={projectList} visibility={isPreviewLayout}/> */}
-                <ProjectListGrid projects={projectList} visibility={!isPreviewLayout}/>
+                <ProjectListGrid projects={projectSearchList} visibility={!isPreviewLayout}/>
               </div>
             </div>
             :
